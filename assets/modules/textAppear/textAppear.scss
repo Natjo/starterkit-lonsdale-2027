@@ -1,0 +1,63 @@
+/* textAppear — types: fadein | reveal (slide-up behind overflow) */
+
+.text-appear {
+    .word {
+        display: inline-block;
+        overflow: hidden;
+    }
+
+    .char {
+        display: inline-block;
+        opacity: 0;
+    }
+
+    &--reveal .char {
+        translate: 0 110%;
+    }
+
+    &--fadein .char {
+        translate: none;
+    }
+}
+
+.text-appear-root.is-animated {
+    .text-appear--reveal .char {
+        animation: text-appear-reveal var(--text-appear-duration, 0.45s) cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: calc(var(--text-appear-delay, 0ms) + var(--i, 0) * var(--text-appear-stagger, 20ms));
+    }
+
+    .text-appear--fadein .char {
+        animation: text-appear-fade var(--text-appear-duration, 0.22s) ease-out both;
+        animation-delay: calc(var(--text-appear-delay, 0ms) + var(--i, 0) * var(--text-appear-stagger, 10ms));
+    }
+}
+
+@keyframes text-appear-reveal {
+    from {
+        translate: 0 110%;
+        opacity: 0;
+    }
+
+    to {
+        translate: 0 0;
+        opacity: 1;
+    }
+}
+
+@keyframes text-appear-fade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .text-appear .char {
+        translate: none;
+        opacity: 1;
+        animation: none;
+    }
+}

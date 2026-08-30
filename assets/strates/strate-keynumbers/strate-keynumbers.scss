@@ -1,0 +1,17 @@
+.strate-keynumbers {
+    .strate-content {
+        display: grid;
+        gap: var(--gap);
+        grid-column: ctr;
+        min-width: 0;
+    }
+
+    .keynumbers-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+        gap: clamp(3rem, 5vw, 6rem) var(--gap);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+}

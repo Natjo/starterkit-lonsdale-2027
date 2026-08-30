@@ -1,0 +1,11 @@
+{
+    "require-dev": {
+        "symfony/var-dumper": "^5.4"
+    },
+    "require": {
+        "enshrined/svg-sanitize": "^0.22.0"
+    },
+    "config": {
+        "vendor-dir": "vendor"
+    }
+}

@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Header nav browser contract</title>
+    <style>
+        body { min-height: 3000px; }
+    </style>
+</head>
+<body data-result="pending">
+    <header id="header-nav" class="header-nav">
+        <a class="header-nav-logo" href="#home">Accueil</a>
+        <button class="btn-nav" type="button" aria-expanded="false" aria-controls="nav">
+            <span aria-hidden="true"></span>
+            <span class="sr-only">Menu</span>
+        </button>
+        <nav id="nav" aria-label="Navigation principale">
+            <a id="nav-link" href="#target">Cible</a>
+        </nav>
+    </header>
+    <main id="target" tabindex="-1">Contenu</main>
+
+    <script type="module">
+        const mediaListeners = new Set();
+        const mobileMedia = {
+            matches: true,
+            addEventListener(type, listener) {
+                if (type === 'change') mediaListeners.add(listener);
+            },
+            addListener(listener) {
+                mediaListeners.add(listener);
+            },
+            emit(matches) {
+                this.matches = matches;
+                mediaListeners.forEach(listener => listener({ matches }));
+            },
+        };
+
+        window.matchMedia = () => mobileMedia;
+        const frameQueue = [];
+        window.requestAnimationFrame = callback => {
+            frameQueue.push(callback);
+            return frameQueue.length;
+        };
+        const flushFrame = () => {
+            const callbacks = frameQueue.splice(0);
+            callbacks.forEach(callback => callback(performance.now()));
+        };
+
+        const { default: initHeaderNav } = await import(
+            '/assets/common/header-nav/header-nav.js'
+        );
+
+        const assert = (condition, message) => {
+            if (!condition) throw new Error(message);
+        };
+        let testScrollY = 120;
+
+        Object.defineProperty(window, 'scrollY', {
+            configurable: true,
+            get: () => testScrollY,
+        });
+
+        try {
+            let root = document.querySelector('#header-nav');
+
+            initHeaderNav();
+
+            assert(root.classList.contains('is-compact'), 'restored scroll starts compact');
+            assert(!root.classList.contains('is-scroll-ready'), 'initial compact has no transition');
+            window.dispatchEvent(new PageTransitionEvent('pageshow'));
+            flushFrame();
+            flushFrame();
+            assert(root.classList.contains('is-scroll-ready'), 'scroll transitions enabled after paint');
+
+            const freshRoot = root.cloneNode(true);
+            freshRoot.className = 'header-nav';
+            freshRoot.querySelector('.btn-nav').setAttribute('aria-expanded', 'false');
+            freshRoot.querySelector('#nav').removeAttribute('data-lenis-prevent');
+            root.replaceWith(freshRoot);
+            root = freshRoot;
+            testScrollY = 0;
+            initHeaderNav();
+
+            const button = root.querySelector('.btn-nav');
+            const nav = root.querySelector('#nav');
+            const link = root.querySelector('#nav-link');
+
+            link.addEventListener('click', event => event.preventDefault());
+
+            assert(
+                Boolean(button.compareDocumentPosition(nav) & Node.DOCUMENT_POSITION_FOLLOWING),
+                'button precedes nav',
+            );
+            assert(!root.classList.contains('is-nav-animating'), 'initial render has no transition');
+
+            button.click();
+            assert(root.classList.contains('is-open'), 'button opens');
+            assert(root.classList.contains('is-nav-animating'), 'button enables transition');
+            assert(button.getAttribute('aria-expanded') === 'true', 'button expanded');
+            assert(nav.hasAttribute('data-lenis-prevent'), 'lenis prevented while open');
+
+            link.click();
+            assert(!root.classList.contains('is-open'), 'link closes');
+            assert(!nav.hasAttribute('data-lenis-prevent'), 'lenis restored after close');
+
+            button.click();
+            root.dispatchEvent(new KeyboardEvent('keydown', {
+                key: 'Escape',
+                bubbles: true,
+            }));
+            assert(!root.classList.contains('is-open'), 'escape closes');
+            assert(document.activeElement === button, 'escape restores button focus');
+
+            button.click();
+            mobileMedia.emit(false);
+            assert(!root.classList.contains('is-open'), 'desktop closes');
+            assert(button.getAttribute('aria-expanded') === 'false', 'desktop resets expanded');
+            assert(!root.classList.contains('is-nav-animating'), 'desktop disables transitions');
+
+            mobileMedia.emit(true);
+            assert(!root.classList.contains('is-nav-animating'), 'mobile starts without transitions');
+
+            document.querySelector('#target').focus({ preventScroll: true });
+            assert(document.activeElement.id === 'target', 'focus moved outside header');
+            assert(!root.classList.contains('is-open'), 'menu closed before scroll');
+            root.classList.add('is-hidden');
+            link.focus({ preventScroll: true });
+            assert(!root.classList.contains('is-hidden'), 'focus reveals');
+
+            document.body.dataset.result = 'ok';
+        } catch (error) {
+            document.body.dataset.result = error.message;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+#edittag {
+	max-width: 100%;
+}
+
+.rte-xs iframe {
+	min-height: 50px !important;
+	height: auto !important;
+}
+
+.rte-sm iframe {
+	min-height: 100px !important;
+	height: auto !important;
+}
+
+// WYSIWYG ACF toolbar « Light » (titre, suptitre…) — hauteur réduite.
+.acf-editor-wrap[data-toolbar="light"] {
+	textarea.wp-editor-area {
+		height: 100px !important;
+		min-height: 100px !important;
+	}
+
+	iframe {
+		height: 100px !important;
+		min-height: 100px !important;
+	}
+
+	.mce-edit-area {
+		height: 100px !important;
+	}
+}

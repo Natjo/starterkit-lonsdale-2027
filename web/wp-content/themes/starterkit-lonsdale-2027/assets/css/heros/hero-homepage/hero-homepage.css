@@ -1,0 +1,2 @@
+.hero-homepage{height:100vh}.hero-homepage .hero-content{z-index:2;grid-area:1/fluid;align-self:center;align-items:center;gap:3rem;display:grid}.hero-homepage .intro{font-size:1.8rem;font-weight:300;line-height:3rem}.hero-homepage .bg{z-index:1;opacity:.6;grid-area:1/full;width:100%;height:100%;overflow:hidden}.hero-homepage .bg img{object-fit:cover;width:100%;height:100%}
+/*# sourceMappingURL=hero-homepage.css.map*/

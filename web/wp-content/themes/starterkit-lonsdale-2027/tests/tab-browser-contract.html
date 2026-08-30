@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Tabs browser contract</title>
+</head>
+<body data-result="pending">
+    <div id="horizontal" class="tabs">
+        <div role="tablist" aria-label="Sections" aria-orientation="horizontal">
+            <button id="tab-0" role="tab" aria-controls="panel-0" aria-selected="true" tabindex="-1" disabled><span>Fermé</span></button>
+            <button id="tab-1" role="tab" aria-controls="panel-1" aria-selected="false" tabindex="-1"><span>Présentation</span></button>
+            <button id="tab-2" role="tab" aria-controls="panel-2" aria-selected="false" tabindex="-1" disabled><span>Archivé</span></button>
+            <button id="tab-3" role="tab" aria-controls="panel-3" aria-selected="false" tabindex="-1"><span>Contact</span></button>
+        </div>
+        <div id="panel-0" role="tabpanel" aria-labelledby="tab-0">Fermé</div>
+        <div id="panel-1" role="tabpanel" aria-labelledby="tab-1" hidden>Présentation</div>
+        <div id="panel-2" role="tabpanel" aria-labelledby="tab-2" hidden>Archivé</div>
+        <div id="panel-3" role="tabpanel" aria-labelledby="tab-3" hidden>Contact</div>
+    </div>
+
+    <div id="vertical" class="tabs">
+        <div role="tablist" aria-label="Étapes" aria-orientation="vertical">
+            <button id="step-0" role="tab" aria-controls="step-panel-0" aria-selected="true" tabindex="0">Étape 1</button>
+            <button id="step-1" role="tab" aria-controls="step-panel-1" aria-selected="false" tabindex="-1">Étape 2</button>
+        </div>
+        <div id="step-panel-0" role="tabpanel" aria-labelledby="step-0">Étape 1</div>
+        <div id="step-panel-1" role="tabpanel" aria-labelledby="step-1" hidden>Étape 2</div>
+    </div>
+
+    <script type="module">
+        import initializeTabs from "/assets/components/tab/tab.js";
+
+        const assert = (condition, message) => {
+            if (!condition) throw new Error(message);
+        };
+        const keydown = (element, key) => {
+            const event = new KeyboardEvent("keydown", { key, bubbles: true, cancelable: true });
+            element.dispatchEvent(event);
+            return event;
+        };
+
+        try {
+            const horizontal = document.querySelector("#horizontal");
+            const tabs = Array.from(horizontal.querySelectorAll('[role="tab"]'));
+            const panels = Array.from(horizontal.querySelectorAll('[role="tabpanel"]'));
+            const destroyHorizontal = initializeTabs(horizontal);
+
+            assert(tabs[0].getAttribute("aria-selected") === "false", "disabled tab unselected");
+            assert(tabs[1].getAttribute("aria-selected") === "true", "first enabled selected");
+            assert(tabs[1].tabIndex === 0 && tabs[3].tabIndex === -1, "roving tabindex initialized");
+            assert(panels[0].hidden && !panels[1].hidden && panels[2].hidden && panels[3].hidden, "only selected panel visible");
+
+            tabs[3].querySelector("span").click();
+            assert(tabs[3].getAttribute("aria-selected") === "true", "nested click target selects");
+            assert(document.activeElement === tabs[3], "click selection focuses tab");
+            assert(!panels[3].hidden && panels[1].hidden, "click changes panel");
+
+            keydown(tabs[3], "ArrowRight");
+            assert(document.activeElement === tabs[1], "arrow wraps and skips disabled");
+            keydown(tabs[1], "End");
+            assert(document.activeElement === tabs[3], "end selects last enabled");
+            keydown(tabs[3], "Home");
+            assert(document.activeElement === tabs[1], "home selects first enabled");
+            const tabEvent = keydown(tabs[1], "Tab");
+            assert(!tabEvent.defaultPrevented, "tab remains native");
+
+            const vertical = document.querySelector("#vertical");
+            const verticalTabs = Array.from(vertical.querySelectorAll('[role="tab"]'));
+            const destroyVertical = initializeTabs(vertical);
+            verticalTabs[0].focus();
+            keydown(verticalTabs[0], "ArrowDown");
+            assert(document.activeElement === verticalTabs[1], "vertical arrow down selects next");
+            keydown(verticalTabs[1], "ArrowUp");
+            assert(document.activeElement === verticalTabs[0], "vertical arrow up selects previous");
+            const horizontalKey = keydown(verticalTabs[0], "ArrowRight");
+            assert(!horizontalKey.defaultPrevented, "vertical ignores horizontal arrows");
+
+            destroyVertical();
+            destroyHorizontal();
+            assert(tabs[0].getAttribute("aria-selected") === "true", "destroy restores disabled selected state");
+            assert(!panels[0].hidden && panels[1].hidden, "destroy restores panels");
+            tabs[3].click();
+            assert(tabs[0].getAttribute("aria-selected") === "true", "destroy removes listeners");
+
+            document.body.dataset.result = "ok";
+        } catch (error) {
+            document.body.dataset.result = error.message;
+        }
+    </script>
+</body>
+</html>

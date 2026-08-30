@@ -1,0 +1,29 @@
+.pagination {
+    margin-top: var(--margin-sm);
+
+    .pagination-list {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    .page-numbers {
+        display: grid;
+        place-items: center;
+        min-width: 4rem;
+        min-height: 4rem;
+        padding: .6rem 1rem;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius);
+    }
+
+    .current {
+        color: var(--color-bg);
+        background: var(--color-text);
+        border-color: var(--color-text);
+    }
+}

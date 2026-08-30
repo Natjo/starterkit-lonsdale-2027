@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>TextAppear browser contract</title>
+    <script type="importmap">
+        {
+            "imports": {
+                "@modules/splitText/splitText": "/assets/modules/splitText/splitText.js"
+            }
+        }
+    </script>
+</head>
+<body>
+    <section id="root">
+        <h1 class="title keep" style="--text-appear-delay: 99ms">Hello 👨‍👩‍👧‍👦</h1>
+    </section>
+    <section id="empty"></section>
+    <section id="reduced"><p class="title">Sans mouvement</p></section>
+    <section id="fallback"><p class="title">Fallback observer</p></section>
+    <pre id="result">PENDING</pre>
+
+    <script type="module">
+        let reducedMotion = false;
+        window.matchMedia = () => ({ get matches() { return reducedMotion; } });
+
+        const { default: textAppear } = await import(
+            "/assets/modules/textAppear/textAppear.js"
+        );
+
+        const assertions = [];
+        const assert = (condition, message) => {
+            assertions.push(`${condition ? "PASS" : "FAIL"}: ${message}`);
+            if (!condition) throw new Error(message);
+        };
+        const afterFrames = () => new Promise(resolve => setTimeout(resolve, 100));
+
+        try {
+            const root = document.querySelector("#root");
+            const title = root.querySelector(".title");
+            const originalHtml = title.innerHTML;
+            const destroy = textAppear(root, {
+                items: [
+                    { el: ".title", type: "reveal", delay: 10, duration: 200, stagger: 15 },
+                    { el: title, type: "fadein" },
+                    null,
+                ],
+            });
+
+            assert(root.classList.contains("text-appear-root"), "la racine est scopée");
+            assert(title.querySelectorAll(".word").length === 2, "une cible dupliquée est traitée une seule fois");
+            await afterFrames();
+            assert(root.classList.contains("is-animated"), "le double RAF active l'animation");
+            destroy();
+            destroy();
+            assert(!root.classList.contains("text-appear-root"), "la classe racine ajoutée est nettoyée");
+            assert(!root.classList.contains("is-animated"), "la classe active ajoutée est nettoyée");
+            assert(title.innerHTML === originalHtml, "le texte original est restauré");
+            assert(title.classList.contains("keep"), "les classes préexistantes sont conservées");
+            assert(
+                title.style.getPropertyValue("--text-appear-delay") === "99ms",
+                "la variable CSS préexistante est restaurée"
+            );
+
+            const empty = document.querySelector("#empty");
+            const destroyEmpty = textAppear(empty, { items: null });
+            assert(empty.classList.contains("is-animated"), "un payload vide laisse le contenu actif");
+            destroyEmpty();
+            assert(!empty.classList.contains("is-animated"), "le parcours vide possède un nettoyage");
+
+            reducedMotion = true;
+            const reduced = document.querySelector("#reduced");
+            const destroyReduced = textAppear(reduced, { items: [{ el: ".title" }] });
+            assert(!reduced.querySelector(".char"), "reduced motion évite le split");
+            assert(reduced.classList.contains("is-animated"), "reduced motion affiche l'état final");
+            destroyReduced();
+            assert(!reduced.classList.contains("is-animated"), "reduced motion est nettoyé");
+            reducedMotion = false;
+
+            const fallback = document.querySelector("#fallback");
+            const Observer = globalThis.IntersectionObserver;
+            globalThis.IntersectionObserver = undefined;
+            const destroyFallback = textAppear(fallback, {
+                whenVisible: true,
+                rootMargin: "invalid",
+                threshold: 5,
+                items: [{ el: ".title", duration: {}, stagger: Infinity }],
+            });
+            assert(fallback.querySelector(".char"), "sans observer le split démarre immédiatement");
+            destroyFallback();
+            globalThis.IntersectionObserver = Observer;
+
+            const invalidDestroy = textAppear(null, null);
+            invalidDestroy();
+            textAppear(root, { items: [{ selector: "[invalid" }] })();
+            assert(true, "les entrées invalides ne provoquent pas d'erreur");
+
+            document.querySelector("#result").textContent = `PASS\n${assertions.join("\n")}`;
+        } catch (error) {
+            document.querySelector("#result").textContent = `FAIL\n${assertions.join("\n")}\n${error.stack}`;
+        }
+    </script>
+</body>
+</html>

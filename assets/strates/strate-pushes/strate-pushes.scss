@@ -1,0 +1,12 @@
+.strate-pushes {
+
+
+
+    @media #{$breakpoint-md-down} {}
+
+    @media #{$breakpoint-md-up} {
+        .list {
+            --list-columns: 3;
+        }
+    }
+}

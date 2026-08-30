@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Dialog browser contract</title>
+    <style>
+        dialog { width: 320px; height: 180px; }
+        dialog[data-dialog-closing="1"] { animation: dialog-fade-out 160ms ease-in both; }
+        @keyframes dialog-fade-out { to { opacity: 0; } }
+    </style>
+</head>
+<body data-result="pending">
+    <button id="trigger" data-dialog-id="dialog-test" aria-expanded="false">Ouvrir</button>
+    <button id="trigger-secondary" data-dialog-id="dialog-test" aria-expanded="false">Ouvrir aussi</button>
+    <dialog id="dialog-test">
+        <button type="button" data-dialog-close value="confirm">Fermer</button>
+    </dialog>
+
+    <script type="module">
+        import initializeDialog from "/assets/components/dialog/dialog.js";
+
+        const assert = (condition, message) => {
+            if (!condition) throw new Error(message);
+        };
+        const waitFor = async (condition, message) => {
+            for (let attempt = 0; attempt < 50; attempt += 1) {
+                if (condition()) return;
+                await new Promise(resolve => setTimeout(resolve, 10));
+            }
+            throw new Error(message);
+        };
+        const dialog = document.querySelector("dialog");
+        const trigger = document.querySelector("#trigger");
+        const secondaryTrigger = document.querySelector("#trigger-secondary");
+
+        try {
+            const destroy = initializeDialog(dialog);
+
+            trigger.focus();
+            trigger.click();
+            assert(dialog.open, "open");
+            assert(trigger.getAttribute("aria-expanded") === "true", "trigger expanded");
+
+            const rect = dialog.getBoundingClientRect();
+            dialog.dispatchEvent(new MouseEvent("click", {
+                bubbles: true,
+                clientX: rect.left + rect.width / 2,
+                clientY: rect.top + rect.height / 2,
+            }));
+            assert(dialog.open && !dialog.hasAttribute("data-dialog-closing"), "inside click ignored");
+
+            dialog.dispatchEvent(new MouseEvent("click", {
+                bubbles: true,
+                clientX: Math.max(0, rect.left - 10),
+                clientY: Math.max(0, rect.top - 10),
+            }));
+            assert(dialog.open && dialog.hasAttribute("data-dialog-closing"), "backdrop starts close animation");
+            dialog.dispatchEvent(new AnimationEvent("animationend", { animationName: "dialog-fade-out" }));
+            await waitFor(
+                () => document.activeElement === trigger && trigger.getAttribute("aria-expanded") === "false",
+                "backdrop state restored",
+            );
+            assert(!dialog.open, "backdrop closes after animation");
+
+            secondaryTrigger.focus();
+            secondaryTrigger.click();
+            assert(dialog.open && secondaryTrigger.getAttribute("aria-expanded") === "true", "secondary trigger opens");
+            dialog.querySelector("[data-dialog-close]").click();
+            dialog.dispatchEvent(new AnimationEvent("animationend", { animationName: "dialog-fade-out" }));
+            await waitFor(
+                () => document.activeElement === secondaryTrigger && secondaryTrigger.getAttribute("aria-expanded") === "false",
+                "secondary state restored",
+            );
+            assert(dialog.returnValue === "confirm", "return value preserved");
+
+            trigger.focus();
+            trigger.click();
+            dialog.dispatchEvent(new Event("cancel", { cancelable: true }));
+            assert(dialog.hasAttribute("data-dialog-closing"), "escape starts close animation");
+            dialog.dispatchEvent(new AnimationEvent("animationend", { animationName: "dialog-fade-out" }));
+            await waitFor(
+                () => document.activeElement === trigger && trigger.getAttribute("aria-expanded") === "false",
+                "escape state restored",
+            );
+            assert(!dialog.open && dialog.returnValue === "cancel", "escape closes with cancel value");
+
+            trigger.focus();
+            trigger.click();
+            assert(dialog.open, "reopens before destroy");
+            destroy();
+            await waitFor(() => !dialog.open, "destroy closes dialog");
+            assert(!dialog.open, "destroy closes dialog");
+            assert(trigger.getAttribute("aria-expanded") === "false", "destroy resets trigger");
+            trigger.click();
+            assert(!dialog.open, "destroy removes trigger listener");
+
+            document.body.dataset.result = "ok";
+        } catch (error) {
+            document.body.dataset.result = `${error.message}:${document.activeElement?.id || "none"}`;
+        }
+    </script>
+</body>
+</html>

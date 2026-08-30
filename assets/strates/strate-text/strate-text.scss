@@ -1,0 +1,10 @@
+.strate-text {
+
+    .strate-title {
+        margin-bottom: 1rem;
+    }
+
+    @media #{$breakpoint-md-down} {}
+
+    @media #{$breakpoint-md-up} {}
+}

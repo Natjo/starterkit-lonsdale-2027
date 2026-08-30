@@ -1,0 +1,77 @@
+// CSS
+@import "styles/styles" critical;
+@import "styles/fonts" critical;
+
+// vendors
+@import "vendors/lenis/lenis" critical;
+
+// modules
+@import "modules/scrollDriver/textAnimated/textAnimated";
+@import "modules/textAppear/textAppear";
+
+// common
+@import "common/header-nav/header-nav" critical;
+@import "common/related/related";
+@import "common/prefooter/prefooter";
+@import "common/footer/footer";
+
+// components
+@import "components/slider/slider";
+@import "components/accordion/accordion";
+@import "components/eyebrow/eyebrow";
+@import "components/title/title" critical;
+@import "components/text/text" critical;
+@import "components/btn/btn" critical;
+@import "components/link/link" critical;
+@import "components/list/list" critical;
+@import "components/date/date";
+@import "components/shares/shares";
+@import "components/socials/socials";
+@import "components/select-lang/select-lang";
+@import "components/video/video";
+@import "components/badge/badge";
+@import "components/dialog/dialog";
+@import "components/tooltip/tooltip";
+@import "components/header/header" critical;
+@import "components/picto/picto";
+@import "components/tag/tag";
+@import "components/autocomplete/autocomplete";
+@import "components/quote/quote";
+@import "components/field/field";
+@import "components/newsletter/newsletter";
+@import "components/pagination/pagination";
+@import "components/breadcrumb/breadcrumb";
+@import "components/intro/intro";
+@import "components/search/search" critical;
+@import "components/select-custom/select-custom";
+@import "components/select/select";
+@import "components/tab/tab";
+@import "components/table/table";
+@import "components/marquee/marquee";
+@import "components/picture/picture" critical;
+
+// heros
+@import "heros/hero-homepage/hero-homepage" critical;
+
+// cards
+@import "cards/card-news/card-news";
+@import "cards/card-page/card-page";
+@import "cards/card-keynumber/card-keynumber";
+
+// pages
+@import "pages/404" split;
+@import "pages/archive-news" split;
+@import "pages/search" split;
+
+// strates — split : bundle dédié, <link> injecté par strate() / component() / card()
+// @import "strates/strate-quizz/strate-quizz" split;
+@import "strates/strate-text_image/strate-text_image";
+@import "strates/strate-text/strate-text";
+@import "strates/strate-intro/strate-intro" split;
+@import "strates/strate-media/strate-media";
+@import "strates/strate-pushes/strate-pushes";
+@import "strates/strate-slider/strate-slider";
+@import "strates/strate-marquee/strate-marquee";
+@import "strates/strate-formulaire/strate-formulaire" split;
+@import "strates/strate-textAnimated/strate-textAnimated" split;
+@import "strates/strate-paralax/strate-paralax" split;

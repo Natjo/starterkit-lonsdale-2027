@@ -1,0 +1,55 @@
+.tag {
+    --tag-color: var(--color-2, var(--color-1));
+
+    align-items: center;
+    background: color-mix(in srgb, var(--tag-color) 10%, transparent);
+    border: 1px solid currentColor;
+    border-radius: 999rem;
+    box-sizing: border-box;
+    color: var(--tag-color);
+    display: inline-flex;
+    font: inherit;
+    font-size: 1.4rem;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 1.2;
+    min-height: 2.4rem;
+    padding: .4rem .8rem;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    &:is(a[href], button) {
+        cursor: pointer;
+
+        &:hover {
+            background: color-mix(in srgb, var(--tag-color) 20%, transparent);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--tag-color);
+            outline-offset: 2px;
+        }
+    }
+
+    &:is(button) {
+        appearance: none;
+    }
+
+    &:disabled,
+    &[aria-disabled="true"] {
+        cursor: not-allowed;
+        opacity: .55;
+    }
+}
+
+@media (forced-colors: active) {
+    .tag {
+        background: Canvas;
+        border-color: ButtonText;
+        color: ButtonText;
+
+        &:is(a[href], button):focus-visible {
+            outline-color: Highlight;
+        }
+    }
+}

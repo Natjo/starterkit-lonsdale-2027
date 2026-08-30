@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Shares browser contract</title>
+</head>
+<body data-result="pending">
+    <nav id="shares">
+        <a href="https://example.test/share" target="_blank" rel="noopener noreferrer">Partager</a>
+        <button
+            type="button"
+            data-share-copy
+            data-url="https://example.test/article/"
+            data-success="Lien copié"
+            data-error="Copie impossible"
+        >
+            Copier
+            <span data-copy-tip></span>
+            <span role="status" data-copy-status></span>
+        </button>
+    </nav>
+
+    <script type="module">
+        import initializeShares from "/assets/components/shares/shares.js";
+
+        const assert = (condition, message) => {
+            if (!condition) throw new Error(message);
+        };
+        const waitFor = async (condition, message) => {
+            for (let attempt = 0; attempt < 20; attempt += 1) {
+                if (condition()) return;
+                await new Promise(resolve => setTimeout(resolve, 10));
+            }
+            throw new Error(message);
+        };
+        const root = document.querySelector("#shares");
+        const button = root.querySelector("button");
+
+        try {
+            let clipboardAttempts = 0;
+            Object.defineProperty(navigator, "clipboard", {
+                configurable: true,
+                value: {
+                    writeText: async () => {
+                        clipboardAttempts += 1;
+                        throw new Error("permission denied");
+                    },
+                },
+            });
+            document.execCommand = command => command === "copy";
+
+            const destroy = initializeShares(root);
+            button.focus();
+            button.click();
+
+            await waitFor(() => button.classList.contains("is-copied"), "copy feedback");
+            await waitFor(() => button.querySelector("[data-copy-status]").textContent === "Lien copié", "copy announcement");
+            assert(clipboardAttempts === 1, "clipboard attempted");
+            assert(document.activeElement === button, "fallback restores focus");
+            assert(button.querySelector("[data-copy-tip]").textContent === "Lien copié", "visual success");
+            assert(root.querySelector("a").href === "https://example.test/share", "native link preserved");
+
+            destroy();
+            assert(!button.classList.contains("is-copied"), "destroy clears state");
+            button.click();
+            await new Promise(resolve => setTimeout(resolve, 20));
+            assert(!button.classList.contains("is-copied"), "destroy removes listener");
+
+            document.body.dataset.result = "ok";
+        } catch (error) {
+            document.body.dataset.result = error.message;
+        }
+    </script>
+</body>
+</html>

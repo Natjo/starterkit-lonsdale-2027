@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Video browser contract</title>
+</head>
+<body data-result="pending">
+    <div class="video" id="facade" data-autoplay-src="https://example.test/autoplay">
+        <iframe data-src="https://example.test/idle" tabindex="-1" title="Vidéo"></iframe>
+        <button type="button" class="poster">Lire</button>
+    </div>
+
+    <div class="video" id="lazy">
+        <video data-lazy-autoplay></video>
+    </div>
+
+    <script type="module">
+        const failures = [];
+        const assert = (condition, message) => {
+            if (!condition) failures.push(message);
+        };
+
+        window.matchMedia = () => ({
+            matches: true,
+            addEventListener() {},
+        });
+
+        let disconnected = false;
+        window.IntersectionObserver = class {
+            constructor(callback) {
+                this.callback = callback;
+            }
+            observe(target) {
+                this.callback([{ isIntersecting: true, target }]);
+            }
+            disconnect() {
+                disconnected = true;
+            }
+        };
+
+        const { default: initVideo } = await import('/assets/components/video/video.js');
+        const facade = document.querySelector('#facade');
+        const iframe = facade.querySelector('iframe');
+        const poster = facade.querySelector('.poster');
+        const destroyFacade = initVideo(facade);
+
+        poster.click();
+        await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
+        assert(facade.classList.contains('is-playing'), 'La façade ne passe pas en lecture');
+        assert(poster.hidden, 'Le poster reste visible');
+        assert(iframe.src === 'https://example.test/autoplay', 'La source autoplay de l’iframe n’est pas chargée');
+        assert(!iframe.hasAttribute('tabindex'), 'L’iframe reste hors de l’ordre de tabulation');
+
+        const lazy = document.querySelector('#lazy');
+        const video = lazy.querySelector('video');
+        const destroyLazy = initVideo(lazy);
+        assert(video.controls, 'Reduced motion ne rétablit pas les contrôles');
+
+        destroyFacade?.();
+        destroyLazy?.();
+        assert(disconnected, 'L’IntersectionObserver n’est pas nettoyé');
+
+        document.body.dataset.result = failures.length === 0 ? 'pass' : 'fail';
+        document.body.textContent = failures.join('\n');
+    </script>
+</body>
+</html>

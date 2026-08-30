@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Select custom browser contract</title>
+</head>
+<body data-result="pending">
+    <form id="single-form">
+        <div id="single" class="select-custom" data-placeholder="Choisir une ville">
+            <label id="city-label" for="city">Ville</label>
+            <select id="city" name="city" required data-select-native>
+                <option value="" selected disabled>Choisir une ville</option>
+                <option value="paris">Paris</option>
+                <option value="lyon">Lyon</option>
+                <option value="closed" disabled>Fermé</option>
+            </select>
+            <div data-select-ui hidden>
+                <button id="city-button" type="button" role="combobox" aria-controls="city-list" aria-expanded="false" aria-labelledby="city-label city-button" data-select-button><span data-select-button-label>Choisir une ville</span></button>
+                <ul id="city-list" role="listbox" data-select-list hidden>
+                    <li id="city-option-1" role="option" data-select-option data-index="1" aria-selected="false">Paris</li>
+                    <li id="city-option-2" role="option" data-select-option data-index="2" aria-selected="false">Lyon</li>
+                    <li id="city-option-3" role="option" data-select-option data-index="3" aria-selected="false" aria-disabled="true">Fermé</li>
+                </ul>
+            </div>
+        </div>
+    </form>
+
+    <form id="multi-form">
+        <div id="multi" class="select-custom" data-placeholder="Choisir des thèmes">
+            <label id="topics-label" for="topics">Thèmes</label>
+            <select id="topics" name="topics[]" multiple data-select-native>
+                <option value="design" selected>Design</option>
+                <option value="code">Code</option>
+                <option value="research,design">Recherche</option>
+            </select>
+            <div data-select-ui hidden>
+                <button id="topics-button" type="button" role="combobox" aria-controls="topics-list" aria-expanded="false" aria-labelledby="topics-label topics-button" data-select-button><span data-select-button-label>Design</span></button>
+                <ul id="topics-list" role="listbox" aria-multiselectable="true" data-select-list hidden>
+                    <li id="topics-option-0" role="option" data-select-option data-index="0" aria-selected="true">Design</li>
+                    <li id="topics-option-1" role="option" data-select-option data-index="1" aria-selected="false">Code</li>
+                    <li id="topics-option-2" role="option" data-select-option data-index="2" aria-selected="false">Recherche</li>
+                </ul>
+            </div>
+        </div>
+    </form>
+
+    <script type="module">
+        import initializeSelectCustom from "/assets/components/select-custom/select-custom.js";
+
+        const assert = (condition, message) => {
+            if (!condition) throw new Error(message);
+        };
+        const keydown = (element, key) => {
+            const event = new KeyboardEvent("keydown", { key, bubbles: true, cancelable: true });
+            element.dispatchEvent(event);
+            return event;
+        };
+        const frame = () => new Promise(resolve => requestAnimationFrame(resolve));
+
+        try {
+            const single = document.querySelector("#single");
+            const singleSelect = single.querySelector("select");
+            const singleButton = single.querySelector("button");
+            let inputEvents = 0;
+            let changeEvents = 0;
+            singleSelect.addEventListener("input", () => { inputEvents += 1; });
+            singleSelect.addEventListener("change", () => { changeEvents += 1; });
+            const destroySingle = initializeSelectCustom(single);
+
+            assert(single.dataset.enhanced === "true", "single enhanced");
+            assert(singleSelect.getAttribute("aria-hidden") === "true", "native select hidden from accessibility tree");
+            assert(!single.querySelector("[data-select-ui]").hidden, "custom ui revealed");
+            single.querySelector("label").click();
+            assert(document.activeElement === singleButton, "label focuses custom button");
+            assert(singleButton.getAttribute("aria-expanded") === "true", "label activates custom button");
+            keydown(singleButton, "Escape");
+
+            singleButton.focus();
+            keydown(singleButton, "Enter");
+            assert(singleButton.getAttribute("aria-expanded") === "true", "enter opens");
+            assert(document.activeElement === singleButton, "focus stays on combobox");
+            assert(singleButton.getAttribute("aria-activedescendant") === "city-option-1", "first option active");
+            keydown(singleButton, "ArrowDown");
+            assert(singleButton.getAttribute("aria-activedescendant") === "city-option-2", "arrow moves active option");
+            keydown(singleButton, "Enter");
+            assert(singleSelect.value === "lyon", "enter commits native value");
+            assert(singleButton.getAttribute("aria-expanded") === "false", "single closes after commit");
+            assert(inputEvents === 1 && changeEvents === 1, "form events emitted");
+
+            singleButton.click();
+            const tabEvent = keydown(singleButton, "Tab");
+            assert(!tabEvent.defaultPrevented, "tab remains native");
+            assert(singleButton.getAttribute("aria-expanded") === "false", "tab closes");
+
+            document.querySelector("#single-form").reset();
+            await frame();
+            assert(singleSelect.value === "", "native reset restored");
+            assert(single.querySelector("[data-select-button-label]").textContent === "Choisir une ville", "custom reset restored");
+            document.querySelector("#single-form").reportValidity();
+            assert(singleButton.getAttribute("aria-invalid") === "true", "invalid state exposed");
+            assert(document.activeElement === singleButton, "invalid focuses combobox");
+
+            const multi = document.querySelector("#multi");
+            const multiSelect = multi.querySelector("select");
+            const multiButton = multi.querySelector("button");
+            const destroyMulti = initializeSelectCustom(multi);
+            multiButton.focus();
+            keydown(multiButton, "Enter");
+            keydown(multiButton, "ArrowDown");
+            keydown(multiButton, " ");
+            assert(multiButton.getAttribute("aria-expanded") === "true", "multi stays open");
+            assert(multiSelect.options[0].selected && multiSelect.options[1].selected, "keyboard preserves previous multi selection");
+            assert(multi.querySelector('[data-index="1"]').getAttribute("aria-selected") === "true", "multi aria synchronized");
+            keydown(multiButton, "End");
+            keydown(multiButton, "Enter");
+            assert(multiSelect.options[2].selected, "comma value selected intact");
+
+            destroyMulti();
+            assert(!multi.dataset.enhanced, "multi destroy removes enhancement");
+            assert(!multiSelect.hasAttribute("aria-hidden"), "multi destroy restores native select");
+            assert(multi.querySelector("[data-select-ui]").hidden, "multi destroy hides custom ui");
+            destroySingle();
+            assert(!single.dataset.enhanced, "single destroy removes enhancement");
+            assert(single.querySelector("label").htmlFor === "city", "single destroy restores label");
+
+            document.body.dataset.result = "ok";
+        } catch (error) {
+            document.body.dataset.result = error.message;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+:root {
+  color-scheme: light;
+
+  --font-1: 'SequelSans', Arial, sans-serif;
+
+  --ctr-width: 135rem;
+
+  --radius: .8rem;
+  --shadows: 0 1.6rem 4rem rgba(17, 17, 19, .12);
+  --border: 1px solid var(--color-border);
+
+  // surfaces
+  --color-bg: #fff;
+  --color-surface: #f7f7f8;
+  --color-border: #dedee3;
+  --color-overlay: rgba(17, 17, 19, .48);
+  --color-shadow: rgba(17, 17, 19, .14);
+
+  // text
+  --color-text: #171719;
+  --color-text-invert: #fff;
+  --color-muted: #68686f;
+  --color-error: #b42318;
+
+  // gray
+  --color-gray-light: #f7f7f8;
+  --color-gray: #b8b8bf;
+  --color-gray-dark: #e8e8eb;
+
+  // palette de démonstration à remplacer par celle du projet
+  --color-1: #171719;
+  --color-2: #315efb;
+  --color-3: #f1f2f4;
+
+  --color-theme: var(--color-2);
+
+  --layout:
+    [full] var(--ctr-offset) [fluid ctr ctr-sm center] auto [center-end ctr-sm-end ctr-end fluid-end] var(--ctr-offset) [full-end];
+}
+
+:root[data-lightdark="light"] {
+  color-scheme: light;
+}
+
+[data-theme="private"] {
+  --color-theme: var(--color-1);
+}
+
+@media #{$breakpoint-md-down} {
+  :root {
+    --ctr-offset: 1.6rem;
+    --header-height: 7rem;
+    --gap: 2rem;
+
+    --margin-xs: 3rem;
+    --margin-sm: 4rem;
+    --margin-md: 4rem;
+    --margin-lg: 6rem;
+  }
+}
+
+@media #{$breakpoint-md-up} {
+  :root {
+    --ctr-offset: 6rem;
+    --header-height: 9rem;
+    --gap: 2rem;
+
+    --margin-xs: 2rem;
+    --margin-sm: 5rem;
+    --margin-md: 8rem;
+    --margin-lg: 11rem;
+
+    /* layout avec ctr-sm et center*/
+    --ctr-col: calc((var(--ctr-width) - (11) * var(--gap)) / 12 + var(--gap));
+    --layout:
+      [full] var(--ctr-offset) [fluid] 1fr [ctr-start] var(--ctr-col) [ctr-sm-start] minmax(1vw, calc((var(--ctr-width) - (2 * var(--ctr-col)))/2)) [center] minmax(1vw, calc((var(--ctr-width) - (2 * var(--ctr-col)))/2)) [ctr-sm-end] var(--ctr-col) [ctr-end] 1fr [fluid-end] var(--ctr-offset) [full-end];
+  }
+}

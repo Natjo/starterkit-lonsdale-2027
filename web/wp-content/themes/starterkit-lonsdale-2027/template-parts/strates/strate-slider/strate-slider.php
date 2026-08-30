@@ -1,0 +1,98 @@
+<?php
+$args = get_template_args();
+$image_size = 'full';
+$slider_options = is_array($args['slider_options'] ?? null) ? $args['slider_options'] : [];
+$to_bool = static fn(mixed $value, bool $default = false): bool => filter_var(
+    $value,
+    FILTER_VALIDATE_BOOL,
+    FILTER_NULL_ON_FAILURE
+) ?? $default;
+$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
+    ? trim((string) $value)
+    : '';
+$hydrate = $to_bool($slider_options['hydrate'] ?? true, true);
+$media = $to_string($slider_options['media'] ?? null);
+$component_options = array_replace($slider_options, ['hydrate' => false]);
+$content_type = $to_string($args['content_type'] ?? 'cards');
+$content_type = in_array($content_type, ['cards', 'images'], true) ? $content_type : 'cards';
+$items = [];
+$card = null;
+$item_component = null;
+
+if ($content_type === 'images') {
+    $rows = is_array($args['images'] ?? null) ? $args['images'] : [];
+
+    foreach ($rows as $row) {
+        if (!is_array($row)) continue;
+
+        $image = $row['image'] ?? null;
+        if (empty($image)) continue;
+
+        $items[] = [
+            'image' => $image,
+            'size' => $image_size,
+            'fit' => 'cover',
+            'classes' => 'slider-image',
+        ];
+    }
+
+    $item_component = 'picture';
+} else {
+    $post_type = sanitize_key($to_string($args['post_type'] ?? ''));
+    $card = sanitize_key($to_string($args['card'] ?? $post_type));
+    $card_exists = resolve_card_name($card) !== '';
+    $post_type_exists = $post_type !== '' && post_type_exists($post_type);
+    $selected = is_array($args['items'] ?? null) ? $args['items'] : [];
+    $seen_ids = [];
+
+    if ($card_exists && ($post_type_exists || array_key_exists('card', $args))) {
+        foreach ($selected as $item) {
+            $id = filter_var($item, FILTER_VALIDATE_INT);
+            if (
+                $id !== false
+                && $id > 0
+                && $post_type_exists
+                && get_post_type($id) === $post_type
+                && !isset($seen_ids[$id])
+            ) {
+                $items[] = $id;
+                $seen_ids[$id] = true;
+                continue;
+            }
+
+            if (!is_array($item) || !is_valid_card_data($item)) continue;
+
+            $item_post_id = (int) ($item['post_id'] ?? 0);
+            if ($item_post_id > 0 && (!$post_type_exists || get_post_type($item_post_id) !== $post_type)) {
+                continue;
+            }
+
+            $items[] = $item;
+        }
+    }
+
+    $post_ids = array_values(array_filter($items, 'is_int'));
+    if ($post_ids !== [] && function_exists('update_meta_cache')) {
+        update_meta_cache('post', $post_ids);
+    }
+}
+
+if ($items === []) return;
+
+$module_attributes = html_attributes([
+    'data-module' => $hydrate ? 'strates/strate-slider' : null,
+    'data-context' => $hydrate ? '@visible true' : null,
+    'data-module-media' => $hydrate && $media !== '' ? $media : null,
+]);
+?>
+
+<section <?= options("strate strate-slider", $args) ?><?= $module_attributes !== '' ? ' ' . $module_attributes : '' ?>>
+    <div class="strate-content">
+        <?php component('header', array_replace($args, ['classes' => 'strate-header'])); ?>
+        <?php component('slider', array_replace($component_options, [
+            'items' => $items,
+            'card' => $card,
+            'item_component' => $item_component,
+        ])); ?>
+    </div>
+</section>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Field browser contract</title>
+</head>
+<body data-result="pending">
+    <form id="form">
+        <div class="field">
+            <label for="email">E-mail</label>
+            <input id="email" name="email" type="email" required aria-describedby="email-error" data-mandatory="&lt;img src=x onerror=window.fieldXss=true&gt;Message requis">
+            <div id="email-error" class="invalid-msg" aria-live="polite" hidden></div>
+        </div>
+        <div class="field">
+            <label for="website">Site</label>
+            <input id="website" name="website" type="url" aria-describedby="website-error" data-typemismatch="Adresse invalide">
+            <div id="website-error" class="invalid-msg" aria-live="polite" hidden></div>
+        </div>
+        <div class="field">
+            <label for="password">Mot de passe</label>
+            <input id="password" name="password" pattern=".{8,}" aria-describedby="password-error password-hint" data-patternmismatch="Mot de passe trop court">
+            <div id="password-error" class="invalid-msg" aria-live="polite" hidden></div>
+            <small id="password-hint">Huit caractères minimum.</small>
+        </div>
+        <div class="field radio" role="group" aria-labelledby="contact-label" data-required aria-required="true" data-mandatory="Choisissez un contact.">
+            <span id="contact-label">Contact</span>
+            <input id="contact-email" name="contact" type="radio" value="email">
+            <label for="contact-email">E-mail</label>
+            <input id="contact-phone" name="contact" type="radio" value="phone">
+            <label for="contact-phone">Téléphone</label>
+            <div class="invalid-msg" aria-live="polite" hidden></div>
+        </div>
+        <button type="submit">Envoyer</button>
+    </form>
+
+    <script type="module">
+        import { FormValidate } from "/assets/components/field/field.js";
+
+        const assert = (condition, message) => {
+            if (!condition) throw new Error(message);
+        };
+        const submit = (form) => {
+            const event = new SubmitEvent("submit", { bubbles: true, cancelable: true });
+            form.dispatchEvent(event);
+            return event;
+        };
+
+        try {
+            const form = document.querySelector("#form");
+            const email = document.querySelector("#email");
+            const website = document.querySelector("#website");
+            const password = document.querySelector("#password");
+            const contact = document.querySelector("#contact-email");
+            let sent = 0;
+            const validator = new FormValidate(form, () => { sent += 1; });
+
+            assert(form.noValidate, "custom validation enabled after hydration");
+
+            let event = submit(form);
+            assert(event.defaultPrevented, "required field blocks submit");
+            assert(document.activeElement === email, "first invalid field focused");
+            assert(!email.parentNode.querySelector(".invalid-msg").hidden, "required message visible");
+            assert(!email.parentNode.querySelector("img"), "message rendered as text");
+            assert(!window.fieldXss, "message cannot execute html");
+
+            email.value = "test@example.com";
+            email.dispatchEvent(new Event("input", { bubbles: true }));
+            assert(email.parentNode.querySelector(".invalid-msg").hidden, "changed field cleared");
+
+            website.value = "invalid";
+            event = submit(form);
+            assert(event.defaultPrevented, "optional invalid url blocks submit");
+            assert(document.activeElement === website, "optional invalid field focused");
+            assert(website.parentNode.querySelector(".invalid-msg").textContent === "Adresse invalide", "type message used");
+
+            website.value = "https://example.test";
+            password.value = "court";
+            event = submit(form);
+            assert(event.defaultPrevented, "optional pattern blocks submit");
+            assert(document.activeElement === password, "pattern field focused");
+            assert(password.parentNode.querySelector(".invalid-msg").textContent === "Mot de passe trop court", "pattern message used");
+
+            password.value = "assez-long";
+            event = submit(form);
+            assert(event.defaultPrevented, "required group blocks submit");
+            assert(document.activeElement === contact, "required group focuses first control");
+
+            contact.checked = true;
+            event = submit(form);
+            assert(event.defaultPrevented && sent === 1, "valid form calls onSend once");
+
+            const dynamic = document.createElement("input");
+            dynamic.required = true;
+            dynamic.id = "dynamic";
+            form.insertBefore(dynamic, form.querySelector("button"));
+            event = submit(form);
+            assert(event.defaultPrevented, "dynamic field is validated");
+            assert(document.activeElement === dynamic, "dynamic field focused");
+
+            form.reset();
+            assert(email.parentNode.querySelector(".invalid-msg").hidden, "reset clears messages");
+
+            validator.destroy();
+            assert(!form.noValidate, "destroy restores native validation");
+            event = submit(form);
+            assert(!event.defaultPrevented && sent === 1, "destroy removes submit listener");
+
+            document.body.dataset.result = "ok";
+        } catch (error) {
+            document.body.dataset.result = error.message;
+        }
+    </script>
+</body>
+</html>

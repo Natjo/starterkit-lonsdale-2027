@@ -1,0 +1,65 @@
+.strate-paralax {
+    --paralax-y: 0vh;
+
+    background: var(--color-bg);
+    height: 100vh;
+    height: 100svh;
+    isolation: isolate;
+    min-height: 40rem;
+    overflow: hidden;
+    overflow: clip;
+    position: relative;
+
+    &::after {
+        background: rgba(0, 0, 0, .35);
+        content: "";
+        inset: 0;
+        pointer-events: none;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .strate-paralax-media {
+        inset: -10vh 0;
+        position: absolute;
+        z-index: -2;
+    }
+
+    .strate-paralax-image {
+        display: block;
+        height: 100%;
+        object-fit: cover;
+        transform: translate3d(0, var(--paralax-y), 0);
+        width: 100%;
+    }
+
+    &.viewed .strate-paralax-image {
+        will-change: transform;
+    }
+
+    .strate-content {
+        align-items: center;
+        display: grid;
+        grid-column: full;
+        height: 100%;
+        justify-items: center;
+        padding: var(--ctr-offset);
+        text-align: center;
+    }
+
+    .strate-paralax-title {
+        color: #fff;
+        max-width: 16ch;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .strate-paralax {
+        --paralax-y: 0vh;
+
+        .strate-paralax-image {
+            transform: none;
+            will-change: auto;
+        }
+    }
+}

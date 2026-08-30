@@ -1,0 +1,13 @@
+.strate-media {
+
+    .image {
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    @media #{$breakpoint-md-down} {}
+
+    @media #{$breakpoint-md-up} {}
+}

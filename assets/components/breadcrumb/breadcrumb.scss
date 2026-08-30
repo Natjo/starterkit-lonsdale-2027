@@ -1,0 +1,32 @@
+.breadcrumb {
+    color: var(--color-muted);
+    font-size: 1.4rem;
+
+    .breadcrumb-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .6rem;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    .breadcrumb-item {
+        display: flex;
+        gap: .6rem;
+        align-items: center;
+
+        &:not(:first-child)::before {
+            content: "/";
+            color: var(--color-gray);
+        }
+    }
+
+    a {
+        color: inherit;
+    }
+
+    [aria-current="page"] {
+        color: var(--color-text);
+    }
+}

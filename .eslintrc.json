@@ -1,0 +1,50 @@
+{
+    "root": true,
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "node": true
+    },
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "rules": {
+        "func-names": 0,
+        "indent": [
+            "error",
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "max-len": [
+            2,
+            1000,
+            4
+        ],
+        "no-console": "off",
+        "no-param-reassign": 0,
+        "no-plusplus": "off",
+        "arrow-parens": 0,
+        "prefer-destructuring": [
+            "error",
+            {
+                "array": false,
+                "object": false
+            }
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "guard-for-in": 1,
+        "no-restricted-syntax": 0,
+        "camelcase": 0,
+        "yoda": 0
+    }
+}

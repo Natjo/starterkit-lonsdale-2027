@@ -1,0 +1,88 @@
+.accordion {
+    .summary {
+        border-top: 1px solid var(--color-border);
+        background: none;
+        width: 100%;
+        text-align: left;
+        padding: 1.6rem 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        font-weight: 500;
+
+        &:focus-visible {
+            outline: 2px solid currentColor;
+            outline-offset: 2px;
+        }
+
+        .accordion-caret {
+            border-bottom: 2px solid currentColor;
+            border-right: 2px solid currentColor;
+            flex: 0 0 .9rem;
+            height: .9rem;
+            transform: rotate(45deg);
+            transition: transform .25s ease;
+            width: .9rem;
+        }
+
+        &[aria-expanded=true] {
+            color: var(--color-2);
+
+            .accordion-caret {
+                transform: rotate(225deg);
+            }
+        }
+    }
+
+    .details-content {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows .3s;
+        overflow: hidden;
+
+        .details-content-inner {
+            min-height: 0;
+            overflow: hidden;
+            visibility: hidden;
+            transition: visibility 0s .3s;
+        }
+
+        .text {
+            max-width: 80rem;
+            padding: 0 0 2rem;
+            box-sizing: border-box;
+        }
+
+        &[aria-hidden="false"] {
+            grid-template-rows: 1fr;
+
+            .details-content-inner {
+                visibility: visible;
+                transition-delay: 0s;
+            }
+        }
+    }
+
+    .details {
+        &:last-of-type {
+            border-bottom: 1px solid var(--color-border);
+        }
+    }
+
+    @media #{$breakpoint-lg-down} {
+        .details {
+            margin-left: calc(-1 * var(--ctr-offset));
+            margin-right: calc(-1 * var(--ctr-offset));
+            width: calc(100% + 2 * var(--ctr-offset));
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .summary .accordion-caret,
+        .details-content,
+        .details-content-inner {
+            transition: none;
+        }
+    }
+}

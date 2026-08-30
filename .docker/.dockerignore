@@ -1,0 +1,5 @@
+../.git
+../node_modules
+../.pnpm-store
+../web/wp-content/uploads
+*.log

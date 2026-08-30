@@ -1,0 +1,98 @@
+.tabs {
+    .tabs-title {
+        color: var(--color-1);
+        margin-bottom: 1.6rem;
+    }
+
+    .tabs-list {
+        border-bottom: 1px solid var(--color-gray-dark, #ececec);
+        display: flex;
+        gap: .4rem;
+        margin-bottom: 2rem;
+        max-width: 100%;
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+    }
+
+    [role="tab"] {
+        background: none;
+        border: 0;
+        border-bottom: 2px solid transparent;
+        color: var(--color-text);
+        cursor: pointer;
+        flex: 0 0 auto;
+        font: inherit;
+        font-weight: 600;
+        margin: 0;
+        padding: 1.2rem 1.6rem;
+        position: relative;
+        transition: border-color .2s ease, color .2s ease;
+        z-index: 1;
+
+        &:hover:not(:disabled) {
+            color: var(--color-2, var(--color-1));
+        }
+
+        &:focus-visible {
+            border-radius: .2rem;
+            outline: 2px solid var(--color-2, var(--color-1));
+            outline-offset: -4px;
+        }
+
+        &:disabled {
+            cursor: not-allowed;
+            opacity: .5;
+        }
+
+        &[aria-selected="true"] {
+            border-bottom-color: var(--color-2, var(--color-1));
+            color: var(--color-2, var(--color-1));
+        }
+    }
+
+    .tabs-list[aria-orientation="vertical"] {
+        align-items: stretch;
+        border-bottom: 0;
+        border-inline-end: 1px solid var(--color-gray-dark, #ececec);
+        flex-direction: column;
+        overflow: visible;
+
+        [role="tab"] {
+            border-bottom: 0;
+            border-inline-end: 2px solid transparent;
+            text-align: start;
+
+            &[aria-selected="true"] {
+                border-inline-end-color: var(--color-2, var(--color-1));
+            }
+        }
+    }
+
+    .tabs-panel {
+        min-height: 8rem;
+
+        &:focus-visible {
+            outline: 2px solid var(--color-2, var(--color-1));
+            outline-offset: 4px;
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tabs [role="tab"] {
+        transition: none;
+    }
+}
+
+@media (forced-colors: active) {
+    .tabs [role="tab"] {
+        &[aria-selected="true"] {
+            border-color: Highlight;
+            color: Highlight;
+        }
+
+        &:focus-visible {
+            outline-color: Highlight;
+        }
+    }
+}

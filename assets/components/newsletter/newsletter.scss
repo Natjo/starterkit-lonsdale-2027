@@ -1,0 +1,30 @@
+.newsletter {
+    display: grid;
+    align-content: start;
+    gap: 2rem;
+    min-width: 0;
+
+    .newsletter-form {
+        display: grid;
+        gap: 1.2rem;
+
+        .field {
+            max-width: none;
+        }
+
+        .btn {
+            justify-self: start;
+        }
+    }
+
+    @media #{$breakpoint-md-up} {
+        .newsletter-form {
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: end;
+
+            .btn {
+                min-height: 4.4rem;
+            }
+        }
+    }
+}

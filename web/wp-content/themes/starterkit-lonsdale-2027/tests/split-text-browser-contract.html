@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>SplitText browser contract</title>
+</head>
+<body>
+    <h1 id="title">Hello<br><em id="inline">👨‍👩‍👧‍👦 café</em></h1>
+    <p id="labelled" aria-label="Libellé personnalisé">Texte</p>
+    <pre id="result">PENDING</pre>
+
+    <script type="module">
+        import { splitText } from "../../../../../assets/modules/splitText/splitText.js";
+
+        const assertions = [];
+        const assert = (condition, message) => {
+            assertions.push(`${condition ? "PASS" : "FAIL"}: ${message}`);
+            if (!condition) throw new Error(message);
+        };
+
+        try {
+            const title = document.querySelector("#title");
+            const inline = document.querySelector("#inline");
+            const originalHtml = title.innerHTML;
+            let clicked = 0;
+            inline.addEventListener("click", () => clicked++);
+
+            const first = splitText(title);
+            assert(first.words.length === 3, "les mots sont découpés");
+            assert(first.chars.length === 10, "les graphèmes Unicode restent entiers");
+            assert(
+                title.getAttribute("aria-label") === "Hello 👨‍👩‍👧‍👦 café",
+                "br devient un espace accessible"
+            );
+
+            const second = splitText(title, {
+                wordClass: "word-test",
+                charClass: "char-test",
+            });
+            assert(
+                !title.querySelector(".word .word-test"),
+                "un second split ne crée pas de spans imbriqués"
+            );
+            first.restore();
+            assert(
+                title.querySelectorAll(".word-test").length === 3,
+                "l'ancien restore ne détruit pas le split actif"
+            );
+
+            second.restore();
+            second.restore();
+            assert(title.innerHTML === originalHtml, "restore remet le HTML original");
+            assert(title.querySelector("#inline") === inline, "le nœud inline original est conservé");
+            inline.click();
+            assert(clicked === 1, "les listeners des descendants sont conservés");
+            assert(!title.hasAttribute("aria-label"), "aria-label généré est retiré");
+
+            const labelled = document.querySelector("#labelled");
+            const labelledSplit = splitText(labelled, { skipSelector: "[invalid" });
+            assert(
+                labelled.getAttribute("aria-label") === "Libellé personnalisé",
+                "aria-label existant reste intact"
+            );
+            labelledSplit.restore();
+            assert(
+                labelled.getAttribute("aria-label") === "Libellé personnalisé",
+                "aria-label existant est restauré"
+            );
+
+            const invalid = splitText(null);
+            assert(
+                invalid.words.length === 0 && invalid.chars.length === 0,
+                "une cible invalide est ignorée"
+            );
+            invalid.restore();
+
+            document.querySelector("#result").textContent = `PASS\n${assertions.join("\n")}`;
+        } catch (error) {
+            document.querySelector("#result").textContent = `FAIL\n${assertions.join("\n")}\n${error.stack}`;
+        }
+    </script>
+</body>
+</html>

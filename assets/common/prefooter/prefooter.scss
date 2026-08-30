@@ -1,0 +1,37 @@
+.prefooter {
+    display: grid;
+    grid-template-columns: var(--layout);
+    padding-block: var(--margin-md);
+    color: var(--color-text-invert);
+    background: var(--color-1);
+
+    .prefooter-content {
+        display: grid;
+        grid-column: ctr;
+        gap: var(--margin-sm);
+        min-width: 0;
+    }
+
+    .prefooter-intro {
+        display: grid;
+        align-content: start;
+        gap: 2rem;
+    }
+
+    .prefooter-intro,
+    .prefooter-newsletter {
+        min-width: 0;
+    }
+
+    @media #{$breakpoint-md-up} {
+        .prefooter-content {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: var(--gap);
+        }
+
+        .prefooter-intro,
+        .prefooter-newsletter {
+            padding-right: var(--margin-sm);
+        }
+    }
+}

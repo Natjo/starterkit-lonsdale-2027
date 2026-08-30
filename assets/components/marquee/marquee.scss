@@ -1,0 +1,84 @@
+.marquee {
+    --marquee-gap: 3rem;
+    --marquee-distance: 0px;
+    --marquee-duration: 20s;
+    overflow: hidden;
+    contain: paint;
+    cursor: grab;
+    touch-action: pan-y;
+
+    .marquee-track {
+        display: flex;
+        width: max-content;
+        will-change: auto;
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-user-drag: none;
+    }
+
+    .marquee-group {
+        display: flex;
+        flex: none;
+        align-items: center;
+        gap: var(--marquee-gap);
+        padding-inline-end: var(--marquee-gap);
+    }
+
+    .marquee-item {
+        flex: none;
+    }
+
+    &.is-ready .marquee-track {
+        animation: marquee-left var(--marquee-duration) linear infinite;
+    }
+
+    &.is-ready:not(.is-paused) .marquee-track {
+        will-change: transform;
+    }
+
+    &[data-marquee-direction="right"].is-ready .marquee-track {
+        animation-direction: reverse;
+    }
+
+    &.is-paused .marquee-track,
+    &[data-marquee-pause-hover="true"]:hover .marquee-track,
+    &[data-marquee-pause-focus="true"]:focus-within .marquee-track {
+        animation-play-state: paused;
+    }
+
+    &.is-dragging {
+        cursor: grabbing;
+    }
+
+    &.is-dragged:not(.is-paused) .marquee-track {
+        animation-play-state: running;
+    }
+
+    &.is-scroll-accelerated:not(.is-paused) .marquee-track {
+        animation-play-state: running;
+    }
+
+    // La pause explicite et le focus clavier restent toujours prioritaires.
+    &.is-paused .marquee-track,
+    &[data-marquee-pause-focus="true"]:focus-within .marquee-track {
+        animation-play-state: paused;
+    }
+}
+
+@keyframes marquee-left {
+    to {
+        transform: translate3d(calc(-1 * var(--marquee-distance)), 0, 0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .marquee {
+        overflow-x: auto;
+
+        .marquee-track {
+            animation: none;
+            transform: none;
+            will-change: auto;
+        }
+    }
+}

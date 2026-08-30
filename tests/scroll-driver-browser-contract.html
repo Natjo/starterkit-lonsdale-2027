@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>ScrollDriver browser contract</title>
+</head>
+<body>
+    <section id="section"></section>
+    <section id="range-section"></section>
+    <div id="stagger">
+        <span class="char">A</span>
+        <span class="char">B</span>
+        <span class="char">C</span>
+    </div>
+    <pre id="result">PENDING</pre>
+
+    <script type="module">
+        const result = document.querySelector("#result");
+        const assertions = [];
+        const assert = (condition, message) => {
+            assertions.push(`${condition ? "PASS" : "FAIL"}: ${message}`);
+            if (!condition) throw new Error(message);
+        };
+
+        const listeners = new Map();
+        const nativeAddEventListener = window.addEventListener.bind(window);
+        const nativeRemoveEventListener = window.removeEventListener.bind(window);
+
+        window.addEventListener = (type, listener, options) => {
+            if (["scroll", "resize", "lenis:ready"].includes(type)) {
+                if (!listeners.has(type)) listeners.set(type, new Set());
+                listeners.get(type).add(listener);
+            }
+            nativeAddEventListener(type, listener, options);
+        };
+
+        window.removeEventListener = (type, listener, options) => {
+            listeners.get(type)?.delete(listener);
+            nativeRemoveEventListener(type, listener, options);
+        };
+
+        let rafId = 0;
+        const rafCallbacks = new Map();
+        window.requestAnimationFrame = callback => {
+            const id = ++rafId;
+            rafCallbacks.set(id, callback);
+            return id;
+        };
+        window.cancelAnimationFrame = id => rafCallbacks.delete(id);
+
+        const flushRaf = () => {
+            const callbacks = [...rafCallbacks.values()];
+            rafCallbacks.clear();
+            callbacks.forEach(callback => callback(performance.now()));
+        };
+
+        const observers = [];
+        class IntersectionObserverMock {
+            constructor(callback) {
+                this.callback = callback;
+                this.observed = new Set();
+                observers.push(this);
+            }
+
+            observe(element) {
+                this.observed.add(element);
+            }
+
+            unobserve(element) {
+                this.observed.delete(element);
+            }
+
+            disconnect() {
+                this.observed.clear();
+            }
+
+            emit(element, isIntersecting) {
+                this.callback([{ target: element, isIntersecting }]);
+            }
+        }
+
+        window.IntersectionObserver = IntersectionObserverMock;
+
+        let reducedMotion = false;
+        window.matchMedia = query => ({
+            matches: reducedMotion && query === "(prefers-reduced-motion: reduce)",
+        });
+
+        try {
+            const { ScrollDriver, scrollAnimation, stagger, style } = await import(
+                "/assets/modules/scrollDriver/scrollDriver.js"
+            );
+
+            const section = document.querySelector("#section");
+            let sectionTop = 900;
+            Object.defineProperty(section, "offsetTop", { get: () => sectionTop });
+            Object.defineProperty(section, "offsetParent", { get: () => null });
+            Object.defineProperty(section, "clientHeight", { get: () => 200 });
+
+            const driver = ScrollDriver();
+            assert(driver === ScrollDriver(), "ScrollDriver retourne le singleton actif");
+
+            const rangeSection = document.querySelector("#range-section");
+            Object.defineProperty(rangeSection, "offsetTop", { get: () => 900 });
+            Object.defineProperty(rangeSection, "offsetParent", { get: () => null });
+            Object.defineProperty(rangeSection, "clientHeight", { get: () => 737 });
+
+            const rangePresets = new Map([
+                ["top-top", [0, 0]],
+                ["middle-middle", [50, 50]],
+                ["bottom-bottom", [100, 100]],
+                ["middle-bottom", [50, 100]],
+                ["bottom-top", [100, 0]],
+                ["top-bottom", [0, 100]],
+            ]);
+
+            for (const [preset, range] of rangePresets) {
+                const presetController = driver.add(rangeSection, preset, () => {});
+                presetController._measure(window.innerHeight);
+                const presetValue = presetController._calc(1345);
+
+                const rangeController = driver.add(rangeSection, range, () => {});
+                rangeController._measure(window.innerHeight);
+                const rangeValue = rangeController._calc(1345);
+
+                assert(
+                    Math.abs(presetValue - rangeValue) < Number.EPSILON,
+                    `${preset} utilise la même formule que [${range.join(", ")}]`,
+                );
+            }
+
+            const firstTimelineValues = [];
+            const secondTimelineValues = [];
+            const multiTimelineController = driver.add(rangeSection, [0, 100], event => {
+                event.timeline(0, 20, value => firstTimelineValues.push(value));
+                event.timeline(80, 100, value => secondTimelineValues.push(value));
+            });
+            multiTimelineController._measure(window.innerHeight);
+            multiTimelineController._update(-10000);
+            assert(
+                firstTimelineValues.at(-1) === 0 && secondTimelineValues.at(-1) === 0,
+                "toutes les timelines reçoivent la limite initiale",
+            );
+            multiTimelineController._update(950);
+            multiTimelineController._update(10000);
+            assert(
+                firstTimelineValues.at(-1) === 1 && secondTimelineValues.at(-1) === 1,
+                "toutes les timelines reçoivent la limite finale",
+            );
+
+            driver.remove(rangeSection);
+
+            let firstUpdates = 0;
+            const firstController = driver.add(section, [85, 40], () => firstUpdates++);
+            assert(firstController, "add retourne le contrôleur de section");
+            assert(driver._sections.length === 1, "la section est enregistrée une fois");
+            assert(firstController._top === 0, "add diffère la mesure tant que le driver est désactivé");
+            assert(!("_getWh" in firstController), "aucune closure de viewport inutile n'est conservée");
+            assert(firstController._isGated === true, "le mode gated est précalculé par contrôleur");
+
+            let timelineValue = null;
+            firstController._percent = 50;
+            firstController.timeline(0, 100, value => timelineValue = value);
+            assert(timelineValue === 0.5, "timeline retourne une progression 0..1");
+
+            driver.enable();
+            assert(firstUpdates === 1, "enable applique un état initial");
+            assert(firstController._top === sectionTop, "enable effectue l'unique mesure initiale");
+            assert(listeners.get("scroll")?.size === 1, "le scroll natif est écouté sans Lenis");
+
+            driver.onScroll(100);
+            flushRaf();
+            assert(firstUpdates === 1, "une section hors écran n'est pas recalculée");
+
+            const observer = observers[0];
+            observer.emit(section, true);
+            flushRaf();
+            assert(section.classList.contains("viewed"), "une section visible reçoit viewed");
+            assert(firstUpdates === 2, "une section entrant dans la zone est mise à jour");
+
+            driver.onScroll(120);
+            driver.onScroll(140);
+            assert(rafCallbacks.size === 1, "plusieurs événements partagent un seul RAF");
+            flushRaf();
+            assert(firstUpdates === 3, "la section visible est mise à jour au scroll");
+
+            let replacementUpdates = 0;
+            const replacementController = driver.add(section, [85, 40], () => replacementUpdates++);
+            assert(driver._sections.length === 1, "un second add remplace l'inscription existante");
+            assert(replacementUpdates === 1, "l'inscription remplacée reçoit son état initial");
+
+            sectionTop = 1200;
+            driver.refresh();
+            assert(replacementUpdates === 2, "refresh remesure et réapplique l'état courant");
+
+            let resizeMeasures = 0;
+            const measureReplacement = replacementController._measure.bind(replacementController);
+            replacementController._measure = (...args) => {
+                resizeMeasures++;
+                measureReplacement(...args);
+            };
+            window.dispatchEvent(new Event("resize"));
+            window.dispatchEvent(new Event("resize"));
+            assert(resizeMeasures === 0, "resize diffère les mesures jusqu'au RAF");
+            assert(rafCallbacks.size === 1, "plusieurs resize partagent un seul RAF");
+            flushRaf();
+            assert(resizeMeasures === 1, "plusieurs resize déclenchent une seule mesure");
+
+            let lenisOn = 0;
+            let lenisOff = 0;
+            const lenisHandlers = new Set();
+            window.lenis = {
+                animatedScroll: 140,
+                on(type, listener) {
+                    if (type === "scroll") {
+                        lenisOn++;
+                        lenisHandlers.add(listener);
+                    }
+                },
+                off(type, listener) {
+                    if (type === "scroll") {
+                        lenisOff++;
+                        lenisHandlers.delete(listener);
+                    }
+                },
+            };
+
+            window.dispatchEvent(new CustomEvent("lenis:ready", { detail: window.lenis }));
+            assert(lenisOn === 1, "le driver bascule sur Lenis lorsqu'il devient disponible");
+            assert(listeners.get("scroll")?.size === 0, "le listener natif est retiré après la bascule");
+
+            driver.remove(section);
+            assert(driver._sections.length === 0, "remove supprime la dernière section");
+            assert(driver._enabled === false, "la dernière suppression désactive le driver");
+            assert(observer.observed.size === 0, "la section est désobservée");
+            assert(!section.classList.contains("viewed"), "remove retire viewed");
+            assert(lenisOff === 1 && lenisHandlers.size === 0, "le listener Lenis exact est retiré");
+            assert(listeners.get("resize")?.size === 0, "le listener resize est retiré");
+            assert(listeners.get("lenis:ready")?.size === 0, "le listener lenis:ready est retiré");
+            assert(rafCallbacks.size === 0, "aucun RAF ne reste après le nettoyage");
+
+            const staggerRoot = document.querySelector("#stagger");
+            const chars = [...staggerRoot.querySelectorAll(".char")];
+            stagger(staggerRoot, 0.5, { selector: ".char" });
+            assert(staggerRoot.style.getPropertyValue("--p") === "0.5", "stagger écrit la progression sur la racine");
+            assert(staggerRoot.style.getPropertyValue("--denom") === "2", "stagger écrit le dénominateur sur la racine");
+            assert(chars.every((char, index) => char.style.getPropertyValue("--i") === String(index)), "les index sont écrits sur les enfants");
+            assert(chars.every(char => !char.style.getPropertyValue("--p")), "la progression n'est pas répétée sur chaque enfant");
+
+            const staggerState = stagger._cache.get(staggerRoot)?.state;
+            stagger(staggerRoot, 0.75, { selector: ".char" });
+            assert(stagger._cache.get(staggerRoot)?.state === staggerState, "stagger réutilise son état préparé");
+            assert(staggerRoot.style.getPropertyValue("--p") === "0.75", "stagger ne met à jour que la progression");
+
+            style.clear(staggerRoot);
+            assert(!staggerRoot.style.getPropertyValue("--p"), "style.clear nettoie la racine");
+            assert(chars.every(char => !char.style.getPropertyValue("--i")), "style.clear nettoie les enfants");
+            assert(!stagger._cache.get(staggerRoot), "style.clear invalide l'état préparé de stagger");
+
+            let helperUpdates = 0;
+            let helperDestroys = 0;
+            const lifecycle = scrollAnimation(section, {
+                range: [85, 40],
+                update: () => helperUpdates++,
+                destroy: () => helperDestroys++,
+            });
+
+            assert(driver._sections.length === 1, "scrollAnimation inscrit immédiatement la section");
+            assert(helperUpdates === 1, "scrollAnimation applique l'état initial");
+            style.var(section, "42", "--helper-progress");
+
+            lifecycle.pause();
+            lifecycle.pause();
+            assert(driver._sections.length === 0, "pause retire la section de façon idempotente");
+
+            lifecycle.resume();
+            lifecycle.resume();
+            assert(driver._sections.length === 1, "resume réinscrit la section sans doublon");
+
+            lifecycle.destroy();
+            lifecycle.destroy();
+            assert(driver._sections.length === 0, "destroy retire la section");
+            assert(helperDestroys === 1, "le nettoyage local n'est appelé qu'une fois");
+            assert(!section.style.getPropertyValue("--helper-progress"), "destroy nettoie automatiquement les variables suivies");
+
+            lifecycle.resume();
+            assert(driver._sections.length === 0, "un lifecycle détruit ne peut pas reprendre");
+
+            reducedMotion = true;
+            const reducedLifecycle = scrollAnimation(section, {
+                update: () => helperUpdates++,
+            });
+            assert(reducedLifecycle === undefined, "scrollAnimation respecte le mouvement réduit");
+            assert(driver._sections.length === 0, "le mouvement réduit n'inscrit aucune section");
+            reducedMotion = false;
+
+            driver.destroy();
+            const nextDriver = ScrollDriver();
+            assert(nextDriver !== driver, "un singleton détruit est remplacé");
+            nextDriver.destroy();
+
+            result.textContent = `PASS\n${assertions.join("\n")}`;
+        } catch (error) {
+            result.textContent = `FAIL\n${assertions.join("\n")}\n${error.stack}`;
+        } finally {
+            delete window.lenis;
+        }
+    </script>
+</body>
+</html>

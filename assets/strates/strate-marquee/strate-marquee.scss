@@ -1,0 +1,16 @@
+.strate-marquee {
+    .strate-content {
+        display: grid;
+        grid-template-columns: subgrid;
+        grid-column: full;
+        min-width: 0;
+    }
+
+    .strate-header {
+        grid-column: ctr;
+    }
+
+    .marquee {
+        grid-column: full;
+    }
+}

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Hydrate browser contract</title>
+</head>
+<body>
+    <pre id="result">PENDING</pre>
+
+    <script type="module">
+        const result = document.querySelector("#result");
+        const assertions = [];
+        const assert = (condition, message) => {
+            assertions.push(`${condition ? "PASS" : "FAIL"}: ${message}`);
+            if (!condition) throw new Error(message);
+        };
+
+        try {
+            const { composeLifecycles } = await import(
+                "/assets/modules/hydrate/hydrate.js"
+            );
+
+            const calls = [];
+            const first = {
+                name: "first",
+                pause() { calls.push(`pause:${this.name}`); },
+                resume() { calls.push(`resume:${this.name}`); },
+                destroy() { calls.push(`destroy:${this.name}`); },
+            };
+            const destroyOnly = {
+                name: "destroy-only",
+                destroy() { calls.push(`destroy:${this.name}`); },
+            };
+            const cleanup = () => calls.push("destroy:function");
+
+            const lifecycle = composeLifecycles([
+                first,
+                undefined,
+                [destroyOnly, null, cleanup],
+            ]);
+
+            assert(typeof lifecycle.pause === "function", "le pause disponible est composé");
+            assert(typeof lifecycle.resume === "function", "le resume disponible est composé");
+            assert(typeof lifecycle.destroy === "function", "les nettoyages sont composés");
+
+            lifecycle.pause();
+            assert(calls.join(",") === "pause:first", "pause ignore les modules sans pause");
+
+            calls.length = 0;
+            lifecycle.resume();
+            assert(calls.join(",") === "resume:first", "resume ignore les modules sans resume");
+
+            calls.length = 0;
+            lifecycle.destroy();
+            assert(
+                calls.join(",") === "destroy:function,destroy:destroy-only,destroy:first",
+                "destroy nettoie tous les modules dans l'ordre inverse",
+            );
+
+            const empty = composeLifecycles([undefined, null, false]);
+            assert(empty.pause === null, "aucun pause artificiel n'est créé");
+            assert(empty.resume === null, "aucun resume artificiel n'est créé");
+            assert(empty.destroy === null, "aucun destroy artificiel n'est créé");
+
+            result.textContent = `PASS\n${assertions.join("\n")}`;
+        } catch (error) {
+            result.textContent = `FAIL\n${assertions.join("\n")}\n${error.stack}`;
+        }
+    </script>
+</body>
+</html>

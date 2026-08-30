@@ -1,0 +1,32 @@
+@import "../breakpoints";
+@import "../styles";
+
+.mce-content-body {
+	padding: 20px;
+	font-family: var(--font-1);
+	color: var(--color-text);
+	font-weight: 400;
+
+	& > * {
+		&:first-child {
+			margin-top: 0 !important;
+		}
+	}
+}
+
+// Toolbar Light — body class injectée via filtre ACF (wysiwyg.php).
+.mce-content-body.mce-toolbar-light {
+	font-size: 2rem;
+	line-height: 2rem;
+
+	strong{
+		color: var(--color-1);
+		font-weight: 700;
+	}
+}
+
+
+
+html {
+	font-size: 10px;
+}

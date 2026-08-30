@@ -1,0 +1,39 @@
+.card-keynumber {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    padding-top: 2.4rem;
+    border-top: 1px solid var(--color-border);
+
+    .keynumber-number {
+        display: flex;
+        gap: .4rem;
+        align-items: baseline;
+        margin: 0;
+        color: var(--color-2);
+    }
+
+    .keynumber-value {
+        font-size: clamp(4.8rem, 7vw, 8rem);
+        font-weight: 700;
+        letter-spacing: -.04em;
+        line-height: 1;
+    }
+
+    .keynumber-prefix,
+    .keynumber-suffix {
+        font-size: 2rem;
+        font-weight: 600;
+        line-height: 1;
+    }
+
+    .keynumber-title {
+        max-width: 24ch;
+        color: var(--color-text);
+    }
+
+    .keynumber-text {
+        max-width: 40ch;
+        color: color-mix(in srgb, var(--color-text) 72%, transparent);
+    }
+}

@@ -1,0 +1,92 @@
+.table {
+    width: 100%;
+
+    .table__scroll {
+        max-width: 100%;
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        scrollbar-gutter: stable;
+        -webkit-overflow-scrolling: touch;
+
+        &:focus-visible {
+            outline: 2px solid var(--color-2, var(--color-1));
+            outline-offset: 2px;
+        }
+    }
+
+    .table__table {
+        border: 1px solid var(--color-gray-dark, #ececec);
+        border-collapse: collapse;
+        font-family: var(--font-1);
+        font-size: 1.4rem;
+        letter-spacing: .02em;
+        line-height: 1.4;
+        min-width: var(--table-min-width, 60rem);
+        width: 100%;
+    }
+
+    .table__caption {
+        color: var(--color-text);
+        font-weight: 600;
+        padding-block: 0 1.2rem;
+        text-align: start;
+    }
+
+    .table__caption--visually-hidden {
+        clip-path: inset(50%);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+    }
+
+    th,
+    td {
+        border: 1px solid var(--color-gray-dark, #ececec);
+        padding: 1rem 1.6rem;
+        text-align: start;
+        vertical-align: top;
+    }
+
+    thead th,
+    tbody th,
+    tbody tr:nth-child(even) td {
+        background: var(--color-gray-light, #eff2f8);
+        color: var(--color-text);
+    }
+
+    thead th,
+    tbody th {
+        font-weight: 600;
+    }
+
+    tbody {
+        font-size: .95em;
+    }
+
+    tbody td {
+        color: var(--color-text);
+    }
+}
+
+@media (forced-colors: active) {
+    .table {
+        .table__table,
+        th,
+        td {
+            border-color: CanvasText;
+        }
+
+        thead th,
+        tbody th,
+        tbody tr:nth-child(even) td {
+            background: Canvas;
+            color: CanvasText;
+        }
+
+        .table__scroll:focus-visible {
+            outline-color: Highlight;
+        }
+    }
+}

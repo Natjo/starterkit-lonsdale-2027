@@ -1,0 +1,54 @@
+{
+    "name": "wordpress_starter_kit",
+    "version": "2.0.0",
+    "description": "",
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@gitlab.com/lonsdale/Wordpress_Starter_Kit.git"
+    },
+    "keywords": [
+        "starter",
+        "kit"
+    ],
+    "author": "Lonsdale",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://gitlab.com/lonsdale/Wordpress_Starter_Kit/issues"
+    },
+    "homepage": "https://gitlab.com/lonsdale/Wordpress_Starter_Kit#readme",
+    "scripts": {
+        "prod": "NODE_ENV=production rspack build --config rspack/rspack.prod.js && node rspack/check-build-assets.js",
+        "prod:clean": "node rspack/clean-theme-assets.js && pnpm run prod",
+        "dev": "NODE_ENV=development rspack build --watch --config rspack/rspack.dev.js",
+        "build:analyze": "NODE_ENV=production rspack build --config rspack/rspack.prod.js --profile --json > stats.json",
+        "check:assets": "node rspack/check-build-assets.js",
+        "check:js": "node rspack/check-js-syntax.js",
+        "test:php": "pnpm run test:php:components && pnpm run test:php:assets && pnpm run test:php:webp && pnpm run test:php:static",
+        "test:php:components": "docker compose -f .docker/docker-compose.yml exec -T wordpress php /var/www/html/wp-content/themes/starterkit-lonsdale-2027/tests/components-contract.php",
+        "test:php:assets": "docker compose -f .docker/docker-compose.yml exec -T wordpress php /var/www/html/wp-content/themes/starterkit-lonsdale-2027/tests/theme-assets-contract.php",
+        "test:php:webp": "docker compose -f .docker/docker-compose.yml exec -T wordpress php /var/www/html/wp-content/plugins/wp-webp/tests/wp-webp-contract.php",
+        "test:php:static": "docker compose -f .docker/docker-compose.yml exec -T wordpress php /var/www/html/wp-content/plugins/wp-static/tests/wp-static-contract.php",
+        "check": "pnpm run check:js && pnpm run test:php"
+    },
+    "devDependencies": {
+        "@rspack/cli": "^2.0.1",
+        "@rspack/core": "^2.0.1",
+        "autoprefixer": "^10.4.16",
+        "css-loader": "^7.1.2",
+        "postcss": "^8.4.32",
+        "postcss-loader": "^7.3.3",
+        "sass": "^1.32.5",
+        "sass-loader": "^16.0.0",
+        "svgo": "^4.0.1"
+    },
+    "sideEffects": [
+        "*.css",
+        "*.scss"
+    ],
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "@parcel/watcher"
+        ]
+    },
+    "packageManager": "pnpm@10.33.4"
+}
