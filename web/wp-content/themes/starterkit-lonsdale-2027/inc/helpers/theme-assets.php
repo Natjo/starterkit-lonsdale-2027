@@ -130,22 +130,12 @@ final class ThemeAssets
         ];
     }
 
-    /** @var bool */
-    private static bool $heroCriticalRenderedInHead = false;
+    /** @var array<string, true> */
+    private static array $renderedHeroCriticalModules = [];
 
     public static function getHeroCriticalCssForHead(): string
     {
-        if (self::$heroCriticalRenderedInHead) {
-            return '';
-        }
-
-        $heroCss = self::buildHeroCriticalCss();
-
-        if ($heroCss !== '') {
-            self::$heroCriticalRenderedInHead = true;
-        }
-
-        return $heroCss;
+        return self::buildHeroCriticalCss();
     }
 
     /**
@@ -192,17 +182,11 @@ final class ThemeAssets
 
     private static function injectHeroCriticalCss(string $html): string
     {
-        if (self::$heroCriticalRenderedInHead) {
-            return $html;
-        }
-
         $heroCss = self::buildHeroCriticalCss();
 
         if ($heroCss === '') {
             return $html;
         }
-
-        self::$heroCriticalRenderedInHead = true;
 
         if (preg_match('#<style id="critical-css">.*?</style>#s', $html)) {
             return preg_replace(
@@ -274,6 +258,10 @@ final class ThemeAssets
         $chunks = [];
 
         foreach (array_keys(self::$heroCriticalQueue) as $modulePath) {
+            if (isset(self::$renderedHeroCriticalModules[$modulePath])) {
+                continue;
+            }
+
             $file = self::getModuleCssPath($modulePath);
 
             if ($file === null) {
@@ -287,6 +275,7 @@ final class ThemeAssets
             }
 
             $chunks[] = $css;
+            self::$renderedHeroCriticalModules[$modulePath] = true;
         }
 
         return implode('', $chunks);

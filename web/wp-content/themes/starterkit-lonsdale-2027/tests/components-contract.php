@@ -262,46 +262,10 @@ function get_template_part(string $slug, ?string $name = null, array $args = [])
     global $loaded_templates, $query_vars, $rendering_component_fixture;
     $loaded_templates[] = $slug;
 
-    if ($rendering_component_fixture && in_array($slug, [
-        'template-parts/components/accordion/accordion',
-        'template-parts/components/autocomplete/autocomplete',
-        'template-parts/components/badge/badge',
-        'template-parts/components/breadcrumb/breadcrumb',
-        'template-parts/components/btn/btn',
-        'template-parts/components/quote/quote',
-        'template-parts/components/date/date',
-        'template-parts/components/dialog/dialog',
-        'template-parts/components/eyebrow/eyebrow',
-        'template-parts/components/header/header',
-        'template-parts/components/icon/icon',
-        'template-parts/components/image/image',
-        'template-parts/components/intro/intro',
-        'template-parts/components/link/link',
-        'template-parts/components/list/list',
-        'template-parts/components/marquee/marquee',
-        'template-parts/components/newsletter/newsletter',
-        'template-parts/components/pagination/pagination',
-        'template-parts/components/picto/picto',
-        'template-parts/components/field/field',
-        'template-parts/components/picture/picture',
-        'template-parts/components/search/search',
-        'template-parts/components/select/select',
-        'template-parts/components/select-custom/select-custom',
-        'template-parts/components/select-lang/select-lang',
-        'template-parts/components/shares/shares',
-        'template-parts/components/slider/slider',
-        'template-parts/components/socials/socials',
-        'template-parts/components/tag/tag',
-        'template-parts/components/table/table',
-        'template-parts/components/tab/tab',
-        'template-parts/components/text/text',
-        'template-parts/components/title/title',
-        'template-parts/components/tooltip/tooltip',
-        'template-parts/components/video/video',
-        'template-parts/cards/card-keynumber/card-keynumber',
-        'template-parts/cards/card-news/card-news',
-        'template-parts/cards/card-page/card-page',
-    ], true)) {
+    $is_fixture = str_starts_with($slug, 'template-parts/components/')
+        || str_starts_with($slug, 'template-parts/cards/');
+
+    if ($rendering_component_fixture && $is_fixture && is_file(dirname(__DIR__) . "/{$slug}.php")) {
         $params = $query_vars['params'] ?? [];
         include dirname(__DIR__) . "/{$slug}.php";
     }
@@ -365,7 +329,7 @@ $render = static function (string $component, array $values): string {
     $params = $values;
     $rendering_component_fixture = true;
     ob_start();
-    include dirname(__DIR__) . "/template-parts/components/{$component}/{$component}.php";
+    include dirname(__DIR__) . "/template-parts/components/{$component}.php";
     $rendering_component_fixture = false;
 
     return trim((string) ob_get_clean());
@@ -380,7 +344,7 @@ $render_strate = static function (string $strate, array $values): string {
     ob_start();
 
     try {
-        include dirname(__DIR__) . "/template-parts/strates/strate-{$strate}/strate-{$strate}.php";
+        include dirname(__DIR__) . "/template-parts/strates/strate-{$strate}.php";
     } finally {
         $rendering_component_fixture = false;
         set_query_var('template_args', $previous_args);
@@ -469,7 +433,7 @@ component('select-lang', [
 ]);
 $assert_same(
     'Le dispatcher charge le template demandé',
-    'template-parts/components/select-lang/select-lang',
+    'template-parts/components/select-lang',
     $loaded_templates[0] ?? null
 );
 $assert_same(
@@ -1120,17 +1084,29 @@ $assert_not_contains('Picture respecte lazy false', 'loading="lazy"', $picture);
 $assert_not_contains('Picture protège sa classe structurelle', 'class="duplicate"', $picture);
 
 $GLOBALS['lsd_thumb_calls'] = [];
+$GLOBALS['lsd_webp_sources'] = [
+    '/images/simple.jpg|large' => '/images/simple.webp',
+    '/images/mobile-only.jpg|medium' => '/images/mobile-only.webp',
+];
 $simple_picture = $render('picture', [
     'image' => '/images/simple.jpg',
     'size' => 'large',
 ]);
-$assert_contains('Picture accepte l’API simple image', '<img src="/images/simple.jpg"', $simple_picture);
+$assert_contains('Picture simple rend le WebP existant dans une source', '<source srcset="/images/simple.webp" type="image/webp">', $simple_picture);
+$assert_contains('Picture simple conserve l’original comme fallback', '<img src="/images/simple.jpg"', $simple_picture);
 $assert_contains('Picture utilise fluid par défaut', '<picture class="picture fit-fluid">', $simple_picture);
 $assert_same(
     'Picture transmet la taille simple au resolver',
     ['/images/simple.jpg', 'large'],
     $GLOBALS['lsd_thumb_calls'][0] ?? null
 );
+
+$mobile_only_picture = $render('picture', [
+    'images' => ['mobile' => '/images/mobile-only.jpg'],
+    'mobile_size' => 'medium',
+]);
+$assert_contains('Picture mobile seul rend son WebP sans media query', '<source srcset="/images/mobile-only.webp" type="image/webp">', $mobile_only_picture);
+$assert_contains('Picture mobile seul conserve l’original comme fallback', '<img src="/images/mobile-only.jpg"', $mobile_only_picture);
 
 $picture_source_priority = $render('picture', [
     'image' => '/images/simple.jpg',

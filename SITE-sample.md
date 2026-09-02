@@ -189,7 +189,7 @@ La correspondance doit rester exacte :
 
 ```text
 acf_fc_layout = text_image
-template       = template-parts/strates/strate-text_image/strate-text_image.php
+template       = template-parts/strates/strate-text_image.php
 appel          = strate('text_image', $strate)
 ```
 
@@ -268,8 +268,8 @@ Comportement lorsque les données sont absentes :
 Pour chaque nouvelle strate, créer au minimum :
 
 ```text
-template-parts/strates/strate-<nom>/strate-<nom>.php
-template-parts/strates/strate-<nom>/README.md
+template-parts/strates/strate-<nom>.php
+assets/strates/strate-<nom>/README.md
 assets/strates/strate-<nom>/strate-<nom>.scss
 ```
 

@@ -10,10 +10,10 @@ WordPress 6+.
 Les templates de composants vivent sous :
 
 ```
-template-parts/components/{nom}/{nom}.php
+template-parts/components/{nom}.php
 ```
 
-Exemples : `icon/icon.php`, `text/text.php`, `btn/btn.php`, etc.
+Exemples : `icon.php`, `text.php`, `btn.php`, etc.
 
 Ils consomment un payload associatif via la variable **`$params`**.
 
@@ -34,7 +34,7 @@ component_attributes(...);
 - `component_attributes()` filtre et échappe les attributs HTML.
 
 Les noms avec un underscore sont convertis en tirets : `select_lang` cible le
-dossier `select-lang`. Il est toutefois préférable d’utiliser directement le
+fichier `select-lang.php`. Il est toutefois préférable d’utiliser directement le
 nom canonique avec des tirets.
 
 ### Code cible
@@ -50,7 +50,7 @@ function component(string $name, array $args = []): void
     set_query_var('params', $args);
 
     try {
-        get_template_part("template-parts/components/{$folder}/{$folder}");
+        get_template_part("template-parts/components/{$folder}");
     } finally {
         set_query_var('params', $previousParams);
     }
@@ -87,9 +87,9 @@ payload et n'appelle pas `get_template_args()`.
 | Helper | Avant | Après |
 |--------|-------|-------|
 | `common()` | Template global avec arguments | nom uniquement + données récupérées depuis WordPress |
-| `hero()` | `get_template_part("heros/hero-{$name}/hero-{$name}", null, $args)` | `set_template_args($args)` + `get_template_part("template-parts/heros/hero-{$name}/hero-{$name}")` |
-| `card()` | `get_template_part("cards/{$name}/{$name}", null, $args)` | validation du template + isolation de `template_args` + `get_template_part("template-parts/cards/{$name}/{$name}")` |
-| `strate()` | `get_template_part("template-parts/strates/strate-{$name}/strate-{$name}", null, $args)` | validation + isolation de `template_args` + template dans `template-parts/strates/` |
+| `hero()` | Appel direct avec arguments WordPress | `set_template_args($args)` + `get_template_part("template-parts/heros/hero-{$name}")` |
+| `card()` | Template imbriqué dans un dossier homonyme | validation du template + isolation de `template_args` + `get_template_part("template-parts/cards/{$name}")` |
+| `strate()` | Template imbriqué dans un dossier homonyme | validation + isolation de `template_args` + template plat dans `template-parts/strates/` |
 
 ### Code cible
 
@@ -100,13 +100,13 @@ function common(string $name): void
     if ($name === '' || str_contains($name, '/') || str_contains($name, '..')) return;
 
     theme_queue_module_assets("common/{$name}/{$name}");
-    get_template_part("template-parts/common/{$name}/{$name}");
+    get_template_part("template-parts/common/{$name}");
 }
 
 function hero(string $name, array $args = []): void
 {
     set_template_args($args);
-    get_template_part("template-parts/heros/hero-{$name}/hero-{$name}");
+    get_template_part("template-parts/heros/hero-{$name}");
 }
 
 function card(mixed $name, mixed $data = []): void
@@ -119,7 +119,7 @@ function card(mixed $name, mixed $data = []): void
     set_template_args($args);
 
     try {
-        get_template_part("template-parts/cards/{$name}/{$name}");
+        get_template_part("template-parts/cards/{$name}");
     } finally {
         set_query_var('template_args', $previousArgs);
     }
@@ -134,7 +134,7 @@ function strate(string $name, array $args = []): void
     set_template_args($args);
 
     try {
-        get_template_part("template-parts/strates/strate-{$name}/strate-{$name}");
+        get_template_part("template-parts/strates/strate-{$name}");
     } finally {
         set_query_var('template_args', $previousArgs);
     }
@@ -193,7 +193,7 @@ $args = get_template_args();
 
 ### Structure de fichiers
 
-- [ ] Copier / déplacer les templates vers `template-parts/components/{nom}/{nom}.php`
+- [ ] Copier / déplacer les templates vers `template-parts/components/{nom}.php`
 - [ ] Vérifier que chaque composant appelé en PHP existe à cet emplacement
 
 ### Dépendances
@@ -237,11 +237,12 @@ Dans le HTML généré, attendu :
 |---------|------|
 | `inc/front/components.php` | Helpers de classes et d’attributs |
 | `inc/front/methods.php` | Dispatcher `component()` et helpers de templates |
-| `template-parts/components/*/` | Markup de chaque composant |
-| `template-parts/common/*/` | Header, footer, etc. |
-| `template-parts/heros/*/` | Heros de page |
-| `template-parts/cards/*/` | Cards (news, people, etc.) |
-| `template-parts/common/footer/footer.php` | Exemple d’usage des composants procéduraux |
+| `template-parts/components/*.php` | Markup de chaque composant |
+| `template-parts/common/*.php` | Header, footer, etc. |
+| `template-parts/heros/*.php` | Heros de page |
+| `template-parts/cards/*.php` | Cards (news, people, etc.) |
+| `assets/{famille}/{module}/README.md` | Contrat local et assets du module |
+| `template-parts/common/footer.php` | Exemple d’usage des composants procéduraux |
 
 ---
 

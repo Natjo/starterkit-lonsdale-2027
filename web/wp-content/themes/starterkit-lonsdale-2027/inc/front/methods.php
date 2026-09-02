@@ -164,7 +164,7 @@ function component(string $name, array $args = []): void
     set_query_var('params', $args);
 
     try {
-        $loaded = get_template_part("template-parts/components/{$folder}/{$folder}");
+        $loaded = get_template_part("template-parts/components/{$folder}");
     } finally {
         set_query_var('params', $previousParams);
     }
@@ -184,7 +184,7 @@ function common(string $name): void
     if ($name === '' || str_contains($name, '/') || str_contains($name, '..')) return;
 
     theme_queue_module_assets("common/{$name}/{$name}");
-    get_template_part("template-parts/common/{$name}/{$name}");
+    get_template_part("template-parts/common/{$name}");
 }
 
 /**
@@ -201,7 +201,7 @@ function hero(string $name, ?array $args = null): void
         return;
     }
 
-    $template = "template-parts/heros/hero-{$name}/hero-{$name}";
+    $template = "template-parts/heros/hero-{$name}";
 
     if (locate_template("{$template}.php") === '') {
         return;
@@ -302,7 +302,7 @@ function strate(string $name, array $args = []): void
     set_template_args($args);
 
     try {
-        get_template_part("template-parts/strates/strate-{$name}/strate-{$name}");
+        get_template_part("template-parts/strates/strate-{$name}");
     } finally {
         set_query_var('template_args', $previousArgs);
     }
@@ -324,7 +324,7 @@ function resolve_card_name(mixed $name): string
         return $cache[$name];
     }
 
-    $template = "template-parts/cards/{$name}/{$name}.php";
+    $template = "template-parts/cards/{$name}.php";
     $cache[$name] = !function_exists('locate_template') || locate_template($template) !== ''
         ? $name
         : '';
@@ -382,7 +382,7 @@ function card(mixed $name, mixed $args = []): void
     set_template_args($args);
 
     try {
-        get_template_part("template-parts/cards/{$name}/{$name}");
+        get_template_part("template-parts/cards/{$name}");
     } finally {
         set_query_var('template_args', $previousArgs);
     }

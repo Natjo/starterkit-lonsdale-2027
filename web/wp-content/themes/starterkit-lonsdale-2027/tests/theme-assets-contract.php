@@ -22,6 +22,29 @@ function esc_url_raw(mixed $value): string
 
 require_once dirname(__DIR__) . '/inc/helpers/theme-assets.php';
 
+theme_queue_hero_critical('homepage');
+$initialHeroCss = ThemeAssets::getHeroCriticalCssForHead();
+
+if (!str_contains($initialHeroCss, '.hero-homepage')) {
+    fwrite(STDERR, "Le CSS critique du hero préscanné doit être rendu dans wp_head.\n");
+    exit(1);
+}
+
+$heroQueue = new ReflectionProperty(ThemeAssets::class, 'heroCriticalQueue');
+$heroQueue->setAccessible(true);
+$queuedHeroes = $heroQueue->getValue();
+$queuedHeroes['pages/search'] = true;
+$heroQueue->setValue(null, $queuedHeroes);
+
+$lateHeroHtml = ThemeAssets::processBufferedHtml(
+    '<!doctype html><html><head><style id="critical-css">initial</style></head><body></body></html>'
+);
+
+if (!str_contains($lateHeroHtml, '.search-page')) {
+    fwrite(STDERR, "Un CSS critique découvert après wp_head doit être ajouté au bloc critique.\n");
+    exit(1);
+}
+
 theme_queue_template_assets('/var/www/html/wp-content/themes/example/search.php');
 
 if (!in_array('pages/search', ThemeAssets::getSplitModules(), true)) {

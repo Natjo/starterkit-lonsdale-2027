@@ -11,7 +11,7 @@ publics.
 ## Organisation du projet
 
 ```text
-assets/                                      Sources SCSS et JavaScript
+assets/                                      Sources SCSS/JS et README des modules
 web/wp-content/themes/starterkit-lonsdale-2027/
 ├── inc/                                     Helpers et logique du thème
 ├── template-parts/
@@ -33,11 +33,11 @@ compilés dans les dossiers `assets/css/` et `assets/js/` du thème.
 | Travail concerné | Documentation |
 | --- | --- |
 | Création ou adaptation d'un site | [`SITE.md`](SITE.md), puis les documentations techniques concernées |
-| Composant | [`template-parts/components/README.md`](web/wp-content/themes/starterkit-lonsdale-2027/template-parts/components/README.md), puis le README local |
-| Strate | [`template-parts/strates/README.md`](web/wp-content/themes/starterkit-lonsdale-2027/template-parts/strates/README.md), puis le README local s'il existe |
-| Hero | [`template-parts/heros/README.md`](web/wp-content/themes/starterkit-lonsdale-2027/template-parts/heros/README.md), puis le README local |
-| Élément global | [`template-parts/common/README.md`](web/wp-content/themes/starterkit-lonsdale-2027/template-parts/common/README.md), puis le README local |
-| Card | [`template-parts/cards/README.md`](web/wp-content/themes/starterkit-lonsdale-2027/template-parts/cards/README.md), puis le README local |
+| Composant | [`assets/components/README.md`](assets/components/README.md), puis le README local |
+| Strate | [`assets/strates/README.md`](assets/strates/README.md), puis le README local s'il existe |
+| Hero | [`assets/heros/README.md`](assets/heros/README.md), puis le README local |
+| Élément global | [`assets/common/README.md`](assets/common/README.md), puis le README local |
+| Card | [`assets/cards/README.md`](assets/cards/README.md), puis le README local |
 | Helpers front | [`inc/front/README-front.md`](web/wp-content/themes/starterkit-lonsdale-2027/inc/front/README-front.md) |
 | Configuration SEO | [`inc/config/README.md`](web/wp-content/themes/starterkit-lonsdale-2027/inc/config/README.md) |
 
@@ -106,9 +106,10 @@ globales depuis WordPress (menus, options du site ou options ACF).
 Co-localiser les fichiers avec le même nom :
 
 ```text
-template-parts/components/example/example.php
+template-parts/components/example.php
 assets/components/example/example.scss
 assets/components/example/example.js
+assets/components/example/README.md
 ```
 
 Le même principe s'applique à `cards`, `common`, `heros` et `strates`.

@@ -33,10 +33,10 @@ considéré comme un socle technique, pas comme un site éditorial finalisé.
 | Sujet | Source |
 | --- | --- |
 | Règles générales | `AGENTS.md` |
-| Composants | `template-parts/components/README.md` et README locaux |
-| Cards | `template-parts/cards/README.md` et README locaux |
-| Common | `template-parts/common/README.md` et README locaux |
-| Strates et grille | `template-parts/strates/README.md` |
+| Composants | `assets/components/README.md` et README locaux |
+| Cards | `assets/cards/README.md` et README locaux |
+| Common | `assets/common/README.md` et README locaux |
+| Strates et grille | `assets/strates/README.md` |
 | Groupes ACF | `web/wp-content/themes/starterkit-lonsdale-2027/acf-json/` |
 | État des pages et réglages | Base WordPress locale |
 
@@ -243,7 +243,7 @@ La correspondance technique est :
 
 ```text
 acf_fc_layout = text_image
-template       = template-parts/strates/strate-text_image/strate-text_image.php
+template       = template-parts/strates/strate-text_image.php
 appel          = strate('text_image', $strate)
 ```
 
@@ -335,7 +335,7 @@ Un renommage doit conserver la correspondance complète entre
 
 Une seule card est conservée : `card-news`. Le renderer accepte un ID de post,
 un payload personnalisé, ou un ID avec surcharges. Son contrat détaillé est
-documenté dans `template-parts/cards/card-news/README.md`.
+documenté dans `assets/cards/card-news/README.md`.
 
 La strate `pushes` alimente cette card avec une sélection manuelle de News ou
 une remontée automatique des News les plus récentes. Elle accepte aussi un
