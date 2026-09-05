@@ -36,8 +36,8 @@ $styleguide_sections = [
     'video' => 'Video',
 ];
 
-$styleguide_image = rtrim(THEME_ASSETS, '/') . '/img/tmp/hero-1.jpg';
-$styleguide_image_alt = rtrim(THEME_ASSETS, '/') . '/img/tmp/hero-2.jpg';
+$image_desktop = rtrim(THEME_URL, '/') . '/inc/front/styleguide/429-1240x800.jpg';
+$image_mobile = rtrim(THEME_ASSETS, '/') . '/inc/front/styleguide/429-1240x800.jpg';
 $styleguide_options = [
     ['value' => 'paris', 'label' => 'Paris', 'alt' => 'Île-de-France'],
     ['value' => 'lyon', 'label' => 'Lyon', 'alt' => 'Rhône'],
@@ -287,7 +287,10 @@ $styleguide_news = [
                 <?php component('eyebrow', ['eyebrow' => 'Sans icône']); ?>
                 <?php component('eyebrow', [
                     'eyebrow' => 'Avec une <strong>icône</strong>',
-                    'icon' => 'star',
+                    'icon' => 'logo',
+                    'icon_width' => 54,
+                    'icon_height' => 55,
+
                 ]); ?>
             </div>
         </section>
@@ -337,9 +340,9 @@ $styleguide_news = [
         <section class="styleguide-section" id="component-icon">
             <h2 class="styleguide-section-title"><code>icon</code></h2>
             <div class="styleguide-preview">
-                <?php component('icon', ['name' => 'star', 'width' => 32, 'height' => 32, 'label' => 'Étoile']); ?>
-                <?php component('icon', ['name' => 'chat', 'width' => 32, 'height' => 32, 'label' => 'Conversation']); ?>
-                <?php component('icon', ['name' => 'blank', 'width' => 32, 'height' => 32, 'label' => 'Lien externe']); ?>
+                <?php component('icon', ['name' => 'email', 'width' => 44, 'height' => 44, 'label' => 'Étoile']); ?>
+                <?php component('icon', ['name' => 'linkedin', 'width' => 44, 'height' => 44, 'label' => 'Conversation']); ?>
+              
             </div>
         </section>
 
@@ -347,7 +350,7 @@ $styleguide_news = [
             <h2 class="styleguide-section-title"><code>image</code></h2>
             <div class="styleguide-preview styleguide-preview--media">
                 <?php component('image', [
-                    'image' => $styleguide_image,
+                    'image' => $image_desktop,
                     'alt' => 'Exemple visuel du composant image',
                     'classes' => 'styleguide-image',
                 ]); ?>
@@ -363,7 +366,7 @@ $styleguide_news = [
                 <?php component('link', [
                     'link' => ['url' => '#component-link', 'title' => 'Lien avec icône'],
                     'classes' => 'link-2',
-                    'icon' => ['name' => 'blank', 'width' => 18, 'height' => 18],
+                    'icon' => ['name' => 'blank', 'width' => 16, 'height' => 16],
                 ]); ?>
             </div>
         </section>
@@ -417,9 +420,9 @@ $styleguide_news = [
         <section class="styleguide-section" id="component-picto">
             <h2 class="styleguide-section-title"><code>picto</code></h2>
             <div class="styleguide-preview">
-                <?php component('picto', ['name' => 'star', 'label' => 'Étoile']); ?>
-                <?php component('picto', ['name' => 'chat', 'label' => 'Conversation']); ?>
-                <?php component('picto', ['name' => 'training', 'label' => 'Formation']); ?>
+                <?php component('picto', ['name' => 'email', 'label' => 'email']); ?>
+                <?php component('picto', ['name' => 'linkedin', 'label' => 'email']); ?>
+
             </div>
         </section>
 
@@ -428,8 +431,8 @@ $styleguide_news = [
             <div class="styleguide-preview styleguide-preview--media">
                 <?php component('picture', [
                     'images' => [
-                        'desktop' => $styleguide_image,
-                        'mobile' => $styleguide_image_alt,
+                        'desktop' => $image_desktop,
+                        'mobile' => $image_mobile,
                     ],
                     'classes' => 'styleguide-picture',
                     'breakpoint' => 768,
