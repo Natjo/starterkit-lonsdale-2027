@@ -2,7 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const { getSplitEntries } = require("./parse-split-imports");
+const { getOnceEntries, getSplitEntries } = require("./parse-split-imports");
 
 const themeName = process.env.WP_THEME_NAME;
 
@@ -26,8 +26,10 @@ const requiredFiles = [
     "css/admin-rte.css",
     "js/app.js",
     ...Object.keys(getSplitEntries()).map((modulePath) => `css/${modulePath}.css`),
+    ...Object.keys(getOnceEntries()).map((modulePath) => `css/${modulePath}.css`),
 ];
 const copiedDirectories = ["fonts", "video", "favicon", "img"];
+const lottieSourceDirectory = path.resolve(__dirname, "../assets/components/lottie");
 const ignoredCopiedFiles = new Set([".DS_Store", ".gitkeep", "head-snippet.html"]);
 
 function collectCopiedFiles(directory, prefix = "") {
@@ -56,6 +58,12 @@ for (const directory of copiedDirectories) {
 
     for (const relativePath of collectCopiedFiles(sourceDirectory)) {
         requiredFiles.push(`${directory}/${relativePath}`);
+    }
+}
+
+for (const relativePath of collectCopiedFiles(lottieSourceDirectory)) {
+    if (path.extname(relativePath).toLowerCase() === ".json") {
+        requiredFiles.push(`lottie/${relativePath}`);
     }
 }
 

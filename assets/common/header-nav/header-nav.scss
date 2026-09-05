@@ -18,10 +18,6 @@
         transition: height .3s ease, transform .3s ease;
     }
 
-    &.is-compact {
-        --header-height: 7rem;
-    }
-
     &.is-hidden:not(.is-open) {
         transform: translate3d(0, -100%, 0);
     }

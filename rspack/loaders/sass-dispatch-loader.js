@@ -7,6 +7,7 @@
  *   @import "styles/styles" critical;                    → critical only
  *   @import "components/slider/slider";                  → app only
  *   @import "heros/hero-homepage/hero-homepage" critical; → bundle dédié, inline si hero()
+ *   @import "pages/404" once;                             → bundle dédié, inline au rendu
  *
  * Entries:
  *   app.scss?dispatch=app       → app.css

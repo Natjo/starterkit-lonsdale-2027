@@ -1,0 +1,42 @@
+.anchor-nav {
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: thin;
+
+    ul {
+        display: flex;
+        align-items: center;
+        gap: 2.4rem;
+        width: max-content;
+        min-width: 100%;
+    }
+
+    a {
+        display: inline-flex;
+        padding-block: .6rem;
+        color: var(--color-muted);
+        font-weight: 500;
+        text-decoration: underline;
+        text-decoration-color: transparent;
+        text-underline-offset: .4em;
+        transition: color .2s ease, text-decoration-color .2s ease;
+
+        &:hover,
+        &.active,
+        &[aria-current="location"] {
+            color: var(--color-1);
+            text-decoration-color: currentColor;
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--color-2);
+            outline-offset: .3rem;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        a {
+            transition: none;
+        }
+    }
+}

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Lottie source browser contract</title>
+    <script type="importmap">
+        {
+            "imports": {
+                "@assets/vendors/lottie.js": "/assets/vendors/lottie.js",
+                "lottie-web/build/player/esm/lottie_light.min.js": "/node_modules/lottie-web/build/player/esm/lottie_light.min.js"
+            }
+        }
+    </script>
+</head>
+<body data-result="pending">
+    <div
+        id="lottie"
+        data-lottie-src="/assets/components/lottie/animation.json"
+        data-lottie-autoplay="false"
+        data-lottie-loop="true"
+        data-lottie-progressive-load="true"
+        data-lottie-reduced-motion="true">
+    </div>
+
+    <script type="module">
+        const waitFor = (condition, timeout = 15000) => new Promise((resolve, reject) => {
+            const started = performance.now();
+            const check = () => {
+                if (condition()) return resolve();
+                if (performance.now() - started >= timeout) return reject(new Error('Lottie SVG timeout'));
+                setTimeout(check, 25);
+            };
+            check();
+        });
+
+        try {
+            const root = document.querySelector('#lottie');
+            const { default: initLottie } = await import('/assets/components/lottie/lottie.js');
+            const lifecycle = initLottie(root);
+            await waitFor(() => root.querySelector('svg') || root.dataset.lottieError);
+            if (root.dataset.lottieError) throw new Error(root.dataset.lottieError);
+            if (root.querySelector('svg').getAttribute('viewBox') !== '0 0 1920 1080') {
+                throw new Error('Unexpected Lottie viewBox');
+            }
+            lifecycle.destroy();
+            if (root.querySelector('svg')) throw new Error('Lottie destroy failed');
+            document.body.dataset.result = 'ok';
+        } catch (error) {
+            document.body.dataset.result = error.message;
+        }
+    </script>
+</body>
+</html>

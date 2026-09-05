@@ -42,6 +42,11 @@ function home_url(string $path = ''): string
     return 'https://example.test' . $path;
 }
 
+function get_template_directory_uri(): string
+{
+    return 'https://example.test/theme';
+}
+
 function is_admin(): bool
 {
     return false;
@@ -527,6 +532,85 @@ $assert_same(
     $render('breadcrumb', ['items' => [['name' => 'Accueil', 'url' => '/']]])
 );
 $assert_same('Le breadcrumb refuse une liste directe', '', $render('breadcrumb', ['Accueil']));
+
+$anchor_nav = $render('anchor-nav', [
+    'items' => [
+        ['label' => 'Introduction', 'target' => 'introduction'],
+        ['label' => 'Nos <expertises>', 'target' => '#expertises'],
+        ['label' => 'Doublon', 'target' => 'expertises'],
+        ['label' => 'Cible invalide', 'target' => '../invalide'],
+    ],
+    'aria_label' => 'Sommaire <principal>',
+    'classes' => ['in-page', 'in-page'],
+    'attributes' => ['id' => 'page-summary', 'data-module' => 'refuse'],
+]);
+$assert_contains('Anchor nav rend une navigation hydratée', 'data-module="components/anchor-nav"', $anchor_nav);
+$assert_contains('Anchor nav ajoute ses classes sans doublon', 'class="anchor-nav in-page"', $anchor_nav);
+$assert_contains('Anchor nav conserve les attributs sûrs', 'id="page-summary"', $anchor_nav);
+$assert_contains('Anchor nav échappe son nom accessible', 'aria-label="Sommaire &lt;principal&gt;"', $anchor_nav);
+$assert_contains('Anchor nav échappe ses libellés', 'Nos &lt;expertises&gt;', $anchor_nav);
+$assert_same('Anchor nav filtre les cibles invalides et dupliquées', 2, substr_count($anchor_nav, '<li>'));
+$assert_not_contains('Anchor nav réserve son attribut d’hydratation', 'data-module="refuse"', $anchor_nav);
+$assert_same('Anchor nav vide ne produit aucun HTML', '', $render('anchor-nav', ['items' => []]));
+$assert_same('Anchor nav refuse une liste directe', '', $render('anchor-nav', ['Introduction']));
+
+$section_snap = $render('section-snap', [
+    'slides' => [
+        ['title' => 'Première'],
+        ['title' => '<Deuxième>'],
+        ['title' => ''],
+    ],
+    'root_id' => 'snap-demo-4',
+    'aria_label' => 'Navigation <snap>',
+    'classes' => ['in-demo', 'in-demo'],
+    'attributes' => ['id' => 'snap-navigation', 'data-module' => 'refuse'],
+]);
+$assert_contains('Section snap rend la navigation attendue', 'class="snap-nav in-demo"', $section_snap);
+$assert_contains('Section snap porte son hydratation', 'data-module="components/section-snap"', $section_snap);
+$assert_contains('Section snap conserve les attributs sûrs', 'id="snap-navigation"', $section_snap);
+$assert_contains('Section snap génère les cibles depuis la racine', 'href="#snap-demo-4-1"', $section_snap);
+$assert_contains('Section snap échappe les titres', '&lt;Deuxième&gt;', $section_snap);
+$assert_contains('Section snap échappe son nom accessible', 'aria-label="Navigation &lt;snap&gt;"', $section_snap);
+$assert_same('Section snap ignore les titres vides', 2, substr_count($section_snap, '<li>'));
+$assert_not_contains('Section snap réserve son attribut d’hydratation', 'data-module="refuse"', $section_snap);
+$assert_same('Section snap refuse une racine invalide', '', $render('section-snap', [
+    'slides' => [['title' => 'Première']],
+    'root_id' => '../snap',
+]));
+$assert_same('Section snap vide ne produit aucun HTML', '', $render('section-snap', [
+    'slides' => [],
+    'root_id' => 'snap-demo',
+]));
+
+$lottie = $render('lottie', [
+    'src' => 'https://example.test/desktop.json',
+    'mobile_src' => '/mobile.json',
+    'breakpoint' => 1024,
+    'autoplay' => 'true',
+    'loop' => '1',
+    'width' => 1920,
+    'height' => 1080,
+    'label' => 'Animation <test>',
+    'classes' => ['in-hero', 'in-hero'],
+    'attributes' => ['id' => 'lottie-test', 'data-module' => 'refuse'],
+]);
+$assert_contains('Lottie rend sa source desktop', 'data-lottie-src="https://example.test/desktop.json"', $lottie);
+$assert_contains('Lottie rend sa source mobile', 'data-lottie-src-mobile="/mobile.json"', $lottie);
+$assert_contains('Lottie rend son breakpoint', 'data-lottie-breakpoint="1024"', $lottie);
+$assert_contains('Lottie normalise la lecture automatique', 'data-lottie-autoplay="true"', $lottie);
+$assert_contains('Lottie normalise la boucle', 'data-lottie-loop="true"', $lottie);
+$assert_contains('Lottie réserve son ratio', 'style="--lottie-aspect-ratio:1920 / 1080"', $lottie);
+$assert_contains('Lottie rend son nom accessible', 'role="img" aria-label="Animation &lt;test&gt;"', $lottie);
+$assert_contains('Lottie porte son hydratation', 'data-module="components/lottie"', $lottie);
+$assert_contains('Lottie conserve les attributs sûrs', 'id="lottie-test"', $lottie);
+$assert_not_contains('Lottie réserve son attribut d’hydratation', 'data-module="refuse"', $lottie);
+$assert_same('Lottie refuse une source dangereuse', '', $render('lottie', [
+    'src' => 'javascript:alert(1)',
+]));
+$assert_not_contains('Lottie peut déléguer son hydratation', 'data-module=', $render('lottie', [
+    'src' => '/animation.json',
+    'autonomous' => false,
+]));
 
 $assert_same(
     'Le parcours SEO supprime le HTML et les éléments invalides',
@@ -1169,6 +1253,15 @@ $assert_contains('YouTube utilise le domaine respectueux de la vie privée', 'da
 $assert_not_contains('La façade diffère la source de l’iframe', ' src="https://www.youtube-nocookie.com', $facade_video);
 $assert_contains('Le bouton de façade possède un nom accessible', 'aria-label="Lire la vidéo : YouTube"', $facade_video);
 
+$external_video_without_poster = $render('video', [
+    'url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    'title' => 'YouTube sans poster',
+]);
+$assert_not_contains('Un lecteur externe sans poster ne crée pas de façade', 'class="poster"', $external_video_without_poster);
+$assert_contains('Un lecteur externe sans poster attend le viewport', 'data-context="@visible true"', $external_video_without_poster);
+$assert_contains('Un lecteur externe sans poster conserve sa source différée', 'data-src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?', $external_video_without_poster);
+$assert_not_contains('Un lecteur externe sans poster ne charge pas son iframe au rendu PHP', ' src="https://www.youtube-nocookie.com', $external_video_without_poster);
+
 $autoplay_video = $render('video', [
     'url' => '/videos/background.mp4',
     'title' => 'Arrière-plan',
@@ -1558,6 +1651,8 @@ $slider = $render('slider', [
 $assert_same('Le slider direct ignore les items incompatibles ou vides', 2, substr_count($slider, '<li'));
 $assert_contains('Le slider charge son module', 'data-module="components/slider"', $slider);
 $assert_contains('Le slider expose une région de carrousel', 'aria-roledescription="carousel"', $slider);
+$assert_contains('Le slider expose une liste valide', 'role="list"', $slider);
+$assert_same('Chaque slide conserve le rôle requis par la liste', 2, substr_count($slider, 'role="listitem"'));
 $assert_contains('Le slider nomme chaque slide avec sa position réelle', 'aria-label="Diapositive 2 sur 2"', $slider);
 $assert_contains('Le slider protège le scroll horizontal de Lenis', 'data-lenis-prevent-horizontal', $slider);
 $assert_contains('Le slider conserve ses attributs libres', 'data-tracking="editorial-slider"', $slider);
@@ -2444,6 +2539,37 @@ $assert_same(
     '',
     $render_strate('pushes', ['mode' => 'manual', 'items' => []])
 );
+
+$snap_strate = $render_strate('snap', [
+    'strates' => [['acf_fc_layout' => 'text']],
+]);
+$assert_contains('La strate snap hydrate le composant section snap', 'data-module="components/section-snap"', $snap_strate);
+$assert_not_contains('La strate snap ne conserve pas son ancien module', 'data-module="strates/strate-snap"', $snap_strate);
+$assert_contains('La strate snap rend sa navigation', 'class="snap-nav"', $snap_strate);
+$assert_same('La strate snap rend ses quatre panneaux statiques', 4, substr_count($snap_strate, 'class="strate strate-snap-panel'));
+$assert_contains('La strate snap rend un panneau noir', 'strate-snap-panel bg-color-1', $snap_strate);
+$assert_contains('La strate snap rend un panneau bleu', 'strate-snap-panel bg-color-2', $snap_strate);
+$assert_contains('La strate snap rend un panneau gris', 'strate-snap-panel bg-color-3', $snap_strate);
+$assert_not_contains('La strate snap ignore les arguments transmis', 'acf_fc_layout', $snap_strate);
+preg_match_all('/href="#([^"]+)"/', $snap_strate, $snap_ids);
+$assert_same('La strate snap produit quatre ancres uniques', 4, count(array_unique($snap_ids[1] ?? [])));
+
+$anchor_nav_strate = $render_strate('anchor_nav', [
+    'items' => [['label' => 'Ignoré', 'target' => 'ignored']],
+]);
+$assert_contains('La strate anchor nav hydrate son composant', 'data-module="components/anchor-nav"', $anchor_nav_strate);
+$assert_contains('La strate anchor nav rend sa navigation', 'class="anchor-nav"', $anchor_nav_strate);
+$assert_contains('La strate anchor nav rend sa première cible', 'href="#anchor-1"', $anchor_nav_strate);
+$assert_contains('La strate anchor nav rend sa dernière cible', 'href="#anchor-3"', $anchor_nav_strate);
+$assert_same('La strate anchor nav rend ses trois liens statiques', 3, substr_count($anchor_nav_strate, '<li>'));
+$assert_same('La strate anchor nav rend ses trois sections statiques', 3, substr_count($anchor_nav_strate, '<section id="anchor-'));
+$assert_not_contains('La strate anchor nav ignore les items transmis', 'ignored', $anchor_nav_strate);
+
+$lottie_strate = $render_strate('lottie', []);
+$assert_contains('La strate lottie utilise le composant lottie', 'data-module="components/lottie"', $lottie_strate);
+$assert_contains('La strate lottie utilise son animation de test', 'data-lottie-src="https://example.test/theme/assets/lottie/animation.json"', $lottie_strate);
+$assert_contains('La strate lottie active la lecture automatique', 'data-lottie-autoplay="true"', $lottie_strate);
+$assert_contains('La strate lottie active la boucle', 'data-lottie-loop="true"', $lottie_strate);
 
 if ($failures !== []) {
     fwrite(STDERR, implode("\n\n", $failures) . "\n");

@@ -67,40 +67,7 @@ function getVisitorIp(): string
     return '';
 }
 
-/**
- * Détermine si le visiteur est une IP interne connue.
- *
- * @param  string[]|null $allowedIps Tableau d'IPs autorisées.
- *                                   Si null, utilise le tableau global $INTERNAL_IPS.
- * @return bool true si l'IP est interne, false sinon.
- */
-function isInternalIp(?array $allowedIps = null): bool
-{
-    if (function_exists('wp_static_is_generation_request') && wp_static_is_generation_request()) {
-        return false;
-    }
 
-    global $INTERNAL_IPS;
-
-    $list = $allowedIps ?? $INTERNAL_IPS;
-    $visitorIp = getVisitorIp();
-
-    if (empty($visitorIp)) {
-        return false;
-    }
-
-    // Local Docker : le navigateur apparaît souvent comme gateway bridge (ex. 172.19.0.1),
-    // pas 192.168.65.1. On accepte localhost + réseaux privés Docker en ENV_LOCAL.
-    if (defined('ENV_LOCAL') && ENV_LOCAL && isLocalDockerIp($visitorIp)) {
-        return true;
-    }
-
-    if (!is_array($list)) {
-        return false;
-    }
-
-    return in_array($visitorIp, $list, true);
-}
 
 /**
  * IP typiques du trafic host → conteneur (Docker Desktop / compose).

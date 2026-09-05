@@ -146,20 +146,50 @@ vide. Un ID charge les champs ACF et ajoute `post_id`. Un tableau contenant
 `post_id` charge également le post, puis ses autres valeurs surchargent les
 champs récupérés.
 
-### CSS propre aux templates WordPress
+### Preload des fontes locales
 
-Un import marqué `split` est compilé séparément et chargé uniquement pour le
-template WordPress portant le même nom :
+`fontPreload()` génère les preloads WOFF2 à partir des noms de fichiers sans
+extension :
 
-```scss
-@import "pages/search" split;
+```php
+fontPreload(['SequelSansLight', 'SequelSansBook', 'SequelSansHeavy']);
 ```
 
-`search.php` enregistre alors automatiquement `pages/search.css`. La même
-convention s'applique à `404.php`, `archive.php`, `single-news.php` ou
-`front-page.php`. Aucun appel à `theme_queue_module_assets()` n'est nécessaire
-dans ces templates. Si aucun fichier CSS compilé ne correspond au template,
-aucune balise `<link>` n'est produite.
+La fonction accepte uniquement une liste de noms composés de lettres, chiffres,
+underscores et tirets. Elle ignore les entrées invalides, les fichiers absents
+et les doublons, y compris entre plusieurs appels. Les fichiers doivent être
+présents dans `assets/fonts/`; les balises générées incluent automatiquement
+`as="font"`, `type="font/woff2"` et `crossorigin`.
+
+### CSS propre aux templates WordPress
+
+Un import marqué `once` est compilé séparément puis injecté inline une seule
+fois, uniquement pour le template WordPress portant le même nom :
+
+```scss
+@import "pages/search" once;
+```
+
+Le build produit alors `assets/css/once/pages/search.css`. `search.php`
+l'enregistre automatiquement et son contenu est rendu dans
+`<style id="once-pages-search">`. La même convention s'applique à `404.php`,
+`archive.php`, `single-news.php` ou `front-page.php`. Aucun appel à
+`theme_queue_module_assets()` n'est nécessaire dans ces templates. Si aucun
+fichier CSS compilé ne correspond au template, aucune balise `<style>` n'est
+produite.
+
+Le CSS critique nécessaire au premier écran reste injecté dans
+`<style id="critical-css">`. `app.css` et chaque fichier marqué `split` restent
+des feuilles externes classiques, mises en cache entre les pages. Le CSS
+`split` d'un composant, common, card ou d'une strate est émis une seule fois
+juste avant le premier rendu de ce module dans le `<body>`.
+
+Le suffixe `once` peut aussi être appliqué à un composant, une card, un common
+ou une strate de petite taille et rarement réutilisé. Son CSS est alors injecté
+dans une balise `<style>` juste avant le premier rendu du module et dédupliqué
+pour toute la réponse. `once` décrit le mode de chargement, pas la page sur
+laquelle le module est autorisé : ce sont toujours les templates et les données
+ACF qui déterminent où il apparaît.
 
 ### Usage côté templates
 

@@ -141,7 +141,7 @@ $item_count = count($items);
             ?>
                 <li
                     class="item"
-                    role="group"
+                    role="listitem"
                     aria-roledescription="slide"
                     aria-label="<?= esc_attr($slide_position) ?>">
                     <?php if ($item_component !== null) : ?>

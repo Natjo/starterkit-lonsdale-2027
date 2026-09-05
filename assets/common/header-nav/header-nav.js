@@ -71,11 +71,10 @@ function HeaderScroll(root, {
 
     const update = () => {
         const scrollY = Math.max(0, window.scrollY);
+        const compact = compactOnScroll && scrollY > scrollThreshold;
         scrollFrame = 0;
-        root.classList.toggle(
-            'is-compact',
-            compactOnScroll && scrollY > scrollThreshold,
-        );
+        root.classList.toggle('is-compact', compact);
+        document.documentElement.classList.toggle('has-compact-header', compact);
 
         if (
             !hideOnScroll

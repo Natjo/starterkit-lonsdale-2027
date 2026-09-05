@@ -101,6 +101,50 @@ function asset($path)
 }
 
 /**
+ * Précharge une liste de fontes WOFF2 locales à partir de leur nom de fichier.
+ *
+ * @param list<mixed> $fonts
+ */
+function fontPreload(array $fonts): void
+{
+    static $rendered = [];
+
+    if (!defined('THEME_DIR') || !defined('THEME_ASSETS')) {
+        return;
+    }
+
+    foreach ($fonts as $font) {
+        if (!is_string($font)) {
+            continue;
+        }
+
+        $font = trim($font);
+
+        if ($font === '' || !preg_match('/^[A-Za-z0-9_-]+$/D', $font)) {
+            continue;
+        }
+
+        $filename = $font . '.woff2';
+
+        if (isset($rendered[$filename])) {
+            continue;
+        }
+
+        $file = THEME_DIR . 'assets/fonts/' . $filename;
+
+        if (!is_readable($file) || filesize($file) === 0) {
+            continue;
+        }
+
+        printf(
+            '<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n",
+            esc_url(rtrim(THEME_ASSETS, '/') . '/fonts/' . $filename)
+        );
+        $rendered[$filename] = true;
+    }
+}
+
+/**
  * Résout une image (ID média WP ou URL) vers [src, width, height, alt].
  * Utilisé par les composants picture / image.
  */

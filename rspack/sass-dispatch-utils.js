@@ -6,7 +6,7 @@ const fs = require("fs");
 const path = require("path");
 
 const IMPORT_RE =
-    /^@import\s+["']([^"']+)["'](?:\s+(?:critical|shared|split))*\s*;/;
+    /^@import\s+["']([^"']+)["'](?:\s+(?:critical|shared|split|once))*\s*;/;
 
 const SCSS_IMPORT_RE = /@import\s+["']([^"']+)["']/g;
 
@@ -35,7 +35,7 @@ function parseImportLine(line) {
     }
 
     const flags = [
-        ...line.matchAll(/\s+(critical|shared|split)\b/g),
+        ...line.matchAll(/\s+(critical|shared|split|once)\b/g),
     ].map((entry) => entry[1]);
 
     return {
@@ -65,13 +65,14 @@ function dispatchAppScss(source, mode) {
         const isExplicitShared = parsed.flags.includes("shared");
         const isCritical = parsed.flags.includes("critical");
         const isSplit = parsed.flags.includes("split");
+        const isOnce = parsed.flags.includes("once");
 
         if (isHeroCriticalImport(parsed.path, parsed.flags)) {
             heroCritical.push(parsed.path);
             continue;
         }
 
-        if (isSplit) {
+        if (isSplit || isOnce) {
             continue;
         }
 

@@ -193,13 +193,13 @@ un hero.
 ## Composants disponibles
 
 ```text
-accordion       autocomplete    badge           btn
+accordion       anchor-nav      autocomplete    badge           btn
 breadcrumb      date            dialog          eyebrow
 field
 header          icon            image           intro
-link            list            marquee         newsletter
-pagination      picto
-picture         quote           search          select
+link            list            lottie          marquee         newsletter
+pagination      picto           picture         quote           search
+section-snap    select
 select-custom   select-lang     shares          slider
 socials
 tab             table           tag             text

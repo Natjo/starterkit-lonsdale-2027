@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Anchor nav browser contract</title>
+    <style>
+        main section { scroll-margin-top: 80px; }
+    </style>
+</head>
+<body data-result="pending">
+    <section>
+        <nav id="anchor-nav-root" class="anchor-nav" aria-label="Navigation des sections">
+            <ul>
+                <li><a href="#introduction"><span>Introduction</span></a></li>
+                <li><a href="#expertises">Expertises</a></li>
+                <li><a href="#contact"><span>Contact</span></a></li>
+            </ul>
+        </nav>
+    </section>
+    <main>
+        <section id="introduction">Introduction</section>
+        <section id="expertises">Expertises</section>
+        <section id="contact">Contact</section>
+    </main>
+
+    <script type="module">
+        const assert = (condition, message) => {
+            if (!condition) throw new Error(message);
+        };
+
+        const frameQueue = [];
+        window.requestAnimationFrame = callback => {
+            frameQueue.push(callback);
+            return frameQueue.length;
+        };
+        window.cancelAnimationFrame = id => {
+            if (id > 0) frameQueue[id - 1] = null;
+        };
+        const flushFrame = () => {
+            const callbacks = frameQueue.splice(0);
+            callbacks.forEach(callback => callback?.(performance.now()));
+        };
+
+        window.matchMedia = () => ({
+            matches: false,
+            addEventListener() {},
+            removeEventListener() {},
+        });
+
+        class TestResizeObserver {
+            observe() {}
+            disconnect() {}
+        }
+        window.ResizeObserver = TestResizeObserver;
+
+        let testScrollY = 20;
+        Object.defineProperty(window, 'scrollY', {
+            configurable: true,
+            get: () => testScrollY,
+        });
+        Object.defineProperty(window, 'innerHeight', {
+            configurable: true,
+            value: 600,
+        });
+
+        const root = document.querySelector('#anchor-nav-root');
+        root.getBoundingClientRect = () => ({ top: 20, bottom: 80, height: 60 });
+
+        const positions = {
+            introduction: { top: 100, height: 400 },
+            expertises: { top: 500, height: 400 },
+            contact: { top: 900, height: 400 },
+        };
+        Object.entries(positions).forEach(([id, position]) => {
+            document.getElementById(id).getBoundingClientRect = () => ({
+                top: position.top - testScrollY,
+                bottom: position.top + position.height - testScrollY,
+                height: position.height,
+            });
+        });
+
+        const scrollCalls = [];
+        window.lenis = {
+            scrollTo(target, options) {
+                scrollCalls.push({ target, options });
+                testScrollY = positions[target.id].top - 80;
+                options.onComplete();
+            },
+        };
+
+        const { default: initAnchorNav } = await import(
+            '/assets/components/anchor-nav/anchor-nav.js'
+        );
+
+        try {
+            const lifecycle = initAnchorNav(root);
+            const links = [...root.querySelectorAll('a')];
+            flushFrame();
+
+            assert(links[0].classList.contains('active'), 'first visible section starts active');
+            assert(links[0].parentElement.classList.contains('active'), 'parent mirrors active state');
+            assert(links[0].getAttribute('aria-current') === 'location', 'active link is exposed');
+
+            testScrollY = 450;
+            window.dispatchEvent(new Event('scroll'));
+            flushFrame();
+            assert(links[1].classList.contains('active'), 'scroll activates the section crossing the nav');
+            assert(!links[0].hasAttribute('aria-current'), 'previous section is cleared');
+
+            links[2].querySelector('span').click();
+            assert(scrollCalls.length === 1, 'click delegates scrolling to Lenis once');
+            assert(scrollCalls[0].target.id === 'contact', 'click gives the target section to Lenis');
+            assert(links[2].classList.contains('active'), 'clicked section activates immediately');
+            assert(window.location.hash === '#contact', 'click updates the URL hash');
+
+            lifecycle.pause();
+            testScrollY = 20;
+            window.dispatchEvent(new Event('scroll'));
+            flushFrame();
+            assert(links[2].classList.contains('active'), 'pause suspends scroll tracking');
+
+            lifecycle.resume();
+            flushFrame();
+            assert(links[0].classList.contains('active'), 'resume synchronizes the visible section');
+
+            lifecycle.destroy();
+            assert(!links.some(link => link.classList.contains('active')), 'destroy clears active state');
+            assert(!links.some(link => link.hasAttribute('aria-current')), 'destroy clears accessibility state');
+
+            document.body.dataset.result = 'ok';
+        } catch (error) {
+            document.body.dataset.result = error.message;
+        }
+    </script>
+</body>
+</html>

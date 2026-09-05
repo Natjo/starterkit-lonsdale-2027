@@ -68,6 +68,7 @@
             initHeaderNav();
 
             assert(root.classList.contains('is-compact'), 'restored scroll starts compact');
+            assert(document.documentElement.classList.contains('has-compact-header'), 'global header height starts compact');
             assert(!root.classList.contains('is-scroll-ready'), 'initial compact has no transition');
             window.dispatchEvent(new PageTransitionEvent('pageshow'));
             flushFrame();
@@ -82,6 +83,7 @@
             root = freshRoot;
             testScrollY = 0;
             initHeaderNav();
+            assert(!document.documentElement.classList.contains('has-compact-header'), 'global header height returns expanded');
 
             const button = root.querySelector('.btn-nav');
             const nav = root.querySelector('#nav');

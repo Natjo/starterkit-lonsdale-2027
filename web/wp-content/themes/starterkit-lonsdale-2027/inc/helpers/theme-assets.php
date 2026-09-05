@@ -1,10 +1,11 @@
 <?php
 
 /**
- * Registre les CSS on-demand (split + heroes critical).
+ * Registre les CSS on-demand (split, once et heroes critical).
  *
  * Chemin module = chemin co-localisé sous assets/, ex.:
  *   strates/strate-quizz/strate-quizz → assets/css/strates/strate-quizz/strate-quizz.css
+ *   pages/search → assets/css/once/pages/search.css si l'import est marqué once
  *   heros/hero-homepage/hero-homepage → concaténé dans <style id="critical-css"> si hero()
  */
 final class ThemeAssets
@@ -14,6 +15,12 @@ final class ThemeAssets
 
     /** @var array<string, true> */
     private static array $renderedSplits = [];
+
+    /** @var array<string, true> */
+    private static array $onceModules = [];
+
+    /** @var array<string, true> */
+    private static array $renderedOnceModules = [];
 
     /** @var array<string, true> */
     private static array $heroCriticalQueue = [];
@@ -26,6 +33,22 @@ final class ThemeAssets
         $modulePath = self::normalizeModulePath($modulePath);
 
         if ($modulePath === null) {
+            return;
+        }
+
+        self::$splitModules[$modulePath] = true;
+    }
+
+    public static function queueModule(string $modulePath): void
+    {
+        $modulePath = self::normalizeModulePath($modulePath);
+
+        if ($modulePath === null) {
+            return;
+        }
+
+        if (self::getOnceCssPath($modulePath) !== null) {
+            self::$onceModules[$modulePath] = true;
             return;
         }
 
@@ -51,6 +74,14 @@ final class ThemeAssets
         return array_keys(self::$splitModules);
     }
 
+    /**
+     * @return list<string>
+     */
+    public static function getOnceModules(): array
+    {
+        return array_keys(self::$onceModules);
+    }
+
     public static function getModuleCssPath(string $modulePath): ?string
     {
         $modulePath = self::normalizeModulePath($modulePath);
@@ -66,6 +97,50 @@ final class ThemeAssets
         }
 
         return $file;
+    }
+
+    public static function getOnceCssPath(string $modulePath): ?string
+    {
+        $modulePath = self::normalizeModulePath($modulePath);
+
+        if ($modulePath === null) {
+            return null;
+        }
+
+        $file = THEME_DIR . 'assets/css/once/' . $modulePath . '.css';
+
+        if (!is_readable($file) || filesize($file) === 0) {
+            return null;
+        }
+
+        return $file;
+    }
+
+    public static function renderOnceStyles(): void
+    {
+        foreach (array_keys(self::$onceModules) as $modulePath) {
+            if (isset(self::$renderedOnceModules[$modulePath])) {
+                continue;
+            }
+
+            $file = self::getOnceCssPath($modulePath);
+
+            if ($file === null) {
+                continue;
+            }
+
+            $css = file_get_contents($file);
+
+            if ($css === false || trim($css) === '') {
+                continue;
+            }
+
+            $handle = 'once-' . str_replace('/', '-', $modulePath);
+            $css = str_ireplace('</style', '<\/style', $css);
+
+            printf('<style id="%s">%s</style>' . "\n", esc_attr($handle), $css);
+            self::$renderedOnceModules[$modulePath] = true;
+        }
     }
 
     public static function renderSplitLinks(): void
@@ -139,45 +214,12 @@ final class ThemeAssets
     }
 
     /**
-     * Output buffer : CSS critique, preloads d’images et CSS split.
+     * Output buffer : CSS critique et preloads d’images.
      */
     public static function processBufferedHtml(string $html): string
     {
         $html = self::injectHeroCriticalCss($html);
-        $html = self::injectPreloadImages($html);
-
-        return self::injectSplitStyles($html);
-    }
-
-    private static function injectSplitStyles(string $html): string
-    {
-        if (stripos($html, '</head>') === false) {
-            return $html;
-        }
-
-        $links = '';
-        $html = preg_replace_callback(
-            '#<link\b(?=[^>]*\bid=(["\'])split-[^"\']+\1)[^>]*>\s*#i',
-            static function (array $match) use (&$links): string {
-                $links .= $match[0];
-
-                return '';
-            },
-            $html
-        ) ?? $html;
-
-        $links .= self::buildSplitLinksHtml();
-
-        if ($links === '') {
-            return $html;
-        }
-
-        return preg_replace(
-            '#</head>#i',
-            $links . '</head>',
-            $html,
-            1
-        ) ?? $html;
+        return self::injectPreloadImages($html);
     }
 
     private static function injectHeroCriticalCss(string $html): string
@@ -229,7 +271,10 @@ final class ThemeAssets
         $html = '';
 
         foreach (self::$preloadImages as $item) {
-            $attrs = sprintf(' rel="preload" as="image" href="%s"', esc_url($item['href']));
+            $attrs = sprintf(
+                ' rel="preload" as="image" href="%s" fetchpriority="high"',
+                esc_url($item['href'])
+            );
 
             if ($item['type'] !== '') {
                 $attrs .= sprintf(' type="%s"', esc_attr($item['type']));
@@ -282,7 +327,7 @@ final class ThemeAssets
     }
 
     /**
-     * Pré-enregistre les strates ACF avant get_header() pour éviter le FOUC.
+     * Pré-enregistre explicitement les strates ACF fournies.
      *
      * @param list<array<string, mixed>> $rows
      */
@@ -299,7 +344,7 @@ final class ThemeAssets
                 continue;
             }
 
-            self::queueSplit("strates/strate-{$layout}/strate-{$layout}");
+            self::queueModule("strates/strate-{$layout}/strate-{$layout}");
         }
     }
 
@@ -321,7 +366,9 @@ final class ThemeAssets
 
 function theme_queue_module_assets(string $modulePath): void
 {
-    ThemeAssets::queueSplit($modulePath);
+    ThemeAssets::queueModule($modulePath);
+    ThemeAssets::renderOnceStyles();
+    ThemeAssets::renderSplitLinks();
 }
 
 /**
@@ -337,7 +384,7 @@ function theme_queue_template_assets(string $template): void
         return;
     }
 
-    ThemeAssets::queueSplit("pages/{$name}");
+    ThemeAssets::queueModule("pages/{$name}");
 }
 
 function theme_queue_hero_critical(string $name): void
@@ -350,12 +397,6 @@ function theme_queue_hero_critical(string $name): void
  */
 function theme_prescan_page_assets(array $fields = []): void
 {
-    $strates = $fields['strates'] ?? [];
-
-    if (is_array($strates)) {
-        ThemeAssets::prescanAcfStrates($strates);
-    }
-
     theme_prescan_hero_assets($fields);
 }
 

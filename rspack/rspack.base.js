@@ -282,6 +282,11 @@ function createRspackConfig({ name, entry, withCopy = false }) {
                                       ? { transform: optimizeSvgCopyTransform }
                                       : {}),
                               },
+                              {
+                                  from: "./assets/components/lottie/*.json",
+                                  to: "lottie/[name][ext]",
+                                  noErrorOnMissing: true,
+                              },
                           ],
                       }),
                   ]

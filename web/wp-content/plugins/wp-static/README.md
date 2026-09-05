@@ -40,6 +40,10 @@ Génère des versions **statiques (HTML)** des pages de votre site WordPress et 
 2. Activer **WP Static** dans l'administration WordPress (menu *Extensions*).
 3. Un menu **WP Static** apparaît dans la barre latérale d'administration.
 
+L’activation crée aussi les exclusions Git des fichiers générés : rien à ajouter
+au `.gitignore` du projet (voir
+[Exclusion du dépôt Git](#exclusion-du-dépôt-git)).
+
 À l’activation/désactivation, les tâches planifiées sont créées/supprimées (voir
 [Tâche planifiée](#tâche-planifiée-cron)). La désactivation coupe le service,
 retire l’injection du contrôleur frontal et conserve les fichiers générés : elle
@@ -583,16 +587,53 @@ add_filter( 'wp_static_urls', function ( $urls ) {
 - En multi-hôtes (WPML domaines), les fichiers sont rangés sous `…/_hosts/<hôte>/…`.
 - Dès que cet arbre multi-hôtes existe, un domaine sans fichier propre ne retombe
   jamais sur la version racine d'une autre langue.
-- Les fichiers `wp-static-generating.lock` et `wp-static-pending.lock`, placés
-  directement dans `wp-content`, sérialisent respectivement les opérations sur
-  le cache et les mises à jour de la file d'attente. Ils sont persistants mais
-  ne contiennent aucune donnée sensible.
-- La désactivation conserve ce dossier mais désactive le service et les tâches.
-  La suppression explicite s’effectue depuis **Vider le cache statique**.
+- Les fichiers `wp-static-generating.lock` et `wp-static-pending.lock`,
+  placés dans le dossier du plugin, sérialisent respectivement les opérations
+  sur le cache et les mises à jour de la file d'attente. Ils sont persistants
+  mais ne contiennent aucune donnée sensible. Leur présence dans le plugin
+  les isole du cache HTML : **Vider le cache statique** peut supprimer
+  `static-pages/` sans perdre le verrou de génération.
+- La désactivation conserve le dossier statique mais désactive le service et
+  les tâches. La suppression explicite s’effectue depuis **Vider le cache
+  statique**.
+
+### Exclusion du dépôt Git
+
+Le cache HTML est propre à chaque environnement : les URLs qu'il contient sont
+celles du site qui l'a généré. Les versionner conduit à déployer les URLs de
+la machine locale en préproduction.
+
+Le projet n'a rien à déclarer : l'extension écrit elle-même ses exclusions, à
+l'activation puis avant chaque génération.
+
+| Fichier | Rôle |
+|---|---|
+| `plugins/wp-static/.gitignore` | Versionné avec l'extension. Ignore les deux verrous. |
+| `wp-content/static-pages/.gitignore` | Écrit à l'activation et avant chaque génération. Contient `*` : le dossier s'exclut donc entièrement, y compris ce fichier. |
+| `wp-content/.gitignore` | Un bloc `# wp-static:start` / `# wp-static:end` couvrant `/static-pages` et les anciens verrous à la racine de `wp-content`. |
+
+Le bloc de `wp-content/.gitignore` est délimité par des marqueurs et réécrit
+uniquement s'il a changé : les règles propres au projet présentes dans le
+même fichier sont conservées. Ce fichier peut être versionné comme un fichier
+de projet ordinaire. S'il est supprimé, l'extension le recrée.
+
+Les anciens verrous laissés à la racine de `wp-content` sont aussi supprimés
+au prochain `wp_static_ensure_static_dir()`.
 
 ---
 
 ## Notes de version
+
+### 1.2.5 — 31 août 2026
+
+- Les verrous vivent dans le dossier du plugin, ignorés par son `.gitignore`
+  versionné. Le cache HTML s'exclut via `static-pages/.gitignore` et un bloc
+  à marqueurs dans `wp-content/.gitignore`. Le projet n'a plus à déclarer
+  ces artefacts (voir [Exclusion du dépôt Git](#exclusion-du-dépôt-git)).
+- Les exclusions du dossier statique sont posées à l'activation et avant
+  chaque génération : une installation déjà active en bénéficie sans
+  réactivation.
+- L'export ZIP ignore les fichiers `.gitignore` du dossier statique.
 
 ### 1.2.4 — 28 août 2026
 

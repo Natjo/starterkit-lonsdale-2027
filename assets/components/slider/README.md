@@ -174,7 +174,8 @@ Les index correspondent aux pages de scroll, pas nécessairement aux items.
 ## Accessibilité
 
 - La racine est une région avec `aria-roledescription="carousel"`.
-- Chaque item est un groupe annoncé avec sa position réelle.
+- La piste conserve une structure `list` / `listitem` valide.
+- Chaque item est annoncé comme une slide avec sa position réelle.
 - Les boutons natifs sont désactivés aux limites.
 - La pagination expose la page active avec `aria-current="page"`.
 - Les flèches clavier agissent lorsque la liste elle-même a le focus.

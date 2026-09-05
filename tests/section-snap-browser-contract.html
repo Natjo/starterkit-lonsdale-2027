@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>sectionSnap browser contract</title>
+</head>
+<body>
+    <div id="snap">
+        <nav class="snap-nav" data-module="components/section-snap">
+            <a href="#slide-1">Une</a>
+            <a href="#slide-2">Deux</a>
+            <a href="#slide-3">Trois</a>
+        </nav>
+        <section id="slide-1" class="strate"></section>
+        <section id="slide-2" class="strate"></section>
+        <section id="slide-3" class="strate"></section>
+    </div>
+    <pre id="result">PENDING</pre>
+
+    <script type="module">
+        const result = document.querySelector("#result");
+        const assertions = [];
+        const assert = (condition, message) => {
+            assertions.push(`${condition ? "PASS" : "FAIL"}: ${message}`);
+            if (!condition) throw new Error(message);
+        };
+
+        try {
+            let position = 1000;
+            let scrollCalls = 0;
+            const root = document.querySelector("#snap");
+            const slides = [...root.querySelectorAll(":scope > section")];
+            const tops = [1000, 1300, 1600];
+
+            Object.defineProperty(window, "scrollY", { get: () => position });
+            Object.defineProperty(document.documentElement, "scrollHeight", { get: () => 2500 });
+            root.getBoundingClientRect = () => ({
+                top: 1000 - position,
+                bottom: 2100 - position,
+                left: 0,
+                right: 1200,
+                width: 1200,
+                height: 1100,
+            });
+            slides.forEach((slide, index) => {
+                slide.getBoundingClientRect = () => ({
+                    top: tops[index] - position,
+                    bottom: tops[index] - position + 300,
+                    left: 0,
+                    right: 1200,
+                    width: 1200,
+                    height: 300,
+                });
+            });
+
+            window.matchMedia = query => ({
+                matches: query.startsWith("(min-width:") || false,
+                addEventListener() {},
+                removeEventListener() {},
+            });
+            window.ResizeObserver = class {
+                observe() {}
+                disconnect() {}
+            };
+            window.lenis = {
+                animatedScroll: position,
+                userData: {},
+                scrollTo(target, options = {}) {
+                    const index = slides.indexOf(target);
+                    if (index < 0) return;
+                    scrollCalls++;
+                    position = tops[index];
+                    this.animatedScroll = position;
+                    this.userData = options.userData || {};
+                    options.onComplete?.();
+                    this.userData = {};
+                },
+                reset() {},
+            };
+
+            const { default: initSectionSnap } = await import(
+                "/assets/components/section-snap/section-snap.js"
+            );
+            const lifecycle = initSectionSnap(root.querySelector(".snap-nav"));
+
+            assert(typeof lifecycle?.pause === "function", "le lifecycle suspendable est créé");
+            assert(slides.every(slide => slide.style.getPropertyValue("--i") !== ""), "la progression est publiée");
+            assert(root.querySelector("a").getAttribute("aria-current") === "location", "la première ancre est active");
+
+            let changedIndex = -1;
+            root.addEventListener("snap:change", event => { changedIndex = event.detail.index; });
+            root.querySelector('a[href="#slide-2"]').click();
+            assert(position === tops[1] && changedIndex === 1, "un clic d’ancre utilise Lenis et émet snap:change");
+            assert(root.querySelector('a[href="#slide-2"]').getAttribute("aria-current") === "location", "la navigation suit la cible");
+
+            const wheel = new WheelEvent("wheel", { deltaY: 50, cancelable: true, bubbles: true });
+            slides[1].dispatchEvent(wheel);
+            assert(wheel.defaultPrevented && position === tops[2], "la molette atteint la slide suivante");
+
+            lifecycle.pause();
+            const callsBeforePause = scrollCalls;
+            slides[2].dispatchEvent(new WheelEvent("wheel", { deltaY: -50, cancelable: true, bubbles: true }));
+            assert(scrollCalls === callsBeforePause, "pause retire la capture de la molette");
+
+            lifecycle.destroy();
+            assert(slides.every(slide => !slide.style.getPropertyValue("--i") && !slide.style.getPropertyValue("--p")), "destroy nettoie les variables inline");
+            assert(!root.querySelector('[aria-current="location"]'), "destroy nettoie la navigation");
+
+            result.textContent = `PASS\n${assertions.join("\n")}`;
+        } catch (error) {
+            result.textContent = `FAIL\n${assertions.join("\n")}\n${error.stack}`;
+        }
+    </script>
+</body>
+</html>

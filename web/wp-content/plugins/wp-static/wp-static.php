@@ -3,7 +3,7 @@
 /**
  * Plugin Name: WP Static
  * Description: Génère des pages statiques de votre site WordPress et les sert pour améliorer les performances.
- * Version: 1.2.4
+ * Version: 1.2.5
  * Author: Lonsdale studio
  */
 
@@ -33,8 +33,10 @@ define('WP_STATIC_REGEN_CLASSES_OPTION', 'wp_static_regen_classes');
 define('WP_STATIC_DYNAMIC_URLS_OPTION', 'wp_static_dynamic_urls');
 define('WP_STATIC_INDEX_MARKER_START', '/* wp-static-cache:start */');
 define('WP_STATIC_INDEX_MARKER_END', '/* wp-static-cache:end */');
-define('WP_STATIC_GEN_LOCK_FILE', WP_CONTENT_DIR . '/wp-static-generating.lock');
-define('WP_STATIC_PENDING_LOCK_FILE', WP_CONTENT_DIR . '/wp-static-pending.lock');
+define('WP_STATIC_GITIGNORE_MARKER_START', '# wp-static:start');
+define('WP_STATIC_GITIGNORE_MARKER_END', '# wp-static:end');
+define('WP_STATIC_GEN_LOCK_FILE', __DIR__ . '/wp-static-generating.lock');
+define('WP_STATIC_PENDING_LOCK_FILE', __DIR__ . '/wp-static-pending.lock');
 define('WP_STATIC_GEN_PENDING_OPTION', 'wp_static_gen_pending');
 define('WP_STATIC_PENDING_CRON_HOOK', 'wp_static_process_pending_regeneration');
 define('WP_STATIC_BATCH_JOB_OPTION', 'wp_static_batch_job');
@@ -671,6 +673,10 @@ add_action(WP_STATIC_PENDING_CRON_HOOK, 'wp_static_maybe_process_pending_regen')
 
 // Convertit l'option volumineuse des dépendances en autoload='no' (une fois).
 add_action('admin_init', 'wp_static_maybe_migrate_deps_autoload');
+
+// Un déploiement peut réécrire index.php et emporter le bloc de service : on
+// le réinjecte dès qu'une page d'administration est chargée.
+add_action('admin_init', 'wp_static_maybe_reinject_index');
 
 // Détection des changements structurels : on ne peut pas deviner l'impact,
 // on signale simplement qu'il faut régénérer le site.
@@ -2375,7 +2381,7 @@ function wp_static_batch_create_job(array $urls, $full = false)
         return false;
     }
 
-    if (!file_exists(WP_STATIC_DIR) && !wp_mkdir_p(WP_STATIC_DIR)) {
+    if (!wp_static_ensure_static_dir()) {
         return false;
     }
 
@@ -2832,7 +2838,7 @@ function wp_static_export_manifest($sources, $rewrite_prefix)
         foreach ($iterator as $file) {
             if (
                 !$file->isFile()
-                || in_array($file->getFilename(), ['.DS_Store', 'Thumbs.db'], true)
+                || in_array($file->getFilename(), ['.DS_Store', 'Thumbs.db', '.gitignore'], true)
             ) {
                 continue;
             }
@@ -5383,7 +5389,7 @@ function wp_static_run_generation()
         ], $started_at);
     }
 
-    if (!file_exists(WP_STATIC_DIR) && !wp_mkdir_p(WP_STATIC_DIR)) {
+    if (!wp_static_ensure_static_dir()) {
         return wp_static_store_last_generation_result([
             'generated' => 0,
             'skipped' => 0,
@@ -6586,6 +6592,40 @@ function wp_static_inject_index()
 }
 
 /**
+ * Vrai si index.php contient déjà le bloc attendu, à jour. Un bloc présent
+ * mais obsolète (réglage « servir aux utilisateurs connectés » modifié,
+ * chemins différents) doit être réécrit.
+ */
+function wp_static_index_snippet_is_current()
+{
+    $file = wp_static_front_controller_path();
+    if (!is_file($file)) {
+        return false;
+    }
+
+    $content = file_get_contents($file);
+    if ($content === false) {
+        return false;
+    }
+
+    return strpos($content, wp_static_index_snippet()) !== false;
+}
+
+/**
+ * Réinjecte le bloc lorsqu'un déploiement ou une réinstallation du cœur a
+ * réécrit index.php. Sans cela, le site retomberait silencieusement sur le
+ * filet de secours WordPress (plus lent) jusqu'à une réactivation manuelle.
+ */
+function wp_static_maybe_reinject_index()
+{
+    if (!wp_static_is_enabled() || wp_static_index_snippet_is_current()) {
+        return;
+    }
+
+    wp_static_inject_index();
+}
+
+/**
  * Retire le bloc de service « pré-WordPress » d'index.php.
  */
 function wp_static_remove_index_injection()
@@ -6607,6 +6647,158 @@ function wp_static_remove_index_injection()
     $new_content = wp_static_strip_index_snippet($content);
 
     return wp_static_atomic_write($file, $new_content);
+}
+
+/**
+ * Le dossier statique est un cache propre à chaque environnement : ses URLs
+ * absolues n'ont aucun sens ailleurs. Il porte donc son propre .gitignore, qui
+ * l'exclut entièrement — y compris lui-même — sans rien demander au projet.
+ */
+function wp_static_write_static_dir_gitignore()
+{
+    if (!is_dir(WP_STATIC_DIR)) {
+        return false;
+    }
+
+    $file = WP_STATIC_DIR . '/.gitignore';
+    if (is_file($file)) {
+        return true;
+    }
+
+    return wp_static_atomic_write(
+        $file,
+        "# Cache local généré par WP Static : jamais versionné.\n*\n"
+    );
+}
+
+/**
+ * Chemin relatif à wp-content, ou chaîne vide si le fichier est ailleurs.
+ */
+function wp_static_wp_content_relative($path)
+{
+    $root = untrailingslashit(wp_normalize_path(WP_CONTENT_DIR));
+    $path = wp_normalize_path((string) $path);
+
+    if ($root === '' || strpos($path, $root . '/') !== 0) {
+        return '';
+    }
+
+    return substr($path, strlen($root) + 1);
+}
+
+/**
+ * Artefacts sous wp-content à exclure du dépôt. Les verrous vivent dans le
+ * plugin ; leurs anciens chemins à la racine de wp-content restent listés
+ * pour ignorer d'éventuels fichiers hérités.
+ */
+function wp_static_runtime_ignore_rules()
+{
+    $rules = [];
+    $relative = wp_static_wp_content_relative(WP_STATIC_DIR);
+    if ($relative !== '') {
+        $rules[] = '/' . $relative;
+    }
+
+    $rules[] = '/wp-static-generating.lock';
+    $rules[] = '/wp-static-pending.lock';
+
+    return $rules;
+}
+
+function wp_static_gitignore_block()
+{
+    $lines = array_merge(
+        [
+            WP_STATIC_GITIGNORE_MARKER_START,
+            '# Artefacts générés par WP Static — bloc maintenu par l’extension.',
+        ],
+        wp_static_runtime_ignore_rules(),
+        [WP_STATIC_GITIGNORE_MARKER_END]
+    );
+
+    return implode("\n", $lines);
+}
+
+function wp_static_strip_gitignore_block($content)
+{
+    $start = preg_quote(WP_STATIC_GITIGNORE_MARKER_START, '#');
+    $end   = preg_quote(WP_STATIC_GITIGNORE_MARKER_END, '#');
+
+    return preg_replace('#\R?' . $start . '.*?' . $end . '\R?#s', '', (string) $content);
+}
+
+/**
+ * Maintient le bloc d'exclusions dans wp-content/.gitignore. Le bloc est
+ * délimité par des marqueurs : les règles déjà présentes dans le fichier
+ * sont conservées.
+ */
+function wp_static_ensure_runtime_gitignore()
+{
+    $file = WP_CONTENT_DIR . '/.gitignore';
+    $exists = is_file($file);
+
+    if ($exists ? !is_writable($file) : !is_writable(WP_CONTENT_DIR)) {
+        return false;
+    }
+
+    $content = $exists ? file_get_contents($file) : '';
+    if ($content === false) {
+        return false;
+    }
+
+    $block = wp_static_gitignore_block();
+    if (strpos($content, $block) !== false) {
+        return true;
+    }
+
+    $content = rtrim(wp_static_strip_gitignore_block($content), "\n");
+    $content = $content === '' ? $block . "\n" : $content . "\n\n" . $block . "\n";
+
+    return wp_static_atomic_write($file, $content);
+}
+
+/**
+ * Les verrous vivaient à la racine de wp-content. Ils sont désormais dans le
+ * plugin, ignorés par son .gitignore versionné.
+ */
+function wp_static_remove_legacy_wp_content_locks()
+{
+    foreach (['wp-static-generating.lock', 'wp-static-pending.lock'] as $name) {
+        $legacy = WP_CONTENT_DIR . '/' . $name;
+        if (is_file($legacy)) {
+            @unlink($legacy);
+        }
+    }
+}
+
+/**
+ * Prépare le dossier statique et les exclusions Git associées. Appelé avant
+ * chaque génération : une installation déjà active en bénéficie sans
+ * réactivation.
+ */
+function wp_static_ensure_static_dir()
+{
+    wp_static_remove_legacy_wp_content_locks();
+
+    if (!file_exists(WP_STATIC_DIR) && !wp_mkdir_p(WP_STATIC_DIR)) {
+        return false;
+    }
+
+    wp_static_write_static_dir_gitignore();
+    wp_static_ensure_runtime_gitignore();
+
+    // Couvre les régénérations déclenchées hors administration (cron, WP-CLI) :
+    // un index.php réécrit entre-temps retrouve son bloc de service.
+    wp_static_maybe_reinject_index();
+
+    return true;
+}
+
+register_activation_hook(__FILE__, 'wp_static_setup_on_activation');
+
+function wp_static_setup_on_activation()
+{
+    wp_static_ensure_static_dir();
 }
 
 /**

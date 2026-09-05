@@ -56,8 +56,9 @@ export default root => {
 
     poster?.addEventListener("click", activate, { signal: controller.signal });
 
-    if (!poster && !isVideo && root.dataset.autoplay === "true") {
-        loadIframe(motion?.matches !== true);
+    if (!poster && !isVideo) {
+        const autoplay = root.dataset.autoplay === "true" && motion?.matches !== true;
+        loadIframe(autoplay);
     }
 
     if (lazyAutoplay) {
@@ -84,5 +85,6 @@ export default root => {
         controller.abort();
         observer?.disconnect();
         pause();
+        if (!isVideo) media.removeAttribute("src");
     };
 };

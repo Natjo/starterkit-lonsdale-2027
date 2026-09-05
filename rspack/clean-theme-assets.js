@@ -17,7 +17,7 @@ const assetsDir = path.join(
     "assets",
 );
 
-for (const dir of ["css", "js", "fonts", "video", "favicon", "img"]) {
+for (const dir of ["css", "js", "fonts", "video", "favicon", "img", "lottie"]) {
     fs.rmSync(path.join(assetsDir, dir), { recursive: true, force: true });
     fs.mkdirSync(path.join(assetsDir, dir), { recursive: true });
 }

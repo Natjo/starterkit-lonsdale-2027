@@ -97,7 +97,7 @@ définit `aspect-ratio` selon son design :
 | défaut | `lazy` | absent | non |
 | `lazy => false` | absent | absent | non |
 | `critical => true` | absent | `high` | non |
-| `preload => true` | absent | `high` | oui |
+| `preload => true` | absent | `high` | oui, avec `fetchpriority="high"` |
 
 Avec deux variantes, le preload utilise les mêmes media queries que les
 sources : mobile sous le breakpoint et desktop à partir du breakpoint.

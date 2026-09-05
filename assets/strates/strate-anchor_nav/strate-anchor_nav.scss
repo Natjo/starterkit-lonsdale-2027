@@ -1,0 +1,17 @@
+.strate-anchor_nav {
+    margin: 0;
+    padding-block: 1.2rem;
+    border-bottom: 1px solid var(--color-border);
+    --offset-top: calc(var(--header-height) + 2rem);
+
+    .anchor-nav {
+        grid-column: ctr;
+        position: sticky;
+        top: var(--offset-top)
+    }
+
+    section {
+        padding-bottom: 10rem;
+        scroll-margin-top: var(--offset-top)
+    }
+}

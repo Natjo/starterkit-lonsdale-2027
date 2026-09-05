@@ -67,13 +67,21 @@ component('video', [
 ```
 
 YouTube utilise le domaine `youtube-nocookie.com`. Les identifiants Vimeo et
-YouTube sont extraits uniquement depuis des URL reconnues.
+YouTube sont extraits uniquement depuis des URL reconnues. Un lecteur externe
+n'est jamais chargé au rendu PHP : son URL reste dans `data-src` jusqu'à son
+entrée dans le viewport ou, lorsqu'un poster existe, jusqu'à l'action de
+l'utilisateur.
 
 ## Façade et autoplay
 
-Avec un `poster`, le lecteur tiers ou la vidéo ne démarre pas avant l’action de
-l’utilisateur. Le bouton possède un nom accessible composé de `play_label` et
-de `title`, puis transfère le focus au lecteur.
+Un `poster` active une façade locale pour les lecteurs externes comme pour les
+vidéos HTML5. Le média n'est alors chargé ou démarré qu'après un clic. Le bouton
+possède un nom accessible composé de `play_label` et de `title`, puis transfère
+le focus au lecteur.
+
+Sans `poster`, aucune façade ni bouton n'est rendu. Une iframe YouTube ou Vimeo
+reste néanmoins différée par `data-context="@visible true"` et n'est chargée
+que lorsque le composant arrive dans le viewport.
 
 Sans façade, l’autoplay HTML5 est muet, utilise `playsinline`, démarre à
 l’approche de la zone visible et s’arrête hors écran. Avec
@@ -81,7 +89,8 @@ l’approche de la zone visible et s’arrête hors écran. Avec
 disponibles.
 
 Une façade force `preload="none"`. L’autoplay différé fait de même afin d’éviter
-un téléchargement prématuré.
+un téléchargement prématuré. Pour un lecteur externe avec façade, `autoplay`
+ne contourne jamais le clic obligatoire.
 
 ## Sous-titres
 

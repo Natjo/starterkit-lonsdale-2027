@@ -14,6 +14,10 @@
         <video data-lazy-autoplay></video>
     </div>
 
+    <div class="video" id="external" data-autoplay="false">
+        <iframe data-src="https://example.test/visible" title="Vidéo externe"></iframe>
+    </div>
+
     <script type="module">
         const failures = [];
         const assert = (condition, message) => {
@@ -44,6 +48,7 @@
         const poster = facade.querySelector('.poster');
         const destroyFacade = initVideo(facade);
 
+        assert(!iframe.hasAttribute('src'), 'La source externe est chargée avant le clic');
         poster.click();
         await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 
@@ -57,8 +62,17 @@
         const destroyLazy = initVideo(lazy);
         assert(video.controls, 'Reduced motion ne rétablit pas les contrôles');
 
+        const external = document.querySelector('#external');
+        const externalIframe = external.querySelector('iframe');
+        assert(!externalIframe.hasAttribute('src'), 'Le lecteur externe est chargé avant son initialisation visible');
+        const destroyExternal = initVideo(external);
+        assert(externalIframe.src === 'https://example.test/visible', 'Le lecteur externe visible sans poster n’est pas chargé');
+
         destroyFacade?.();
         destroyLazy?.();
+        destroyExternal?.();
+        assert(!iframe.hasAttribute('src'), 'La destruction ne décharge pas le lecteur externe');
+        assert(!externalIframe.hasAttribute('src'), 'La destruction ne décharge pas le lecteur externe sans poster');
         assert(disconnected, 'L’IntersectionObserver n’est pas nettoyé');
 
         document.body.dataset.result = failures.length === 0 ? 'pass' : 'fail';

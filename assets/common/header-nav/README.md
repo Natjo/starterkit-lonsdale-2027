@@ -144,22 +144,27 @@ Un header masqué redevient visible dès que le focus entre dans l’un de ses
 | --- | --- |
 | `is-open` | Menu mobile ouvert. |
 | `is-nav-animating` | Transition temporaire du panneau mobile. |
-| `is-compact` | Hauteur compacte après le seuil. |
+| `is-compact` | État compact du header après le seuil. |
 | `is-hidden` | Header déplacé hors écran pendant un scroll descendant. |
 | `is-scroll-ready` | Transitions de hauteur autorisées après le rendu initial. |
+| `has-compact-header` | État miroir sur `<html>` qui synchronise la hauteur globale. |
 
 ## CSS
 
 Le SCSS utilise `#header-nav` comme racine. La hauteur normale vient de
-`--header-height`. La règle actuelle du mode compact la remplace par `7rem` :
+`--header-height-expanded` et la hauteur compacte de
+`--header-height-compact`. `HeaderScroll()` publie l’état compact sur `<html>`
+afin que `--header-height` reflète la hauteur réelle dans tout le document :
 
 ```scss
-#header-nav {
-    height: var(--header-height);
+:root {
+    --header-height-expanded: 9rem;
+    --header-height-compact: 7rem;
+    --header-height: var(--header-height-expanded);
+}
 
-    &.is-compact {
-        --header-height: 7rem;
-    }
+:root.has-compact-header {
+    --header-height: var(--header-height-compact);
 }
 ```
 

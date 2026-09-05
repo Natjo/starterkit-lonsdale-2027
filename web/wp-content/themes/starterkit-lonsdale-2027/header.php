@@ -13,9 +13,7 @@
     <link rel="shortcut icon" href="<?= THEME_ASSETS ?>favicon/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="<?= THEME_ASSETS ?>favicon/apple-touch-icon.png">
 
-    <link rel="preload" href="<?= THEME_ASSETS ?>fonts/SequelSansLight.woff2" as="font" type="font/woff2" crossorigin="">
-    <link rel="preload" href="<?= THEME_ASSETS ?>fonts/SequelSansBook.woff2" as="font" type="font/woff2" crossorigin="">
-    <link rel="preload" href="<?= THEME_ASSETS ?>fonts/SequelSansHeavy.woff2" as="font" type="font/woff2" crossorigin="">
+    <?php fontPreload(['SequelSansLight', 'SequelSansBook', 'SequelSansHeavy']); ?>
 
     <?php wp_head(); ?>
 
@@ -26,7 +24,5 @@
     <?php endif ?>
 </head>
 
-<?php $isInternal = isInternalIp(); ?>
-
-<body <?php body_class(); ?> <?= !empty($isInternal) ? 'data-theme="private"' : "" ?>>
+<body <?php body_class(); ?>>
     <?php wp_body_open(); ?>

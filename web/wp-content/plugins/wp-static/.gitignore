@@ -1,0 +1,3 @@
+# Verrous d'exécution, locaux à l'environnement.
+/wp-static-generating.lock
+/wp-static-pending.lock

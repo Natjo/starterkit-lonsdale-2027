@@ -43,6 +43,19 @@ considéré comme un socle technique, pas comme un site éditorial finalisé.
 `SITE-sample.md` reste le modèle vierge à copier et remplir pour un futur site
 client. Le présent `SITE.md` est uniquement la photographie du starter actuel.
 
+### Bibliothèques et plugins front tiers
+
+Les bibliothèques ou plugins exécutés dans le navigateur doivent être intégrés
+localement dans `assets/vendors/`, avec leur licence et, lorsque l'information
+est disponible, leur version et leur source. Un fichier d'entrée
+`assets/vendors/<nom>.js` peut servir d'adaptateur pour fournir une API stable
+aux composants et modules du starter.
+
+Ne pas ajouter ces dépendances front à `package.json` pour les charger dans le
+site. `package.json` est réservé aux outils nécessaires au développement et à
+la chaîne de compilation, comme Rspack, Sass, les loaders et les outils de
+validation.
+
 ## 3. Périmètre réellement en place
 
 Le starter contient actuellement :
@@ -88,7 +101,7 @@ La lecture statique est configurée dans WordPress : `show_on_front = page` et
 
 | Template | État actuel |
 | --- | --- |
-| `front-page.php` | Fonctionnel : common `header-nav`, hero ACF `homepage`, dispatch des strates, footer |
+| `front-page.php` | Fonctionnel : common `header-nav`, hero ACF `homepage`, strates ACF, puis démonstration statique de la strate `snap`, footer |
 | `template-styleguide.php` | Fonctionnel pour la démonstration des composants |
 | `page.php` | Générique : hero ACF avec titre WordPress en fallback, contenu natif éventuel et dispatch des strates |
 | `index.php` | Liste générique avec extraits et pagination |
@@ -239,7 +252,11 @@ d'accueil locale :
 2. `text` ;
 3. `accordion`.
 
-La correspondance technique est :
+La homepage conserve ce dispatch ACF puis appelle en dur `strate('snap')`. Cette
+dernière est une démonstration indépendante composée de quatre panneaux colorés
+et conserve un défilement natif sous `1025px`.
+
+La correspondance technique d’une entrée reste :
 
 ```text
 acf_fc_layout = text_image

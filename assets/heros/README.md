@@ -125,7 +125,8 @@ component('picture', [
 
 Cette option :
 
-- injecte un `<link rel="preload" as="image">` dans le `<head>` ;
+- injecte un `<link rel="preload" as="image" fetchpriority="high">` dans le
+  `<head>` ;
 - retire `loading="lazy"` ;
 - ajoute `fetchpriority="high"` ;
 - précharge le WebP lorsqu’il est réellement utilisé ;

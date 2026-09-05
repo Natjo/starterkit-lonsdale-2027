@@ -1,0 +1,37 @@
+.strate-snap {
+    display: block;
+    position: relative;
+    margin: 0;
+
+    > .strate {
+        z-index: 1;
+        height: calc(100vh - var(--header-height));
+        min-height: calc(100vh - var(--header-height));
+        margin: 0 !important;
+        scroll-margin-top: var(--header-height);
+        align-content: center;
+        align-items: center;
+    }
+
+    @media #{$breakpoint-lg-up} {
+        > .strate {
+            align-items: center;
+            align-content: center;
+            opacity: var(--i, 1);
+
+            .paralax {
+                translate: 0 calc(var(--p, 0) * 8rem);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            > .strate {
+                opacity: 1;
+
+                .paralax {
+                    translate: none;
+                }
+            }
+        }
+    }
+}

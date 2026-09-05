@@ -41,6 +41,9 @@
 @import "components/newsletter/newsletter";
 @import "components/pagination/pagination";
 @import "components/breadcrumb/breadcrumb";
+@import "components/anchor-nav/anchor-nav" split;
+@import "components/section-snap/section-snap" split;
+@import "components/lottie/lottie" split;
 @import "components/intro/intro";
 @import "components/search/search" critical;
 @import "components/select-custom/select-custom";
@@ -59,12 +62,13 @@
 @import "cards/card-page/card-page";
 @import "cards/card-keynumber/card-keynumber";
 
-// pages
-@import "pages/404" split;
-@import "pages/archive-news" split;
-@import "pages/search" split;
+// pages — once : bundle dédié, contenu inline uniquement sur le template correspondant
+@import "pages/404" once;
+@import "pages/archive-news" once;
+@import "pages/search" once;
 
-// strates — split : bundle dédié, <link> injecté par strate() / component() / card()
+// strates — split : bundle dédié, <link> injecté au premier rendu
+// Pour un petit module rarement utilisé, `once` injecte son contenu dans <style> au premier rendu.
 // @import "strates/strate-quizz/strate-quizz" split;
 @import "strates/strate-text_image/strate-text_image";
 @import "strates/strate-text/strate-text";
@@ -76,3 +80,6 @@
 @import "strates/strate-formulaire/strate-formulaire" split;
 @import "strates/strate-textAnimated/strate-textAnimated" split;
 @import "strates/strate-paralax/strate-paralax" split;
+@import "strates/strate-snap/strate-snap" split;
+@import "strates/strate-anchor_nav/strate-anchor_nav" split;
+@import "strates/strate-lottie/strate-lottie" split;

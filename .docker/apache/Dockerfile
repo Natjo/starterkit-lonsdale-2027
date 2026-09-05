@@ -10,6 +10,7 @@ RUN sed -i \
     -e 's/^#LoadModule proxy_fcgi_module/LoadModule proxy_fcgi_module/' \
     -e 's/^#LoadModule headers_module/LoadModule headers_module/' \
     -e 's/^#LoadModule deflate_module/LoadModule deflate_module/' \
+    -e 's/^#LoadModule http2_module/LoadModule http2_module/' \
     -e 's/^#LoadModule filter_module/LoadModule filter_module/' \
     -e 's/^#LoadModule setenvif_module/LoadModule setenvif_module/' \
     -e '/^Include conf\/extra\/httpd-ssl.conf/d' \

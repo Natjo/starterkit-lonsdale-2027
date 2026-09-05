@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lottie browser contract</title>
+</head>
+<body data-result="pending">
+    <div
+        id="lottie"
+        data-lottie-src="/wp-content/themes/starterkit-lonsdale-2027/assets/lottie/animation.json"
+        data-lottie-autoplay="false"
+        data-lottie-loop="true"
+        data-lottie-progressive-load="true"
+        data-lottie-reduced-motion="true"
+        data-module="components/lottie">
+    </div>
+
+    <script type="module">
+        const assert = (condition, message) => {
+            if (!condition) throw new Error(message);
+        };
+        const waitFor = (condition, timeout = 15000) => new Promise((resolve, reject) => {
+            const started = performance.now();
+            const check = () => {
+                if (condition()) {
+                    resolve();
+                    return;
+                }
+                if (performance.now() - started >= timeout) {
+                    reject(new Error('Lottie SVG timeout'));
+                    return;
+                }
+                setTimeout(check, 25);
+            };
+            check();
+        });
+
+        try {
+            const root = document.querySelector('#lottie');
+            const app = document.createElement('script');
+            app.src = '/wp-content/themes/starterkit-lonsdale-2027/assets/js/app.js';
+            const appLoaded = new Promise((resolve, reject) => {
+                app.addEventListener('load', resolve, { once: true });
+                app.addEventListener('error', reject, { once: true });
+            });
+            document.head.append(app);
+            await appLoaded;
+
+            await waitFor(() => root.querySelector('svg') || root.dataset.lottieError);
+            if (root.dataset.lottieError) throw new Error(root.dataset.lottieError);
+            assert(root.dataset.hydrated === 'true', 'component hydrated');
+            assert(root.querySelector('svg').getAttribute('viewBox') === '0 0 1920 1080', 'animation SVG created');
+
+            root.remove();
+            await new Promise(resolve => setTimeout(resolve, 50));
+            assert(!root.querySelector('svg'), 'destroy removes SVG');
+
+            document.body.dataset.result = 'ok';
+        } catch (error) {
+            document.body.dataset.result = error.message;
+        }
+    </script>
+</body>
+</html>

@@ -93,6 +93,7 @@ $play_label .= ' : ' . $title;
 $autoplay = $to_bool($params['autoplay'] ?? false);
 $loop = $to_bool($params['loop'] ?? false);
 $poster = $resolve_url($params['poster'] ?? '');
+$is_external_player = $type !== 'video';
 $has_facade = $poster !== '';
 
 $idle_src = '';
@@ -137,7 +138,7 @@ if ($has_facade || $lazy_autoplay) {
     $preload = 'none';
 }
 
-$needs_module = $has_facade || $lazy_autoplay || ($autoplay && $type !== 'video');
+$needs_module = $has_facade || $lazy_autoplay || $is_external_player;
 $wrapper_attributes = html_attributes([
     'class' => component_classes('video', $params['classes'] ?? ''),
     'data-type' => $type,
@@ -181,9 +182,8 @@ foreach ($tracks_input as $track) {
 ?>
 <div <?= $wrapper_attributes ?><?= $attributes ?>>
     <?php if ($type !== 'video') : ?>
-        <?php $defer_iframe = $has_facade || $autoplay; ?>
         <iframe
-            <?= $defer_iframe ? 'data-src="' . esc_attr($idle_src) . '"' : 'src="' . esc_url($idle_src) . '"' ?>
+            data-src="<?= esc_attr($idle_src) ?>"
             title="<?= esc_attr($title) ?>"
             loading="lazy"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -209,12 +209,14 @@ foreach ($tracks_input as $track) {
 
     <?php if ($has_facade) : ?>
         <button type="button" class="poster" aria-label="<?= esc_attr($play_label) ?>">
-            <?php component('image', [
-                'image' => $poster,
-                'alt' => '',
-                'lazy' => true,
-                'decoding' => 'async',
-            ]); ?>
+            <?php if ($poster !== '') : ?>
+                <?php component('image', [
+                    'image' => $poster,
+                    'alt' => '',
+                    'lazy' => true,
+                    'decoding' => 'async',
+                ]); ?>
+            <?php endif ?>
             <span class="play" aria-hidden="true"><?php component('icon', ['name' => 'play', 'width' => 60, 'height' => 60]); ?></span>
         </button>
     <?php endif ?>

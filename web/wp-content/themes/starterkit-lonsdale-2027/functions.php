@@ -146,16 +146,9 @@ add_action('wp_head', function () {
         return;
     }
 
+    ThemeAssets::renderOnceStyles();
     ThemeAssets::renderSplitLinks();
 }, 5);
-
-add_action('wp_footer', function () {
-    if (is_admin()) {
-        return;
-    }
-
-    ThemeAssets::renderSplitLinks();
-}, 1);
 
 add_action('admin_print_styles', function () {
     $admin_path = THEME_DIR . 'assets/css/admin.css';

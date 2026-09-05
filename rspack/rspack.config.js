@@ -1,10 +1,13 @@
-const { getSplitEntries } = require("./parse-split-imports");
+const { getOnceEntries, getSplitEntries } = require("./parse-split-imports");
 
 if (!process.env.WP_THEME_NAME) {
     throw new Error("WP_THEME_NAME is required (e.g. WP_THEME_NAME=lonsdale-richard npm run prod)");
 }
 
-const splitEntries = getSplitEntries();
+const splitEntries = {
+    ...getSplitEntries(),
+    ...getOnceEntries(),
+};
 
 const config = {
     entries: {

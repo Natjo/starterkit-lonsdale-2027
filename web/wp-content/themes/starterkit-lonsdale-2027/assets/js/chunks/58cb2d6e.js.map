@@ -1,0 +1,1 @@
+{"version":3,"file":"./js/chunks/58cb2d6e.js","sources":["webpack://wordpress_starter_kit/./assets/strates/strate-anchor_nav/strate-anchor_nav.js"],"sourcesContent":["\nexport default function initStrateAnchorNav(root) {\n  \n}\n"],"names":["initStrateAnchorNav","root"],"mappings":"6IACe,SAASA,EAAoBC,CAAI,EAEhD,C"}

@@ -130,6 +130,39 @@ if (
 }
 @unlink($atomicFile);
 
+$pluginDir = wp_normalize_path(WP_PLUGIN_DIR . '/wp-static');
+$pluginGitignore = (string) @file_get_contents($pluginDir . '/.gitignore');
+if (
+    wp_normalize_path(dirname(WP_STATIC_GEN_LOCK_FILE)) !== $pluginDir
+    || wp_normalize_path(dirname(WP_STATIC_PENDING_LOCK_FILE)) !== $pluginDir
+    || strpos($pluginGitignore, 'wp-static-generating.lock') === false
+    || strpos($pluginGitignore, 'wp-static-pending.lock') === false
+) {
+    $failures[] = 'Les verrous ne sont pas confinés au plugin ni ignorés par son .gitignore.';
+}
+
+$gitignoreBlock = wp_static_gitignore_block();
+$gitignoreSample = "# Projet\n/uploads/\n";
+$gitignoreStripped = wp_static_strip_gitignore_block(
+    $gitignoreSample . $gitignoreBlock . "\n"
+);
+if (
+    strpos($gitignoreBlock, '/static-pages') === false
+    || strpos($gitignoreBlock, '/wp-static-generating.lock') === false
+    || strpos($gitignoreBlock, '/wp-static-pending.lock') === false
+    || rtrim($gitignoreStripped, "\n") !== rtrim($gitignoreSample, "\n")
+) {
+    $failures[] = 'Le bloc d’exclusions Git de wp-content ne couvre pas les artefacts ou n’est pas réversible.';
+}
+
+if (
+    !wp_static_ensure_static_dir()
+    || strpos((string) @file_get_contents(WP_STATIC_DIR . '/.gitignore'), '*') === false
+    || strpos((string) @file_get_contents(WP_CONTENT_DIR . '/.gitignore'), WP_STATIC_GITIGNORE_MARKER_START) === false
+) {
+    $failures[] = 'Les fichiers .gitignore du cache statique ne sont pas écrits.';
+}
+
 $emptyCacheDir = get_temp_dir() . 'wp-static-empty-cache-contract-' . getmypid();
 $generatedCacheDir = $emptyCacheDir . '/_hosts/example.test';
 wp_mkdir_p($generatedCacheDir);
