@@ -161,6 +161,46 @@ et les doublons, y compris entre plusieurs appels. Les fichiers doivent être
 présents dans `assets/fonts/`; les balises générées incluent automatiquement
 `as="font"`, `type="font/woff2"` et `crossorigin`.
 
+### Cache ACF et préchargement des contenus
+
+`theme_get_fields()` conserve les champs ACF formatés ou bruts d'une cible
+pendant toute la requête PHP. Il accepte un ID de post, une cible ACF comme
+`option`, ou utilise le contenu interrogé lorsque la cible est omise :
+
+```php
+$page_fields = theme_get_fields();
+$news_fields = theme_get_fields($news_id);
+$raw_options = theme_get_fields('option', false);
+```
+
+`theme_prime_posts()` extrait les IDs directs et les clés `post_id` d'une
+collection, puis charge en lots les objets WordPress et leurs métadonnées. Les
+IDs déjà traités pendant la requête sont ignorés :
+
+```php
+theme_prime_posts([123, ['post_id' => 456]]);
+```
+
+`theme_prime_attachments()` est réservé aux payloads explicitement dédiés aux
+images. Il reconnaît les IDs directs, les tableaux ACF avec `ID` ou `id`, ainsi
+que les clés `image`, `images`, `desktop` et `mobile`. Il ne parcourt pas les
+autres nombres d'un payload, afin de ne pas confondre une dimension ou une
+valeur éditoriale avec un média :
+
+```php
+theme_prime_attachments([
+    ['image' => 123],
+    ['images' => ['desktop' => 456, 'mobile' => 789]],
+]);
+```
+
+Les composants de collection `list`, `slider` et `marquee` utilisent ces
+helpers automatiquement dans leurs modes card ou picture. Les strates doivent
+les appeler avant toute validation individuelle avec `get_post_type()`.
+`theme_attachment_url_to_post_id()` déduplique aussi les résolutions d'une même
+URL de médiathèque pendant la requête. Ces caches sont locaux à la requête et
+ne nécessitent ni Redis ni cache de page.
+
 ### CSS propre aux templates WordPress
 
 Un import marqué `once` est compilé séparément puis injecté inline une seule

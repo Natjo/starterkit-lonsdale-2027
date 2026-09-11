@@ -47,6 +47,13 @@ if ($items === []) {
     return;
 }
 
+if ($item_component !== null) {
+    theme_prime_attachments($items);
+} elseif ($card !== null) {
+    theme_prime_posts($items);
+    theme_prime_attachments(array_values(array_filter($items, 'is_array')));
+}
+
 $to_bool = static fn (mixed $value, bool $default): bool => filter_var(
     $value,
     FILTER_VALIDATE_BOOL,

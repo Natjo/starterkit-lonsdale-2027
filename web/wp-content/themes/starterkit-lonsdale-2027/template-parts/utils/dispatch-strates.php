@@ -1,5 +1,5 @@
 <?php
-$fields = get_fields() ?: [];
+$fields = theme_get_fields();
 $strates = $fields['strates'] ?? [];
 
 if (!is_array($strates) || $strates === []) {

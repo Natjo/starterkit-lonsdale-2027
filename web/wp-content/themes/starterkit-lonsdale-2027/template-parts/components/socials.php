@@ -32,22 +32,6 @@ $catalog = [
     'pinterest' => 'Pinterest',
     'threads' => 'Threads',
 ];
-$available_icons = (static function (): array {
-    static $cache = null;
-    if (is_array($cache)) return $cache;
-
-    $cache = [];
-    $sprite_path = defined('THEME_DIR') ? THEME_DIR . 'assets/img/icons.svg' : '';
-    $sprite = $sprite_path !== '' && is_readable($sprite_path)
-        ? file_get_contents($sprite_path)
-        : false;
-
-    if (is_string($sprite) && preg_match_all('/<symbol\b[^>]*\bid=["\']([^"\']+)["\']/', $sprite, $matches)) {
-        $cache = array_fill_keys($matches[1], true);
-    }
-
-    return $cache;
-})();
 $normalized_items = [];
 $seen = [];
 
@@ -62,7 +46,6 @@ foreach ($items as $item) {
         'network' => $network,
         'label' => $catalog[$network],
         'url' => $url,
-        'has_icon' => isset($available_icons[$network]),
     ];
     $seen[$network] = true;
 }
@@ -77,7 +60,7 @@ $attributes = component_attributes($args['attributes'], ['class', 'aria-label'])
 <nav class="<?= $classes ?>" aria-label="<?= esc_attr($aria_label) ?>"<?= $attributes ?>>
     <ul class="socials-list">
         <?php foreach ($normalized_items as $item) : ?>
-            <li class="<?= component_classes('socials-item', 'socials-item-' . $item['network'], $item['has_icon'] ? 'has-icon' : '') ?>">
+            <li class="<?= component_classes('socials-item', 'socials-item-' . $item['network'], 'has-icon') ?>">
                 <a
                     class="socials-link"
                     href="<?= esc_url($item['url']) ?>"
@@ -85,7 +68,7 @@ $attributes = component_attributes($args['attributes'], ['class', 'aria-label'])
                     rel="noopener noreferrer"
                     aria-label="<?= esc_attr($item['label']) ?>"
                 >
-                    <?php if ($item['has_icon']) component('icon', [
+                    <?php component('icon', [
                         'name' => $item['network'],
                         'width' => 24,
                         'height' => 24,

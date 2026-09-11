@@ -34,6 +34,174 @@ function get_template_args(array $defaults = []): array
     return normalize_args(get_query_var('template_args') ?: [], $defaults);
 }
 
+/**
+ * Retourne les champs ACF d'une cible une seule fois par requête.
+ *
+ * @return array<string, mixed>
+ */
+function theme_get_fields(mixed $post_id = null, bool $format_value = true): array
+{
+    static $cache = [];
+
+    if (!function_exists('get_fields')) {
+        return [];
+    }
+
+    $target = $post_id;
+    if ($target === null) {
+        $queried_id = function_exists('get_queried_object_id') ? (int) get_queried_object_id() : 0;
+        $target = $queried_id > 0 ? $queried_id : false;
+    } elseif (is_string($target) && ctype_digit($target)) {
+        $target = (int) $target;
+    } elseif (is_object($target) && isset($target->ID)) {
+        $target = (int) $target->ID;
+    }
+
+    if (!is_int($target) && !is_string($target) && !is_bool($target)) {
+        return [];
+    }
+
+    $key = get_debug_type($target) . ':' . (string) $target . ':' . ($format_value ? 'formatted' : 'raw');
+    if (!array_key_exists($key, $cache)) {
+        $fields = get_fields($target, $format_value);
+        $cache[$key] = is_array($fields) && !array_is_list($fields) ? $fields : [];
+    }
+
+    return $cache[$key];
+}
+
+/**
+ * Extrait les IDs de posts d'une collection de cards.
+ *
+ * @param list<mixed> $items
+ * @return list<int>
+ */
+function theme_collect_post_ids(array $items): array
+{
+    $ids = [];
+
+    foreach ($items as $item) {
+        $candidate = is_array($item) && !array_is_list($item)
+            ? ($item['post_id'] ?? null)
+            : $item;
+        $id = filter_var($candidate, FILTER_VALIDATE_INT);
+
+        if ($id !== false && $id > 0) {
+            $ids[$id] = $id;
+        }
+    }
+
+    return array_values($ids);
+}
+
+/**
+ * Précharge les posts et leurs métadonnées en lots pour la requête courante.
+ *
+ * @param list<mixed> $items
+ * @return list<int>
+ */
+function theme_prime_posts(array $items): array
+{
+    static $primed = [];
+
+    $ids = theme_collect_post_ids($items);
+    $pending = array_values(array_filter(
+        $ids,
+        static fn(int $id): bool => !isset($primed[$id])
+    ));
+
+    if ($pending === []) {
+        return $ids;
+    }
+
+    if (function_exists('_prime_post_caches')) {
+        _prime_post_caches($pending, false, false);
+    }
+
+    if (function_exists('update_meta_cache')) {
+        update_meta_cache('post', $pending);
+    }
+
+    foreach ($pending as $id) {
+        $primed[$id] = true;
+    }
+
+    return $ids;
+}
+
+/**
+ * Extrait uniquement les IDs placés dans un payload explicitement dédié aux images.
+ *
+ * @return list<int>
+ */
+function theme_collect_attachment_ids(mixed $images): array
+{
+    $ids = [];
+    $collect = static function (mixed $value) use (&$ids, &$collect): void {
+        $id = filter_var($value, FILTER_VALIDATE_INT);
+        if ($id !== false && $id > 0) {
+            $ids[$id] = $id;
+            return;
+        }
+
+        if (!is_array($value) || $value === []) {
+            return;
+        }
+
+        if (array_is_list($value)) {
+            foreach ($value as $item) {
+                $collect($item);
+            }
+            return;
+        }
+
+        foreach (['ID', 'id', 'image', 'images', 'desktop', 'mobile'] as $key) {
+            if (array_key_exists($key, $value)) {
+                $collect($value[$key]);
+            }
+        }
+    };
+
+    $collect($images);
+
+    return array_values($ids);
+}
+
+/**
+ * Précharge les pièces jointes connues et leurs métadonnées en lots.
+ *
+ * @return list<int>
+ */
+function theme_prime_attachments(mixed $images): array
+{
+    $ids = theme_collect_attachment_ids($images);
+
+    if ($ids !== []) {
+        theme_prime_posts($ids);
+    }
+
+    return $ids;
+}
+
+/**
+ * Résout une URL de médiathèque une seule fois par requête.
+ */
+function theme_attachment_url_to_post_id(string $url): int
+{
+    static $cache = [];
+
+    $url = trim($url);
+    if ($url === '' || !function_exists('attachment_url_to_postid')) {
+        return 0;
+    }
+
+    if (!array_key_exists($url, $cache)) {
+        $cache[$url] = max(0, (int) attachment_url_to_postid($url));
+    }
+
+    return $cache[$url];
+}
+
 function normalize_template_slug(mixed $slug): string
 {
     $slug = trim(str_replace('\\', '/', (string) $slug), '/');
@@ -208,7 +376,8 @@ function hero(string $name, ?array $args = null): void
     }
 
     if ($args === null) {
-        $hero = get_field("hero-{$name}");
+        $fields = theme_get_fields();
+        $hero = $fields["hero-{$name}"] ?? null;
         $args = is_array($hero) ? $hero : [];
     }
 
@@ -362,8 +531,7 @@ function resolve_card_data(mixed $data): ?array
         return $args;
     }
 
-    $fields = function_exists('get_fields') ? get_fields($post_id) : [];
-    $fields = is_array($fields) ? $fields : [];
+    $fields = theme_get_fields($post_id);
     $args = array_replace($fields, $args);
     $args['post_id'] = $post_id;
 

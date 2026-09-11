@@ -74,6 +74,10 @@ même nom. Dans le starter, cela sélectionne `news` et rend `card-news`.
 Un appel PHP peut aussi fournir explicitement `card` et des payloads
 associatifs sans dépendre d’un CPT.
 
+Les posts sélectionnés sont préchargés en lots avant leur validation par CPT.
+Les images sont ensuite préchargées par le composant `slider`. Ce comportement
+s'applique quel que soit le template WordPress qui rend la strate.
+
 La taille WordPress des images est définie directement au début du template :
 
 ```php

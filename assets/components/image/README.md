@@ -51,7 +51,8 @@ component('image', [
 
 Une URL externe reste acceptée, mais elle est rendue comme une source unique :
 WordPress ne possède pas les métadonnées nécessaires pour en déduire d'autres
-formats.
+formats. La résolution d'une même URL vers son ID est mémorisée pendant toute
+la requête PHP afin d'éviter les recherches SQL répétées.
 
 La clé source est uniquement `image`. Les anciens alias `src`, `url` et les
 arguments positionnels ne sont plus supportés.

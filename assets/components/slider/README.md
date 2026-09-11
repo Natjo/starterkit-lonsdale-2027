@@ -86,6 +86,11 @@ au mode HTML filtré qui n’est pas destiné aux sources responsive.
 
 Les booléens acceptent aussi `0`, `1`, `true`, `false`, `yes` et `no`.
 
+En mode card, les posts et les images explicites de la collection sont
+préchargés en lots avant le rendu. En mode `picture`, les IDs placés dans
+`image`, `images.desktop` et `images.mobile` sont préchargés de la même manière.
+Les URLs externes sont ignorées par ce préchargement et restent supportées.
+
 Le composant ne contient aucune clé de traduction. Pour une autre langue :
 
 ```php

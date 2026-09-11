@@ -72,6 +72,13 @@ if ($items === []) {
     return;
 }
 
+if ($item_component !== null) {
+    theme_prime_attachments($items);
+} elseif ($card !== null) {
+    theme_prime_posts($items);
+    theme_prime_attachments(array_values(array_filter($items, 'is_array')));
+}
+
 $hydrate = $to_bool($args['hydrate'], true);
 $has_multiple_items = count($items) > 1;
 $navigation = $has_multiple_items && $to_bool($args['navigation'], true);

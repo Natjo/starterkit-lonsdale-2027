@@ -137,7 +137,7 @@ add_action('template_redirect', function () {
         return;
     }
 
-    $fields = get_fields() ?: [];
+    $fields = theme_get_fields();
     theme_prescan_page_assets($fields);
 }, 5);
 

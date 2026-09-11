@@ -37,8 +37,8 @@ if (is_array($params['sizes'] ?? null)) {
 $default_size = $params['size'] ?? 'full';
 $resolved_input = $input;
 $input_url = !is_numeric($input) ? $to_string($input) : '';
-if ($input_url !== '' && function_exists('attachment_url_to_postid')) {
-    $attachment_id = (int) attachment_url_to_postid($input_url);
+if ($input_url !== '') {
+    $attachment_id = theme_attachment_url_to_post_id($input_url);
     if ($attachment_id > 0) {
         $resolved_input = $attachment_id;
     }

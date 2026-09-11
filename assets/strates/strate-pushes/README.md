@@ -79,8 +79,9 @@ liste propre au projet n’est nécessaire dans le JSON ACF.
 ## Remontée automatique
 
 La requête récupère les contenus publiés du plus récent au plus ancien. Elle
-retourne uniquement leurs IDs, conserve les filtres multilingues et précharge
-leurs métadonnées avant le rendu des cards.
+conserve les filtres multilingues, amorce le cache des objets WordPress et
+précharge leurs métadonnées avant le rendu des cards. La sélection manuelle
+utilise le même préchargement avant de valider le CPT de chaque ID.
 
 Dans le starter, le couple `post_type = news` et `card-news` transforme le
 groupe ACF `hero-news` en payload direct : date, titre, ID de l’image desktop

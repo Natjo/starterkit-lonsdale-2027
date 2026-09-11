@@ -21,6 +21,10 @@ $get_posts_calls = [];
 $post_types_by_id = [];
 $registered_post_types = ['news'];
 $meta_cache_calls = [];
+$post_cache_calls = [];
+$get_fields_calls = [];
+$attachment_url_calls = [];
+$queried_object_id = 7002;
 
 function esc_attr(mixed $value): string
 {
@@ -60,6 +64,12 @@ function is_front_page(): bool
 function is_404(): bool
 {
     return false;
+}
+
+function get_queried_object_id(): int
+{
+    global $queried_object_id;
+    return $queried_object_id;
 }
 
 function did_action(string $hook_name): int
@@ -142,6 +152,12 @@ function update_meta_cache(string $meta_type, array $object_ids): array|false
     return [];
 }
 
+function _prime_post_caches(array $ids, bool $update_term_cache = true, bool $update_meta_cache = true): void
+{
+    global $post_cache_calls;
+    $post_cache_calls[] = [$ids, $update_term_cache, $update_meta_cache];
+}
+
 function wp_kses_post(mixed $value): string
 {
     return strip_tags((string) $value, '<p><br><strong><em><a>');
@@ -171,6 +187,7 @@ function lsd_get_thumb(mixed $input, mixed $size = 'full'): array
 
 function attachment_url_to_postid(string $url): int
 {
+    $GLOBALS['attachment_url_calls'][] = $url;
     return (int) ($GLOBALS['attachment_ids_by_url'][$url] ?? 0);
 }
 
@@ -195,8 +212,15 @@ function wp_check_filetype(string $path): array
     return ['type' => 'image/jpeg'];
 }
 
-function get_fields(mixed $post_id = null): array|false
+function get_fields(mixed $post_id = null, bool $format_value = true): array|false
 {
+    global $get_fields_calls;
+    $get_fields_calls[] = [$post_id, $format_value];
+
+    if ($post_id === 'option') {
+        return ['prefooter' => ['title' => 'Préfooter']];
+    }
+
     if (!is_int($post_id) || $post_id <= 0) return false;
 
     return [
@@ -372,6 +396,52 @@ $render_card = static function (string $card_name, mixed $values): string {
 
     return trim((string) ob_get_clean());
 };
+
+$get_fields_calls = [];
+$assert_same('Le cache ACF retourne les champs du post', 'Actualité 7001', theme_get_fields(7001)['title'] ?? '');
+$assert_same('Le cache ACF réutilise les champs du post', 'Actualité 7001', theme_get_fields('7001')['title'] ?? '');
+$assert_same('Le cache ACF ne charge un post qu’une fois', [[7001, true]], $get_fields_calls);
+$assert_same('Le cache ACF utilise le contenu interrogé par défaut', 'Actualité 7002', theme_get_fields()['title'] ?? '');
+$assert_same('Le cache ACF distingue les valeurs brutes', 'Actualité 7001', theme_get_fields(7001, false)['title'] ?? '');
+$assert_same('Le cache ACF accepte les options', 'Préfooter', theme_get_fields('option')['prefooter']['title'] ?? '');
+$assert_same(
+    'Le cache ACF sépare les cibles et les modes de formatage',
+    [[7001, true], [7002, true], [7001, false], ['option', true]],
+    $get_fields_calls
+);
+
+$post_cache_calls = [];
+$meta_cache_calls = [];
+$assert_same(
+    'Le préchargement de posts normalise et déduplique les IDs',
+    [7101, 7102, 7103],
+    theme_prime_posts([7101, '7102', ['post_id' => 7103], 7101, 0, ['title' => 'Sans post']])
+);
+$assert_same('Le préchargement groupe les objets posts', [[[7101, 7102, 7103], false, false]], $post_cache_calls);
+$assert_same('Le préchargement groupe les métadonnées', [['post', [7101, 7102, 7103]]], $meta_cache_calls);
+theme_prime_posts([7102, 7103]);
+$assert_same('Le préchargement ne répète pas les objets déjà traités', 1, count($post_cache_calls));
+$assert_same('Le préchargement ne répète pas les métadonnées déjà traitées', 1, count($meta_cache_calls));
+
+$post_cache_calls = [];
+$meta_cache_calls = [];
+$assert_same(
+    'Le préchargement d’images ignore les autres nombres du payload',
+    [7201, 7202, 7203],
+    theme_prime_attachments([
+        ['image' => 7201, 'breakpoint' => 768],
+        ['images' => ['desktop' => 7202, 'mobile' => 7203]],
+        ['image' => 'https://example.test/externe.jpg'],
+    ])
+);
+$assert_same('Le préchargement groupe les pièces jointes', [[[7201, 7202, 7203], false, false]], $post_cache_calls);
+$assert_same('Le préchargement groupe les métadonnées des pièces jointes', [['post', [7201, 7202, 7203]]], $meta_cache_calls);
+
+$GLOBALS['attachment_ids_by_url']['https://example.test/cached.jpg'] = 7301;
+$attachment_url_calls = [];
+$assert_same('La résolution média retourne son ID', 7301, theme_attachment_url_to_post_id('https://example.test/cached.jpg'));
+$assert_same('La résolution média réutilise son résultat', 7301, theme_attachment_url_to_post_id('https://example.test/cached.jpg'));
+$assert_same('Une URL média identique est recherchée une seule fois', ['https://example.test/cached.jpg'], $attachment_url_calls);
 
 ob_start();
 theme_render_breadcrumb_schema();
@@ -834,6 +904,42 @@ $button_link = $render('btn', [
 $assert_contains('Btn rend un link explicite comme un lien', '<a href="https://example.test/project/" class="btn secondary" data-tracking="project" target="_blank"', $button_link);
 $assert_contains('Btn sécurise et fusionne rel', 'rel="nofollow noopener noreferrer"', $button_link);
 
+$span_button = $render('btn', [
+    'link' => [
+        'url' => 'https://example.test/card/',
+        'title' => 'Voir la card',
+        'target' => '_blank',
+    ],
+    'element' => 'span',
+    'classes' => 'secondary',
+    'attributes' => [
+        'href' => '/duplicate/',
+        'type' => 'submit',
+        'disabled' => true,
+        'data-tracking' => 'card',
+    ],
+]);
+$assert_contains('Btn peut devenir un span non interactif', '<span class="btn secondary" data-tracking="card"><span>Voir la card</span></span>', $span_button);
+$assert_not_contains('Btn span ne rend aucun href', ' href=', $span_button);
+$assert_not_contains('Btn span ne rend aucun type', ' type=', $span_button);
+$assert_not_contains('Btn span ne rend aucun état disabled natif', ' disabled', $span_button);
+
+$button_ignores_element = $render('btn', [
+    'name' => 'Découvrir',
+    'element' => 'span',
+]);
+$assert_contains('Btn sans link reste un bouton et ignore element', '<button type="button" class="btn"><span>Découvrir</span></button>', $button_ignores_element);
+
+$invalid_element_link = $render('btn', [
+    'link' => ['url' => '/fallback/', 'title' => 'Fallback'],
+    'element' => 'script',
+]);
+$assert_contains('Btn refuse une balise arbitraire et conserve le lien par défaut', '<a href="/fallback/" class="btn">', $invalid_element_link);
+$assert_contains('Btn sans link ignore aussi element a', '<button type="button" class="btn"><span>Lien incomplet</span></button>', $render('btn', [
+    'name' => 'Lien incomplet',
+    'element' => 'a',
+]));
+
 $disabled_button_link = $render('btn', [
     'link' => ['url' => '/project/', 'title' => 'Indisponible', 'target' => '_blank'],
     'attributes' => ['aria-disabled' => true],
@@ -958,6 +1064,21 @@ $assert_same('List ignore les items invalides', 2, substr_count($list, '<li clas
 $assert_same('List rend réellement chaque card valide', 2, substr_count($list, '<article class="card-news">'));
 $assert_not_contains('List protège ses attributs structurels', 'class="duplicate"', $list);
 $assert_not_contains('List protège son rôle structurel', 'role="group"', $list);
+
+$flex_list = $render('list', [
+    'items' => [['title' => 'Première'], ['title' => 'Deuxième']],
+    'card' => 'news',
+    'type' => 'flex',
+]);
+$assert_contains('List utilise la classe flex demandée', '<ul class="list-flex" role="list">', $flex_list);
+$assert_not_contains('List flex ne conserve pas la classe grid', '<ul class="list ', $flex_list);
+
+$invalid_type_list = $render('list', [
+    'items' => [['title' => 'Type invalide']],
+    'card' => 'news',
+    'type' => 'invalid',
+]);
+$assert_contains('List utilise grid par défaut pour un type invalide', '<ul class="list" role="list">', $invalid_type_list);
 
 $post_list = $render('list', [
     'items' => [104, 0, -1, '105', 106],
@@ -1448,8 +1569,8 @@ $assert_contains('Socials rend une navigation accessible', '<nav class="socials 
 $assert_contains('Socials ouvre les liens externes dans un nouvel onglet', 'target="_blank"', $socials);
 $assert_contains('Socials protège les liens externes', 'rel="noopener noreferrer"', $socials);
 $assert_contains('Socials utilise une icône disponible dans le sprite', 'icon-linkedin', $socials);
-$assert_contains('Socials conserve le nom si une icône manque', '<span class="socials-label">Facebook</span>', $socials);
-$assert_not_contains('Socials ne référence pas une icône absente', 'icon-facebook', $socials);
+$assert_contains('Socials utilise l’icône correspondant au réseau', 'icon-facebook', $socials);
+$assert_contains('Socials conserve le nom visible du réseau', '<span class="socials-label">Facebook</span>', $socials);
 $assert_same('Socials déduplique les réseaux', 1, substr_count($socials, 'socials-item-linkedin'));
 $assert_not_contains('Socials ignore les réseaux inconnus', 'unknown', $socials);
 $assert_not_contains('Socials ignore les URL dangereuses', 'javascript:', $socials);
@@ -2509,8 +2630,9 @@ $assert_not_contains('La strate pushes refuse les contenus d’un autre CPT', 'A
 $assert_same('La strate pushes déduplique sa sélection', 1, substr_count($manual_pushes, 'class="card-news"'));
 
 $get_posts_calls = [];
-$get_posts_result = [201, 202];
+$get_posts_result = [(object) ['ID' => 1201], (object) ['ID' => 1202]];
 $meta_cache_calls = [];
+$post_cache_calls = [];
 $automatic_pushes = $render_strate('pushes', [
     'mode' => 'automatic',
     'post_type' => 'news',
@@ -2519,11 +2641,13 @@ $automatic_pushes = $render_strate('pushes', [
 $assert_same('La remontée automatique utilise le CPT demandé', 'news', $get_posts_calls[0]['post_type'] ?? null);
 $assert_same('La remontée automatique limite la quantité', 12, $get_posts_calls[0]['posts_per_page'] ?? null);
 $assert_same('La remontée automatique conserve les filtres multilingues', false, $get_posts_calls[0]['suppress_filters'] ?? null);
-$assert_same('La remontée automatique précharge les métadonnées', ['post', [201, 202]], $meta_cache_calls[0] ?? null);
+$assert_same('La remontée automatique charge les objets posts', false, array_key_exists('fields', $get_posts_calls[0] ?? []));
+$assert_same('La remontée automatique groupe le cache des posts', [[1201, 1202], false, false], $post_cache_calls[0] ?? null);
+$assert_same('La remontée automatique précharge les métadonnées', ['post', [1201, 1202]], $meta_cache_calls[0] ?? null);
 $assert_same('La remontée automatique rend les résultats', 2, substr_count($automatic_pushes, 'class="card-news"'));
-$assert_contains('La remontée automatique mappe le titre du hero News', 'Actualité 201', $automatic_pushes);
+$assert_contains('La remontée automatique mappe le titre du hero News', 'Actualité 1201', $automatic_pushes);
 $assert_contains('La remontée automatique mappe l’image desktop du hero News', '<picture class="picture fit-cover card-image">', $automatic_pushes);
-$assert_contains('La remontée automatique ajoute le permalien de la News', 'href="https://example.test/news/201/"', $automatic_pushes);
+$assert_contains('La remontée automatique ajoute le permalien de la News', 'href="https://example.test/news/1201/"', $automatic_pushes);
 
 $get_posts_calls = [];
 $assert_same(

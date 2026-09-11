@@ -52,7 +52,7 @@
                             "conditional_logic": 0,
                             "wrapper": {
                                 "width": "",
-                                "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
+                                "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
                                 "id": ""
                             },
                             "default_value": "",
@@ -165,11 +165,11 @@
                             "ui_off_text": "Non"
                         },
                         {
-                            "key": "field_6a3023bba3fa9_field_6a3298318eb6c",
-                            "label": "",
-                            "name": "options",
+                            "key": "field_6a3023bba3fa9",
+                            "label": "Options",
+                            "name": "settings",
                             "aria-label": "",
-                            "type": "group",
+                            "type": "clone",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -178,284 +178,13 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "layout": "block",
-                            "sub_fields": [
-                                {
-                                    "key": "field_669e67c1_container",
-                                    "label": "Conteneur",
-                                    "name": "container",
-                                    "aria-label": "",
-                                    "type": "select",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "choices": {
-                                        "": "Par défaut",
-                                        "sm": "Étroit",
-                                        "fluid": "Fluide",
-                                        "full": "Pleine largeur"
-                                    },
-                                    "default_value": false,
-                                    "return_format": "value",
-                                    "multiple": 0,
-                                    "allow_null": 0,
-                                    "ui": 0,
-                                    "ajax": 0,
-                                    "placeholder": "",
-                                    "create_options": 0,
-                                    "save_options": 0
-                                },
-                                {
-                                    "key": "field_669e67c1_margin",
-                                    "label": "Marges",
-                                    "name": "margin",
-                                    "aria-label": "",
-                                    "type": "group",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "layout": "block",
-                                    "sub_fields": [
-                                        {
-                                            "key": "field_669e67c1_margin_top",
-                                            "label": "Haut",
-                                            "name": "top",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "50",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "": "Aucune",
-                                                "sm": "Petite",
-                                                "md": "Moyenne",
-                                                "lg": "Grande"
-                                            },
-                                            "default_value": false,
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        },
-                                        {
-                                            "key": "field_669e67c1_margin_bottom",
-                                            "label": "Bas",
-                                            "name": "bottom",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "50",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "0": "Aucune",
-                                                "sm": "Petite",
-                                                "md": "Moyenne",
-                                                "lg": "Grande"
-                                            },
-                                            "default_value": "md",
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        }
-                                    ]
-                                },
-                                {
-                                    "key": "field_669e67c1_background",
-                                    "label": "Background",
-                                    "name": "background",
-                                    "aria-label": "",
-                                    "type": "group",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "layout": "block",
-                                    "sub_fields": [
-                                        {
-                                            "key": "field_669e67c1_hasbackground",
-                                            "label": "",
-                                            "name": "hasbackground",
-                                            "aria-label": "",
-                                            "type": "true_false",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "message": "",
-                                            "default_value": 0,
-                                            "allow_in_bindings": 1,
-                                            "ui_on_text": "Oui",
-                                            "ui_off_text": "Non",
-                                            "ui": 1
-                                        },
-                                        {
-                                            "key": "field_669e67c1_background_color",
-                                            "label": "Couleur",
-                                            "name": "color",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": [
-                                                [
-                                                    {
-                                                        "field": "field_669e67c1_hasbackground",
-                                                        "operator": "==",
-                                                        "value": "1"
-                                                    }
-                                                ]
-                                            ],
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "color-1": "Couleur 1",
-                                                "color-2": "Couleur 2",
-                                                "color-3": "Couleur 3"
-                                            },
-                                            "default_value": "color-1",
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        },
-                                        {
-                                            "key": "field_669e67c1_padding",
-                                            "label": "Espacements internes",
-                                            "name": "padding",
-                                            "aria-label": "",
-                                            "type": "group",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": [
-                                                [
-                                                    {
-                                                        "field": "field_669e67c1_hasbackground",
-                                                        "operator": "==",
-                                                        "value": "1"
-                                                    }
-                                                ]
-                                            ],
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "layout": "block",
-                                            "sub_fields": [
-                                                {
-                                                    "key": "field_669e67c1_padding_top",
-                                                    "label": "Haut",
-                                                    "name": "top",
-                                                    "aria-label": "",
-                                                    "type": "select",
-                                                    "instructions": "",
-                                                    "required": 0,
-                                                    "conditional_logic": 0,
-                                                    "wrapper": {
-                                                        "width": "50",
-                                                        "class": "",
-                                                        "id": ""
-                                                    },
-                                                    "choices": {
-                                                        "0": "Aucun",
-                                                        "xs": "Très petit",
-                                                        "sm": "Petit",
-                                                        "md": "Moyen",
-                                                        "lg": "Grand"
-                                                    },
-                                                    "default_value": "md",
-                                                    "return_format": "value",
-                                                    "multiple": 0,
-                                                    "allow_null": 0,
-                                                    "ui": 0,
-                                                    "ajax": 0,
-                                                    "placeholder": "",
-                                                    "create_options": 0,
-                                                    "save_options": 0
-                                                },
-                                                {
-                                                    "key": "field_669e67c1_padding_bottom",
-                                                    "label": "Bas",
-                                                    "name": "bottom",
-                                                    "aria-label": "",
-                                                    "type": "select",
-                                                    "instructions": "",
-                                                    "required": 0,
-                                                    "conditional_logic": 0,
-                                                    "wrapper": {
-                                                        "width": "50",
-                                                        "class": "",
-                                                        "id": ""
-                                                    },
-                                                    "choices": {
-                                                        "0": "Aucun",
-                                                        "sm": "Petit",
-                                                        "md": "Moyen",
-                                                        "lg": "Grand"
-                                                    },
-                                                    "default_value": "md",
-                                                    "return_format": "value",
-                                                    "multiple": 0,
-                                                    "allow_null": 0,
-                                                    "ui": 0,
-                                                    "ajax": 0,
-                                                    "placeholder": "",
-                                                    "create_options": 0,
-                                                    "save_options": 0
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
+                            "clone": [
+                                "group_669e67c1b5303"
                             ],
-                            "_clone": "field_6a3023bba3fa9",
-                            "__key": "field_6a3298318eb6c",
-                            "__name": "options",
-                            "__label": ""
+                            "display": "seamless",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 0
                         }
                     ],
                     "min": "",
@@ -544,11 +273,11 @@
                             "selected": 0
                         },
                         {
-                            "key": "field_6a64971333853_field_6a3298318eb6c",
+                            "key": "field_6a64971333853",
                             "label": "",
-                            "name": "options",
+                            "name": "",
                             "aria-label": "",
-                            "type": "group",
+                            "type": "clone",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -557,284 +286,13 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "layout": "block",
-                            "sub_fields": [
-                                {
-                                    "key": "field_669e67c1_container",
-                                    "label": "Conteneur",
-                                    "name": "container",
-                                    "aria-label": "",
-                                    "type": "select",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "choices": {
-                                        "": "Par défaut",
-                                        "sm": "Étroit",
-                                        "fluid": "Fluide",
-                                        "full": "Pleine largeur"
-                                    },
-                                    "default_value": false,
-                                    "return_format": "value",
-                                    "multiple": 0,
-                                    "allow_null": 0,
-                                    "ui": 0,
-                                    "ajax": 0,
-                                    "placeholder": "",
-                                    "create_options": 0,
-                                    "save_options": 0
-                                },
-                                {
-                                    "key": "field_669e67c1_margin",
-                                    "label": "Marges",
-                                    "name": "margin",
-                                    "aria-label": "",
-                                    "type": "group",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "layout": "block",
-                                    "sub_fields": [
-                                        {
-                                            "key": "field_669e67c1_margin_top",
-                                            "label": "Haut",
-                                            "name": "top",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "50",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "": "Aucune",
-                                                "sm": "Petite",
-                                                "md": "Moyenne",
-                                                "lg": "Grande"
-                                            },
-                                            "default_value": false,
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        },
-                                        {
-                                            "key": "field_669e67c1_margin_bottom",
-                                            "label": "Bas",
-                                            "name": "bottom",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "50",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "0": "Aucune",
-                                                "sm": "Petite",
-                                                "md": "Moyenne",
-                                                "lg": "Grande"
-                                            },
-                                            "default_value": "md",
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        }
-                                    ]
-                                },
-                                {
-                                    "key": "field_669e67c1_background",
-                                    "label": "Background",
-                                    "name": "background",
-                                    "aria-label": "",
-                                    "type": "group",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "layout": "block",
-                                    "sub_fields": [
-                                        {
-                                            "key": "field_669e67c1_hasbackground",
-                                            "label": "",
-                                            "name": "hasbackground",
-                                            "aria-label": "",
-                                            "type": "true_false",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "message": "",
-                                            "default_value": 0,
-                                            "allow_in_bindings": 1,
-                                            "ui_on_text": "Oui",
-                                            "ui_off_text": "Non",
-                                            "ui": 1
-                                        },
-                                        {
-                                            "key": "field_669e67c1_background_color",
-                                            "label": "Couleur",
-                                            "name": "color",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": [
-                                                [
-                                                    {
-                                                        "field": "field_669e67c1_hasbackground",
-                                                        "operator": "==",
-                                                        "value": "1"
-                                                    }
-                                                ]
-                                            ],
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "color-1": "Couleur 1",
-                                                "color-2": "Couleur 2",
-                                                "color-3": "Couleur 3"
-                                            },
-                                            "default_value": "color-1",
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        },
-                                        {
-                                            "key": "field_669e67c1_padding",
-                                            "label": "Espacements internes",
-                                            "name": "padding",
-                                            "aria-label": "",
-                                            "type": "group",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": [
-                                                [
-                                                    {
-                                                        "field": "field_669e67c1_hasbackground",
-                                                        "operator": "==",
-                                                        "value": "1"
-                                                    }
-                                                ]
-                                            ],
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "layout": "block",
-                                            "sub_fields": [
-                                                {
-                                                    "key": "field_669e67c1_padding_top",
-                                                    "label": "Haut",
-                                                    "name": "top",
-                                                    "aria-label": "",
-                                                    "type": "select",
-                                                    "instructions": "",
-                                                    "required": 0,
-                                                    "conditional_logic": 0,
-                                                    "wrapper": {
-                                                        "width": "50",
-                                                        "class": "",
-                                                        "id": ""
-                                                    },
-                                                    "choices": {
-                                                        "0": "Aucun",
-                                                        "xs": "Très petit",
-                                                        "sm": "Petit",
-                                                        "md": "Moyen",
-                                                        "lg": "Grand"
-                                                    },
-                                                    "default_value": "md",
-                                                    "return_format": "value",
-                                                    "multiple": 0,
-                                                    "allow_null": 0,
-                                                    "ui": 0,
-                                                    "ajax": 0,
-                                                    "placeholder": "",
-                                                    "create_options": 0,
-                                                    "save_options": 0
-                                                },
-                                                {
-                                                    "key": "field_669e67c1_padding_bottom",
-                                                    "label": "Bas",
-                                                    "name": "bottom",
-                                                    "aria-label": "",
-                                                    "type": "select",
-                                                    "instructions": "",
-                                                    "required": 0,
-                                                    "conditional_logic": 0,
-                                                    "wrapper": {
-                                                        "width": "50",
-                                                        "class": "",
-                                                        "id": ""
-                                                    },
-                                                    "choices": {
-                                                        "0": "Aucun",
-                                                        "sm": "Petit",
-                                                        "md": "Moyen",
-                                                        "lg": "Grand"
-                                                    },
-                                                    "default_value": "md",
-                                                    "return_format": "value",
-                                                    "multiple": 0,
-                                                    "allow_null": 0,
-                                                    "ui": 0,
-                                                    "ajax": 0,
-                                                    "placeholder": "",
-                                                    "create_options": 0,
-                                                    "save_options": 0
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
+                            "clone": [
+                                "group_669e67c1b5303"
                             ],
-                            "_clone": "field_6a64971333853",
-                            "__key": "field_6a3298318eb6c",
-                            "__name": "options",
-                            "__label": ""
+                            "display": "seamless",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 0
                         }
                     ],
                     "min": "",
@@ -875,7 +333,7 @@
                             "conditional_logic": 0,
                             "wrapper": {
                                 "width": "",
-                                "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
+                                "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
                                 "id": ""
                             },
                             "default_value": "",
@@ -904,11 +362,11 @@
                             "selected": 0
                         },
                         {
-                            "key": "field_6a649a332e2d4_field_6a3298318eb6c",
+                            "key": "field_6a649a332e2d4",
                             "label": "",
-                            "name": "options",
+                            "name": "",
                             "aria-label": "",
-                            "type": "group",
+                            "type": "clone",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -917,284 +375,13 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "layout": "block",
-                            "sub_fields": [
-                                {
-                                    "key": "field_669e67c1_container",
-                                    "label": "Conteneur",
-                                    "name": "container",
-                                    "aria-label": "",
-                                    "type": "select",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "choices": {
-                                        "": "Par défaut",
-                                        "sm": "Étroit",
-                                        "fluid": "Fluide",
-                                        "full": "Pleine largeur"
-                                    },
-                                    "default_value": false,
-                                    "return_format": "value",
-                                    "multiple": 0,
-                                    "allow_null": 0,
-                                    "ui": 0,
-                                    "ajax": 0,
-                                    "placeholder": "",
-                                    "create_options": 0,
-                                    "save_options": 0
-                                },
-                                {
-                                    "key": "field_669e67c1_margin",
-                                    "label": "Marges",
-                                    "name": "margin",
-                                    "aria-label": "",
-                                    "type": "group",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "layout": "block",
-                                    "sub_fields": [
-                                        {
-                                            "key": "field_669e67c1_margin_top",
-                                            "label": "Haut",
-                                            "name": "top",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "50",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "": "Aucune",
-                                                "sm": "Petite",
-                                                "md": "Moyenne",
-                                                "lg": "Grande"
-                                            },
-                                            "default_value": false,
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        },
-                                        {
-                                            "key": "field_669e67c1_margin_bottom",
-                                            "label": "Bas",
-                                            "name": "bottom",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "50",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "0": "Aucune",
-                                                "sm": "Petite",
-                                                "md": "Moyenne",
-                                                "lg": "Grande"
-                                            },
-                                            "default_value": "md",
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        }
-                                    ]
-                                },
-                                {
-                                    "key": "field_669e67c1_background",
-                                    "label": "Background",
-                                    "name": "background",
-                                    "aria-label": "",
-                                    "type": "group",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "layout": "block",
-                                    "sub_fields": [
-                                        {
-                                            "key": "field_669e67c1_hasbackground",
-                                            "label": "",
-                                            "name": "hasbackground",
-                                            "aria-label": "",
-                                            "type": "true_false",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "message": "",
-                                            "default_value": 0,
-                                            "allow_in_bindings": 1,
-                                            "ui_on_text": "Oui",
-                                            "ui_off_text": "Non",
-                                            "ui": 1
-                                        },
-                                        {
-                                            "key": "field_669e67c1_background_color",
-                                            "label": "Couleur",
-                                            "name": "color",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": [
-                                                [
-                                                    {
-                                                        "field": "field_669e67c1_hasbackground",
-                                                        "operator": "==",
-                                                        "value": "1"
-                                                    }
-                                                ]
-                                            ],
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "color-1": "Couleur 1",
-                                                "color-2": "Couleur 2",
-                                                "color-3": "Couleur 3"
-                                            },
-                                            "default_value": "color-1",
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        },
-                                        {
-                                            "key": "field_669e67c1_padding",
-                                            "label": "Espacements internes",
-                                            "name": "padding",
-                                            "aria-label": "",
-                                            "type": "group",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": [
-                                                [
-                                                    {
-                                                        "field": "field_669e67c1_hasbackground",
-                                                        "operator": "==",
-                                                        "value": "1"
-                                                    }
-                                                ]
-                                            ],
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "layout": "block",
-                                            "sub_fields": [
-                                                {
-                                                    "key": "field_669e67c1_padding_top",
-                                                    "label": "Haut",
-                                                    "name": "top",
-                                                    "aria-label": "",
-                                                    "type": "select",
-                                                    "instructions": "",
-                                                    "required": 0,
-                                                    "conditional_logic": 0,
-                                                    "wrapper": {
-                                                        "width": "50",
-                                                        "class": "",
-                                                        "id": ""
-                                                    },
-                                                    "choices": {
-                                                        "0": "Aucun",
-                                                        "xs": "Très petit",
-                                                        "sm": "Petit",
-                                                        "md": "Moyen",
-                                                        "lg": "Grand"
-                                                    },
-                                                    "default_value": "md",
-                                                    "return_format": "value",
-                                                    "multiple": 0,
-                                                    "allow_null": 0,
-                                                    "ui": 0,
-                                                    "ajax": 0,
-                                                    "placeholder": "",
-                                                    "create_options": 0,
-                                                    "save_options": 0
-                                                },
-                                                {
-                                                    "key": "field_669e67c1_padding_bottom",
-                                                    "label": "Bas",
-                                                    "name": "bottom",
-                                                    "aria-label": "",
-                                                    "type": "select",
-                                                    "instructions": "",
-                                                    "required": 0,
-                                                    "conditional_logic": 0,
-                                                    "wrapper": {
-                                                        "width": "50",
-                                                        "class": "",
-                                                        "id": ""
-                                                    },
-                                                    "choices": {
-                                                        "0": "Aucun",
-                                                        "sm": "Petit",
-                                                        "md": "Moyen",
-                                                        "lg": "Grand"
-                                                    },
-                                                    "default_value": "md",
-                                                    "return_format": "value",
-                                                    "multiple": 0,
-                                                    "allow_null": 0,
-                                                    "ui": 0,
-                                                    "ajax": 0,
-                                                    "placeholder": "",
-                                                    "create_options": 0,
-                                                    "save_options": 0
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
+                            "clone": [
+                                "group_669e67c1b5303"
                             ],
-                            "_clone": "field_6a649a332e2d4",
-                            "__key": "field_6a3298318eb6c",
-                            "__name": "options",
-                            "__label": ""
+                            "display": "seamless",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 0
                         }
                     ],
                     "min": "",
@@ -1356,11 +543,11 @@
                             "selected": 0
                         },
                         {
-                            "key": "field_6a649fcc6b737_field_6a3298318eb6c",
+                            "key": "field_6a649fcc6b737",
                             "label": "",
-                            "name": "options",
+                            "name": "",
                             "aria-label": "",
-                            "type": "group",
+                            "type": "clone",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -1369,284 +556,13 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "layout": "block",
-                            "sub_fields": [
-                                {
-                                    "key": "field_669e67c1_container",
-                                    "label": "Conteneur",
-                                    "name": "container",
-                                    "aria-label": "",
-                                    "type": "select",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "choices": {
-                                        "": "Par défaut",
-                                        "sm": "Étroit",
-                                        "fluid": "Fluide",
-                                        "full": "Pleine largeur"
-                                    },
-                                    "default_value": false,
-                                    "return_format": "value",
-                                    "multiple": 0,
-                                    "allow_null": 0,
-                                    "ui": 0,
-                                    "ajax": 0,
-                                    "placeholder": "",
-                                    "create_options": 0,
-                                    "save_options": 0
-                                },
-                                {
-                                    "key": "field_669e67c1_margin",
-                                    "label": "Marges",
-                                    "name": "margin",
-                                    "aria-label": "",
-                                    "type": "group",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "layout": "block",
-                                    "sub_fields": [
-                                        {
-                                            "key": "field_669e67c1_margin_top",
-                                            "label": "Haut",
-                                            "name": "top",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "50",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "": "Aucune",
-                                                "sm": "Petite",
-                                                "md": "Moyenne",
-                                                "lg": "Grande"
-                                            },
-                                            "default_value": false,
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        },
-                                        {
-                                            "key": "field_669e67c1_margin_bottom",
-                                            "label": "Bas",
-                                            "name": "bottom",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "50",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "0": "Aucune",
-                                                "sm": "Petite",
-                                                "md": "Moyenne",
-                                                "lg": "Grande"
-                                            },
-                                            "default_value": "md",
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        }
-                                    ]
-                                },
-                                {
-                                    "key": "field_669e67c1_background",
-                                    "label": "Background",
-                                    "name": "background",
-                                    "aria-label": "",
-                                    "type": "group",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "layout": "block",
-                                    "sub_fields": [
-                                        {
-                                            "key": "field_669e67c1_hasbackground",
-                                            "label": "",
-                                            "name": "hasbackground",
-                                            "aria-label": "",
-                                            "type": "true_false",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "message": "",
-                                            "default_value": 0,
-                                            "allow_in_bindings": 1,
-                                            "ui_on_text": "Oui",
-                                            "ui_off_text": "Non",
-                                            "ui": 1
-                                        },
-                                        {
-                                            "key": "field_669e67c1_background_color",
-                                            "label": "Couleur",
-                                            "name": "color",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": [
-                                                [
-                                                    {
-                                                        "field": "field_669e67c1_hasbackground",
-                                                        "operator": "==",
-                                                        "value": "1"
-                                                    }
-                                                ]
-                                            ],
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "color-1": "Couleur 1",
-                                                "color-2": "Couleur 2",
-                                                "color-3": "Couleur 3"
-                                            },
-                                            "default_value": "color-1",
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        },
-                                        {
-                                            "key": "field_669e67c1_padding",
-                                            "label": "Espacements internes",
-                                            "name": "padding",
-                                            "aria-label": "",
-                                            "type": "group",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": [
-                                                [
-                                                    {
-                                                        "field": "field_669e67c1_hasbackground",
-                                                        "operator": "==",
-                                                        "value": "1"
-                                                    }
-                                                ]
-                                            ],
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "layout": "block",
-                                            "sub_fields": [
-                                                {
-                                                    "key": "field_669e67c1_padding_top",
-                                                    "label": "Haut",
-                                                    "name": "top",
-                                                    "aria-label": "",
-                                                    "type": "select",
-                                                    "instructions": "",
-                                                    "required": 0,
-                                                    "conditional_logic": 0,
-                                                    "wrapper": {
-                                                        "width": "50",
-                                                        "class": "",
-                                                        "id": ""
-                                                    },
-                                                    "choices": {
-                                                        "0": "Aucun",
-                                                        "xs": "Très petit",
-                                                        "sm": "Petit",
-                                                        "md": "Moyen",
-                                                        "lg": "Grand"
-                                                    },
-                                                    "default_value": "md",
-                                                    "return_format": "value",
-                                                    "multiple": 0,
-                                                    "allow_null": 0,
-                                                    "ui": 0,
-                                                    "ajax": 0,
-                                                    "placeholder": "",
-                                                    "create_options": 0,
-                                                    "save_options": 0
-                                                },
-                                                {
-                                                    "key": "field_669e67c1_padding_bottom",
-                                                    "label": "Bas",
-                                                    "name": "bottom",
-                                                    "aria-label": "",
-                                                    "type": "select",
-                                                    "instructions": "",
-                                                    "required": 0,
-                                                    "conditional_logic": 0,
-                                                    "wrapper": {
-                                                        "width": "50",
-                                                        "class": "",
-                                                        "id": ""
-                                                    },
-                                                    "choices": {
-                                                        "0": "Aucun",
-                                                        "sm": "Petit",
-                                                        "md": "Moyen",
-                                                        "lg": "Grand"
-                                                    },
-                                                    "default_value": "md",
-                                                    "return_format": "value",
-                                                    "multiple": 0,
-                                                    "allow_null": 0,
-                                                    "ui": 0,
-                                                    "ajax": 0,
-                                                    "placeholder": "",
-                                                    "create_options": 0,
-                                                    "save_options": 0
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
+                            "clone": [
+                                "group_669e67c1b5303"
                             ],
-                            "_clone": "field_6a649fcc6b737",
-                            "__key": "field_6a3298318eb6c",
-                            "__name": "options",
-                            "__label": ""
+                            "display": "seamless",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 0
                         }
                     ],
                     "min": "",
@@ -1687,7 +603,7 @@
                             "conditional_logic": 0,
                             "wrapper": {
                                 "width": "",
-                                "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
+                                "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
                                 "id": ""
                             },
                             "default_value": "",
@@ -1802,11 +718,11 @@
                             "selected": 0
                         },
                         {
-                            "key": "field_6a64d05639147_field_6a3298318eb6c",
+                            "key": "field_6a64d05639147",
                             "label": "",
-                            "name": "options",
+                            "name": "",
                             "aria-label": "",
-                            "type": "group",
+                            "type": "clone",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -1815,284 +731,13 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "layout": "block",
-                            "sub_fields": [
-                                {
-                                    "key": "field_669e67c1_container",
-                                    "label": "Conteneur",
-                                    "name": "container",
-                                    "aria-label": "",
-                                    "type": "select",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "choices": {
-                                        "": "Par défaut",
-                                        "sm": "Étroit",
-                                        "fluid": "Fluide",
-                                        "full": "Pleine largeur"
-                                    },
-                                    "default_value": false,
-                                    "return_format": "value",
-                                    "multiple": 0,
-                                    "allow_null": 0,
-                                    "ui": 0,
-                                    "ajax": 0,
-                                    "placeholder": "",
-                                    "create_options": 0,
-                                    "save_options": 0
-                                },
-                                {
-                                    "key": "field_669e67c1_margin",
-                                    "label": "Marges",
-                                    "name": "margin",
-                                    "aria-label": "",
-                                    "type": "group",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "layout": "block",
-                                    "sub_fields": [
-                                        {
-                                            "key": "field_669e67c1_margin_top",
-                                            "label": "Haut",
-                                            "name": "top",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "50",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "": "Aucune",
-                                                "sm": "Petite",
-                                                "md": "Moyenne",
-                                                "lg": "Grande"
-                                            },
-                                            "default_value": false,
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        },
-                                        {
-                                            "key": "field_669e67c1_margin_bottom",
-                                            "label": "Bas",
-                                            "name": "bottom",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "50",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "0": "Aucune",
-                                                "sm": "Petite",
-                                                "md": "Moyenne",
-                                                "lg": "Grande"
-                                            },
-                                            "default_value": "md",
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        }
-                                    ]
-                                },
-                                {
-                                    "key": "field_669e67c1_background",
-                                    "label": "Background",
-                                    "name": "background",
-                                    "aria-label": "",
-                                    "type": "group",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "layout": "block",
-                                    "sub_fields": [
-                                        {
-                                            "key": "field_669e67c1_hasbackground",
-                                            "label": "",
-                                            "name": "hasbackground",
-                                            "aria-label": "",
-                                            "type": "true_false",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "message": "",
-                                            "default_value": 0,
-                                            "allow_in_bindings": 1,
-                                            "ui_on_text": "Oui",
-                                            "ui_off_text": "Non",
-                                            "ui": 1
-                                        },
-                                        {
-                                            "key": "field_669e67c1_background_color",
-                                            "label": "Couleur",
-                                            "name": "color",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": [
-                                                [
-                                                    {
-                                                        "field": "field_669e67c1_hasbackground",
-                                                        "operator": "==",
-                                                        "value": "1"
-                                                    }
-                                                ]
-                                            ],
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "color-1": "Couleur 1",
-                                                "color-2": "Couleur 2",
-                                                "color-3": "Couleur 3"
-                                            },
-                                            "default_value": "color-1",
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        },
-                                        {
-                                            "key": "field_669e67c1_padding",
-                                            "label": "Espacements internes",
-                                            "name": "padding",
-                                            "aria-label": "",
-                                            "type": "group",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": [
-                                                [
-                                                    {
-                                                        "field": "field_669e67c1_hasbackground",
-                                                        "operator": "==",
-                                                        "value": "1"
-                                                    }
-                                                ]
-                                            ],
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "layout": "block",
-                                            "sub_fields": [
-                                                {
-                                                    "key": "field_669e67c1_padding_top",
-                                                    "label": "Haut",
-                                                    "name": "top",
-                                                    "aria-label": "",
-                                                    "type": "select",
-                                                    "instructions": "",
-                                                    "required": 0,
-                                                    "conditional_logic": 0,
-                                                    "wrapper": {
-                                                        "width": "50",
-                                                        "class": "",
-                                                        "id": ""
-                                                    },
-                                                    "choices": {
-                                                        "0": "Aucun",
-                                                        "xs": "Très petit",
-                                                        "sm": "Petit",
-                                                        "md": "Moyen",
-                                                        "lg": "Grand"
-                                                    },
-                                                    "default_value": "md",
-                                                    "return_format": "value",
-                                                    "multiple": 0,
-                                                    "allow_null": 0,
-                                                    "ui": 0,
-                                                    "ajax": 0,
-                                                    "placeholder": "",
-                                                    "create_options": 0,
-                                                    "save_options": 0
-                                                },
-                                                {
-                                                    "key": "field_669e67c1_padding_bottom",
-                                                    "label": "Bas",
-                                                    "name": "bottom",
-                                                    "aria-label": "",
-                                                    "type": "select",
-                                                    "instructions": "",
-                                                    "required": 0,
-                                                    "conditional_logic": 0,
-                                                    "wrapper": {
-                                                        "width": "50",
-                                                        "class": "",
-                                                        "id": ""
-                                                    },
-                                                    "choices": {
-                                                        "0": "Aucun",
-                                                        "sm": "Petit",
-                                                        "md": "Moyen",
-                                                        "lg": "Grand"
-                                                    },
-                                                    "default_value": "md",
-                                                    "return_format": "value",
-                                                    "multiple": 0,
-                                                    "allow_null": 0,
-                                                    "ui": 0,
-                                                    "ajax": 0,
-                                                    "placeholder": "",
-                                                    "create_options": 0,
-                                                    "save_options": 0
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
+                            "clone": [
+                                "group_669e67c1b5303"
                             ],
-                            "_clone": "field_6a64d05639147",
-                            "__key": "field_6a3298318eb6c",
-                            "__name": "options",
-                            "__label": ""
+                            "display": "seamless",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 0
                         }
                     ],
                     "min": "",
@@ -2133,7 +778,7 @@
                             "conditional_logic": 0,
                             "wrapper": {
                                 "width": "",
-                                "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
+                                "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
                                 "id": ""
                             },
                             "default_value": "",
@@ -2238,7 +883,8 @@
                                 "id": ""
                             },
                             "choices": {
-                                "news": "News"
+                                "page": "Page",
+                                "news": "Actualités"
                             },
                             "default_value": "news",
                             "return_format": "value",
@@ -2273,6 +919,7 @@
                                 "id": ""
                             },
                             "post_type": [
+                                "page",
                                 "news"
                             ],
                             "post_status": [
@@ -2280,7 +927,8 @@
                             ],
                             "taxonomy": "",
                             "filters": [
-                                "search"
+                                "search",
+                                "post_type"
                             ],
                             "return_format": "id",
                             "min": "",
@@ -2339,11 +987,11 @@
                             "selected": 0
                         },
                         {
-                            "key": "field_6a64efddeebc9_field_6a3298318eb6c",
+                            "key": "field_6a64efddeebc9",
                             "label": "",
-                            "name": "options",
+                            "name": "",
                             "aria-label": "",
-                            "type": "group",
+                            "type": "clone",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -2352,284 +1000,13 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "layout": "block",
-                            "sub_fields": [
-                                {
-                                    "key": "field_669e67c1_container",
-                                    "label": "Conteneur",
-                                    "name": "container",
-                                    "aria-label": "",
-                                    "type": "select",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "choices": {
-                                        "": "Par défaut",
-                                        "sm": "Étroit",
-                                        "fluid": "Fluide",
-                                        "full": "Pleine largeur"
-                                    },
-                                    "default_value": false,
-                                    "return_format": "value",
-                                    "multiple": 0,
-                                    "allow_null": 0,
-                                    "ui": 0,
-                                    "ajax": 0,
-                                    "placeholder": "",
-                                    "create_options": 0,
-                                    "save_options": 0
-                                },
-                                {
-                                    "key": "field_669e67c1_margin",
-                                    "label": "Marges",
-                                    "name": "margin",
-                                    "aria-label": "",
-                                    "type": "group",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "layout": "block",
-                                    "sub_fields": [
-                                        {
-                                            "key": "field_669e67c1_margin_top",
-                                            "label": "Haut",
-                                            "name": "top",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "50",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "": "Aucune",
-                                                "sm": "Petite",
-                                                "md": "Moyenne",
-                                                "lg": "Grande"
-                                            },
-                                            "default_value": false,
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        },
-                                        {
-                                            "key": "field_669e67c1_margin_bottom",
-                                            "label": "Bas",
-                                            "name": "bottom",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "50",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "0": "Aucune",
-                                                "sm": "Petite",
-                                                "md": "Moyenne",
-                                                "lg": "Grande"
-                                            },
-                                            "default_value": "md",
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        }
-                                    ]
-                                },
-                                {
-                                    "key": "field_669e67c1_background",
-                                    "label": "Background",
-                                    "name": "background",
-                                    "aria-label": "",
-                                    "type": "group",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "layout": "block",
-                                    "sub_fields": [
-                                        {
-                                            "key": "field_669e67c1_hasbackground",
-                                            "label": "",
-                                            "name": "hasbackground",
-                                            "aria-label": "",
-                                            "type": "true_false",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "message": "",
-                                            "default_value": 0,
-                                            "allow_in_bindings": 1,
-                                            "ui_on_text": "Oui",
-                                            "ui_off_text": "Non",
-                                            "ui": 1
-                                        },
-                                        {
-                                            "key": "field_669e67c1_background_color",
-                                            "label": "Couleur",
-                                            "name": "color",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": [
-                                                [
-                                                    {
-                                                        "field": "field_669e67c1_hasbackground",
-                                                        "operator": "==",
-                                                        "value": "1"
-                                                    }
-                                                ]
-                                            ],
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "color-1": "Couleur 1",
-                                                "color-2": "Couleur 2",
-                                                "color-3": "Couleur 3"
-                                            },
-                                            "default_value": "color-1",
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        },
-                                        {
-                                            "key": "field_669e67c1_padding",
-                                            "label": "Espacements internes",
-                                            "name": "padding",
-                                            "aria-label": "",
-                                            "type": "group",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": [
-                                                [
-                                                    {
-                                                        "field": "field_669e67c1_hasbackground",
-                                                        "operator": "==",
-                                                        "value": "1"
-                                                    }
-                                                ]
-                                            ],
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "layout": "block",
-                                            "sub_fields": [
-                                                {
-                                                    "key": "field_669e67c1_padding_top",
-                                                    "label": "Haut",
-                                                    "name": "top",
-                                                    "aria-label": "",
-                                                    "type": "select",
-                                                    "instructions": "",
-                                                    "required": 0,
-                                                    "conditional_logic": 0,
-                                                    "wrapper": {
-                                                        "width": "50",
-                                                        "class": "",
-                                                        "id": ""
-                                                    },
-                                                    "choices": {
-                                                        "0": "Aucun",
-                                                        "xs": "Très petit",
-                                                        "sm": "Petit",
-                                                        "md": "Moyen",
-                                                        "lg": "Grand"
-                                                    },
-                                                    "default_value": "md",
-                                                    "return_format": "value",
-                                                    "multiple": 0,
-                                                    "allow_null": 0,
-                                                    "ui": 0,
-                                                    "ajax": 0,
-                                                    "placeholder": "",
-                                                    "create_options": 0,
-                                                    "save_options": 0
-                                                },
-                                                {
-                                                    "key": "field_669e67c1_padding_bottom",
-                                                    "label": "Bas",
-                                                    "name": "bottom",
-                                                    "aria-label": "",
-                                                    "type": "select",
-                                                    "instructions": "",
-                                                    "required": 0,
-                                                    "conditional_logic": 0,
-                                                    "wrapper": {
-                                                        "width": "50",
-                                                        "class": "",
-                                                        "id": ""
-                                                    },
-                                                    "choices": {
-                                                        "0": "Aucun",
-                                                        "sm": "Petit",
-                                                        "md": "Moyen",
-                                                        "lg": "Grand"
-                                                    },
-                                                    "default_value": "md",
-                                                    "return_format": "value",
-                                                    "multiple": 0,
-                                                    "allow_null": 0,
-                                                    "ui": 0,
-                                                    "ajax": 0,
-                                                    "placeholder": "",
-                                                    "create_options": 0,
-                                                    "save_options": 0
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
+                            "clone": [
+                                "group_669e67c1b5303"
                             ],
-                            "_clone": "field_6a64efddeebc9",
-                            "__key": "field_6a3298318eb6c",
-                            "__name": "options",
-                            "__label": ""
+                            "display": "seamless",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 0
                         }
                     ],
                     "min": "",
@@ -2670,7 +1047,7 @@
                             "conditional_logic": 0,
                             "wrapper": {
                                 "width": "",
-                                "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
+                                "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
                                 "id": ""
                             },
                             "default_value": "",
@@ -2783,7 +1160,8 @@
                                 "id": ""
                             },
                             "choices": {
-                                "news": "News"
+                                "page": "Page",
+                                "news": "Actualités"
                             },
                             "default_value": "news",
                             "return_format": "value",
@@ -2818,6 +1196,7 @@
                                 "id": ""
                             },
                             "post_type": [
+                                "page",
                                 "news"
                             ],
                             "post_status": [
@@ -2825,7 +1204,8 @@
                             ],
                             "taxonomy": "",
                             "filters": [
-                                "search"
+                                "search",
+                                "post_type"
                             ],
                             "return_format": "id",
                             "min": "",
@@ -3008,11 +1388,11 @@
                             "selected": 0
                         },
                         {
-                            "key": "field_6a66a2a10a112_field_6a3298318eb6c",
+                            "key": "field_6a66a2a10a112",
                             "label": "",
-                            "name": "options",
+                            "name": "",
                             "aria-label": "",
-                            "type": "group",
+                            "type": "clone",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -3021,284 +1401,13 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "layout": "block",
-                            "sub_fields": [
-                                {
-                                    "key": "field_669e67c1_container",
-                                    "label": "Conteneur",
-                                    "name": "container",
-                                    "aria-label": "",
-                                    "type": "select",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "choices": {
-                                        "": "Par défaut",
-                                        "sm": "Étroit",
-                                        "fluid": "Fluide",
-                                        "full": "Pleine largeur"
-                                    },
-                                    "default_value": false,
-                                    "return_format": "value",
-                                    "multiple": 0,
-                                    "allow_null": 0,
-                                    "ui": 0,
-                                    "ajax": 0,
-                                    "placeholder": "",
-                                    "create_options": 0,
-                                    "save_options": 0
-                                },
-                                {
-                                    "key": "field_669e67c1_margin",
-                                    "label": "Marges",
-                                    "name": "margin",
-                                    "aria-label": "",
-                                    "type": "group",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "layout": "block",
-                                    "sub_fields": [
-                                        {
-                                            "key": "field_669e67c1_margin_top",
-                                            "label": "Haut",
-                                            "name": "top",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "50",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "": "Aucune",
-                                                "sm": "Petite",
-                                                "md": "Moyenne",
-                                                "lg": "Grande"
-                                            },
-                                            "default_value": false,
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        },
-                                        {
-                                            "key": "field_669e67c1_margin_bottom",
-                                            "label": "Bas",
-                                            "name": "bottom",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "50",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "0": "Aucune",
-                                                "sm": "Petite",
-                                                "md": "Moyenne",
-                                                "lg": "Grande"
-                                            },
-                                            "default_value": "md",
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        }
-                                    ]
-                                },
-                                {
-                                    "key": "field_669e67c1_background",
-                                    "label": "Background",
-                                    "name": "background",
-                                    "aria-label": "",
-                                    "type": "group",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "layout": "block",
-                                    "sub_fields": [
-                                        {
-                                            "key": "field_669e67c1_hasbackground",
-                                            "label": "",
-                                            "name": "hasbackground",
-                                            "aria-label": "",
-                                            "type": "true_false",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "message": "",
-                                            "default_value": 0,
-                                            "allow_in_bindings": 1,
-                                            "ui_on_text": "Oui",
-                                            "ui_off_text": "Non",
-                                            "ui": 1
-                                        },
-                                        {
-                                            "key": "field_669e67c1_background_color",
-                                            "label": "Couleur",
-                                            "name": "color",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": [
-                                                [
-                                                    {
-                                                        "field": "field_669e67c1_hasbackground",
-                                                        "operator": "==",
-                                                        "value": "1"
-                                                    }
-                                                ]
-                                            ],
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "color-1": "Couleur 1",
-                                                "color-2": "Couleur 2",
-                                                "color-3": "Couleur 3"
-                                            },
-                                            "default_value": "color-1",
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        },
-                                        {
-                                            "key": "field_669e67c1_padding",
-                                            "label": "Espacements internes",
-                                            "name": "padding",
-                                            "aria-label": "",
-                                            "type": "group",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": [
-                                                [
-                                                    {
-                                                        "field": "field_669e67c1_hasbackground",
-                                                        "operator": "==",
-                                                        "value": "1"
-                                                    }
-                                                ]
-                                            ],
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "layout": "block",
-                                            "sub_fields": [
-                                                {
-                                                    "key": "field_669e67c1_padding_top",
-                                                    "label": "Haut",
-                                                    "name": "top",
-                                                    "aria-label": "",
-                                                    "type": "select",
-                                                    "instructions": "",
-                                                    "required": 0,
-                                                    "conditional_logic": 0,
-                                                    "wrapper": {
-                                                        "width": "50",
-                                                        "class": "",
-                                                        "id": ""
-                                                    },
-                                                    "choices": {
-                                                        "0": "Aucun",
-                                                        "xs": "Très petit",
-                                                        "sm": "Petit",
-                                                        "md": "Moyen",
-                                                        "lg": "Grand"
-                                                    },
-                                                    "default_value": "md",
-                                                    "return_format": "value",
-                                                    "multiple": 0,
-                                                    "allow_null": 0,
-                                                    "ui": 0,
-                                                    "ajax": 0,
-                                                    "placeholder": "",
-                                                    "create_options": 0,
-                                                    "save_options": 0
-                                                },
-                                                {
-                                                    "key": "field_669e67c1_padding_bottom",
-                                                    "label": "Bas",
-                                                    "name": "bottom",
-                                                    "aria-label": "",
-                                                    "type": "select",
-                                                    "instructions": "",
-                                                    "required": 0,
-                                                    "conditional_logic": 0,
-                                                    "wrapper": {
-                                                        "width": "50",
-                                                        "class": "",
-                                                        "id": ""
-                                                    },
-                                                    "choices": {
-                                                        "0": "Aucun",
-                                                        "sm": "Petit",
-                                                        "md": "Moyen",
-                                                        "lg": "Grand"
-                                                    },
-                                                    "default_value": "md",
-                                                    "return_format": "value",
-                                                    "multiple": 0,
-                                                    "allow_null": 0,
-                                                    "ui": 0,
-                                                    "ajax": 0,
-                                                    "placeholder": "",
-                                                    "create_options": 0,
-                                                    "save_options": 0
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
+                            "clone": [
+                                "group_669e67c1b5303"
                             ],
-                            "_clone": "field_6a66a2a10a112",
-                            "__key": "field_6a3298318eb6c",
-                            "__name": "options",
-                            "__label": ""
+                            "display": "seamless",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 0
                         }
                     ],
                     "min": "",
@@ -3339,7 +1448,7 @@
                             "conditional_logic": 0,
                             "wrapper": {
                                 "width": "",
-                                "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
+                                "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
                                 "id": ""
                             },
                             "default_value": "",
@@ -3452,7 +1561,8 @@
                                 "id": ""
                             },
                             "choices": {
-                                "news": "News"
+                                "page": "Page",
+                                "news": "Actualités"
                             },
                             "default_value": "news",
                             "return_format": "value",
@@ -3487,6 +1597,7 @@
                                 "id": ""
                             },
                             "post_type": [
+                                "page",
                                 "news"
                             ],
                             "post_status": [
@@ -3494,7 +1605,8 @@
                             ],
                             "taxonomy": "",
                             "filters": [
-                                "search"
+                                "search",
+                                "post_type"
                             ],
                             "return_format": "id",
                             "min": "",
@@ -3743,11 +1855,11 @@
                             "selected": 0
                         },
                         {
-                            "key": "field_6a66b2b10b112_field_6a3298318eb6c",
+                            "key": "field_6a66b2b10b112",
                             "label": "",
-                            "name": "options",
+                            "name": "",
                             "aria-label": "",
-                            "type": "group",
+                            "type": "clone",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -3756,284 +1868,13 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "layout": "block",
-                            "sub_fields": [
-                                {
-                                    "key": "field_669e67c1_container",
-                                    "label": "Conteneur",
-                                    "name": "container",
-                                    "aria-label": "",
-                                    "type": "select",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "choices": {
-                                        "": "Par défaut",
-                                        "sm": "Étroit",
-                                        "fluid": "Fluide",
-                                        "full": "Pleine largeur"
-                                    },
-                                    "default_value": false,
-                                    "return_format": "value",
-                                    "multiple": 0,
-                                    "allow_null": 0,
-                                    "ui": 0,
-                                    "ajax": 0,
-                                    "placeholder": "",
-                                    "create_options": 0,
-                                    "save_options": 0
-                                },
-                                {
-                                    "key": "field_669e67c1_margin",
-                                    "label": "Marges",
-                                    "name": "margin",
-                                    "aria-label": "",
-                                    "type": "group",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "layout": "block",
-                                    "sub_fields": [
-                                        {
-                                            "key": "field_669e67c1_margin_top",
-                                            "label": "Haut",
-                                            "name": "top",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "50",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "": "Aucune",
-                                                "sm": "Petite",
-                                                "md": "Moyenne",
-                                                "lg": "Grande"
-                                            },
-                                            "default_value": false,
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        },
-                                        {
-                                            "key": "field_669e67c1_margin_bottom",
-                                            "label": "Bas",
-                                            "name": "bottom",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "50",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "0": "Aucune",
-                                                "sm": "Petite",
-                                                "md": "Moyenne",
-                                                "lg": "Grande"
-                                            },
-                                            "default_value": "md",
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        }
-                                    ]
-                                },
-                                {
-                                    "key": "field_669e67c1_background",
-                                    "label": "Background",
-                                    "name": "background",
-                                    "aria-label": "",
-                                    "type": "group",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "layout": "block",
-                                    "sub_fields": [
-                                        {
-                                            "key": "field_669e67c1_hasbackground",
-                                            "label": "",
-                                            "name": "hasbackground",
-                                            "aria-label": "",
-                                            "type": "true_false",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "message": "",
-                                            "default_value": 0,
-                                            "allow_in_bindings": 1,
-                                            "ui_on_text": "Oui",
-                                            "ui_off_text": "Non",
-                                            "ui": 1
-                                        },
-                                        {
-                                            "key": "field_669e67c1_background_color",
-                                            "label": "Couleur",
-                                            "name": "color",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": [
-                                                [
-                                                    {
-                                                        "field": "field_669e67c1_hasbackground",
-                                                        "operator": "==",
-                                                        "value": "1"
-                                                    }
-                                                ]
-                                            ],
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "color-1": "Couleur 1",
-                                                "color-2": "Couleur 2",
-                                                "color-3": "Couleur 3"
-                                            },
-                                            "default_value": "color-1",
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        },
-                                        {
-                                            "key": "field_669e67c1_padding",
-                                            "label": "Espacements internes",
-                                            "name": "padding",
-                                            "aria-label": "",
-                                            "type": "group",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": [
-                                                [
-                                                    {
-                                                        "field": "field_669e67c1_hasbackground",
-                                                        "operator": "==",
-                                                        "value": "1"
-                                                    }
-                                                ]
-                                            ],
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "layout": "block",
-                                            "sub_fields": [
-                                                {
-                                                    "key": "field_669e67c1_padding_top",
-                                                    "label": "Haut",
-                                                    "name": "top",
-                                                    "aria-label": "",
-                                                    "type": "select",
-                                                    "instructions": "",
-                                                    "required": 0,
-                                                    "conditional_logic": 0,
-                                                    "wrapper": {
-                                                        "width": "50",
-                                                        "class": "",
-                                                        "id": ""
-                                                    },
-                                                    "choices": {
-                                                        "0": "Aucun",
-                                                        "xs": "Très petit",
-                                                        "sm": "Petit",
-                                                        "md": "Moyen",
-                                                        "lg": "Grand"
-                                                    },
-                                                    "default_value": "md",
-                                                    "return_format": "value",
-                                                    "multiple": 0,
-                                                    "allow_null": 0,
-                                                    "ui": 0,
-                                                    "ajax": 0,
-                                                    "placeholder": "",
-                                                    "create_options": 0,
-                                                    "save_options": 0
-                                                },
-                                                {
-                                                    "key": "field_669e67c1_padding_bottom",
-                                                    "label": "Bas",
-                                                    "name": "bottom",
-                                                    "aria-label": "",
-                                                    "type": "select",
-                                                    "instructions": "",
-                                                    "required": 0,
-                                                    "conditional_logic": 0,
-                                                    "wrapper": {
-                                                        "width": "50",
-                                                        "class": "",
-                                                        "id": ""
-                                                    },
-                                                    "choices": {
-                                                        "0": "Aucun",
-                                                        "sm": "Petit",
-                                                        "md": "Moyen",
-                                                        "lg": "Grand"
-                                                    },
-                                                    "default_value": "md",
-                                                    "return_format": "value",
-                                                    "multiple": 0,
-                                                    "allow_null": 0,
-                                                    "ui": 0,
-                                                    "ajax": 0,
-                                                    "placeholder": "",
-                                                    "create_options": 0,
-                                                    "save_options": 0
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
+                            "clone": [
+                                "group_669e67c1b5303"
                             ],
-                            "_clone": "field_6a66b2b10b112",
-                            "__key": "field_6a3298318eb6c",
-                            "__name": "options",
-                            "__label": ""
+                            "display": "seamless",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 0
                         }
                     ],
                     "min": "",
@@ -4074,7 +1915,7 @@
                             "conditional_logic": 0,
                             "wrapper": {
                                 "width": "",
-                                "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
+                                "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
                                 "id": ""
                             },
                             "default_value": "",
@@ -4275,11 +2116,11 @@
                             "selected": 0
                         },
                         {
-                            "key": "field_6a66c3c10c10b_field_6a3298318eb6c",
+                            "key": "field_6a66c3c10c10b",
                             "label": "",
-                            "name": "options",
+                            "name": "",
                             "aria-label": "",
-                            "type": "group",
+                            "type": "clone",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -4288,284 +2129,13 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "layout": "block",
-                            "sub_fields": [
-                                {
-                                    "key": "field_669e67c1_container",
-                                    "label": "Conteneur",
-                                    "name": "container",
-                                    "aria-label": "",
-                                    "type": "select",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "choices": {
-                                        "": "Par défaut",
-                                        "sm": "Étroit",
-                                        "fluid": "Fluide",
-                                        "full": "Pleine largeur"
-                                    },
-                                    "default_value": false,
-                                    "return_format": "value",
-                                    "multiple": 0,
-                                    "allow_null": 0,
-                                    "ui": 0,
-                                    "ajax": 0,
-                                    "placeholder": "",
-                                    "create_options": 0,
-                                    "save_options": 0
-                                },
-                                {
-                                    "key": "field_669e67c1_margin",
-                                    "label": "Marges",
-                                    "name": "margin",
-                                    "aria-label": "",
-                                    "type": "group",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "layout": "block",
-                                    "sub_fields": [
-                                        {
-                                            "key": "field_669e67c1_margin_top",
-                                            "label": "Haut",
-                                            "name": "top",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "50",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "": "Aucune",
-                                                "sm": "Petite",
-                                                "md": "Moyenne",
-                                                "lg": "Grande"
-                                            },
-                                            "default_value": false,
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        },
-                                        {
-                                            "key": "field_669e67c1_margin_bottom",
-                                            "label": "Bas",
-                                            "name": "bottom",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "50",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "0": "Aucune",
-                                                "sm": "Petite",
-                                                "md": "Moyenne",
-                                                "lg": "Grande"
-                                            },
-                                            "default_value": "md",
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        }
-                                    ]
-                                },
-                                {
-                                    "key": "field_669e67c1_background",
-                                    "label": "Background",
-                                    "name": "background",
-                                    "aria-label": "",
-                                    "type": "group",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "layout": "block",
-                                    "sub_fields": [
-                                        {
-                                            "key": "field_669e67c1_hasbackground",
-                                            "label": "",
-                                            "name": "hasbackground",
-                                            "aria-label": "",
-                                            "type": "true_false",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "message": "",
-                                            "default_value": 0,
-                                            "allow_in_bindings": 1,
-                                            "ui_on_text": "Oui",
-                                            "ui_off_text": "Non",
-                                            "ui": 1
-                                        },
-                                        {
-                                            "key": "field_669e67c1_background_color",
-                                            "label": "Couleur",
-                                            "name": "color",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": [
-                                                [
-                                                    {
-                                                        "field": "field_669e67c1_hasbackground",
-                                                        "operator": "==",
-                                                        "value": "1"
-                                                    }
-                                                ]
-                                            ],
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "color-1": "Couleur 1",
-                                                "color-2": "Couleur 2",
-                                                "color-3": "Couleur 3"
-                                            },
-                                            "default_value": "color-1",
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        },
-                                        {
-                                            "key": "field_669e67c1_padding",
-                                            "label": "Espacements internes",
-                                            "name": "padding",
-                                            "aria-label": "",
-                                            "type": "group",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": [
-                                                [
-                                                    {
-                                                        "field": "field_669e67c1_hasbackground",
-                                                        "operator": "==",
-                                                        "value": "1"
-                                                    }
-                                                ]
-                                            ],
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "layout": "block",
-                                            "sub_fields": [
-                                                {
-                                                    "key": "field_669e67c1_padding_top",
-                                                    "label": "Haut",
-                                                    "name": "top",
-                                                    "aria-label": "",
-                                                    "type": "select",
-                                                    "instructions": "",
-                                                    "required": 0,
-                                                    "conditional_logic": 0,
-                                                    "wrapper": {
-                                                        "width": "50",
-                                                        "class": "",
-                                                        "id": ""
-                                                    },
-                                                    "choices": {
-                                                        "0": "Aucun",
-                                                        "xs": "Très petit",
-                                                        "sm": "Petit",
-                                                        "md": "Moyen",
-                                                        "lg": "Grand"
-                                                    },
-                                                    "default_value": "md",
-                                                    "return_format": "value",
-                                                    "multiple": 0,
-                                                    "allow_null": 0,
-                                                    "ui": 0,
-                                                    "ajax": 0,
-                                                    "placeholder": "",
-                                                    "create_options": 0,
-                                                    "save_options": 0
-                                                },
-                                                {
-                                                    "key": "field_669e67c1_padding_bottom",
-                                                    "label": "Bas",
-                                                    "name": "bottom",
-                                                    "aria-label": "",
-                                                    "type": "select",
-                                                    "instructions": "",
-                                                    "required": 0,
-                                                    "conditional_logic": 0,
-                                                    "wrapper": {
-                                                        "width": "50",
-                                                        "class": "",
-                                                        "id": ""
-                                                    },
-                                                    "choices": {
-                                                        "0": "Aucun",
-                                                        "sm": "Petit",
-                                                        "md": "Moyen",
-                                                        "lg": "Grand"
-                                                    },
-                                                    "default_value": "md",
-                                                    "return_format": "value",
-                                                    "multiple": 0,
-                                                    "allow_null": 0,
-                                                    "ui": 0,
-                                                    "ajax": 0,
-                                                    "placeholder": "",
-                                                    "create_options": 0,
-                                                    "save_options": 0
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
+                            "clone": [
+                                "group_669e67c1b5303"
                             ],
-                            "_clone": "field_6a66c3c10c10b",
-                            "__key": "field_6a3298318eb6c",
-                            "__name": "options",
-                            "__label": ""
+                            "display": "seamless",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 0
                         }
                     ],
                     "min": "",
@@ -4606,7 +2176,7 @@
                             "conditional_logic": 0,
                             "wrapper": {
                                 "width": "",
-                                "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
+                                "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
                                 "id": ""
                             },
                             "default_value": "",
@@ -4639,7 +2209,7 @@
                         },
                         {
                             "key": "field_6a5e407d724ff",
-                            "label": "Item",
+                            "label": "Items",
                             "name": "items",
                             "aria-label": "",
                             "type": "repeater",
@@ -4721,11 +2291,11 @@
                             "selected": 0
                         },
                         {
-                            "key": "field_6a649761ef102_field_6a3298318eb6c",
-                            "label": "",
+                            "key": "field_6a649761ef102",
+                            "label": "Options",
                             "name": "options",
                             "aria-label": "",
-                            "type": "group",
+                            "type": "clone",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -4734,284 +2304,13 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "layout": "block",
-                            "sub_fields": [
-                                {
-                                    "key": "field_669e67c1_container",
-                                    "label": "Conteneur",
-                                    "name": "container",
-                                    "aria-label": "",
-                                    "type": "select",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "choices": {
-                                        "": "Par défaut",
-                                        "sm": "Étroit",
-                                        "fluid": "Fluide",
-                                        "full": "Pleine largeur"
-                                    },
-                                    "default_value": false,
-                                    "return_format": "value",
-                                    "multiple": 0,
-                                    "allow_null": 0,
-                                    "ui": 0,
-                                    "ajax": 0,
-                                    "placeholder": "",
-                                    "create_options": 0,
-                                    "save_options": 0
-                                },
-                                {
-                                    "key": "field_669e67c1_margin",
-                                    "label": "Marges",
-                                    "name": "margin",
-                                    "aria-label": "",
-                                    "type": "group",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "layout": "block",
-                                    "sub_fields": [
-                                        {
-                                            "key": "field_669e67c1_margin_top",
-                                            "label": "Haut",
-                                            "name": "top",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "50",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "": "Aucune",
-                                                "sm": "Petite",
-                                                "md": "Moyenne",
-                                                "lg": "Grande"
-                                            },
-                                            "default_value": false,
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        },
-                                        {
-                                            "key": "field_669e67c1_margin_bottom",
-                                            "label": "Bas",
-                                            "name": "bottom",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "50",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "0": "Aucune",
-                                                "sm": "Petite",
-                                                "md": "Moyenne",
-                                                "lg": "Grande"
-                                            },
-                                            "default_value": "md",
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        }
-                                    ]
-                                },
-                                {
-                                    "key": "field_669e67c1_background",
-                                    "label": "Background",
-                                    "name": "background",
-                                    "aria-label": "",
-                                    "type": "group",
-                                    "instructions": "",
-                                    "required": 0,
-                                    "conditional_logic": 0,
-                                    "wrapper": {
-                                        "width": "",
-                                        "class": "",
-                                        "id": ""
-                                    },
-                                    "layout": "block",
-                                    "sub_fields": [
-                                        {
-                                            "key": "field_669e67c1_hasbackground",
-                                            "label": "",
-                                            "name": "hasbackground",
-                                            "aria-label": "",
-                                            "type": "true_false",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": 0,
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "message": "",
-                                            "default_value": 0,
-                                            "allow_in_bindings": 1,
-                                            "ui_on_text": "Oui",
-                                            "ui_off_text": "Non",
-                                            "ui": 1
-                                        },
-                                        {
-                                            "key": "field_669e67c1_background_color",
-                                            "label": "Couleur",
-                                            "name": "color",
-                                            "aria-label": "",
-                                            "type": "select",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": [
-                                                [
-                                                    {
-                                                        "field": "field_669e67c1_hasbackground",
-                                                        "operator": "==",
-                                                        "value": "1"
-                                                    }
-                                                ]
-                                            ],
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "choices": {
-                                                "color-1": "Couleur 1",
-                                                "color-2": "Couleur 2",
-                                                "color-3": "Couleur 3"
-                                            },
-                                            "default_value": "color-1",
-                                            "return_format": "value",
-                                            "multiple": 0,
-                                            "allow_null": 0,
-                                            "ui": 0,
-                                            "ajax": 0,
-                                            "placeholder": "",
-                                            "create_options": 0,
-                                            "save_options": 0
-                                        },
-                                        {
-                                            "key": "field_669e67c1_padding",
-                                            "label": "Espacements internes",
-                                            "name": "padding",
-                                            "aria-label": "",
-                                            "type": "group",
-                                            "instructions": "",
-                                            "required": 0,
-                                            "conditional_logic": [
-                                                [
-                                                    {
-                                                        "field": "field_669e67c1_hasbackground",
-                                                        "operator": "==",
-                                                        "value": "1"
-                                                    }
-                                                ]
-                                            ],
-                                            "wrapper": {
-                                                "width": "",
-                                                "class": "",
-                                                "id": ""
-                                            },
-                                            "layout": "block",
-                                            "sub_fields": [
-                                                {
-                                                    "key": "field_669e67c1_padding_top",
-                                                    "label": "Haut",
-                                                    "name": "top",
-                                                    "aria-label": "",
-                                                    "type": "select",
-                                                    "instructions": "",
-                                                    "required": 0,
-                                                    "conditional_logic": 0,
-                                                    "wrapper": {
-                                                        "width": "50",
-                                                        "class": "",
-                                                        "id": ""
-                                                    },
-                                                    "choices": {
-                                                        "0": "Aucun",
-                                                        "xs": "Très petit",
-                                                        "sm": "Petit",
-                                                        "md": "Moyen",
-                                                        "lg": "Grand"
-                                                    },
-                                                    "default_value": "md",
-                                                    "return_format": "value",
-                                                    "multiple": 0,
-                                                    "allow_null": 0,
-                                                    "ui": 0,
-                                                    "ajax": 0,
-                                                    "placeholder": "",
-                                                    "create_options": 0,
-                                                    "save_options": 0
-                                                },
-                                                {
-                                                    "key": "field_669e67c1_padding_bottom",
-                                                    "label": "Bas",
-                                                    "name": "bottom",
-                                                    "aria-label": "",
-                                                    "type": "select",
-                                                    "instructions": "",
-                                                    "required": 0,
-                                                    "conditional_logic": 0,
-                                                    "wrapper": {
-                                                        "width": "50",
-                                                        "class": "",
-                                                        "id": ""
-                                                    },
-                                                    "choices": {
-                                                        "0": "Aucun",
-                                                        "sm": "Petit",
-                                                        "md": "Moyen",
-                                                        "lg": "Grand"
-                                                    },
-                                                    "default_value": "md",
-                                                    "return_format": "value",
-                                                    "multiple": 0,
-                                                    "allow_null": 0,
-                                                    "ui": 0,
-                                                    "ajax": 0,
-                                                    "placeholder": "",
-                                                    "create_options": 0,
-                                                    "save_options": 0
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
+                            "clone": [
+                                "group_669e67c1b5303"
                             ],
-                            "_clone": "field_6a649761ef102",
-                            "__key": "field_6a3298318eb6c",
-                            "__name": "options",
-                            "__label": ""
+                            "display": "seamless",
+                            "layout": "block",
+                            "prefix_label": 0,
+                            "prefix_name": 0
                         }
                     ],
                     "min": "",
@@ -5042,7 +2341,7 @@
             {
                 "param": "post_template",
                 "operator": "==",
-                "value": "page-flexible.php"
+                "value": "default"
             }
         ]
     ],
@@ -5058,5 +2357,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1785077084
+    "modified": 1789029107
 }

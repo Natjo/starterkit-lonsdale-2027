@@ -23,7 +23,6 @@ if ($can_render_items && $mode === 'automatic') {
         'post_type' => $post_type,
         'post_status' => 'publish',
         'posts_per_page' => $limit,
-        'fields' => 'ids',
         'orderby' => 'date',
         'order' => 'DESC',
         'no_found_rows' => true,
@@ -32,6 +31,8 @@ if ($can_render_items && $mode === 'automatic') {
     ]);
 } elseif ($can_render_items) {
     $selected = is_array($args['items'] ?? null) ? $args['items'] : [];
+    theme_prime_posts($selected);
+
     foreach ($selected as $item) {
         $id = filter_var($item, FILTER_VALIDATE_INT);
         if ($id !== false && $id > 0 && get_post_type($id) === $post_type) {
@@ -40,10 +41,18 @@ if ($can_render_items && $mode === 'automatic') {
     }
 }
 
-$items = array_values(array_unique(array_filter(array_map('intval', $items))));
-if ($items !== [] && function_exists('update_meta_cache')) {
-    update_meta_cache('post', $items);
-}
+$items = array_values(array_unique(array_filter(array_map(
+    static function (mixed $item): int {
+        if (is_object($item) && isset($item->ID)) {
+            return max(0, (int) $item->ID);
+        }
+
+        $id = filter_var($item, FILTER_VALIDATE_INT);
+        return $id !== false && $id > 0 ? $id : 0;
+    },
+    $items
+))));
+theme_prime_posts($items);
 
 if ($post_type === 'news' && $resolved_card === 'card-news' && function_exists('get_field')) {
     $items = array_map(static function (int $post_id): array {

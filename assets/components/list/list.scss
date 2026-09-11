@@ -4,3 +4,13 @@
     grid-template-columns: repeat(var(--list-columns, 1), 1fr);
     gap: var(--list-gap, var(--gap));
 }
+
+.list-flex {
+    width: 100%;
+    display: flex;
+    gap: var(--list-gap, var(--gap));
+
+    > .item {
+        flex: 1;
+    }
+}

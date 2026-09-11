@@ -84,6 +84,10 @@ acf_fc_layout = marquee
 ACF propose automatiquement les CPT enregistrés qui possèdent une card de même
 nom. Dans le starter, le choix par défaut est `news`.
 
+Les posts sélectionnés sont préchargés en lots avant leur validation par CPT.
+Les images sont ensuite préchargées par le composant `marquee`. Ce comportement
+s'applique à toutes les pages, archives et templates utilisant la strate.
+
 ## Images
 
 La taille WordPress est définie au début du template :

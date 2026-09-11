@@ -39,15 +39,11 @@ Réseaux reconnus : `facebook`, `instagram`, `linkedin`, `x`, `youtube`,
 Les réseaux inconnus, URL non HTTP(S) et doublons sont ignorés. Tous les liens
 s’ouvrent dans un nouvel onglet avec `noopener noreferrer`.
 
-## Icônes incomplètes
+## Icônes
 
-Le composant vérifie automatiquement les symboles présents dans
-`assets/img/icons.svg`. Lorsque le symbole du réseau existe, il appelle
-`component('icon', [...])` avec le même nom. Le sprite n’est lu qu’une fois par
-requête.
-
-Si l’icône n’a pas encore été ajoutée au sprite, le nom du réseau reste visible
-à la place. Une icône manquante ne crée donc ni lien vide ni SVG cassé.
+Le composant appelle `component('icon', [...])` avec le nom du réseau. Chaque
+réseau reconnu par le catalogue doit donc posséder un symbole portant le même
+identifiant dans `assets/img/icons.svg`.
 
 ## Dépendances
 

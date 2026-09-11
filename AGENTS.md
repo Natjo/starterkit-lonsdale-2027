@@ -96,6 +96,10 @@ globales depuis WordPress (menus, options du site ou options ACF).
 - Un composant générique ne doit pas lire implicitement un champ ACF.
 - Ne pas mettre de fonction de traduction dans un composant. Les libellés sont
   fournis par l'appelant.
+- Tout nom transmis à `component('icon', [...])` doit correspondre à un
+  `<symbol id="...">` présent dans `assets/img/icons.svg`. Les composants
+  considèrent ce contrat comme acquis et ne doivent pas lire ou analyser le
+  sprite au runtime pour vérifier la présence d'une icône.
 - Les champs ACF image du projet retournent généralement un identifiant. Garder
   aussi les formats explicitement prévus par le README du composant concerné.
 - Ne pas produire de balisage vide lorsque le contrat du composant prévoit de ne

@@ -1,7 +1,8 @@
 # Composant `btn`
 
-Génère un `<button>` ou un lien `<a>` avec la classe `btn`. Le composant
-fonctionne uniquement avec `component('btn', [...])` et un payload associatif.
+Génère un `<button>`, un lien `<a>` ou un élément neutre `<span>` avec la
+classe `btn`. Le composant fonctionne uniquement avec `component('btn', [...])`
+et un payload associatif.
 
 ## Bouton
 
@@ -44,12 +45,39 @@ supportés.
 | --- | --- | --- | --- |
 | `name` | `scalar\|Stringable` | `''` | Libellé du bouton natif |
 | `link` | `array` | absent | Données du lien `url`, `title`, `target` |
+| `element` | `'a'\|'span'` | `'a'` | Élément HTML racine en présence de `link` |
 | `classes` | `string\|array` | `''` | Classes supplémentaires |
 | `icon` | `array associatif` | absent | Payload de `component('icon', [...])` |
 | `attributes` | `array` | `[]` | Attributs HTML supplémentaires |
 
 La présence de `link` sélectionne toujours le mode lien. Un `link` incomplet
 ou invalide ne produit aucun HTML et ne retombe pas sur `name`.
+
+## Élément racine
+
+La présence de `link` génère un `<a>` par défaut. Sans `link`, le composant
+génère toujours un `<button>` et ignore l'option `element`.
+
+Une card dont le lien enveloppe déjà tout le contenu peut demander un élément
+visuel non interactif afin d'éviter d'imbriquer deux liens :
+
+```php
+component('btn', [
+    'link' => [
+        'url' => '/projet/',
+        'title' => 'Découvrir le projet',
+    ],
+    'element' => 'span',
+    'classes' => 'btn-1',
+]);
+```
+
+Le `span` utilise `link.title`. Il ne rend jamais `href`, `target`, `rel`,
+`type`, `disabled` ni les attributs de formulaire. Il reste volontairement non
+interactif et ne reçoit aucun rôle ARIA implicite.
+
+Toute valeur autre que `span` conserve le `<a>` par défaut. Dans les deux cas,
+un `link` valide est obligatoire.
 
 ## Bouton natif
 
@@ -102,6 +130,7 @@ accompagne déjà le texte visible et reste donc décorative par défaut.
 
 - Un bouton sans `name` valide ne produit aucun HTML.
 - Un lien exige une URL sûre et un titre non vide.
+- Un `span` exige un `link` valide et utilise son `title`.
 - Le libellé visible est échappé avec `esc_html()`.
 - Les classes sont nettoyées et dédupliquées.
 - `class`, `href`, `target`, `rel` et `type` sont protégés.

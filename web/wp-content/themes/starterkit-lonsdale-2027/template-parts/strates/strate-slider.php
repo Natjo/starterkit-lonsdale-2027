@@ -46,6 +46,8 @@ if ($content_type === 'images') {
     $seen_ids = [];
 
     if ($card_exists && ($post_type_exists || array_key_exists('card', $args))) {
+        theme_prime_posts($selected);
+
         foreach ($selected as $item) {
             $id = filter_var($item, FILTER_VALIDATE_INT);
             if (
@@ -71,10 +73,6 @@ if ($content_type === 'images') {
         }
     }
 
-    $post_ids = array_values(array_filter($items, 'is_int'));
-    if ($post_ids !== [] && function_exists('update_meta_cache')) {
-        update_meta_cache('post', $post_ids);
-    }
 }
 
 if ($items === []) return;

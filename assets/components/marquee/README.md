@@ -79,6 +79,11 @@ component('marquee', [
 Le mode `picture` évite de filtrer les balises structurelles internes du
 composant. Les autres noms de composants sont ignorés.
 
+En mode card, les posts et les images explicites de la collection sont
+préchargés en lots avant le rendu. En mode `picture`, les IDs placés dans
+`image`, `images.desktop` et `images.mobile` sont préchargés de la même manière.
+Les contenus HTML directs ne déclenchent aucun préchargement.
+
 ## Hydratation avec une strate
 
 Le composant s’hydrate seul par défaut. Une strate qui importe `initMarquee`

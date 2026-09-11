@@ -7,6 +7,7 @@ if (array_is_list($params)) return;
 $args = normalize_args($params, [
     'items' => [],
     'card' => 'card-news',
+    'type' => 'grid',
     'classes' => '',
     'attributes' => [],
 ]);
@@ -25,7 +26,12 @@ if ($items === []) return;
 $card = resolve_card_name($to_string($args['card']) ?: 'card-news');
 if ($card === '') return;
 
-$classes = component_classes('list', $args['classes']);
+theme_prime_posts($items);
+theme_prime_attachments(array_values(array_filter($items, 'is_array')));
+
+$type = strtolower($to_string($args['type']));
+$type = in_array($type, ['grid', 'flex'], true) ? $type : 'grid';
+$classes = component_classes($type === 'flex' ? 'list-flex' : 'list', $args['classes']);
 $attributes = component_attributes($args['attributes'], ['class', 'role']);
 ?>
 

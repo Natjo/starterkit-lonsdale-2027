@@ -27,12 +27,33 @@ if (array_key_exists('link', $params)) {
         return;
     }
 
-    $attributes = component_attributes($link['attributes'], ['class', 'href', 'target', 'rel', 'type']);
-    $href = $link['disabled'] ? '' : ' href="' . $link['url'] . '"';
-    $target = !$link['disabled'] && $link['target'] !== '' ? ' target="' . esc_attr($link['target']) . '"' : '';
-    $rel = $link['rel'] !== '' ? ' rel="' . esc_attr($link['rel']) . '"' : '';
+    $element = strtolower($to_string($params['element'] ?? 'a')) === 'span' ? 'span' : 'a';
+    $link_attributes = $link['attributes'];
+
+    if ($element === 'span') {
+        $span_reserved_attributes = [
+            'disabled',
+            'form',
+            'formaction',
+            'formmethod',
+            'formtarget',
+            'name',
+            'value',
+        ];
+
+        foreach (array_keys($link_attributes) as $attribute_name) {
+            if (in_array(strtolower((string) $attribute_name), $span_reserved_attributes, true)) {
+                unset($link_attributes[$attribute_name]);
+            }
+        }
+    }
+
+    $attributes = component_attributes($link_attributes, ['class', 'href', 'target', 'rel', 'type']);
+    $href = $element === 'a' && !$link['disabled'] ? ' href="' . $link['url'] . '"' : '';
+    $target = $element === 'a' && !$link['disabled'] && $link['target'] !== '' ? ' target="' . esc_attr($link['target']) . '"' : '';
+    $rel = $element === 'a' && $link['rel'] !== '' ? ' rel="' . esc_attr($link['rel']) . '"' : '';
     ?>
-    <a<?= $href ?> class="<?= $classes ?>"<?= $attributes . $target . $rel ?>><span><?= esc_html($link['title']) ?></span><?php if ($icon !== null) component('icon', $icon); ?></a>
+    <<?= $element ?><?= $href ?> class="<?= $classes ?>"<?= $attributes . $target . $rel ?>><span><?= esc_html($link['title']) ?></span><?php if ($icon !== null) component('icon', $icon); ?></<?= $element ?>>
     <?php
     return;
 }
@@ -41,6 +62,8 @@ $name = $to_string($params['name'] ?? '');
 if ($name === '') {
     return;
 }
+
+$reserved_attributes = ['class', 'href', 'target', 'rel', 'type'];
 
 $type = 'button';
 foreach (array_keys($attributes_input) as $attribute_name) {
@@ -54,6 +77,6 @@ foreach (array_keys($attributes_input) as $attribute_name) {
     }
 }
 
-$attributes = component_attributes($attributes_input, ['class', 'href', 'target', 'rel', 'type']);
+$attributes = component_attributes($attributes_input, $reserved_attributes);
 ?>
 <button type="<?= esc_attr($type) ?>" class="<?= $classes ?>"<?= $attributes ?>><span><?= esc_html($name) ?></span><?php if ($icon !== null) component('icon', $icon); ?></button>
