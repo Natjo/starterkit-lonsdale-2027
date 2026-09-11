@@ -3,6 +3,9 @@
 Affiche une actualité. Cette card est rendue avec `card()` et non avec
 `component()`.
 
+Le manifeste `card-news.json` décrit les champs de contribution consommés par
+WP Forge. Il doit rester synchronisé avec le payload documenté ci-dessous.
+
 ## Utilisation recommandée
 
 ### Depuis un post WordPress

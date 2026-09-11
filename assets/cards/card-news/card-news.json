@@ -1,0 +1,49 @@
+{
+  "name": "News",
+  "slug": "news",
+  "fields": [
+    {
+      "name": "date",
+      "label": "Date",
+      "type": "text",
+      "required": false
+    },
+    {
+      "name": "datetime",
+      "label": "Date machine",
+      "type": "text",
+      "required": false
+    },
+    {
+      "name": "title",
+      "label": "Titre",
+      "type": "text",
+      "required": false
+    },
+    {
+      "name": "text",
+      "label": "Texte",
+      "type": "wysiwyg",
+      "required": false
+    },
+    {
+      "name": "image",
+      "label": "Image",
+      "type": "image",
+      "required": false
+    },
+    {
+      "name": "image_size",
+      "label": "Taille de l’image",
+      "type": "text",
+      "required": false,
+      "default": "full"
+    },
+    {
+      "name": "link",
+      "label": "Lien",
+      "type": "link",
+      "required": false
+    }
+  ]
+}
