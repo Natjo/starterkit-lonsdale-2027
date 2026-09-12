@@ -1,6 +1,6 @@
 {
     "key": "group_common_prefooter",
-    "title": "Common - Prefooter",
+    "title": "Option - Prefooter",
     "fields": [
         {
             "key": "field_common_prefooter",
@@ -237,5 +237,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1785071452
+    "modified": 1789203481
 }
