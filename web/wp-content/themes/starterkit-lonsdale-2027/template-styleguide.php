@@ -3,7 +3,7 @@
  * Template Name: Styleguide
  * Template Post Type: page
  */
-
+/*
 $styleguide_css_path = get_template_directory() . '/inc/front/styleguide/styleguide.css';
 $styleguide_css_version = is_file($styleguide_css_path) ? (string) filemtime($styleguide_css_path) : null;
 
@@ -18,4 +18,4 @@ get_header();
 
 get_template_part('inc/front/styleguide/styleguide');
 
-get_footer();
+get_footer();*/

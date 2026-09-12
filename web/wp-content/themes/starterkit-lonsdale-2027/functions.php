@@ -37,6 +37,8 @@ if (is_file($site_options)) {
 }
 defined('THEME_ENABLE_SEARCH') || define('THEME_ENABLE_SEARCH', true);
 defined('THEME_ENABLE_NATIVE_POSTS') || define('THEME_ENABLE_NATIVE_POSTS', false);
+defined('THEME_MULTILINGUAL') || define('THEME_MULTILINGUAL', false);
+defined('THEME_LANGUAGES') || define('THEME_LANGUAGES', ['fr']);
 
 require_once __DIR__ . '/inc/config/setup.php';
 require_once __DIR__ . '/inc/config/image-sizes.php';
