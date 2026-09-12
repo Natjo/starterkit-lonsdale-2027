@@ -65,6 +65,8 @@
 // pages — once : bundle dédié, contenu inline uniquement sur le template correspondant
 @import "pages/404" once;
 @import "pages/archive-news" once;
+@import "pages/template-hub" once;
+@import "pages/template-contact" once;
 @import "pages/search" once;
 
 // strates — split : bundle dédié, <link> injecté au premier rendu

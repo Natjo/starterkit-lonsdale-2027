@@ -103,10 +103,13 @@ La lecture statique est configurée dans WordPress : `show_on_front = page` et
 | --- | --- |
 | `front-page.php` | Fonctionnel : common `header-nav`, hero ACF `homepage`, strates ACF, puis démonstration statique de la strate `snap`, footer |
 | `template-styleguide.php` | Fonctionnel pour la démonstration des composants |
+| `template-hub.php` | Hub générique de CPT : utilise le CPT de l’archive courante ou le champ ACF `hub_post_type` d’une Page, puis résout automatiquement la card correspondante |
+| `template-contact.php` | Page de contact autonome assemblée avec les composants du starter, sans strate, avec validation serveur et envoi à l’adresse administrateur |
 | `page.php` | Générique : hero ACF avec titre WordPress en fallback, contenu natif éventuel et dispatch des strates |
 | `index.php` | Liste générique avec extraits et pagination |
 | `single.php` | Titre et contenu du post |
 | `archive.php` | Titre d’archive, liste et pagination |
+| `archive-news.php` | Délègue au rendu partagé `template-hub.php` avec la requête native de l’archive News |
 | `taxonomy.php` | Titre de taxonomie, liste et pagination |
 | `search.php` | Résultats regroupés par CPT, sidebar d’ancres et pagination |
 | `404.php` | Message générique et retour vers l’accueil |
