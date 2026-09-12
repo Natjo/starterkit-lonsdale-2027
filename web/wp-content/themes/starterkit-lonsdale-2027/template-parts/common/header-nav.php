@@ -31,13 +31,15 @@ $has_menu = has_nav_menu($location);
             ?>
         <?php endif; ?>
 
-        <?php component('search', [
-            'value' => get_search_query(),
-            'action' => home_url('/'),
-            'label' => __('Rechercher sur le site', 'theme'),
-            'placeholder' => __('Votre recherche', 'theme'),
-            'submit_label' => __('Rechercher', 'theme'),
-            'classes' => 'header-search',
-        ]); ?>
+        <?php if (!defined('THEME_ENABLE_SEARCH') || THEME_ENABLE_SEARCH) : ?>
+            <?php component('search', [
+                'value' => get_search_query(),
+                'action' => home_url('/'),
+                'label' => __('Rechercher sur le site', 'theme'),
+                'placeholder' => __('Votre recherche', 'theme'),
+                'submit_label' => __('Rechercher', 'theme'),
+                'classes' => 'header-search',
+            ]); ?>
+        <?php endif; ?>
     </nav>
 </header>

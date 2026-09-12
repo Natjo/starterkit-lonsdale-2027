@@ -22,11 +22,13 @@ Le template produit toujours :
 - le nom du site comme libellé accessible ;
 - `.btn-nav`, placé avant la navigation pour conserver l’ordre clavier mobile ;
 - `#nav`, relié au bouton par `aria-controls` ;
-- le composant `search`, envoyé en GET vers l’accueil.
+- le composant `search`, envoyé en GET vers l’accueil, lorsque `THEME_ENABLE_SEARCH` est activée.
 
 Si `menu-header` possède un menu, celui-ci est affiché avant la recherche dans
 `#nav`. Sans menu affecté, la recherche reste accessible et le bouton burger
-ouvre toujours son panneau sur mobile.
+ouvre toujours son panneau sur mobile. WP Forge peut désactiver la recherche :
+le formulaire est alors omis du header et les URL de recherche redirigent vers
+l’accueil.
 
 ## Données WordPress
 

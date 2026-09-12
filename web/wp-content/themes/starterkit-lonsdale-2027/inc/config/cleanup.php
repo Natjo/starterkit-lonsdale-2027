@@ -43,7 +43,9 @@ remove_action('admin_print_styles', 'print_emoji_styles');
  */
 function theme_hidden_post_types(): array
 {
-    return ['post'];
+    $native_posts_enabled = defined('THEME_ENABLE_NATIVE_POSTS') && THEME_ENABLE_NATIVE_POSTS;
+
+    return $native_posts_enabled ? [] : ['post'];
 }
 
 // Masque les types désactivés dans le menu latéral.
@@ -79,11 +81,19 @@ add_action('wp_dashboard_setup', function () {
 // Le contenu éditorial vient exclusivement des champs ACF.
 function remove_native_content_editors(): void
 {
-    foreach (['post', 'page', 'news'] as $post_type) {
+    $post_types = ['page', 'news'];
+    $native_posts_enabled = defined('THEME_ENABLE_NATIVE_POSTS') && THEME_ENABLE_NATIVE_POSTS;
+    if (!$native_posts_enabled) {
+        $post_types[] = 'post';
+    }
+
+    foreach ($post_types as $post_type) {
         remove_post_type_support($post_type, 'editor');
     }
 
-    remove_post_type_support('post', 'excerpt');
+    if (!$native_posts_enabled) {
+        remove_post_type_support('post', 'excerpt');
+    }
 }
 add_action('init', 'remove_native_content_editors', 100);
 

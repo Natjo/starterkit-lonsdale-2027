@@ -31,13 +31,29 @@ define('THEME_UPLOADS', $cdn && !is_admin()
 define('HOME_URL', get_home_url());
 define('AJAX_URL', admin_url('admin-ajax.php'));
 
+$site_options = __DIR__ . '/inc/config/site-options.php';
+if (is_file($site_options)) {
+    require_once $site_options;
+}
+defined('THEME_ENABLE_SEARCH') || define('THEME_ENABLE_SEARCH', true);
+defined('THEME_ENABLE_NATIVE_POSTS') || define('THEME_ENABLE_NATIVE_POSTS', false);
+
 require_once __DIR__ . '/inc/config/setup.php';
 require_once __DIR__ . '/inc/config/image-sizes.php';
 require_once __DIR__ . '/inc/config/cleanup.php';
 require_once __DIR__ . '/inc/config/disable-comments.php';
 require_once __DIR__ . '/inc/config/security.php';
 require_once __DIR__ . '/inc/config/acf.php';
-require_once __DIR__ . '/inc/config/search.php';
+if (THEME_ENABLE_SEARCH) {
+    require_once __DIR__ . '/inc/config/search.php';
+} else {
+    add_action('template_redirect', static function (): void {
+        if (is_search()) {
+            wp_safe_redirect(home_url('/'));
+            exit;
+        }
+    });
+}
 require_once __DIR__ . '/inc/config/seo.php';
 
 require_once __DIR__ . '/inc/datatypes.php';
