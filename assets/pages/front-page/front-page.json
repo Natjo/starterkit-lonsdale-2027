@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "type": "page",
+  "name": "Front page",
+  "slug": "front-page",
+  "file": "front-page.php",
+  "activation": "always",
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": ["snap", "anchor_nav", "lottie"],
+    "heroes": ["homepage"],
+    "common": ["header-nav", "prefooter"],
+    "modules": []
+  }
+}

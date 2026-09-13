@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "type": "common",
+  "name": "header-nav",
+  "slug": "header-nav",
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

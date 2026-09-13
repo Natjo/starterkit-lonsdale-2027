@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "type": "strate",
+  "name": "quote",
+  "slug": "quote",
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

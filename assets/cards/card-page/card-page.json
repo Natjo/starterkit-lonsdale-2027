@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "type": "card",
+  "name": "page",
+  "slug": "page",
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

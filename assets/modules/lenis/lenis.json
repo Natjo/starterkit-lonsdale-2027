@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "type": "module",
+  "name": "lenis",
+  "slug": "lenis",
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

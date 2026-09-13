@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "type": "template",
+  "name": "Recherche",
+  "slug": "search",
+  "file": "search.php",
+  "activation": { "option": "enableSearch" },
+  "dependencies": {
+    "components": ["list", "pagination", "search", "text", "title"],
+    "cards": ["news"],
+    "strates": [],
+    "heroes": [],
+    "common": ["header-nav"],
+    "modules": []
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "type": "component",
+  "name": "marquee",
+  "slug": "marquee",
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

@@ -5,7 +5,7 @@
  *
  * Chemin module = chemin co-localisé sous assets/, ex.:
  *   strates/strate-quizz/strate-quizz → assets/css/strates/strate-quizz/strate-quizz.css
- *   pages/search → assets/css/once/pages/search.css si l'import est marqué once
+ *   pages/search/search → assets/css/once/pages/search/search.css si l'import est marqué once
  *   heros/hero-homepage/hero-homepage → concaténé dans <style id="critical-css"> si hero()
  */
 final class ThemeAssets
@@ -374,7 +374,7 @@ function theme_queue_module_assets(string $modulePath): void
 /**
  * Enregistre automatiquement le CSS split associé au template WordPress.
  *
- * Exemple : search.php → assets/css/pages/search.css.
+ * Exemple : search.php → assets/css/once/pages/search/search.css.
  */
 function theme_queue_template_assets(string $template): void
 {
@@ -384,7 +384,7 @@ function theme_queue_template_assets(string $template): void
         return;
     }
 
-    ThemeAssets::queueModule("pages/{$name}");
+    ThemeAssets::queueModule("pages/{$name}/{$name}");
 }
 
 function theme_queue_hero_critical(string $name): void

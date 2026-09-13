@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "type": "template",
+  "name": "Flexible",
+  "slug": "flexible",
+  "file": "template-flexible.php",
+  "activation": "selected",
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": ["page"],
+    "common": ["header-nav"],
+    "modules": []
+  }
+}

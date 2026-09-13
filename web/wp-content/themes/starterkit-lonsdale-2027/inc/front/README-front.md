@@ -207,10 +207,10 @@ Un import marqué `once` est compilé séparément puis injecté inline une seul
 fois, uniquement pour le template WordPress portant le même nom :
 
 ```scss
-@import "pages/search" once;
+@import "pages/search/search" once;
 ```
 
-Le build produit alors `assets/css/once/pages/search.css`. `search.php`
+Le build produit alors `assets/css/once/pages/search/search.css`. `search.php`
 l'enregistre automatiquement et son contenu est rendu dans
 `<style id="once-pages-search">`. La même convention s'applique à `404.php`,
 `archive.php`, `single-news.php` ou `front-page.php`. Aucun appel à

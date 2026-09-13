@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "type": "module",
+  "name": "sectionSnap",
+  "slug": "sectionSnap",
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

@@ -71,8 +71,8 @@ if (!str_contains($lateHeroHtml, '.strate-intro')) {
 
 theme_queue_template_assets('/var/www/html/wp-content/themes/example/search.php');
 
-if (!in_array('pages/search', ThemeAssets::getOnceModules(), true)) {
-    fwrite(STDERR, "search.php doit enregistrer automatiquement pages/search en mode once.\n");
+if (!in_array('pages/search/search', ThemeAssets::getOnceModules(), true)) {
+    fwrite(STDERR, "search.php doit enregistrer automatiquement pages/search/search en mode once.\n");
     exit(1);
 }
 
@@ -85,11 +85,11 @@ ThemeAssets::renderOnceStyles();
 $duplicateTemplateStyle = (string) ob_get_clean();
 
 ob_start();
-theme_queue_module_assets('pages/404');
+theme_queue_module_assets('pages/404/404');
 $moduleOnceStyle = (string) ob_get_clean();
 
 ob_start();
-theme_queue_module_assets('pages/404');
+theme_queue_module_assets('pages/404/404');
 $duplicateModuleOnceStyle = (string) ob_get_clean();
 
 ThemeAssets::queueSplit('strates/strate-textAnimated/strate-textAnimated');
@@ -123,7 +123,7 @@ $headEnd = strpos($html, '</head>');
 $bodyStart = strpos($html, '<body>');
 $mainStart = strpos($html, '<main>');
 $mainEnd = strpos($html, '</main>');
-$search = 'id="once-pages-search"';
+$search = 'id="once-pages-search-search"';
 $textAnimated = 'id="split-strates-strate-textAnimated-strate-textAnimated"';
 $paralax = 'id="split-strates-strate-paralax-strate-paralax"';
 $failures = [];
@@ -167,7 +167,7 @@ if (str_contains($templateStyle, '<link')) {
     $failures[] = 'Le CSS once du template doit être injecté inline.';
 }
 
-if (!str_contains($moduleOnceStyle, 'id="once-pages-404"')) {
+if (!str_contains($moduleOnceStyle, 'id="once-pages-404-404"')) {
     $failures[] = 'Le helper des modules doit injecter un CSS once à son premier rendu.';
 }
 

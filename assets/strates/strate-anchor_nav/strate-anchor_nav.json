@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "type": "strate",
+  "name": "anchor_nav",
+  "slug": "anchor_nav",
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

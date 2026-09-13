@@ -63,11 +63,11 @@
 @import "cards/card-keynumber/card-keynumber";
 
 // pages — once : bundle dédié, contenu inline uniquement sur le template correspondant
-@import "pages/404" once;
-@import "pages/archive-news" once;
-@import "pages/template-hub" once;
-@import "pages/template-contact" once;
-@import "pages/search" once;
+@import "pages/404/404" once;
+@import "pages/archive-news/archive-news" once;
+@import "pages/template-hub/template-hub" once;
+@import "pages/template-contact/template-contact" once;
+@import "pages/search/search" once;
 
 // strates — split : bundle dédié, <link> injecté au premier rendu
 // Pour un petit module rarement utilisé, `once` injecte son contenu dans <style> au premier rendu.

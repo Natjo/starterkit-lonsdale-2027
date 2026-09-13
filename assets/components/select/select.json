@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "type": "component",
+  "name": "select",
+  "slug": "select",
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

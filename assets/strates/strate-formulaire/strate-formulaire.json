@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "type": "strate",
+  "name": "formulaire",
+  "slug": "formulaire",
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

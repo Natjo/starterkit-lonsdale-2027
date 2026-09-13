@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "type": "strate",
+  "name": "news",
+  "slug": "news",
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

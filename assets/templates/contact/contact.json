@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "type": "template",
+  "name": "Contact",
+  "slug": "contact",
+  "file": "template-contact.php",
+  "activation": "selected",
+  "dependencies": {
+    "components": ["btn", "field", "text", "title"],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": ["header-nav"],
+    "modules": []
+  }
+}

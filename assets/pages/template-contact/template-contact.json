@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "type": "page",
+  "name": "template-contact",
+  "slug": "template-contact",
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

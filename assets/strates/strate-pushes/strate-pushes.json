@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "type": "strate",
+  "name": "pushes",
+  "slug": "pushes",
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

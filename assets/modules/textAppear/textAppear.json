@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "type": "module",
+  "name": "textAppear",
+  "slug": "textAppear",
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

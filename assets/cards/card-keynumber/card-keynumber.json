@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "type": "card",
+  "name": "keynumber",
+  "slug": "keynumber",
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}
