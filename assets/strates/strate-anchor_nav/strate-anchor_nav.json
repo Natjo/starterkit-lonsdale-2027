@@ -4,7 +4,7 @@
   "name": "anchor_nav",
   "slug": "anchor_nav",
   "dependencies": {
-    "components": [],
+    "components": ["anchor-nav"],
     "cards": [],
     "strates": [],
     "heroes": [],

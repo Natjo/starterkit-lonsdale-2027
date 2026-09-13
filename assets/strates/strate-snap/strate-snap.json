@@ -4,7 +4,7 @@
   "name": "snap",
   "slug": "snap",
   "dependencies": {
-    "components": [],
+    "components": ["section-snap", "title"],
     "cards": [],
     "strates": [],
     "heroes": [],
