@@ -4,7 +4,7 @@
   "name": "text_image",
   "slug": "text_image",
   "dependencies": {
-    "components": [],
+    "components": ["title","text","picture"],
     "cards": [],
     "strates": [],
     "heroes": [],

@@ -4,7 +4,7 @@
   "name": "dialog",
   "slug": "dialog",
   "dependencies": {
-    "components": [],
+    "components": ["link","btn"],
     "cards": [],
     "strates": [],
     "heroes": [],

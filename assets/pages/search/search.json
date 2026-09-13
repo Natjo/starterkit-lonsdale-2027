@@ -3,6 +3,8 @@
   "type": "page",
   "name": "search",
   "slug": "search",
+  "file": "search.php",
+  "activation": { "option": "enableSearch" },
   "dependencies": {
     "components": [],
     "cards": [],

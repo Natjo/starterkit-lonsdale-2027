@@ -4,7 +4,7 @@
   "name": "header",
   "slug": "header",
   "dependencies": {
-    "components": [],
+    "components": ["title","text","link"],
     "cards": [],
     "strates": [],
     "heroes": [],

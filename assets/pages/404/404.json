@@ -3,12 +3,14 @@
   "type": "page",
   "name": "404",
   "slug": "404",
+  "file": "404.php",
+  "activation": "always",
   "dependencies": {
-    "components": [],
+    "components": ["btn", "text", "title"],
     "cards": [],
     "strates": [],
     "heroes": [],
-    "common": [],
+    "common": ["header-nav"],
     "modules": []
   }
 }

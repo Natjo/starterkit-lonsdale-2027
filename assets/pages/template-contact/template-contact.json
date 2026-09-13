@@ -3,6 +3,8 @@
   "type": "page",
   "name": "template-contact",
   "slug": "template-contact",
+  "file": "template-contact.php",
+  "activation": "selected",
   "dependencies": {
     "components": [],
     "cards": [],

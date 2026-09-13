@@ -4,7 +4,7 @@
   "name": "intro",
   "slug": "intro",
   "dependencies": {
-    "components": [],
+    "components": ["text"],
     "cards": [],
     "strates": [],
     "heroes": [],

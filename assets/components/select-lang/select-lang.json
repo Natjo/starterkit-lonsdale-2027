@@ -4,7 +4,7 @@
   "name": "select-lang",
   "slug": "select-lang",
   "dependencies": {
-    "components": [],
+    "components": ["icon"],
     "cards": [],
     "strates": [],
     "heroes": [],

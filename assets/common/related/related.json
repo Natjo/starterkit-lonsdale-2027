@@ -4,7 +4,7 @@
   "name": "related",
   "slug": "related",
   "dependencies": {
-    "components": [],
+    "components": ["title","text","list"],
     "cards": [],
     "strates": [],
     "heroes": [],

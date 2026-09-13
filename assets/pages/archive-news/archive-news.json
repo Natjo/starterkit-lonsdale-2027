@@ -3,12 +3,14 @@
   "type": "page",
   "name": "archive-news",
   "slug": "archive-news",
+  "file": "archive-news.php",
+  "activation": { "contentType": "news" },
   "dependencies": {
-    "components": [],
-    "cards": [],
+    "components": ["list", "pagination"],
+    "cards": ["news"],
     "strates": [],
-    "heroes": [],
-    "common": [],
+    "heroes": ["page"],
+    "common": ["header-nav"],
     "modules": []
   }
 }

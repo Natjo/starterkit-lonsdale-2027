@@ -4,7 +4,7 @@
   "name": "shares",
   "slug": "shares",
   "dependencies": {
-    "components": [],
+    "components": ["icon"],
     "cards": [],
     "strates": [],
     "heroes": [],

@@ -4,7 +4,7 @@
   "name": "marquee",
   "slug": "marquee",
   "dependencies": {
-    "components": [],
+    "components": ["header","marquee"],
     "cards": [],
     "strates": [],
     "heroes": [],

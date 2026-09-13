@@ -4,7 +4,7 @@
   "name": "keynumbers",
   "slug": "keynumbers",
   "dependencies": {
-    "components": [],
+    "components": ["header","list"],
     "cards": [],
     "strates": [],
     "heroes": [],

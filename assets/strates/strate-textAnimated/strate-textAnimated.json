@@ -4,7 +4,7 @@
   "name": "textAnimated",
   "slug": "textAnimated",
   "dependencies": {
-    "components": [],
+    "components": ["title"],
     "cards": [],
     "strates": [],
     "heroes": [],

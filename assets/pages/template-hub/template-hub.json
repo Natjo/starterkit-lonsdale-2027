@@ -3,6 +3,8 @@
   "type": "page",
   "name": "template-hub",
   "slug": "template-hub",
+  "file": "template-hub.php",
+  "activation": "selected",
   "dependencies": {
     "components": [],
     "cards": [],

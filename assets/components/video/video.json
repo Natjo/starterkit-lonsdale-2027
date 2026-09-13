@@ -4,7 +4,7 @@
   "name": "video",
   "slug": "video",
   "dependencies": {
-    "components": [],
+    "components": ["image","icon"],
     "cards": [],
     "strates": [],
     "heroes": [],
