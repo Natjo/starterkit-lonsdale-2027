@@ -9,6 +9,6 @@
     "strates": [],
     "heroes": [],
     "common": [],
-    "modules": []
+    "modules": ["splitText"]
   }
 }

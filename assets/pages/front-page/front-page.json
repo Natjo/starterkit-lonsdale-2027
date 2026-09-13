@@ -11,6 +11,6 @@
     "strates": ["snap", "anchor_nav", "lottie"],
     "heroes": ["homepage"],
     "common": ["header-nav", "prefooter"],
-    "modules": []
+    "modules": ["hydrate", "lenis"]
   }
 }
