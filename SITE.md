@@ -48,8 +48,9 @@ client. Le présent `SITE.md` est uniquement la photographie du starter actuel.
 Les bibliothèques ou plugins exécutés dans le navigateur doivent être intégrés
 localement dans `assets/vendors/`, avec leur licence et, lorsque l'information
 est disponible, leur version et leur source. Un fichier d'entrée
-`assets/vendors/<nom>.js` peut servir d'adaptateur pour fournir une API stable
-aux composants et modules du starter.
+`assets/vendors/<nom>/index.js` sert d'adaptateur pour fournir une API stable
+aux composants et modules du starter. Chaque dossier possède un manifeste
+`<nom>.json` permettant à WP Forge de résoudre et nettoyer ses dépendances.
 
 Ne pas ajouter ces dépendances front à `package.json` pour les charger dans le
 site. `package.json` est réservé aux outils nécessaires au développement et à

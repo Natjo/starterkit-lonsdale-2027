@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "type": "vendor",
+  "name": "Lenis",
+  "slug": "lenis",
+  "entry": "index.js",
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": [],
+    "vendors": []
+  }
+}

@@ -24,7 +24,8 @@ card, composant, strate ou hero est calculé en PHP.
     "strates": [],
     "heroes": [],
     "common": ["header-nav"],
-    "modules": []
+    "modules": [],
+    "vendors": []
   }
 }
 ```
@@ -36,7 +37,9 @@ Règles :
 - `slug` correspond au nom du dossier et du fichier JSON ;
 - `file` est le nom du fichier PHP à la racine du thème ;
 - `activation` est soit `always`, soit un objet `{ "option": "..." }` ;
-- toutes les familles de `dependencies` sont présentes, même vides ;
+- les six familles historiques de `dependencies` sont présentes, même vides ;
+- `vendors` déclare les bibliothèques front requises ; son absence reste
+  interprétée comme un tableau vide pour les manifestes de schéma 1 existants ;
 - les identifiants utilisent les noms des helpers, sans préfixe de dossier
   (`news`, pas `card-news`) ;
 - une dépendance calculée doit être déclarée explicitement ici.

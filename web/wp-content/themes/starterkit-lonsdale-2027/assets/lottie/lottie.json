@@ -9,6 +9,7 @@
     "strates": [],
     "heroes": [],
     "common": [],
-    "modules": []
+    "modules": [],
+    "vendors": ["lottie"]
   }
 }

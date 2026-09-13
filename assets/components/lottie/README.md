@@ -127,7 +127,7 @@ déclenche aucune requête.
 
 ## Dépendances et fichiers JSON
 
-- `assets/vendors/lottie.js` réexporte la build légère stockée localement dans
+- `assets/vendors/lottie/index.js` réexporte la build légère stockée localement dans
   `assets/vendors/lottie/lottie_light.min.js` ;
 - la licence du player est conservée dans `assets/vendors/lottie/LICENSE.md` ;
 - le player n'est pas installé ni chargé depuis `package.json` ;

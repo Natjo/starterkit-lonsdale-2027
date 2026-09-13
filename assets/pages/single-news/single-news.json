@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "type": "page",
+  "name": "Single news",
+  "slug": "single-news",
+  "file": "single-news.php",
+  "activation": { "contentType": "news" },
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": ["news"],
+    "common": ["header-nav", "related"],
+    "modules": []
+  }
+}

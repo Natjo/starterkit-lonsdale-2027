@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "type": "vendor",
+  "name": "Lottie",
+  "slug": "lottie",
+  "entry": "index.js",
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": [],
+    "vendors": []
+  }
+}

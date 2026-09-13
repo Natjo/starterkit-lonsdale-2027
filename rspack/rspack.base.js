@@ -97,10 +97,6 @@ function createRspackConfig({ name, entry, withCopy = false }) {
                 "@components": path.resolve(__dirname, "../assets/components"),
                 "@fonts": path.resolve(__dirname, "../assets/fonts"),
                 "@img": path.resolve(__dirname, "../assets/img"),
-                "@assets/vendors/lenis$": path.resolve(
-                    __dirname,
-                    "../assets/vendors/lenis.js",
-                ),
                 "@assets/vendors": path.resolve(__dirname, "../assets/vendors"),
                 "@": assetsRoot,
             },

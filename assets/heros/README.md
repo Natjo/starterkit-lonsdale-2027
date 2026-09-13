@@ -222,6 +222,7 @@ Puis :
 | --- | --- | --- |
 | `homepage` | `hero('homepage')` | [`hero-homepage/README.md`](hero-homepage/README.md) |
 | `page` | `hero('page')` | [`hero-page/README.md`](hero-page/README.md) |
+| `news` | `hero('news')` | [`hero-news/README.md`](hero-news/README.md) |
 
 ## Vérification
 
