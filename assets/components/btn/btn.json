@@ -4,7 +4,7 @@
   "name": "btn",
   "slug": "btn",
   "dependencies": {
-    "components": [],
+    "components": ["icon"],
     "cards": [],
     "strates": [],
     "heroes": [],

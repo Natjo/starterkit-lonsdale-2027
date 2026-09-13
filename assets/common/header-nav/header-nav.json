@@ -4,7 +4,7 @@
   "name": "header-nav",
   "slug": "header-nav",
   "dependencies": {
-    "components": [],
+    "components": ["icon", "search"],
     "cards": [],
     "strates": [],
     "heroes": [],

@@ -4,7 +4,7 @@
   "name": "newsletter",
   "slug": "newsletter",
   "dependencies": {
-    "components": [],
+    "components": ["btn", "field", "text", "title"],
     "cards": [],
     "strates": [],
     "heroes": [],

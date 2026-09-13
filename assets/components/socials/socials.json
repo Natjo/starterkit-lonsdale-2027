@@ -4,7 +4,7 @@
   "name": "socials",
   "slug": "socials",
   "dependencies": {
-    "components": [],
+    "components": ["icon"],
     "cards": [],
     "strates": [],
     "heroes": [],
