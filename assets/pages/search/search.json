@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "type": "page",
-  "name": "search",
+  "name": "Recherche",
   "slug": "search",
   "file": "search.php",
   "activation": { "option": "enableSearch" },
   "dependencies": {
-    "components": [],
-    "cards": [],
+    "components": ["list", "pagination", "search", "text", "title"],
+    "cards": ["news"],
     "strates": [],
     "heroes": [],
     "common": ["header-nav"],

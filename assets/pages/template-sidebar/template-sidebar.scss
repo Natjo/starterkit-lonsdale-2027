@@ -1,0 +1,5 @@
+.layout-sidebar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 24rem);
+    gap: var(--gap);
+}

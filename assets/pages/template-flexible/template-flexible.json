@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "type": "template",
-  "name": "Hub",
-  "slug": "hub",
-  "file": "template-hub.php",
+  "type": "page",
+  "name": "Flexible",
+  "slug": "template-flexible",
+  "file": "template-flexible.php",
   "activation": "selected",
   "dependencies": {
-    "components": ["list", "pagination"],
+    "components": [],
     "cards": [],
     "strates": [],
     "heroes": ["page"],

@@ -7,6 +7,9 @@ données du site.
 
 ```php
 common('footer');
+
+Le manifeste déclare `activation: "always"` : le footer est une racine globale
+du graphe de dépendances Forge et ne dépend pas d'un faux manifeste de page.
 ```
 
 Le common ne reçoit aucun argument.

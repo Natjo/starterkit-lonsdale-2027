@@ -7,7 +7,7 @@
 $contact_values = [
     'name' => '',
     'email' => '',
-    'phone' => '',
+    'phone' => '',,
     'subject' => '',
     'message' => '',
 ];

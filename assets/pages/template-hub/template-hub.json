@@ -1,15 +1,15 @@
 {
   "schemaVersion": 1,
   "type": "page",
-  "name": "template-hub",
+  "name": "Hub",
   "slug": "template-hub",
   "file": "template-hub.php",
   "activation": "selected",
   "dependencies": {
-    "components": [],
+    "components": ["list", "pagination"],
     "cards": [],
     "strates": [],
-    "heroes": [],
+    "heroes": ["page"],
     "common": ["header-nav"],
     "modules": []
   }

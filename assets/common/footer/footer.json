@@ -3,6 +3,7 @@
   "type": "common",
   "name": "footer",
   "slug": "footer",
+  "activation": "always",
   "dependencies": {
     "components": [],
     "cards": [],

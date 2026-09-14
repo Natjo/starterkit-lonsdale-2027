@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "type": "menu",
+  "name": "Menu Principal",
+  "location": "menu-header"
+}

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "type": "option",
+  "name": "Prefooter",
+  "slug": "prefooter",
+  "acfGroup": "group_common_prefooter",
+  "acfField": "prefooter",
+  "pageSlug": "theme-options-prefooter"
+}
