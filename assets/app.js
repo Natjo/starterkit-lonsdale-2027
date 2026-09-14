@@ -1,5 +1,5 @@
 import { hydrate, observe } from "@modules/hydrate/hydrate";
-import initLenis from "@modules/lenis/initLenis";
+import { initLenis } from "@modules/lenis/lenis";
 import HeaderNav from "@common/header-nav/header-nav";
 
 HeaderNav();

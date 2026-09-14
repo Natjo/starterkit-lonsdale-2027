@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "type": "page",
+  "name": "Simple",
+  "slug": "template-simple",
+  "file": "template-simple.php",
+  "activation": "selected",
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": ["text"],
+    "heroes": ["page"],
+    "common": ["header-nav"],
+    "modules": [],
+    "vendors": []
+  }
+}

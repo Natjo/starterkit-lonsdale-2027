@@ -14,7 +14,7 @@ const isChrome = () => {
         && !/\b(?:Edg|OPR)\//.test(navigator.userAgent);
 };
 
-export default async function initLenis() {
+export async function initLenis() {
     if (!supportsSmoothScroll()) return;
 
     const { default: Lenis } = await import("@assets/vendors/lenis/lenis.mjs");

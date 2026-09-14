@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "type": "page",
+  "name": "Sidebar",
+  "slug": "template-sidebar",
+  "file": "template-sidebar.php",
+  "activation": "selected",
+  "dependencies": {
+    "components": ["anchor-nav"],
+    "cards": [],
+    "strates": [],
+    "heroes": ["page"],
+    "common": ["header-nav"],
+    "modules": [],
+    "vendors": []
+  }
+}

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Template Name: Simple
+ * Template Name: Sidebar
  * Template Post Type: page
  */
 
