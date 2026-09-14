@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "type": "hero",
+  "name": "Flexible",
+  "slug": "flexible",
+  "dependencies": {
+    "components": ["title"],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": [],
+    "vendors": []
+  }
+}

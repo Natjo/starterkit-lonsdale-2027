@@ -1,14 +1,15 @@
 {
   "schemaVersion": 1,
   "type": "strate",
-  "name": "news",
-  "slug": "news",
+  "name": "Accordion",
+  "slug": "accordion",
   "dependencies": {
-    "components": [],
+    "components": ["accordion", "text", "title"],
     "cards": [],
     "strates": [],
     "heroes": [],
     "common": [],
-    "modules": []
+    "modules": [],
+    "vendors": []
   }
 }
