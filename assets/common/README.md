@@ -20,6 +20,7 @@ dans leur dossier dédié :
 ```text
 template-parts/common/example.php
 assets/common/example/README.md
+assets/common/example/example.json      # manifeste Forge
 assets/common/example/example.scss
 assets/common/example/example.js        # seulement si nécessaire
 ```
@@ -27,6 +28,29 @@ assets/common/example/example.js        # seulement si nécessaire
 Le README racine décrit la mécanique générale. Le README de chaque élément
 doit documenter les données WordPress qu'il utilise, ses règles et ses
 dépendances.
+
+Le manifeste déclare le common et toutes ses dépendances statiques. Forge
+l'utilise pour ajouter automatiquement les composants, cards, strates, heroes,
+autres common et modules nécessaires au site :
+
+```json
+{
+  "schemaVersion": 1,
+  "type": "common",
+  "name": "example",
+  "slug": "example",
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}
+```
+
+Tout appel statique fait par le common doit être reflété dans ce manifeste.
 
 ## Appel PHP
 

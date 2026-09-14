@@ -122,7 +122,7 @@ export default function initLottie(root, options = {}) {
         animation = null;
 
         Promise.all([
-            import("@assets/vendors/lottie"),
+            import("@assets/vendors/lottie/lottie_light.min.js"),
             fetch(next, { signal: controller.signal }).then((response) => {
                 if (!response.ok) {
                     throw new Error(`Animation request failed (${response.status})`);
@@ -185,7 +185,7 @@ const warmUp = () => {
 
     // Échecs sans conséquence : l'initialisation réelle refera le travail et
     // signalera l'erreur si elle persiste.
-    import("@assets/vendors/lottie").catch(() => {});
+    import("@assets/vendors/lottie/lottie_light.min.js").catch(() => {});
     [...new Set(sources)].forEach((source) => {
         fetch(source, { cache: "force-cache" }).catch(() => {});
     });

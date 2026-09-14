@@ -3,10 +3,10 @@
 Le player Lottie léger est stocké localement et utilisé par le composant
 `lottie`.
 
-L’entrée stable `index.js` réexporte `lottie_light.min.js` :
+Le composant importe directement la build légère `lottie_light.min.js` :
 
 ```js
-const { default: lottie } = await import("@assets/vendors/lottie");
+const { default: lottie } = await import("@assets/vendors/lottie/lottie_light.min.js");
 ```
 
 La licence de la bibliothèque est conservée dans `LICENSE.md`. WP Forge ne

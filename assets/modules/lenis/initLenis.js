@@ -17,7 +17,7 @@ const isChrome = () => {
 export default async function initLenis() {
     if (!supportsSmoothScroll()) return;
 
-    const { default: Lenis } = await import("@assets/vendors/lenis");
+    const { default: Lenis } = await import("@assets/vendors/lenis/lenis.mjs");
 
     window.lenis = new Lenis({
         autoRaf: true,

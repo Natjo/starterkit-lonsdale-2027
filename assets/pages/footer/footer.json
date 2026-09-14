@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "type": "page",
+  "name": "Footer",
+  "slug": "footer",
+  "file": "footer.php",
+  "activation": "always",
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": ["footer"],
+    "modules": []
+  }
+}

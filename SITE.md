@@ -48,9 +48,9 @@ client. Le présent `SITE.md` est uniquement la photographie du starter actuel.
 Les bibliothèques ou plugins exécutés dans le navigateur doivent être intégrés
 localement dans `assets/vendors/`, avec leur licence et, lorsque l'information
 est disponible, leur version et leur source. Un fichier d'entrée
-`assets/vendors/<nom>/index.js` sert d'adaptateur pour fournir une API stable
-aux composants et modules du starter. Chaque dossier possède un manifeste
-`<nom>.json` permettant à WP Forge de résoudre et nettoyer ses dépendances.
+Les composants et modules importent directement le fichier distribué nécessaire
+dans `assets/vendors/<nom>/`. WP Forge découvre directement ces dossiers ; les
+vendors ne possèdent ni manifeste propre ni fichier d’entrée imposé.
 
 Ne pas ajouter ces dépendances front à `package.json` pour les charger dans le
 site. `package.json` est réservé aux outils nécessaires au développement et à
@@ -68,7 +68,11 @@ Le starter contient actuellement :
 - des templates de strates supplémentaires, dont certains sont fonctionnels et
   d'autres encore vides ;
 - une card `news` ;
-- un Custom Post Type interne `news` et une API d'import ;
+- quatre Custom Post Types de catalogue (`news`, `project`, `expertise` et
+  `people`) ; seul `news` possède actuellement son parcours front et ses champs
+  ACF spécialisés ;
+- quatre taxonomies hiérarchiques de catalogue : `news_category`,
+  `project_type`, `sector` et `people_role` ;
 - deux emplacements de menus enregistrés, sans menu affecté ;
 - une page ACF Options contenant le token de l’API News ;
 - les rôles WordPress natifs, sans rôle personnalisé déclaré dans le thème.
@@ -143,7 +147,15 @@ mais aucun parcours front finalisé ne l'exploite.
 
 Les articles natifs ne font donc pas partie d'un besoin métier confirmé.
 
-### Custom Post Type `news`
+### Custom Post Types
+
+Le catalogue de départ est déclaré dans `inc/datatypes.php`. Forge remplace ce
+fichier à la création et ne conserve que les types choisis pour le site. Les
+types `project`, `expertise` et `people` fournissent une configuration WordPress
+générique ; leurs champs, cards et parcours front doivent être adaptés au
+projet.
+
+#### `news`
 
 | Propriété | Valeur actuelle |
 | --- | --- |
@@ -154,13 +166,22 @@ Les articles natifs ne font donc pas partie d'un besoin métier confirmé.
 | Page individuelle | Oui, `/news/{slug}/` |
 | Archive | Oui, `/news/` |
 | REST WordPress | Oui |
-| Supports | `title`, `thumbnail`, `excerpt` |
+| Supports | `title`, `thumbnail`, `excerpt`, `author` |
 | Icône | `dashicons-rss` |
 | Contenus locaux | Aucun contenu publié |
 
 ## 7. Taxonomies
 
-Aucune taxonomie personnalisée n'est enregistrée par le thème actuel.
+Le catalogue de départ fournit quatre taxonomies hiérarchiques. Comme pour les
+CPT, Forge réécrit `inc/datatypes.php` et ne conserve que les taxonomies choisies
+pour le site final.
+
+| Clé | Libellé | Types de contenus | Archive |
+| --- | --- | --- | --- |
+| `news_category` | Catégories d’actualités | `news` | `/categories-actualites/` |
+| `project_type` | Types de projets | `project` | `/types-projets/` |
+| `sector` | Secteurs | `project` | `/secteurs/` |
+| `people_role` | Fonctions | `people` | `/fonctions/` |
 
 ## 8. Menus et éléments globaux
 
