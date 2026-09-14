@@ -4,6 +4,8 @@ add_action('after_setup_theme', function () {
     register_nav_menus(array(
         'menu-header' => 'Menu Principal',
         'menu-footer' => 'Menu Footer',
+        'menu-legal' => 'Menu légal',
+        'menu-secondary' => 'Menu secondaire',
     ));
 
     show_admin_bar(false);
