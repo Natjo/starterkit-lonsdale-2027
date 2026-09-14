@@ -1,0 +1,1 @@
+{"schemaVersion":1,"type":"taxonomy","key":"project_type","singularLabel":"Type de projet","pluralLabel":"Types de projets","rewriteSlug":"types-projets","objectTypes":["project"],"isPublic":true,"hierarchical":true,"showUi":true,"showInNavMenus":true,"showInRest":true,"hasArchive":true,"translationMode":"not_translated","fields":[]}

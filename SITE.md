@@ -154,6 +154,9 @@ fichier à la création et ne conserve que les types choisis pour le site. Les
 types `project`, `expertise` et `people` fournissent une configuration WordPress
 générique ; leurs champs, cards et parcours front doivent être adaptés au
 projet.
+Les manifestes de `assets/content-types/` constituent l’index lu pendant la
+synchronisation Forge. Toute modification du catalogue PHP doit être reportée
+dans le manifeste correspondant au cours du même changement.
 
 #### `news`
 
@@ -175,6 +178,7 @@ projet.
 Le catalogue de départ fournit quatre taxonomies hiérarchiques. Comme pour les
 CPT, Forge réécrit `inc/datatypes.php` et ne conserve que les taxonomies choisies
 pour le site final.
+Le catalogue Forge correspondant est versionné dans `assets/taxonomies/`.
 
 | Clé | Libellé | Types de contenus | Archive |
 | --- | --- | --- | --- |

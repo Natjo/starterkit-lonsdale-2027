@@ -1,0 +1,1 @@
+{"schemaVersion":1,"type":"content-type","key":"people","singularLabel":"Membre","pluralLabel":"Équipe","rewriteSlug":"equipe","menuIcon":"dashicons-groups","isPublic":true,"hasArchive":true,"showInRest":true,"supports":["title","thumbnail","excerpt"],"translationMode":"not_translated"}
