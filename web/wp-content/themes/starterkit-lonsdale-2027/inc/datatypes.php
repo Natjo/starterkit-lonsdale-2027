@@ -10,9 +10,9 @@ add_action('init', function () {
             'supports' => ['title', 'thumbnail', 'excerpt', 'author'],
         ],
         'project' => [
-            'singular' => 'Projet',
-            'plural' => 'Projets',
-            'rewrite' => 'projets',
+            'singular' => 'Project',
+            'plural' => 'Projects',
+            'rewrite' => 'projects',
             'menu_icon' => 'dashicons-portfolio',
             'supports' => ['title', 'thumbnail', 'excerpt'],
         ],
@@ -28,6 +28,13 @@ add_action('init', function () {
             'plural' => 'Team',
             'rewrite' => 'team',
             'menu_icon' => 'dashicons-groups',
+            'supports' => ['title', 'thumbnail', 'excerpt'],
+        ],
+        'testimonial' => [
+            'singular' => 'Testimonial',
+            'plural' => 'Testimonials',
+            'rewrite' => 'testimonials',
+            'menu_icon' => 'dashicons-format-quote',
             'supports' => ['title', 'thumbnail', 'excerpt'],
         ],
     ];

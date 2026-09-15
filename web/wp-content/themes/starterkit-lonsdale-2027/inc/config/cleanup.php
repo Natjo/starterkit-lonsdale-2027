@@ -81,7 +81,7 @@ add_action('wp_dashboard_setup', function () {
 // Le contenu éditorial vient exclusivement des champs ACF.
 function remove_native_content_editors(): void
 {
-    $post_types = ['page', 'news', 'project', 'expertise', 'team'];
+    $post_types = ['page', 'news', 'project', 'expertise', 'team', 'testimonial'];
     $native_posts_enabled = defined('THEME_ENABLE_NATIVE_POSTS') && THEME_ENABLE_NATIVE_POSTS;
     if (!$native_posts_enabled) {
         $post_types[] = 'post';
