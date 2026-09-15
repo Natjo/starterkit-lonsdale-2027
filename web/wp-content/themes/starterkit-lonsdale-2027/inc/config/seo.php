@@ -129,3 +129,7 @@ add_filter('wpseo_schema_article_type', 'theme_filter_yoast_article_type', 10, 2
 add_filter('wpseo_schema_article', 'theme_filter_yoast_news_article');
 add_filter('wpseo_add_opengraph_images', 'theme_add_yoast_news_opengraph_image');
 add_filter('wpseo_twitter_image', 'theme_filter_yoast_news_twitter_image');
+
+// La pagination visible fournit déjà des liens crawlables. Évite que certains
+// navigateurs préchargent automatiquement la page suivante depuis le <head>.
+add_filter('wpseo_disable_adjacent_rel_links', '__return_true');

@@ -25,7 +25,7 @@
                     "aria-label": "",
                     "type": "textarea",
                     "instructions": "",
-                    "required": 0,
+                    "required": 1,
                     "conditional_logic": 0,
                     "wrapper": {
                         "width": "",
@@ -34,9 +34,31 @@
                     },
                     "default_value": "",
                     "maxlength": "",
+                    "allow_in_bindings": 1,
                     "rows": 3,
                     "placeholder": "",
                     "new_lines": "br"
+                },
+                {
+                    "key": "field_6aa947b710dc1",
+                    "label": "Text",
+                    "name": "text",
+                    "aria-label": "",
+                    "type": "wysiwyg",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "allow_in_bindings": 0,
+                    "tabs": "all",
+                    "toolbar": "full",
+                    "media_upload": 0,
+                    "delay": 0
                 }
             ]
         }
@@ -44,9 +66,9 @@
     "location": [
         [
             {
-                "param": "page_template",
-                "operator": "==",
-                "value": "default"
+                "param": "page_type",
+                "operator": "!=",
+                "value": "front_page"
             }
         ]
     ],
@@ -62,5 +84,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1785174529
+    "modified": 1789478862
 }

@@ -616,6 +616,7 @@ $anchor_nav = $render('anchor-nav', [
 ]);
 $assert_contains('Anchor nav rend une navigation hydratée', 'data-module="components/anchor-nav"', $anchor_nav);
 $assert_contains('Anchor nav ajoute ses classes sans doublon', 'class="anchor-nav in-page"', $anchor_nav);
+$assert_not_contains('Anchor nav reste verticale par défaut', 'class="anchor-nav horizontal', $anchor_nav);
 $assert_contains('Anchor nav conserve les attributs sûrs', 'id="page-summary"', $anchor_nav);
 $assert_contains('Anchor nav échappe son nom accessible', 'aria-label="Sommaire &lt;principal&gt;"', $anchor_nav);
 $assert_contains('Anchor nav échappe ses libellés', 'Nos &lt;expertises&gt;', $anchor_nav);
@@ -623,6 +624,13 @@ $assert_same('Anchor nav filtre les cibles invalides et dupliquées', 2, substr_
 $assert_not_contains('Anchor nav réserve son attribut d’hydratation', 'data-module="refuse"', $anchor_nav);
 $assert_same('Anchor nav vide ne produit aucun HTML', '', $render('anchor-nav', ['items' => []]));
 $assert_same('Anchor nav refuse une liste directe', '', $render('anchor-nav', ['Introduction']));
+
+$horizontal_anchor_nav = $render('anchor-nav', [
+    'items' => [['label' => 'Introduction', 'target' => 'introduction']],
+    'horizontal' => true,
+    'classes' => 'in-page',
+]);
+$assert_contains('Anchor nav ajoute sa variante horizontale', 'class="anchor-nav horizontal in-page"', $horizontal_anchor_nav);
 
 $section_snap = $render('section-snap', [
     'slides' => [

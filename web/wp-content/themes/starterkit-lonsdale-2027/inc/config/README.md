@@ -17,6 +17,10 @@ Le thème conserve uniquement les adaptations liées à son modèle de données 
 Le CPT `news` doit conserver le support WordPress `author`, requis par Yoast
 pour produire un schéma Article.
 
+Les balises `<link rel="next">` et `<link rel="prev">` de Yoast sont
+désactivées. Les archives conservent leur pagination HTML crawlable, sans
+provoquer de préchargement automatique de la page adjacente par le navigateur.
+
 ## Configuration à faire pour chaque site
 
 Dans les réglages Yoast :

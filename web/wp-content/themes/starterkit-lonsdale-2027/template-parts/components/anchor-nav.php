@@ -7,9 +7,16 @@ if (array_is_list($params)) return;
 $args = normalize_args($params, [
     'items' => [],
     'aria_label' => 'Navigation des sections',
+    'horizontal' => false,
     'classes' => '',
     'attributes' => [],
 ]);
+
+$horizontal = filter_var(
+    $args['horizontal'],
+    FILTER_VALIDATE_BOOL,
+    FILTER_NULL_ON_FAILURE
+) ?? false;
 
 $rows = is_array($args['items']) ? $args['items'] : [];
 $items = [];
@@ -49,7 +56,7 @@ $aria_label = is_scalar($aria_label) || $aria_label instanceof Stringable
     ? trim((string) $aria_label)
     : '';
 $aria_label = $aria_label !== '' ? $aria_label : 'Navigation des sections';
-$classes = component_classes('anchor-nav', $args['classes']);
+$classes = component_classes('anchor-nav', $horizontal ? 'horizontal' : '', $args['classes']);
 $attributes = component_attributes(
     $args['attributes'],
     ['class', 'aria-label', 'data-module', 'data-context']

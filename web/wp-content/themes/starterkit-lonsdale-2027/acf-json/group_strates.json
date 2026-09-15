@@ -2341,7 +2341,21 @@
             {
                 "param": "post_template",
                 "operator": "==",
+                "value": "template-flexible.php"
+            }
+        ],
+        [
+            {
+                "param": "post_template",
+                "operator": "==",
                 "value": "default"
+            }
+        ],
+        [
+            {
+                "param": "post_template",
+                "operator": "==",
+                "value": "template-sidebar.php"
             }
         ]
     ],
@@ -2357,5 +2371,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1789029107
+    "modified": 1789481081
 }

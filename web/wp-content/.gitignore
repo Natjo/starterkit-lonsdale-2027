@@ -1,0 +1,6 @@
+# wp-static:start
+# Artefacts générés par WP Static — bloc maintenu par l’extension.
+/static-pages
+/wp-static-generating.lock
+/wp-static-pending.lock
+# wp-static:end

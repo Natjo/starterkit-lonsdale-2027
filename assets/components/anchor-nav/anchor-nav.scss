@@ -1,14 +1,8 @@
 .anchor-nav {
-    min-width: 0;
-    overflow-x: auto;
-    scrollbar-width: thin;
-
     ul {
         display: flex;
-        align-items: center;
-        gap: 2.4rem;
-        width: max-content;
-        min-width: 100%;
+        flex-direction: column;
+        //gap: .2rem;
     }
 
     a {
@@ -33,6 +27,20 @@
             outline-offset: .3rem;
         }
     }
+
+    &.horizontal {
+        min-width: 0;
+        overflow-x: auto;
+        scrollbar-width: thin;
+
+        ul {
+            flex-direction: row;
+            width: max-content;
+            min-width: 100%;
+
+        }
+    }
+
 
     @media (prefers-reduced-motion: reduce) {
         a {

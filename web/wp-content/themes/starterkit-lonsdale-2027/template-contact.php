@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Template Name: Contact
  * Template Post Type: page
@@ -7,7 +8,7 @@
 $contact_values = [
     'name' => '',
     'email' => '',
-    'phone' => '',,
+    'phone' => '',
     'subject' => '',
     'message' => '',
 ];
@@ -62,17 +63,9 @@ common('header-nav');
 ?>
 
 <main class="contact-page">
-    <div class="contact-content">
-        <?php component('title', [
-            'title' => get_the_title(),
-            'hx' => 1,
-            'classes' => 'title-1',
-        ]); ?>
+    <?php hero('page'); ?>
 
-        <?php component('text', [
-            'text' => '<p>Utilisez ce formulaire pour nous envoyer votre demande.</p>',
-            'classes' => 'contact-intro',
-        ]); ?>
+    <div class="main-content">
 
         <?php if ($contact_sent) : ?>
             <?php component('text', [
@@ -158,6 +151,7 @@ common('header-nav');
             ]); ?>
         </form>
     </div>
+
 </main>
 
 <?php get_footer(); ?>

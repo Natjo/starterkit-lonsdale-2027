@@ -217,6 +217,9 @@ actuel et ne doivent pas être réintroduites.
 
 - Les groupes JSON sont enregistrés dans
   `web/wp-content/themes/starterkit-lonsdale-2027/acf-json/`.
+- Lorsqu'un groupe existant est enregistré depuis l'administration, son nom de
+  fichier lisible est conservé afin d'éviter une seconde copie basée sur sa clé
+  technique ACF.
 - Les images présentes dans les groupes actuels retournent un ID WordPress.
 - Tous les champs actuellement déclarés sont facultatifs.
 - Les WYSIWYG de texte utilisent généralement la toolbar `full` sans upload de

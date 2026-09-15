@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "type": "page",
+  "name": "Single team",
+  "slug": "single-team",
+  "file": "single-team.php",
+  "activation": { "contentType": "team" },
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": ["page"],
+    "common": ["header-nav", "related"],
+    "modules": []
+  }
+}

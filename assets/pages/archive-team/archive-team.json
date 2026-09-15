@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "type": "page",
+  "name": "archive-team",
+  "slug": "archive-team",
+  "file": "archive-team.php",
+  "activation": { "contentType": "team" },
+  "dependencies": {
+    "components": ["list", "pagination"],
+    "cards": ["page"],
+    "strates": [],
+    "heroes": ["page"],
+    "common": ["header-nav"],
+    "modules": []
+  }
+}

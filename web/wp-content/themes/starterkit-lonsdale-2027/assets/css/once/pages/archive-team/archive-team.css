@@ -1,0 +1,1 @@
+.team-archive{grid-template-columns:var(--layout);margin-bottom:var(--margin-md);align-content:start;display:grid}.team-archive>*{grid-column:ctr}.team-archive-list{--list-columns:1}@media (width>=768px){.team-archive-list{--list-columns:3}}

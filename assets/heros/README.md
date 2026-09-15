@@ -216,6 +216,10 @@ Puis :
 5. vérifier le `h1`, les dimensions des médias et le comportement LCP ;
 6. régénérer les pages avec WP Static si le cache statique est actif.
 
+En développement, le watcher recalcule les entrées dédiées lorsque
+`assets/app.scss` change. L'ajout d'un import de hero marqué `critical` ne
+nécessite donc pas de relancer manuellement la compilation.
+
 ## Heroes disponibles
 
 | Nom | Appel | Documentation |

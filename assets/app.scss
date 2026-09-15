@@ -55,6 +55,7 @@
 
 // heros
 @import "heros/hero-homepage/hero-homepage" critical;
+@import "heros/hero-page/hero-page" critical;
 
 
 // cards
@@ -65,8 +66,10 @@
 // pages — once : bundle dédié, contenu inline uniquement sur le template correspondant
 @import "pages/404/404" once;
 @import "pages/archive-news/archive-news" once;
+@import "pages/archive-team/archive-team" once;
 @import "pages/template-hub/template-hub" once;
 @import "pages/template-contact/template-contact" once;
+@import "pages/template-sidebar/template-sidebar" once;
 @import "pages/search/search" once;
 
 // strates — split : bundle dédié, <link> injecté au premier rendu

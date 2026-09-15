@@ -23,10 +23,10 @@ add_action('init', function () {
             'menu_icon' => 'dashicons-admin-tools',
             'supports' => ['title', 'thumbnail', 'excerpt'],
         ],
-        'people' => [
-            'singular' => 'Membre',
-            'plural' => 'Équipe',
-            'rewrite' => 'equipe',
+        'team' => [
+            'singular' => 'Member',
+            'plural' => 'Team',
+            'rewrite' => 'team',
             'menu_icon' => 'dashicons-groups',
             'supports' => ['title', 'thumbnail', 'excerpt'],
         ],
@@ -87,11 +87,11 @@ add_action('init', function () {
             'rewrite' => 'secteurs',
             'object_types' => ['project'],
         ],
-        'people_role' => [
-            'singular' => 'Fonction',
-            'plural' => 'Fonctions',
-            'rewrite' => 'fonctions',
-            'object_types' => ['people'],
+        'team_role' => [
+            'singular' => 'Role',
+            'plural' => 'Roles',
+            'rewrite' => 'roles',
+            'object_types' => ['team'],
         ],
     ];
 

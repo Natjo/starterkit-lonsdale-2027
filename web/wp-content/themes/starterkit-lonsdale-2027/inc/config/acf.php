@@ -1,5 +1,23 @@
 <?php
 
+/**
+ * Conserve le nom lisible d'un fichier Local JSON déjà versionné.
+ *
+ * Sans ce filtre, ACF enregistre une nouvelle copie nommée d'après la clé
+ * technique du groupe et laisse l'ancien fichier à côté.
+ */
+add_filter('acf/json/save_file_name', static function (string $filename, array $post, string $load_path): string {
+    if ($load_path === '') {
+        return $filename;
+    }
+
+    $existing_filename = basename($load_path);
+
+    return pathinfo($existing_filename, PATHINFO_EXTENSION) === 'json'
+        ? $existing_filename
+        : $filename;
+}, 10, 3);
+
 add_action('acf/init', function () {
     if (!function_exists('acf_add_options_page')) return;
 

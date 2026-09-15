@@ -12,6 +12,7 @@ component('anchor-nav', [
         ['label' => 'Expertises', 'target' => '#expertises'],
     ],
     'aria_label' => 'Sommaire de la page',
+    'horizontal' => true,
 ]);
 ```
 
@@ -23,12 +24,16 @@ component('anchor-nav', [
 | `items[].label` | `scalar\|Stringable` | — | Libellé obligatoire et échappé |
 | `items[].target` | `scalar\|Stringable` | — | ID avec ou sans `#`, limité aux lettres, chiffres, `_` et `-` |
 | `aria_label` | `scalar\|Stringable` | `Navigation des sections` | Nom accessible du `<nav>` |
+| `horizontal` | `bool` | `false` | Ajoute la classe `horizontal` à la navigation |
 | `classes` | `string\|array` | `''` | Classes supplémentaires |
 | `attributes` | `array` | `[]` | Attributs supplémentaires du `<nav>` |
 
 Le composant ne produit aucun HTML lorsqu’aucune entrée n’est valide. Les
 cibles dupliquées sont supprimées. Une cible absente du document reste dans le
 HTML, mais elle est ignorée par le JavaScript.
+
+Par défaut, les liens sont affichés verticalement. Avec `horizontal => true`,
+le composant ajoute la classe `horizontal` et utilise sa variante horizontale.
 
 `class`, `aria-label`, `data-module` et `data-context` sont réservés par le
 composant. Les autres attributs passent par `component_attributes()`.

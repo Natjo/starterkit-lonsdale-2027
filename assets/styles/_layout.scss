@@ -75,7 +75,8 @@ body {
     scroll-margin-top: var(--header-height);
     display: grid;
     grid-template-columns: var(--layout);
-    padding-top: var(--header-height);
+    // Keep the document height stable when the fixed header becomes compact.
+    padding-top: var(--header-height-expanded);
     --ctr: ctr;
 
     >* {
@@ -131,5 +132,4 @@ body {
     white-space: nowrap;
     border: 0;
 }
-
 

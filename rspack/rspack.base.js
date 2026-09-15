@@ -1,7 +1,11 @@
 const config = require("./rspack.config");
 const path = require("path");
 const rspack = require("@rspack/core");
-const { APP_SCSS } = require("./parse-split-imports");
+const {
+    APP_SCSS,
+    getOnceEntries,
+    getSplitEntries,
+} = require("./parse-split-imports");
 
 const isDev = config.debug;
 const sassDispatchLoader = path.resolve(__dirname, "loaders/sass-dispatch-loader.js");
@@ -12,6 +16,15 @@ const optimizeSvgUtils = path.resolve(__dirname, "utils/optimize-svg.js");
 const { optimizeSvgCopyTransform } = require("./utils/optimize-svg");
 const assetsRoot = path.resolve(__dirname, "../assets");
 const copyIgnoredFiles = ["**/.DS_Store", "**/.gitkeep"];
+
+class WatchDynamicEntriesPlugin {
+    apply(compiler) {
+        compiler.hooks.afterCompile.tap(
+            "WatchDynamicEntriesPlugin",
+            (compilation) => compilation.fileDependencies.add(APP_SCSS),
+        );
+    }
+}
 
 const createScssUse = (withDispatch = false) => [
     rspack.CssExtractRspackPlugin.loader,
@@ -58,9 +71,15 @@ const createScssUse = (withDispatch = false) => [
  *   entry: Record<string, string | string[]>,
  *   clean?: boolean,
  *   withCopy?: boolean,
+ *   watchDynamicEntries?: boolean,
  * }} options
  */
-function createRspackConfig({ name, entry, withCopy = false }) {
+function createRspackConfig({
+    name,
+    entry,
+    withCopy = false,
+    watchDynamicEntries = false,
+}) {
     return {
         name,
         devtool: isDev ? "eval-cheap-module-source-map" : false,
@@ -233,6 +252,7 @@ function createRspackConfig({ name, entry, withCopy = false }) {
             new rspack.CssExtractRspackPlugin({
                 filename: "css/[name].css",
             }),
+            ...(watchDynamicEntries ? [new WatchDynamicEntriesPlugin()] : []),
             ...(withCopy
                 ? [
                       new rspack.CopyRspackPlugin({
@@ -323,13 +343,18 @@ function createRspackConfigs() {
         }),
     ];
 
-    const splitEntries = config.entries.split;
+    const getDynamicEntries = () => ({
+        ...getSplitEntries(),
+        ...getOnceEntries(),
+    });
+    const splitEntries = getDynamicEntries();
 
     if (splitEntries && Object.keys(splitEntries).length > 0) {
         configs.push(
             createRspackConfig({
                 name: "split",
-                entry: splitEntries,
+                entry: isDev ? getDynamicEntries : splitEntries,
+                watchDynamicEntries: isDev,
             }),
         );
     }

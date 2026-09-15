@@ -7,8 +7,8 @@
 $is_post_type_archive = is_post_type_archive();
 $queried_object = get_queried_object();
 $archive_post_type = $queried_object instanceof WP_Post_Type ? $queried_object->name : '';
-$configured_post_type = function_exists('get_field') && !$is_post_type_archive
-    ? get_field('hub_post_type', get_queried_object_id())
+$configured_post_type = !$is_post_type_archive
+    ? get_post_meta(get_queried_object_id(), 'hub_post_type', true)
     : '';
 $configured_post_type = is_string($configured_post_type) ? sanitize_key($configured_post_type) : '';
 $hub_post_type = $is_post_type_archive ? $archive_post_type : $configured_post_type;
