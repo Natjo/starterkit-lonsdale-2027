@@ -44,12 +44,6 @@
       "label": "Source",
       "type": "text",
       "required": false
-    },
-    {
-      "name": "url",
-      "label": "URL de la source",
-      "type": "url",
-      "required": false
     }
   ]
 }

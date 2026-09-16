@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "type": "card",
+  "name": "Expertise",
+  "slug": "expertise",
+  "dependencies": {
+    "components": ["text", "title"],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  },
+  "fields": [
+    { "name": "title", "label": "Titre", "type": "text", "required": true },
+    { "name": "text", "label": "Texte", "type": "wysiwyg", "required": false }
+  ]
+}

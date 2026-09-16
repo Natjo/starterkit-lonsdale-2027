@@ -9,11 +9,9 @@ card('testimonial', [
     'image_size' => 'full',
     'author' => 'Jane Doe',
     'source' => 'Example Company',
-    'url' => 'https://example.com/',
 ]);
 ```
 
-`quote` est obligatoire. `url` est l’URL facultative de `source` : elle ne
-rend un lien que lorsque la source et l’URL sont toutes les deux renseignées.
-Le composant `quote` filtre le HTML de la citation, échappe les libellés et
-sécurise l’URL.
+`quote` est obligatoire. La card transmet l’image, l’auteur et la source au
+composant `quote`. La source est toujours rendue comme du texte, sans lien. Le
+composant filtre le HTML de la citation et échappe les libellés.

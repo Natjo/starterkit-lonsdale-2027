@@ -1049,6 +1049,26 @@ $assert_contains('Card page rend son texte', '<p>Présentation de la page.</p>',
 $assert_contains('Card page sécurise une cible externe', 'target="_blank" rel="noopener noreferrer"', $page_card);
 $assert_same('Card page ne rend rien sans titre', '', $render_card('page', ['type' => 'Page']));
 
+$expertise_card = $render_card('expertise', [
+    'title' => 'Conseil <strong>stratégique</strong>',
+    'text' => '<p>Nous accompagnons les transformations.</p>',
+]);
+$assert_contains('Card expertise rend son titre en h3', '<h3 class="title title-3">Conseil <strong>stratégique</strong></h3>', $expertise_card);
+$assert_contains('Card expertise rend son texte éditorial', '<p>Nous accompagnons les transformations.</p>', $expertise_card);
+$assert_same('Card expertise ne rend rien sans titre', '', $render_card('expertise', [
+    'text' => '<p>Titre absent.</p>',
+]));
+
+$testimonial_card = $render_card('testimonial', [
+    'quote' => '<p>Une collaboration remarquable.</p>',
+    'author' => 'Jane Doe',
+    'source' => 'Example Company',
+    'url' => 'https://example.test/',
+]);
+$assert_contains('Card testimonial rend sa citation', '<p>Une collaboration remarquable.</p>', $testimonial_card);
+$assert_contains('Card testimonial rend sa source', '<cite class="quote-source">', $testimonial_card);
+$assert_not_contains('Card testimonial ignore une URL extérieure à son contrat', '<a href=', $testimonial_card);
+
 $keynumber_card = $render_card('keynumber', [
     'value' => '98<script>',
     'prefix' => '+<',

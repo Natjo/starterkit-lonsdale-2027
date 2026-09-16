@@ -40,12 +40,16 @@ add_action('init', function () {
             'menu_icon' => 'dashicons-format-quote',
             'supports' => ['title', 'thumbnail', 'excerpt'],
             'card' => 'testimonial',
+            'public' => false,
+            'has_archive' => false,
         ],
     ];
 
     foreach ($content_types as $post_type => $definition) {
         $singular = $definition['singular'];
         $plural = $definition['plural'];
+        $is_public = $definition['public'] ?? true;
+        $has_archive = $definition['has_archive'] ?? true;
 
         register_post_type($post_type, [
             'label' => __($plural),
@@ -63,17 +67,17 @@ add_action('init', function () {
                 'all_items' => sprintf(__('Tous : %s'), $plural),
                 'menu_name' => __($plural),
             ],
-            'public' => true,
-            'publicly_queryable' => true,
+            'public' => $is_public,
+            'publicly_queryable' => $is_public,
             'show_ui' => true,
             'show_in_menu' => true,
             'show_in_rest' => true,
-            'has_archive' => $definition['rewrite'],
-            'rewrite' => [
+            'has_archive' => $has_archive ? $definition['rewrite'] : false,
+            'rewrite' => $is_public ? [
                 'slug' => $definition['rewrite'],
                 'with_front' => false,
-            ],
-            'query_var' => true,
+            ] : false,
+            'query_var' => $is_public,
             'supports' => $definition['supports'],
             'menu_icon' => $definition['menu_icon'],
         ]);

@@ -10,3 +10,7 @@ Content Types choisis.
 La clé `card` contient le slug de la card associée au Content Type. Forge
 active automatiquement cette card lorsque le Content Type est ajouté. Une
 chaîne vide indique qu’aucune card dédiée n’est imposée.
+
+Un Content Type avec `isPublic: false` et `hasArchive: false` reste disponible
+dans l’administration et peut être chargé explicitement pour être affiché dans
+une card ou une strate, sans exposer de page individuelle ni d’archive.

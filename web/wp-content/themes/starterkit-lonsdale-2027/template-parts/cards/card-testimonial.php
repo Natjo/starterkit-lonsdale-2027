@@ -15,6 +15,5 @@ if ($quote === '') return;
         'image_size' => $args['image_size'] ?? 'full',
         'author' => $args['author'] ?? '',
         'source' => $args['source'] ?? '',
-        'url' => $args['url'] ?? '',
     ]); ?>
 </article>
