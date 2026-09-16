@@ -1,0 +1,17 @@
+.card-team {
+    .card-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        min-height: 100%;
+    }
+
+    .card-image {
+        aspect-ratio: 3 / 4;
+        overflow: hidden;
+    }
+
+    .text {
+        color: var(--color-muted);
+    }
+}

@@ -11,7 +11,8 @@ template.
 
 Le contrat propre à chaque card est documenté dans son dossier sous
 `assets/cards/`. Le starter
-contient notamment `card-news`, `card-page` et `card-keynumber`.
+contient notamment `card-news`, `card-project`, `card-team`, `card-page` et
+`card-keynumber`.
 
 `card-page` sert aussi de fallback sur la page de recherche lorsqu’un nouveau
 CPT ne possède pas encore de card dédiée.

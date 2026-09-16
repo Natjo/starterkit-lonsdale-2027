@@ -24,7 +24,10 @@ $hub_query = $is_post_type_archive
         'post_status' => 'publish',
         'paged' => $paged,
     ]) : null);
-$card_name = $hub_post_type !== '' ? resolve_card_name($hub_post_type) : '';
+$configured_card = $hub_post_type !== ''
+    ? apply_filters('theme_content_type_card', $hub_post_type, $hub_post_type)
+    : '';
+$card_name = resolve_card_name($configured_card);
 $card_name = $card_name !== '' ? $card_name : 'page';
 $items = [];
 

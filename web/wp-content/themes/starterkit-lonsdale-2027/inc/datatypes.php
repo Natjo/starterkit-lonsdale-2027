@@ -8,6 +8,7 @@ add_action('init', function () {
             'rewrite' => 'news',
             'menu_icon' => 'dashicons-rss',
             'supports' => ['title', 'thumbnail', 'excerpt', 'author'],
+            'card' => 'news',
         ],
         'project' => [
             'singular' => 'Project',
@@ -15,6 +16,7 @@ add_action('init', function () {
             'rewrite' => 'projects',
             'menu_icon' => 'dashicons-portfolio',
             'supports' => ['title', 'thumbnail', 'excerpt'],
+            'card' => 'project',
         ],
         'expertise' => [
             'singular' => 'Expertise',
@@ -29,6 +31,7 @@ add_action('init', function () {
             'rewrite' => 'team',
             'menu_icon' => 'dashicons-groups',
             'supports' => ['title', 'thumbnail', 'excerpt'],
+            'card' => 'team',
         ],
         'testimonial' => [
             'singular' => 'Testimonial',
@@ -74,6 +77,11 @@ add_action('init', function () {
             'menu_icon' => $definition['menu_icon'],
         ]);
     }
+
+    add_filter('theme_content_type_card', static function ($card, $post_type) use ($content_types) {
+        $configured_card = $content_types[$post_type]['card'] ?? '';
+        return is_string($configured_card) && $configured_card !== '' ? $configured_card : $card;
+    }, 10, 2);
 
     $taxonomies = [
         'news_category' => [

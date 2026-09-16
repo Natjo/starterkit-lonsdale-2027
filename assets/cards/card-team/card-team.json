@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "type": "card",
+  "name": "Team",
+  "slug": "team",
+  "dependencies": {
+    "components": ["picture", "text", "title"],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  },
+  "fields": [
+    { "name": "title", "label": "Name", "type": "text", "required": false },
+    { "name": "text", "label": "Description", "type": "wysiwyg", "required": false },
+    { "name": "image", "label": "Portrait", "type": "image", "required": false },
+    { "name": "image_size", "label": "Image size", "type": "text", "required": false, "default": "large" },
+    { "name": "link", "label": "Link", "type": "link", "required": false }
+  ]
+}

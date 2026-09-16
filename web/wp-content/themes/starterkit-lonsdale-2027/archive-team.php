@@ -15,6 +15,7 @@ while (have_posts()) {
         'type' => 'Member',
         'title' => $title,
         'text' => get_the_excerpt($post_id),
+        'image' => get_post_thumbnail_id($post_id),
         'link' => [
             'url' => get_permalink($post_id),
             'title' => $title,
@@ -38,7 +39,7 @@ common('header-nav');
         <?php if ($items !== []) : ?>
             <?php component('list', [
                 'items' => $items,
-                'card' => 'page',
+                'card' => 'team',
                 'classes' => 'team-archive-list',
             ]); ?>
 

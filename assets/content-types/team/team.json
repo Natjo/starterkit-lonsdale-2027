@@ -1,1 +1,1 @@
-{"schemaVersion":1,"type":"content-type","key":"team","singularLabel":"Member","pluralLabel":"Team","rewriteSlug":"team","menuIcon":"dashicons-groups","isPublic":true,"hasArchive":true,"showInRest":true,"supports":["title","thumbnail","excerpt"],"translationMode":"not_translated"}
+{"schemaVersion":1,"type":"content-type","key":"team","singularLabel":"Member","pluralLabel":"Team","rewriteSlug":"team","menuIcon":"dashicons-groups","isPublic":true,"hasArchive":true,"showInRest":true,"supports":["title","thumbnail","excerpt"],"translationMode":"not_translated","card":"team"}
