@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "type": "card",
+  "name": "Testimonial",
+  "slug": "testimonial",
+  "dependencies": {
+    "components": [
+      "quote"
+    ],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  },
+  "fields": [
+    {
+      "name": "quote",
+      "label": "Citation",
+      "type": "wysiwyg",
+      "required": true
+    },
+    {
+      "name": "image",
+      "label": "Portrait",
+      "type": "image",
+      "required": false
+    },
+    {
+      "name": "image_size",
+      "label": "Image size",
+      "type": "text",
+      "required": false,
+      "default": "full"
+    },
+    {
+      "name": "author",
+      "label": "Auteur",
+      "type": "text",
+      "required": false
+    },
+    {
+      "name": "source",
+      "label": "Source",
+      "type": "text",
+      "required": false
+    },
+    {
+      "name": "url",
+      "label": "URL de la source",
+      "type": "url",
+      "required": false
+    }
+  ]
+}

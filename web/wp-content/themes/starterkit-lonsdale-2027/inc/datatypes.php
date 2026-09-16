@@ -39,6 +39,7 @@ add_action('init', function () {
             'rewrite' => 'testimonials',
             'menu_icon' => 'dashicons-format-quote',
             'supports' => ['title', 'thumbnail', 'excerpt'],
+            'card' => 'testimonial',
         ],
     ];
 
