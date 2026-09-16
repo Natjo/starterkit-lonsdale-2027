@@ -259,8 +259,6 @@ function sanitize_class_list(mixed $classes): string
 
 function options(mixed $classes, array $args = []): string
 {
-
-
     $options = !empty($args['options']) && is_array($args['options']) ? $args['options'] : [];
 
     if (empty($options)) {
@@ -269,6 +267,15 @@ function options(mixed $classes, array $args = []): string
 
     $class_list = is_array($classes) ? $classes : [$classes];
     $option_value = static fn($value): string => is_scalar($value) ? trim((string) $value) : '';
+    $attributes = [];
+
+    $name = $option_value($options['name'] ?? '');
+    if ($name !== '') {
+        $id = sanitize_title($name);
+        if ($id !== '') {
+            $attributes['id'] = $id;
+        }
+    }
 
     $container = $option_value($options['container'] ?? '');
     if ($container !== '') {
@@ -305,7 +312,10 @@ function options(mixed $classes, array $args = []): string
         }
     }
 
-    return html_attributes(['class' => sanitize_class_list($class_list)]);
+    return html_attributes([
+        'class' => sanitize_class_list($class_list),
+        ...$attributes,
+    ]);
 }
 
 function component(string $name, array $args = []): void

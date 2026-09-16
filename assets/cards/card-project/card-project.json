@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "type": "card",
+  "name": "Project",
+  "slug": "project",
+  "dependencies": {
+    "components": ["date", "eyebrow", "picture", "text", "title"],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  },
+  "fields": [
+    { "name": "type", "label": "Type", "type": "text", "required": false },
+    { "name": "date", "label": "Date", "type": "text", "required": false },
+    { "name": "datetime", "label": "Date machine", "type": "text", "required": false },
+    { "name": "title", "label": "Titre", "type": "text", "required": true },
+    { "name": "text", "label": "Résumé", "type": "wysiwyg", "required": false },
+    { "name": "image", "label": "Image", "type": "image", "required": false },
+    { "name": "image_size", "label": "Taille de l’image", "type": "text", "required": false, "default": "large" },
+    { "name": "link", "label": "Lien", "type": "link", "required": false }
+  ]
+}

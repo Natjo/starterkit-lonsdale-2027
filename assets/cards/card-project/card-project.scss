@@ -1,0 +1,32 @@
+.card-project {
+    height: 100%;
+    border-top: 1px solid var(--color-border);
+
+    .card-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        height: 100%;
+        padding-block: 2.4rem;
+    }
+
+    .card-image {
+        aspect-ratio: 3 / 2;
+        overflow: hidden;
+    }
+
+    .card-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.2rem;
+    }
+
+    .card-type {
+        color: var(--color-muted);
+    }
+
+    .card-text {
+        color: var(--color-muted);
+    }
+}

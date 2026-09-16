@@ -37,7 +37,7 @@ if ($hub_query instanceof WP_Query) {
             'post_id' => $post_id,
             'type' => trim((string) ($post_type_object?->labels->singular_name ?? '')),
             'date' => get_the_date('', $post_id),
-            'datetime' => get_the_date(DATE_W3C, $post_id),
+            'datetime' => get_the_date('Y-m-d', $post_id),
             'title' => $title,
             'text' => get_the_excerpt($post_id),
             'image' => get_post_thumbnail_id($post_id),

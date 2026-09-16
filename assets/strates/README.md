@@ -95,6 +95,7 @@ Structure reconnue :
 
 ```php
 'options' => [
+    'name' => 'Notre équipe',
     'container' => 'sm',
     'margin' => [
         'top' => 'lg',
@@ -115,6 +116,7 @@ Effets principaux :
 
 | Clé | Résultat |
 | --- | --- |
+| `name` | Attribut `id` normalisé |
 | `container` | Classe `ctr-{valeur}` |
 | `margin.top` | Classe `mt-{valeur}` |
 | `margin.bottom` | Classe `mb-{valeur}` ; avec `options`, une valeur vide produit `mb-0` |
@@ -123,6 +125,9 @@ Effets principaux :
 
 Les valeurs `md` correspondent au comportement CSS par défaut et ne génèrent
 pas certaines classes utilitaires.
+
+Par exemple, `name => 'Notre équipe'` produit `id="notre-equipe"`. Une valeur
+vide ne produit aucun attribut `id`.
 
 Le groupe ACF **Strates - Options** expose les valeurs réellement disponibles :
 

@@ -121,6 +121,15 @@ function sanitize_html_class(mixed $value): string
     return preg_replace('/[^A-Za-z0-9_-]/', '', (string) $value) ?? '';
 }
 
+function sanitize_title(mixed $value): string
+{
+    $value = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', (string) $value) ?: '';
+    $value = strtolower(strip_tags($value));
+    $value = preg_replace('/[^a-z0-9 _-]/', '', $value) ?? '';
+
+    return trim((string) preg_replace('/[\s_-]+/', '-', $value), '-');
+}
+
 function sanitize_key(mixed $value): string
 {
     return strtolower(preg_replace('/[^a-z0-9_-]/i', '', (string) $value) ?? '');
@@ -501,6 +510,20 @@ $assert_same(
             ],
         ]
     )
+);
+$assert_same(
+    'Les options de strate exposent un identifiant normalisé',
+    'class="strate strate-text mb-0" id="notre-equipe"',
+    options('strate strate-text', [
+        'options' => ['name' => 'Notre équipe'],
+    ])
+);
+$assert_same(
+    'Le nom des options de strate est normalisé et ne peut pas injecter d’attribut',
+    'class="strate mb-0" id="equipe-onclickalert1"',
+    options('strate', [
+        'options' => ['name' => 'Équipe " onclick="alert(1)'],
+    ])
 );
 
 component('select-lang', [
