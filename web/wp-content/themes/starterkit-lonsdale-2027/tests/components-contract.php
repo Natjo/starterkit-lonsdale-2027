@@ -135,6 +135,16 @@ function sanitize_key(mixed $value): string
     return strtolower(preg_replace('/[^a-z0-9_-]/i', '', (string) $value) ?? '');
 }
 
+function sanitize_text_field(mixed $value): string
+{
+    return trim(strip_tags((string) $value));
+}
+
+function wp_unslash(mixed $value): mixed
+{
+    return is_string($value) ? stripslashes($value) : $value;
+}
+
 function get_post_type(int $post_id): string|false
 {
     global $post_types_by_id;
@@ -145,6 +155,11 @@ function post_type_exists(string $post_type): bool
 {
     global $registered_post_types;
     return in_array($post_type, $registered_post_types, true);
+}
+
+function get_post_type_object(string $post_type): mixed
+{
+    return null;
 }
 
 function get_posts(array $args = []): array
@@ -332,6 +347,7 @@ function apply_filters(string $hook_name, mixed $value, mixed ...$args): mixed
 
 require_once dirname(__DIR__) . '/inc/front/methods.php';
 require_once dirname(__DIR__) . '/inc/front/components.php';
+require_once dirname(__DIR__) . '/inc/front/filters.php';
 require_once dirname(__DIR__) . '/inc/front/breadcrumb.php';
 require_once dirname(__DIR__) . '/inc/config/seo.php';
 
@@ -2438,6 +2454,192 @@ $assert_same('Field refuse les arguments positionnels', '', $render('field', [
     'email',
     'Adresse e-mail',
     'email',
+]));
+
+$filters = $render('filters', [
+    'action' => '/projects/',
+    'items' => [
+        [
+            'type' => 'search',
+            'name' => 'filter_search',
+            'label' => 'Rechercher',
+            'value' => '<identité>',
+        ],
+        [
+            'type' => 'taxonomy',
+            'name' => 'project_type',
+            'label' => 'Types de projets',
+            'value' => ['website'],
+            'options' => [
+                ['value' => 'website', 'label' => 'Website'],
+                ['value' => 'branding', 'label' => 'Branding'],
+            ],
+        ],
+        [
+            'type' => 'sort',
+            'name' => 'filter_sort',
+            'label' => 'Trier par',
+            'value' => 'title_asc',
+            'options' => [
+                ['value' => 'date_desc', 'label' => 'Plus récents'],
+                ['value' => 'title_asc', 'label' => 'Titre A–Z'],
+            ],
+        ],
+        [
+            'type' => 'acf',
+            'control' => 'search',
+            'name' => 'hero_title',
+            'label' => 'Titre du hero',
+            'value' => 'Website',
+        ],
+        [
+            'type' => 'featured',
+            'name' => 'featured',
+            'label' => 'Mis en avant',
+            'value' => true,
+        ],
+        [
+            'type' => 'date_range',
+            'name' => 'period',
+            'label' => 'Période',
+            'value' => ['from' => '2026-01-01', 'to' => '2026-12-31'],
+        ],
+        [
+            'type' => 'number_range',
+            'name' => 'budget',
+            'label' => 'Budget',
+            'value' => ['min' => 100, 'max' => 500],
+            'min' => 0,
+        ],
+        [
+            'type' => 'hidden',
+            'name' => 'context',
+            'value' => '<project>',
+        ],
+        ['type' => 'text', 'name' => 'invalid name', 'label' => 'Invalide'],
+    ],
+    'submit_label' => 'Appliquer',
+    'reset_label' => 'Effacer',
+    'reset_url' => '/projects/',
+    'show_reset' => true,
+    'result_count' => 12,
+    'result_count_label' => 'projets',
+    'aria_label' => 'Filtrer les projets',
+    'attributes' => ['method' => 'post', 'class' => 'duplicate', 'data-track' => 'filters'],
+]);
+$assert_contains('Filters rend un formulaire GET accessible', '<form class="filters" action="/projects/" method="get" aria-label="Filtrer les projets" data-track="filters">', $filters);
+$assert_contains('Filters rend une recherche native', 'type="search"', $filters);
+$assert_contains('Filters conserve le nom de la recherche', 'name="filter_search"', $filters);
+$assert_contains('Filters échappe la recherche active', 'value="&lt;identité&gt;"', $filters);
+$assert_contains('Filters coche les valeurs de taxonomie actives', 'name="project_type[]" value="website" checked', $filters);
+$assert_contains('Filters rend le tri sélectionné', 'value="title_asc" selected', $filters);
+$assert_contains('Filters rend un champ ACF avec le contrôle demandé', 'name="hero_title"', $filters);
+$assert_contains('Filters conserve la valeur du champ ACF', 'value="Website"', $filters);
+$assert_contains('Filters rend les booléens sous forme de checkbox', 'type="checkbox" name="featured" value="1" checked', $filters);
+$assert_contains('Filters rend le début de période', 'name="period[from]"', $filters);
+$assert_contains('Filters rend la fin de période', 'name="period[to]"', $filters);
+$assert_contains('Filters rend la borne numérique minimale', 'name="budget[min]"', $filters);
+$assert_contains('Filters rend la borne numérique maximale', 'name="budget[max]"', $filters);
+$assert_contains('Filters échappe les champs cachés', 'type="hidden" name="context" value="&lt;project&gt;"', $filters);
+$assert_contains('Filters affiche le nombre de résultats', '<strong>12</strong>', $filters);
+$assert_contains('Filters rend son bouton de validation', '<span>Appliquer</span>', $filters);
+$assert_contains('Filters rend son lien de réinitialisation', '<span>Effacer</span>', $filters);
+$assert_not_contains('Filters ignore les noms de champs invalides', 'Invalide', $filters);
+$assert_not_contains('Filters protège sa méthode', 'method="post"', $filters);
+$assert_not_contains('Filters protège sa classe', 'class="duplicate"', $filters);
+$ajax_filters = $render('filters', [
+    'items' => [['type' => 'sort', 'name' => 'filter_sort']],
+    'ajax' => true,
+    'ajax_group' => 'project-filters',
+    'ajax_target' => 'project-results',
+    'ajax_submit_on_change' => true,
+    'attributes' => ['data-module' => 'refuse', 'data-filters-target' => 'refuse'],
+]);
+$assert_contains(
+    'Filters expose son groupe et sa cible AJAX',
+    'data-module="components/filters" data-filters-group="project-filters" data-filters-target="project-results" data-filters-submit-on-change="true"',
+    $ajax_filters
+);
+$assert_not_contains('Filters protège ses attributs AJAX', 'data-module="refuse"', $ajax_filters);
+$assert_not_contains('Filters ignore AJAX sans cible valide', 'data-module="components/filters"', $render('filters', [
+    'items' => [['type' => 'search', 'name' => 'filter_search']],
+    'ajax' => true,
+    'ajax_group' => 'project-filters',
+]));
+$assert_same('Theme_Filters expose la recherche', true, method_exists(Theme_Filters::class, 'search'));
+$assert_same('Theme_Filters expose les filtres', true, method_exists(Theme_Filters::class, 'filters'));
+$assert_same('Theme_Filters expose les facettes', true, method_exists(Theme_Filters::class, 'facets'));
+$assert_same('Theme_Filters expose le tri', true, method_exists(Theme_Filters::class, 'sort'));
+$assert_same('Theme_Filters expose le message des résultats', true, method_exists(Theme_Filters::class, 'results_message'));
+$assert_same('Theme_Filters expose les résultats sans les rendre', true, method_exists(Theme_Filters::class, 'items'));
+$filters_facade = new Theme_Filters([
+    'post_type' => 'missing',
+    'taxonomies' => false,
+    'request' => [],
+    'ajax' => true,
+    'ajax_group' => 'contract-filters',
+    'ajax_target' => 'contract-results',
+]);
+$rendering_component_fixture = true;
+ob_start();
+$filters_facade->search(['classes' => ['contract-search', 'contract-search-wide']]);
+$filters_search = trim((string) ob_get_clean());
+ob_start();
+$filters_facade->sort(['classes' => 'contract-sort']);
+$filters_sort = trim((string) ob_get_clean());
+$filters_facets_facade = new Theme_Filters([
+    'post_type' => 'missing',
+    'taxonomies' => false,
+    'request' => [],
+    'groups' => [
+        'facets' => ['controls' => ['search']],
+    ],
+]);
+ob_start();
+$filters_facets_facade->filters(['classes' => 'contract-facets']);
+$filters_facets = trim((string) ob_get_clean());
+$rendering_component_fixture = false;
+$assert_contains('Theme_Filters rend directement la recherche', 'class="filters filters-search ', $filters_search);
+$assert_contains('Theme_Filters ajoute les classes de la recherche', 'class="filters filters-search contract-search contract-search-wide"', $filters_search);
+$assert_contains('Theme_Filters transmet le groupe AJAX', 'data-filters-group="contract-filters"', $filters_search);
+$assert_contains('Theme_Filters ajoute les classes des facettes', 'class="filters filters-facets contract-facets"', $filters_facets);
+$assert_contains('Theme_Filters rend directement le tri', 'class="filters filters-sort ', $filters_sort);
+$assert_contains('Theme_Filters ajoute les classes du tri', 'class="filters filters-sort contract-sort"', $filters_sort);
+$assert_contains('Theme_Filters active le tri au changement', 'data-filters-submit-on-change="true"', $filters_sort);
+$assert_same('Theme_Filters expose la cible', 'contract-results', $filters_facade->target());
+$assert_same('Theme_Filters normalise une liste vide', [], $filters_facade->items());
+$assert_same('Theme_Filters ne rend pas les résultats', false, $filters_facade->has_results());
+ob_start();
+$filters_facade->results_message();
+$filters_message_without_search = trim((string) ob_get_clean());
+$assert_same('Theme_Filters masque le message sans recherche', '', $filters_message_without_search);
+$filters_message_facade = new Theme_Filters([
+    'post_type' => 'missing',
+    'taxonomies' => false,
+    'request' => ['filter_search' => 'alpha'],
+]);
+ob_start();
+$filters_message_facade->results_message(['classes' => 'contract-results-message']);
+$filters_empty_message = trim((string) ob_get_clean());
+$assert_contains('Theme_Filters affiche le message sans résultat', 'Aucun résultat pour votre recherche.', $filters_empty_message);
+$assert_contains('Theme_Filters ajoute les classes du message', 'class="filters-results-message contract-results-message"', $filters_empty_message);
+$filters_message_context = $filters_message_facade->context();
+$filters_message_context['result_count'] = 2;
+$filters_context_property = new ReflectionProperty(Theme_Filters::class, 'context');
+$filters_context_property->setValue($filters_message_facade, $filters_message_context);
+ob_start();
+$filters_message_facade->results_message([
+    'messages' => [
+        'plural' => '{count} matching <projects>.',
+    ],
+]);
+$filters_custom_message = trim((string) ob_get_clean());
+$assert_contains('Theme_Filters personnalise le message pluriel', '<strong>2</strong> matching &lt;projects&gt;.', $filters_custom_message);
+$assert_same('Filters ne rend rien sans contrôle valide', '', $render('filters', [
+    'items' => [['type' => 'search', 'name' => 'invalid name']],
+]));
+$assert_same('Filters refuse les arguments positionnels', '', $render('filters', [
+    [['type' => 'search', 'name' => 'filter_search']],
 ]));
 
 $newsletter = $render('newsletter', [

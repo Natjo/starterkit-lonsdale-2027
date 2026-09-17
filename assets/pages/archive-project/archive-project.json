@@ -4,10 +4,10 @@
   "name": "archive-project",
   "slug": "archive-project",
   "file": "archive-project.php",
-  "activation": { "contentType": "project" },
+  "activation": { "contentTypeArchive": "project" },
   "dependencies": {
-    "components": ["list", "pagination"],
-    "cards": [],
+    "components": ["filters", "list", "pagination"],
+    "cards": ["project"],
     "strates": [],
     "heroes": ["page"],
     "common": ["header-nav"],

@@ -4,7 +4,7 @@
   "name": "archive-team",
   "slug": "archive-team",
   "file": "archive-team.php",
-  "activation": { "contentType": "team" },
+  "activation": { "contentTypeArchive": "team" },
   "dependencies": {
     "components": ["list", "pagination"],
     "cards": [],

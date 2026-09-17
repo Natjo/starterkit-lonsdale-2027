@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Filters browser contract</title>
+</head>
+<body data-result="pending">
+    <form action="/projects/" data-filters-group="projects" data-filters-target="results" data-filters-submit-on-change="false">
+        <input name="filter_search" value="identité">
+        <input type="hidden" name="filter_sort" value="title_asc">
+        <button type="submit">Rechercher</button>
+    </form>
+    <form action="/projects/" data-filters-group="projects" data-filters-target="results" data-filters-submit-on-change="false">
+        <input type="checkbox" name="project_type[]" value="website" checked>
+        <input type="hidden" name="filter_search" value="identité">
+        <input type="hidden" name="filter_sort" value="title_asc">
+        <a class="filters-reset" href="/projects/">Réinitialiser</a>
+    </form>
+    <form action="/projects/" data-filters-group="projects" data-filters-target="results" data-filters-submit-on-change="true">
+        <select name="filter_sort">
+            <option value="date_desc">Date</option>
+            <option value="title_asc" selected>Titre</option>
+        </select>
+        <input type="hidden" name="filter_search" value="identité">
+        <input type="hidden" name="project_type[]" value="website">
+    </form>
+    <div id="results"><a class="initial">Résultats initiaux</a></div>
+
+    <script type="module">
+        import initializeFilters from "/assets/components/filters/filters.js";
+
+        const assert = (condition, message) => {
+            if (!condition) throw new Error(message);
+        };
+        const tick = () => new Promise(resolve => setTimeout(resolve, 0));
+        const requests = [];
+
+        window.fetch = async (input) => {
+            const url = new URL(input, window.location.href);
+            requests.push(url);
+            const forms = Array.from(document.querySelectorAll('[data-filters-group="projects"]'))
+                .map(form => form.outerHTML)
+                .join("");
+            return new Response(`<!doctype html><html><head><title>Résultats AJAX</title></head><body>${forms}<div id="results"><p class="updated">${url.search}</p><nav class="pagination"><a href="/projects/page/2/?filter_search=identit%C3%A9">2</a></nav></div></body></html>`, {
+                status: 200,
+                headers: { "Content-Type": "text/html" },
+            });
+        };
+
+        try {
+            const destroys = Array.from(document.querySelectorAll('[data-filters-group="projects"]'))
+                .map(initializeFilters);
+
+            document.querySelector('[name="filter_search"]').value = "nouveau";
+            document.querySelector('form').requestSubmit();
+            await tick();
+            await tick();
+
+            assert(requests.length === 1, "one grouped request");
+            assert(requests[0].searchParams.get("filter_search") === "nouveau", "visible search wins over hidden copies");
+            assert(requests[0].searchParams.getAll("filter_search").length === 1, "search deduplicated");
+            assert(requests[0].searchParams.get("filter_sort") === "title_asc", "sort merged");
+            assert(requests[0].searchParams.getAll("project_type[]").includes("website"), "taxonomy merged");
+            assert(document.querySelector("#results .updated"), "target replaced");
+            assert(document.title === "Résultats AJAX", "title updated");
+
+            document.querySelector("#results .pagination a").click();
+            await tick();
+            await tick();
+            assert(requests.length === 2 && requests[1].pathname.includes("page/2"), "pagination intercepted");
+
+            document.querySelector(".filters-reset").click();
+            await tick();
+            await tick();
+            assert(requests.length === 3 && requests[2].search === "", "reset intercepted");
+
+            destroys.forEach(destroy => destroy?.());
+            document.body.dataset.result = "ok";
+        } catch (error) {
+            document.body.dataset.result = error.message;
+        }
+    </script>
+</body>
+</html>

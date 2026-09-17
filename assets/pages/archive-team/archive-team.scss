@@ -1,18 +1,22 @@
-.team-archive {
-    display: grid;
-    grid-template-columns: var(--layout);
-    align-content: start;
-    margin-bottom: var(--margin-md);
+.archive-team {
 
-    > * {
-        grid-column: ctr;
+    .team-archive {
+        display: grid;
+        grid-template-columns: var(--layout);
+        align-content: start;
+        margin-bottom: var(--margin-md);
+
+
+        >* {
+            grid-column: ctr;
+        }
     }
-}
 
-.team-archive-list {
-    --list-columns: 1;
+    .team-archive-list {
+        --list-columns: 1;
 
-    @media #{$breakpoint-md-up} {
-        --list-columns: 3;
+        @media #{$breakpoint-md-up} {
+            --list-columns: 3;
+        }
     }
 }

@@ -62,7 +62,7 @@ get_header();
 common('header-nav');
 ?>
 
-<main class="contact-page">
+<main class="template-contact">
     <?php hero('page'); ?>
 
     <div class="main-content">

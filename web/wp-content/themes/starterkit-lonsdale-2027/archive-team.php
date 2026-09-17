@@ -32,7 +32,7 @@ get_header();
 common('header-nav');
 ?>
 
-<main>
+<main class="archive-team">
     <?php hero('page', ['title' => post_type_archive_title('', false)]); ?>
 
     <section class="team-archive" aria-label="Team">

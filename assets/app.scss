@@ -38,6 +38,7 @@
 @import "components/autocomplete/autocomplete";
 @import "components/quote/quote";
 @import "components/field/field";
+@import "components/filters/filters" once;
 @import "components/newsletter/newsletter";
 @import "components/pagination/pagination";
 @import "components/breadcrumb/breadcrumb";
@@ -72,6 +73,7 @@
 @import "pages/template-hub/template-hub" once;
 @import "pages/template-contact/template-contact" once;
 @import "pages/template-sidebar/template-sidebar" once;
+@import "pages/template-filters/template-filters" once;
 @import "pages/search/search" once;
 
 // strates — split : bundle dédié, <link> injecté au premier rendu

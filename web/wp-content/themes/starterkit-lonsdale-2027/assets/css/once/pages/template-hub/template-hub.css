@@ -1,1 +1,2 @@
-.hub-results{grid-template-columns:var(--layout);margin-bottom:var(--margin-md);align-content:start;display:grid}.hub-results>*{grid-column:ctr}.hub-results .list{--list-columns:4}
+.template-hub .hub-results{grid-template-columns:var(--layout);margin-bottom:var(--margin-md);align-content:start;display:grid}.template-hub .hub-results>*{grid-column:ctr}.template-hub .hub-results .list{--list-columns:4}
+/*# sourceMappingURL=template-hub.css.map*/

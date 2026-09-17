@@ -3,6 +3,7 @@
     grid-template-columns: var(--layout);
     align-content: start;
     margin-bottom: var(--margin-md);
+    background-color: green;;
 
     > * {
         grid-column: ctr;

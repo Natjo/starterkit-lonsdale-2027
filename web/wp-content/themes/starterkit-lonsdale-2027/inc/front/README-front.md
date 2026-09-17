@@ -201,6 +201,117 @@ les appeler avant toute validation individuelle avec `get_post_type()`.
 URL de médiathèque pendant la requête. Ces caches sont locaux à la requête et
 ne nécessitent ni Redis ni cache de page.
 
+### Contexte des pages filtrées
+
+`Theme_Filters` fournit une façade de rendu autour de
+`theme_build_filters_context()`. Elle centralise la lecture et la validation
+des paramètres GET, la découverte facultative des taxonomies, le tri et la
+requête WordPress. Le template conserve sa configuration, l’emplacement de
+chaque formulaire et l’assemblage des cards :
+
+```php
+$filters = new Theme_Filters([
+    'post_type' => 'project',
+    'search' => [
+        'label' => 'Rechercher',
+        'placeholder' => 'Rechercher un projet',
+        'acf_fields' => ['hero-page_title'],
+    ],
+    'taxonomies' => true,
+    'taxonomy_relation' => 'AND',
+    'ajax' => true,
+    'ajax_group' => 'project-filters',
+    'ajax_target' => 'project-results',
+    'sort' => [
+        'default' => 'date_desc',
+        'options' => [
+            'date_desc' => ['label' => 'Plus récents', 'orderby' => 'date', 'order' => 'DESC'],
+            'title_asc' => ['label' => 'Titre A–Z', 'orderby' => 'title', 'order' => 'ASC'],
+        ],
+    ],
+]);
+```
+
+Sans `acf_fields`, la recherche utilise le moteur natif de WordPress. Avec
+`search.acf_fields`, le champ de recherche unique cible les métadonnées ACF
+indiquées avec une comparaison `LIKE`. `acf_filters` sert aux contrôles
+indépendants rendus dans `filters()`.
+
+Les formulaires peuvent ensuite être placés indépendamment :
+
+```php
+<div class="filters-search-bar">
+    <?php $filters->search(); ?>
+</div>
+
+<aside class="main-sidebar">
+    <?php $filters->filters(); ?>
+</aside>
+
+<div class="filters-toolbar">
+    <?php $filters->sort(); ?>
+</div>
+
+<div id="<?= esc_attr($filters->target()) ?>" aria-live="polite">
+    <?php $filters->results_message(); ?>
+    <?php component('list', [
+        'items' => $filters->items(),
+        'card' => $filters->card(),
+    ]); ?>
+</div>
+```
+
+`results_message()` ne rend rien avant une recherche. Elle affiche ensuite
+« Aucun résultat », « **1** résultat » ou « **X** résultats » et accepte une
+option `classes` comme les méthodes de formulaires. Ses textes sont
+personnalisables pour WPML avec `messages.zero`, `messages.singular` et
+`messages.plural`. Le placeholder `{count}` rend le nombre en `<strong>`.
+
+`search()`, `filters()` et `sort()` acceptent aussi une option de rendu
+`classes`, sous forme de chaîne ou de tableau. Elle complète les classes du
+groupe sans les remplacer :
+
+```php
+<?php $filters->search(['classes' => 'filters-search-wide']); ?>
+<?php $filters->filters(['classes' => ['filters-sidebar', 'theme-dark']]); ?>
+<?php $filters->sort(['classes' => 'filters-sort-compact']); ?>
+```
+
+`facets()` reste disponible comme alias rétrocompatible de `filters()`.
+
+La classe expose `archive_title()`, `target()`, `items()`, `card()`,
+`has_results()`, `current_page()`, `total_pages()`, `post_type_label()` et
+`context()`. `form($name)` permet de rendre un groupe personnalisé. La classe
+ne rend volontairement ni les cards ni la pagination : leur HTML reste sous le
+contrôle du template.
+
+`taxonomies` accepte `true` pour toutes les taxonomies publiques du CPT, une
+liste de slugs pour limiter les filtres, ou `false`. Les options complémentaires
+sont `acf_filters`, `meta_relation`, `hide_empty_terms`, `posts_per_page`,
+`card`, `submit_label`, `reset_label`, `aria_label`, `result_labels`, `ajax`,
+`ajax_group`, `ajax_target` et `groups`.
+Chaque filtre ACF déclare au minimum son `name`, sa clé meta `field` et son
+`control`. Les contrôles texte utilisent `LIKE` par défaut ; les autres valeurs
+simples utilisent `=`. `compare`, `options`, `placeholder`, `input_value`,
+`stored_value`, `value_relation`, `min` et `max` permettent d’ajuster le
+comportement. Le filtre
+`theme_filters_result_item` permet d’enrichir chaque payload de card.
+
+Sans configuration `groups`, `Theme_Filters` crée les groupes `search`,
+`facets` et `sort`. Le helper procédural conserve quant à lui son comportement
+historique dans `form`. Avec
+`groups`, il expose en plus un payload par emplacement dans `forms`. Les groupes
+peuvent assembler `search`, `taxonomies`, `acf` et `sort`. Chaque formulaire
+reçoit sous forme de champs cachés les valeurs actives des groupes qu’il
+n’affiche pas : recherche, filtres et tri restent donc indépendants même sans
+JavaScript. Les options d’un groupe sont `controls`, `submit_label`,
+`aria_label`, `classes`, `show_reset`, `show_result_count` et
+`ajax_submit_on_change`.
+
+Lorsque `ajax` vaut `true`, les formulaires de `forms` partagent le groupe et la
+cible configurés. La page doit attribuer l’identifiant retourné dans
+`ajax_target` au conteneur de la liste et de sa pagination.
+
 ### CSS propre aux templates WordPress
 
 Un import marqué `once` est compilé séparément puis injecté inline une seule

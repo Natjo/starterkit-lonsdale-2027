@@ -1,0 +1,32 @@
+.filters {
+    display: grid;
+    gap: 2.4rem;
+
+    .filters-fields {
+        display: grid;
+        gap: 2.4rem;
+    }
+
+    .filters-range {
+        display: grid;
+        gap: 1.2rem;
+        margin: 0;
+        padding: 0;
+        border: 0;
+
+        legend {
+            margin-bottom: .8rem;
+            font-weight: 600;
+        }
+    }
+
+    .filters-count {
+        margin: 0;
+    }
+
+    .filters-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.2rem;
+    }
+}

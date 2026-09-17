@@ -195,7 +195,7 @@ un hero.
 ```text
 accordion       anchor-nav      autocomplete    badge           btn
 breadcrumb      date            dialog          eyebrow
-field
+field           filters
 header          icon            image           intro
 link            list            lottie          marquee         newsletter
 pagination      picto           picture         quote           search

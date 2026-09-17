@@ -1,1 +1,2 @@
-.hub-results{grid-template-columns:var(--layout);margin-bottom:var(--margin-md);align-content:start;display:grid}.hub-results>*{grid-column:ctr}.hub-results .list{--list-columns:4}
+.hub-results{grid-template-columns:var(--layout);margin-bottom:var(--margin-md);background-color:green;align-content:start;display:grid}.hub-results>*{grid-column:ctr}.hub-results .list{--list-columns:4}
+/*# sourceMappingURL=archive-news.css.map*/

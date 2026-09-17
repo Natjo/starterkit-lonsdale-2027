@@ -33,7 +33,7 @@ get_header();
 common("header-nav");
 ?>
 
-<main>
+<main class="template-sidebar">
     <?php hero('page'); ?>
 
     <div class="layout-sidebar">

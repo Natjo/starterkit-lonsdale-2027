@@ -20,6 +20,7 @@ la fonction globale `form()` et les arguments positionnels ont été retirés.
 ## Types supportés
 
 - `text`
+- `search`
 - `textarea`
 - `select`
 - `checkbox`

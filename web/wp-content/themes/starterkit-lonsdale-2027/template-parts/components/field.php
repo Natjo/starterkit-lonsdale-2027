@@ -34,7 +34,7 @@ $to_string = static fn(mixed $value): string => is_scalar($value) || $value inst
 $to_bool = static fn(mixed $value): bool => filter_var($value, FILTER_VALIDATE_BOOL);
 $type = strtolower($to_string($args['type']));
 $type = $type === 'radio' ? 'radios' : $type;
-$allowed_types = ['text', 'textarea', 'select', 'checkbox', 'checkboxes', 'radios', 'number', 'email', 'url', 'tel', 'date', 'password'];
+$allowed_types = ['text', 'search', 'textarea', 'select', 'checkbox', 'checkboxes', 'radios', 'number', 'email', 'url', 'tel', 'date', 'password'];
 $name = $to_string($args['name']);
 
 if (!in_array($type, $allowed_types, true) || !preg_match('/^[A-Za-z][A-Za-z0-9_.\-\[\]]*$/', $name)) return;

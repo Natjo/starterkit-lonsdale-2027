@@ -7,6 +7,10 @@ déclaration WordPress standard correspondante reste dans `inc/datatypes.php`.
 Lors d'une création, Forge réécrit ce fichier PHP et ne conserve que les
 Content Types choisis.
 
+Dans le catalogue initial, les Content Types ne sont pas exposés dans l’API
+REST (`showInRest: false`) et seuls les supports explicitement nécessaires sont
+activés. `thumbnail` et `excerpt` sont désactivés par défaut.
+
 La clé `card` contient le slug de la card associée au Content Type. Forge
 active automatiquement cette card lorsque le Content Type est ajouté. Une
 chaîne vide indique qu’aucune card dédiée n’est imposée.

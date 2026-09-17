@@ -115,6 +115,7 @@ La lecture statique est configurée dans WordPress : `show_on_front = page` et
 | `single.php` | Titre et contenu du post |
 | `archive.php` | Titre d’archive, liste et pagination |
 | `archive-news.php` | Délègue au rendu partagé `template-hub.php` avec la requête native de l’archive News |
+| `archive-project.php` | Délègue au rendu partagé `template-filters.php` : recherche, facettes et tri séparés avec mise à jour AJAX progressive |
 | `taxonomy.php` | Titre de taxonomie, liste et pagination |
 | `search.php` | Résultats regroupés par CPT, sidebar d’ancres et pagination |
 | `404.php` | Message générique et retour vers l’accueil |
@@ -168,8 +169,8 @@ dans le manifeste correspondant au cours du même changement.
 | Public | Oui |
 | Page individuelle | Oui, `/news/{slug}/` |
 | Archive | Oui, `/news/` |
-| REST WordPress | Oui |
-| Supports | `title`, `thumbnail`, `excerpt`, `author` |
+| REST WordPress | Non |
+| Supports | `title`, `author` |
 | Icône | `dashicons-rss` |
 | Contenus locaux | Aucun contenu publié |
 

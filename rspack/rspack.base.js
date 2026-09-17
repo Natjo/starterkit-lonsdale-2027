@@ -14,6 +14,7 @@ const parseSplitImports = path.resolve(__dirname, "parse-split-imports.js");
 const svgoLoader = path.resolve(__dirname, "loaders/svgo-loader.js");
 const optimizeSvgUtils = path.resolve(__dirname, "utils/optimize-svg.js");
 const { optimizeSvgCopyTransform } = require("./utils/optimize-svg");
+const { pruneOnDemandAssets } = require("./prune-on-demand-assets");
 const assetsRoot = path.resolve(__dirname, "../assets");
 const copyIgnoredFiles = ["**/.DS_Store", "**/.gitkeep"];
 
@@ -23,6 +24,20 @@ class WatchDynamicEntriesPlugin {
             "WatchDynamicEntriesPlugin",
             (compilation) => compilation.fileDependencies.add(APP_SCSS),
         );
+    }
+}
+
+class PruneOnDemandAssetsPlugin {
+    apply(compiler) {
+        compiler.hooks.afterEmit.tap("PruneOnDemandAssetsPlugin", (compilation) => {
+            const removed = pruneOnDemandAssets(compiler.options.output.path);
+
+            if (removed.length > 0) {
+                compilation.getLogger("PruneOnDemandAssetsPlugin").info(
+                    `Removed ${removed.length} orphan on-demand asset(s).`,
+                );
+            }
+        });
     }
 }
 
@@ -252,6 +267,7 @@ function createRspackConfig({
             new rspack.CssExtractRspackPlugin({
                 filename: "css/[name].css",
             }),
+            ...(name === "app" ? [new PruneOnDemandAssetsPlugin()] : []),
             ...(watchDynamicEntries ? [new WatchDynamicEntriesPlugin()] : []),
             ...(withCopy
                 ? [

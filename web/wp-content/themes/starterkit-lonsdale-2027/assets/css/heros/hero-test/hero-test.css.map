@@ -1,1 +1,0 @@
-{"version":3,"file":"css/heros/hero-test/hero-test.css","sources":["webpack://wordpress_starter_kit/./assets/heros/hero-test/hero-test.scss"],"sourcesContent":["@import \"styles/breakpoints\";\n.hero-test {\n    background-color: red;\n}"],"names":[],"mappings":"AACA"}

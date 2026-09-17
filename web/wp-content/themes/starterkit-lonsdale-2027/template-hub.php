@@ -57,7 +57,7 @@ get_header();
 common('header-nav');
 ?>
 
-<main>
+<main class="template-hub">
     <?php if ($is_post_type_archive) : ?>
         <?php hero('page', ['title' => post_type_archive_title('', false)]); ?>
     <?php else : ?>

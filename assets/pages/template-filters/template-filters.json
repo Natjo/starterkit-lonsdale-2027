@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "type": "page",
+  "name": "Filters",
+  "slug": "template-filters",
+  "file": "template-filters.php",
+  "activation": "selected",
+  "dependencies": {
+    "components": ["filters", "list", "pagination"],
+    "cards": ["project"],
+    "strates": [],
+    "heroes": ["page"],
+    "common": ["header-nav"],
+    "modules": [],
+    "vendors": []
+  }
+}

@@ -4,7 +4,7 @@
   "name": "archive-news",
   "slug": "archive-news",
   "file": "archive-news.php",
-  "activation": { "contentType": "news" },
+  "activation": { "contentTypeArchive": "news" },
   "dependencies": {
     "components": ["list", "pagination"],
     "cards": [],
