@@ -9,6 +9,7 @@ add_action('init', function () {
             'menu_icon' => 'dashicons-rss',
             'supports' => ['title', 'author'],
             'card' => 'news',
+            'has_archive' => false,
         ],
         'project' => [
             'singular' => 'Project',
