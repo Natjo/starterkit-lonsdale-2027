@@ -1,8 +1,8 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) return;
+$params = component_args($params ?? null);
+if ($params === null) return;
 
 $args = normalize_args($params, [
     'quote' => '',
@@ -14,13 +14,10 @@ $args = normalize_args($params, [
     'classes' => '',
     'attributes' => [],
 ]);
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
-$quote = $to_string($args['quote']);
-$author = $to_string($args['author']);
-$source = $to_string($args['source']);
-$url = esc_url($to_string($args['url']));
+$quote = component_string($args['quote']);
+$author = component_string($args['author']);
+$source = component_string($args['source']);
+$url = esc_url(component_string($args['url']));
 $image = $args['image'];
 $has_image = is_scalar($image) || $image instanceof Stringable
     ? trim((string) $image) !== ''

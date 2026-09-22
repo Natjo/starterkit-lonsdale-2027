@@ -1,8 +1,8 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params) || !is_array($params['link'] ?? null)) {
+$params = component_args($params ?? null);
+if ($params === null || !is_array($params['link'] ?? null)) {
     return;
 }
 

@@ -1,10 +1,8 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) {
-    return;
-}
+$params = component_args($params ?? null);
+if ($params === null) return;
 
 $title = $params['title'] ?? '';
 if (!is_scalar($title) && !$title instanceof Stringable) {

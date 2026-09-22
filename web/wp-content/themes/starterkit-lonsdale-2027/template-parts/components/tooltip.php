@@ -1,17 +1,12 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) {
-    return;
-}
+$params = component_args($params ?? null);
+if ($params === null) return;
 
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
 
-$label = $to_string($params['label'] ?? '');
-$content = $to_string($params['content'] ?? '');
+$label = component_string($params['label'] ?? '');
+$content = component_string($params['content'] ?? '');
 
 if ($label === '' || $content === '') {
     return;
@@ -25,7 +20,7 @@ $attributes = component_attributes($params['attributes'] ?? [], [
     'data-tooltip-open',
     'data-tooltip-dismissed',
 ]);
-$uid = function_exists('wp_unique_id') ? wp_unique_id('tooltip-') : uniqid('tooltip-');
+$uid = component_id('', 'tooltip-');
 $allowed_content = [
     'br' => [],
     'strong' => [],

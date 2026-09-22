@@ -1,8 +1,8 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) return;
+$params = component_args($params ?? null);
+if ($params === null) return;
 
 $args = normalize_args($params, [
     'total' => 0,
@@ -10,13 +10,11 @@ $args = normalize_args($params, [
     'prev_text' => '‹',
     'next_text' => '›',
     'aria_label' => 'Pagination',
+    'base' => '',
     'classes' => '',
     'attributes' => [],
 ]);
 
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
 
 $total = is_numeric($args['total']) ? max(0, (int) $args['total']) : 0;
 if ($total <= 1) return;
@@ -24,17 +22,23 @@ if ($total <= 1) return;
 $current = is_numeric($args['current']) ? (int) $args['current'] : 1;
 $current = max(1, min($total, $current));
 
-$links = paginate_links([
+$pagination_args = [
     'total' => $total,
     'current' => $current,
     'type' => 'array',
-    'prev_text' => esc_html($to_string($args['prev_text']) ?: '‹'),
-    'next_text' => esc_html($to_string($args['next_text']) ?: '›'),
-]);
+    'prev_text' => esc_html(component_string($args['prev_text']) ?: '‹'),
+    'next_text' => esc_html(component_string($args['next_text']) ?: '›'),
+];
+$base = component_string($args['base']);
+if ($base !== '' && str_contains($base, '%#%')) {
+    $pagination_args['base'] = $base;
+    $pagination_args['format'] = '';
+}
+$links = paginate_links($pagination_args);
 $links = is_array($links) ? array_values(array_filter($links, 'is_string')) : [];
 if ($links === []) return;
 
-$aria_label = $to_string($args['aria_label']) ?: 'Pagination';
+$aria_label = component_string($args['aria_label']) ?: 'Pagination';
 $classes = component_classes('pagination', $args['classes']);
 $attributes = component_attributes($args['attributes'], ['class', 'aria-label']);
 $allowed_html = [

@@ -6,8 +6,8 @@
   "file": "archive-team.php",
   "activation": { "contentTypeArchive": "team" },
   "dependencies": {
-    "components": ["list", "pagination"],
-    "cards": [],
+    "components": ["filters", "list", "pagination"],
+    "cards": ["team"],
     "strates": [],
     "heroes": ["page"],
     "common": ["header-nav"],

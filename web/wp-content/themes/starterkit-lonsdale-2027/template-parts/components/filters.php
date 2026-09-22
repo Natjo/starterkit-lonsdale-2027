@@ -1,8 +1,8 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) return;
+$params = component_args($params ?? null);
+if ($params === null) return;
 
 $args = normalize_args($params, [
     'action' => '',
@@ -18,48 +18,57 @@ $args = normalize_args($params, [
     'ajax_group' => '',
     'ajax_target' => '',
     'ajax_submit_on_change' => false,
+    'pretty_urls' => false,
+    'pretty_base_url' => '',
+    'pretty_params' => [],
     'classes' => '',
     'attributes' => [],
 ]);
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
-$to_bool = static fn(mixed $value): bool => filter_var($value, FILTER_VALIDATE_BOOL);
 $valid_name = static fn(string $name): bool => preg_match('/^[A-Za-z][A-Za-z0-9_.\-\[\]]*$/', $name) === 1;
-$items = is_array($args['items']) && array_is_list($args['items']) ? $args['items'] : [];
-$items = array_values(array_filter($items, static function ($item) use ($to_string, $valid_name): bool {
+$items = component_list($args['items']);
+$items = array_values(array_filter($items, static function ($item) use ($valid_name): bool {
     if (!is_array($item) || array_is_list($item)) return false;
 
-    return $valid_name($to_string($item['name'] ?? ''));
+    return $valid_name(component_string($item['name'] ?? ''));
 }));
 if ($items === []) return;
 
-$action = esc_url($to_string($args['action']));
+$action = esc_url(component_string($args['action']));
 $action = $action !== '' ? $action : esc_url(home_url('/'));
-$reset_url = esc_url($to_string($args['reset_url']));
-$submit_label = $to_string($args['submit_label']) ?: 'Filtrer';
-$reset_label = $to_string($args['reset_label']) ?: 'Réinitialiser';
-$aria_label = $to_string($args['aria_label']);
-$ajax = $to_bool($args['ajax']);
-$ajax_group = sanitize_html_class($to_string($args['ajax_group']));
-$ajax_target = sanitize_html_class($to_string($args['ajax_target']));
+$reset_url = esc_url(component_string($args['reset_url']));
+$submit_label = component_string($args['submit_label']) ?: 'Filtrer';
+$reset_label = component_string($args['reset_label']) ?: 'Réinitialiser';
+$aria_label = component_string($args['aria_label']);
+$ajax = component_bool($args['ajax']);
+$ajax_group = sanitize_html_class(component_string($args['ajax_group']));
+$ajax_target = sanitize_html_class(component_string($args['ajax_target']));
 $ajax = $ajax && $ajax_group !== '' && $ajax_target !== '';
+$pretty_urls = $ajax && component_bool($args['pretty_urls']);
+$pretty_base_url = esc_url(component_string($args['pretty_base_url']));
+$pretty_params = is_array($args['pretty_params'])
+    ? array_values(array_unique(array_filter(array_map(
+        static fn($name): string => sanitize_key((string) $name),
+        $args['pretty_params']
+    ))))
+    : [];
+$pretty_urls = $pretty_urls && $pretty_base_url !== '' && $pretty_params !== [];
 $classes = component_classes('filters', $args['classes']);
 $attributes = component_attributes($args['attributes'], [
     'class', 'action', 'method', 'aria-label', 'data-module', 'data-filters-group',
-    'data-filters-target', 'data-filters-submit-on-change',
+    'data-filters-target', 'data-filters-submit-on-change', 'data-filters-pretty',
+    'data-filters-pretty-base', 'data-filters-pretty-params',
 ]);
 $result_count = is_numeric($args['result_count']) ? max(0, (int) $args['result_count']) : null;
-$result_count_label = $to_string($args['result_count_label']);
+$result_count_label = component_string($args['result_count_label']);
 $control_types = ['text', 'search', 'select', 'checkbox', 'checkboxes', 'radios', 'number', 'date'];
 ?>
 
-<form class="<?= $classes ?>" action="<?= $action ?>" method="get"<?= $aria_label !== '' ? ' aria-label="' . esc_attr($aria_label) . '"' : '' ?><?= $ajax ? ' data-module="components/filters" data-filters-group="' . esc_attr($ajax_group) . '" data-filters-target="' . esc_attr($ajax_target) . '" data-filters-submit-on-change="' . ($to_bool($args['ajax_submit_on_change']) ? 'true' : 'false') . '"' : '' ?><?= $attributes ?>>
+<form class="<?= $classes ?>" action="<?= $action ?>" method="get"<?= $aria_label !== '' ? ' aria-label="' . esc_attr($aria_label) . '"' : '' ?><?= $ajax ? ' data-module="components/filters" data-filters-group="' . esc_attr($ajax_group) . '" data-filters-target="' . esc_attr($ajax_target) . '" data-filters-submit-on-change="' . (component_bool($args['ajax_submit_on_change']) ? 'true' : 'false') . '"' : '' ?><?= $pretty_urls ? ' data-filters-pretty="true" data-filters-pretty-base="' . $pretty_base_url . '" data-filters-pretty-params="' . esc_attr(implode(',', $pretty_params)) . '"' : '' ?><?= $attributes ?>>
     <div class="filters-fields">
         <?php foreach ($items as $item) :
-            $type = strtolower($to_string($item['type'] ?? 'text'));
-            $name = $to_string($item['name'] ?? '');
-            $control = strtolower($to_string($item['control'] ?? ''));
+            $type = strtolower(component_string($item['type'] ?? 'text'));
+            $name = component_string($item['name'] ?? '');
+            $control = strtolower(component_string($item['control'] ?? ''));
             $value = $item['value'] ?? '';
             $options = is_array($item['options'] ?? null) ? $item['options'] : [];
 
@@ -77,28 +86,28 @@ $control_types = ['text', 'search', 'select', 'checkbox', 'checkboxes', 'radios'
 
             if (in_array($type, ['checkboxes', 'radios'], true)) {
                 $selected_values = is_array($value) ? $value : [$value];
-                $selected_values = array_map($to_string, $selected_values);
-                $options = array_map(static function ($option) use ($selected_values, $to_string): array {
+                $selected_values = array_map('component_string', $selected_values);
+                $options = array_map(static function ($option) use ($selected_values): array {
                     $option = is_array($option) ? $option : [];
-                    $option_value = $to_string($option['value'] ?? '');
+                    $option_value = component_string($option['value'] ?? '');
                     $option['checked'] = in_array($option_value, $selected_values, true);
                     return $option;
                 }, $options);
             }
 
             if ($type === 'hidden') : ?>
-                <input type="hidden" name="<?= esc_attr($name) ?>" value="<?= esc_attr($to_string($value)) ?>">
+                <input type="hidden" name="<?= esc_attr($name) ?>" value="<?= esc_attr(component_string($value)) ?>">
             <?php elseif (in_array($type, ['date_range', 'number_range'], true)) :
                 $range_type = $type === 'date_range' ? 'date' : 'number';
                 $range_value = is_array($value) && !array_is_list($value) ? $value : [];
                 $from_key = $type === 'date_range' ? 'from' : 'min';
                 $to_key = $type === 'date_range' ? 'to' : 'max';
-                $from_label = $to_string($item['from_label'] ?? '') ?: ($type === 'date_range' ? 'Du' : 'Minimum');
-                $to_label = $to_string($item['to_label'] ?? '') ?: ($type === 'date_range' ? 'Au' : 'Maximum');
+                $from_label = component_string($item['from_label'] ?? '') ?: ($type === 'date_range' ? 'Du' : 'Minimum');
+                $to_label = component_string($item['to_label'] ?? '') ?: ($type === 'date_range' ? 'Au' : 'Maximum');
                 ?>
                 <fieldset class="filters-range filters-range-<?= esc_attr($range_type) ?>">
-                    <?php if ($to_string($item['label'] ?? '') !== '') : ?>
-                        <legend><?= esc_html($to_string($item['label'])) ?></legend>
+                    <?php if (component_string($item['label'] ?? '') !== '') : ?>
+                        <legend><?= esc_html(component_string($item['label'])) ?></legend>
                     <?php endif; ?>
                     <?php component('field', [
                         'type' => $range_type,
@@ -150,7 +159,7 @@ $control_types = ['text', 'search', 'select', 'checkbox', 'checkboxes', 'radios'
             'attributes' => ['type' => 'submit'],
         ]); ?>
 
-        <?php if ($to_bool($args['show_reset']) && $reset_url !== '') : ?>
+        <?php if (component_bool($args['show_reset']) && $reset_url !== '') : ?>
             <?php component('btn', [
                 'link' => [
                     'url' => $reset_url,

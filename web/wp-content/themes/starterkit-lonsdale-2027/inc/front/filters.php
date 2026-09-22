@@ -1,5 +1,52 @@
 <?php
 
+add_filter('query_vars', static function (array $query_vars): array {
+    $query_vars[] = 'theme_filters_path';
+
+    return array_values(array_unique($query_vars));
+});
+
+add_action('init', static function (): void {
+    add_rewrite_rule(
+        '^(.+?)/filters(?:/(.*))?/?$',
+        'index.php?pagename=$matches[1]&theme_filters_path=$matches[2]',
+        'top'
+    );
+});
+
+/**
+ * Décode les paires `nom/valeur` d'une URL de filtres lisible.
+ *
+ * @return array<string, string|list<string>>
+ */
+function theme_parse_pretty_filters_path(mixed $path, string $page_name = 'paged'): array
+{
+    if (!is_scalar($path)) return [];
+
+    $path = trim((string) $path, '/');
+    if ($path === '') return [];
+
+    $segments = array_slice(explode('/', $path), 0, 40);
+    $request = [];
+
+    for ($index = 0; $index + 1 < count($segments); $index += 2) {
+        $raw_name = rawurldecode($segments[$index]);
+        $name = $raw_name === 'page' ? $page_name : sanitize_key($raw_name);
+        if ($name === '') continue;
+
+        $raw_values = explode(',', rawurldecode($segments[$index + 1]));
+        $values = array_values(array_unique(array_filter(array_map(
+            static fn(string $value): string => sanitize_text_field($value),
+            $raw_values
+        ), static fn(string $value): bool => $value !== '')));
+        if ($values === []) continue;
+
+        $request[$name] = count($values) === 1 ? $values[0] : $values;
+    }
+
+    return $request;
+}
+
 /**
  * Construit le contexte d'une page de filtres depuis une configuration explicite.
  *
@@ -11,9 +58,37 @@ function theme_build_filters_context(array $options = []): array
         ? trim((string) $value)
         : '';
     $request = is_array($options['request'] ?? null) ? $options['request'] : $_GET;
+    $page_name = sanitize_key($to_string($options['page_name'] ?? 'paged')) ?: 'paged';
+    $pretty_urls = filter_var($options['pretty_urls'] ?? false, FILTER_VALIDATE_BOOL);
+    $filters_base = 'filters';
+    if ($pretty_urls) {
+        $pretty_request = theme_parse_pretty_filters_path(
+            get_query_var('theme_filters_path'),
+            $page_name
+        );
+        $request = array_replace($request, $pretty_request);
+    }
+    $provided_query = $options['query'] ?? null;
+    $uses_provided_query = $provided_query instanceof WP_Query;
     $requested_post_type = sanitize_key($to_string($options['post_type'] ?? ''));
+    $is_post_type_archive = is_post_type_archive();
 
-    if ($requested_post_type === '') {
+    if ($requested_post_type === '' && $is_post_type_archive) {
+        $queried_object = get_queried_object();
+        $requested_post_type = $queried_object instanceof WP_Post_Type
+            ? sanitize_key($queried_object->name)
+            : '';
+    }
+
+    if ($requested_post_type === '' && !$is_post_type_archive) {
+        $post_type_meta = sanitize_key($to_string($options['post_type_meta'] ?? ''));
+        if ($post_type_meta !== '') {
+            $meta_post_type = get_post_meta(get_queried_object_id(), $post_type_meta, true);
+            $requested_post_type = is_string($meta_post_type) ? sanitize_key($meta_post_type) : '';
+        }
+    }
+
+    if ($requested_post_type === '' && !$uses_provided_query) {
         $query_post_type = get_query_var('post_type');
         $query_post_type = is_array($query_post_type) ? reset($query_post_type) : $query_post_type;
         $requested_post_type = is_string($query_post_type) ? sanitize_key($query_post_type) : '';
@@ -305,7 +380,10 @@ function theme_build_filters_context(array $options = []): array
         $filter_groups['sort'][] = $sort_item;
     }
 
-    $paged = max(1, (int) get_query_var('paged'));
+    $requested_page = isset($request[$page_name]) && is_scalar($request[$page_name])
+        ? (int) $request[$page_name]
+        : 0;
+    $paged = max(1, $requested_page, (int) get_query_var('paged'), (int) get_query_var('page'));
     $query_args = [
         'post_type' => $post_type !== '' ? $post_type : 'post',
         'post_status' => 'publish',
@@ -348,31 +426,96 @@ function theme_build_filters_context(array $options = []): array
         );
     }
 
-    $query = $post_type !== '' ? new WP_Query($query_args) : null;
+    $query = $uses_provided_query
+        ? $provided_query
+        : ($post_type !== '' ? new WP_Query($query_args) : null);
     $items = [];
+    $grouped_items = [];
+    $group_by = sanitize_key($to_string($options['group_by'] ?? ''));
+    $result_filter = sanitize_key($to_string($options['result_filter'] ?? 'theme_filters_result_item'));
+    $result_filter = $result_filter !== '' ? $result_filter : 'theme_filters_result_item';
 
-    if ($query instanceof WP_Query) {
-        while ($query->have_posts()) {
-            $query->the_post();
-            $post_id = get_the_ID();
-            $title = trim((string) get_the_title($post_id));
-            if ($title === '') continue;
+    $append_item = static function (int $post_id) use (
+        &$items,
+        &$grouped_items,
+        $group_by,
+        $result_filter,
+        $singular_label
+    ): void {
+        $item_post_type = get_post_type($post_id);
+        $item_post_type = is_string($item_post_type) ? sanitize_key($item_post_type) : '';
+        if ($post_id <= 0 || $item_post_type === '') return;
 
-            $item = [
-                'post_id' => $post_id,
-                'type' => $singular_label,
-                'date' => get_the_date('', $post_id),
-                'datetime' => get_the_date('Y-m-d', $post_id),
-                'title' => $title,
-                'text' => get_the_excerpt($post_id),
-                'image' => get_post_thumbnail_id($post_id),
-                'link' => ['url' => get_permalink($post_id), 'title' => $title],
+        $item_post_type_object = get_post_type_object($item_post_type);
+        $fallback_label = ucwords(str_replace(['-', '_'], ' ', $item_post_type));
+        $item_singular_label = trim((string) ($item_post_type_object?->labels->singular_name ?? ''));
+        $item_singular_label = $item_singular_label !== ''
+            ? $item_singular_label
+            : ($group_by === 'post_type' ? $fallback_label : $singular_label);
+        $title = trim((string) get_the_title($post_id));
+        if ($title === '') return;
+
+        $item = [
+            'post_id' => $post_id,
+            'type' => $item_singular_label,
+            'date' => get_the_date('', $post_id),
+            'datetime' => get_the_date('Y-m-d', $post_id),
+            'title' => $title,
+            'text' => get_the_excerpt($post_id),
+            'image' => get_post_thumbnail_id($post_id),
+            'link' => ['url' => get_permalink($post_id), 'title' => $title],
+        ];
+        $filtered_item = apply_filters($result_filter, $item, $post_id, $item_post_type);
+        $item = is_array($filtered_item) && !array_is_list($filtered_item) ? $filtered_item : $item;
+        $items[] = $item;
+
+        if ($group_by !== 'post_type') return;
+
+        if (!isset($grouped_items[$item_post_type])) {
+            $group_label = trim((string) ($item_post_type_object?->labels->name ?? ''));
+            $group_label = $group_label !== '' ? $group_label : $fallback_label;
+            $configured_card = apply_filters('theme_content_type_card', $item_post_type, $item_post_type);
+            $group_card = resolve_card_name($configured_card);
+            if ($group_card === '') {
+                $group_card = resolve_card_name($item_post_type);
+            }
+            if ($group_card === '') {
+                $group_card = resolve_card_name('page') ?: 'card-page';
+            }
+
+            $grouped_items[$item_post_type] = [
+                'id' => 'search-section-' . sanitize_html_class($item_post_type),
+                'post_type' => $item_post_type,
+                'label' => $group_label,
+                'card' => $group_card,
+                'items' => [],
             ];
-            $filtered_item = apply_filters('theme_filters_result_item', $item, $post_id, $post_type);
-            $items[] = is_array($filtered_item) && !array_is_list($filtered_item) ? $filtered_item : $item;
         }
 
-        wp_reset_postdata();
+        $grouped_items[$item_post_type]['items'][] = $item;
+    };
+
+    if ($query instanceof WP_Query) {
+        if ($uses_provided_query) {
+            $query_posts = is_array($query->posts ?? null) ? $query->posts : [];
+            foreach ($query_posts as $post) {
+                $post_id = $post instanceof WP_Post ? (int) $post->ID : (int) $post;
+                $append_item($post_id);
+            }
+        } else {
+            while ($query->have_posts()) {
+                $query->the_post();
+                $append_item((int) get_the_ID());
+            }
+
+            wp_reset_postdata();
+        }
+    }
+
+    if ($grouped_items !== []) {
+        uasort($grouped_items, static fn(array $left, array $right): int =>
+            strcasecmp((string) ($left['label'] ?? ''), (string) ($right['label'] ?? ''))
+        );
     }
 
     $configured_card = $to_string($options['card'] ?? '');
@@ -389,7 +532,50 @@ function theme_build_filters_context(array $options = []): array
     $has_active_filters = $search_value !== '' || $tax_query !== [] || $meta_query !== [] || $sort_value !== $sort_default;
     $ajax = filter_var($options['ajax'] ?? false, FILTER_VALIDATE_BOOL);
     $ajax_group = sanitize_html_class($to_string($options['ajax_group'] ?? '') ?: $post_type . '-filters');
-    $ajax_target = sanitize_html_class($to_string($options['ajax_target'] ?? '') ?: $ajax_group . '-results');
+    $results_target_option = $options['results_target'] ?? $options['ajax_target'] ?? '';
+    $results_target = sanitize_html_class(
+        $to_string($results_target_option) ?: $ajax_group . '-results'
+    );
+    $pretty_param_names = array_values(array_unique(array_filter(array_merge(
+        array_map(static fn(array $item): string => (string) ($item['name'] ?? ''), $taxonomy_filters),
+        ($options['sort'] ?? true) !== false ? [$sort_name] : []
+    ))));
+    $pretty_base_url = rtrim($action_url, '/') . '/' . trim($filters_base, '/') . '/';
+    $pretty_path_parts = [];
+    $pretty_query = [];
+
+    if ($pretty_urls) {
+        foreach ($taxonomy_filters as $taxonomy_filter) {
+            $values = is_array($taxonomy_filter['value'] ?? null) ? $taxonomy_filter['value'] : [];
+            if ($values === []) continue;
+
+            $pretty_path_parts[] = rawurlencode((string) $taxonomy_filter['name']);
+            $pretty_path_parts[] = implode(',', array_map('rawurlencode', $values));
+        }
+        if (($options['sort'] ?? true) !== false && $sort_value !== '') {
+            $pretty_path_parts[] = rawurlencode($sort_name);
+            $pretty_path_parts[] = rawurlencode($sort_value);
+        }
+        if ($search_value !== '') {
+            $pretty_query[$search_name] = $search_value;
+        }
+        foreach ($filter_groups['acf'] as $acf_item) {
+            $value = $acf_item['value'] ?? '';
+            if ($value === '' || $value === []) continue;
+            $pretty_query[(string) $acf_item['name']] = $value;
+        }
+    }
+
+    $pretty_current_url = $pretty_path_parts !== []
+        ? $pretty_base_url . implode('/', $pretty_path_parts) . '/'
+        : $action_url;
+    $pretty_query_string = $pretty_query !== []
+        ? http_build_query($pretty_query, '', '&', PHP_QUERY_RFC3986)
+        : '';
+    $pretty_pagination_base = rtrim($pretty_current_url, '/') . '/page/%#%/';
+    if ($pretty_query_string !== '') {
+        $pretty_pagination_base .= '?' . $pretty_query_string;
+    }
     $form = [
         'action' => $action_url,
         'items' => $filter_items,
@@ -402,7 +588,10 @@ function theme_build_filters_context(array $options = []): array
         'aria_label' => $to_string($options['aria_label'] ?? '') ?: 'Filtrer les résultats',
         'ajax' => $ajax,
         'ajax_group' => $ajax_group,
-        'ajax_target' => $ajax_target,
+        'ajax_target' => $results_target,
+        'pretty_urls' => $pretty_urls,
+        'pretty_base_url' => $pretty_base_url,
+        'pretty_params' => $pretty_param_names,
     ];
     $forms = [];
     $groups = is_array($options['groups'] ?? null) && !array_is_list($options['groups'])
@@ -484,30 +673,114 @@ function theme_build_filters_context(array $options = []): array
     return [
         'post_type' => $post_type,
         'post_type_label' => $post_type_label,
+        'is_post_type_archive' => $is_post_type_archive,
         'archive_title' => $post_type !== '' ? post_type_archive_title('', false) : '',
         'archive_url' => $archive_url,
         'action_url' => $action_url,
         'query' => $query,
         'items' => $items,
+        'grouped_items' => array_values($grouped_items),
         'card' => $card_name,
         'result_count' => $result_count,
         'search_value' => $search_value,
         'has_active_filters' => $has_active_filters,
         'paged' => $paged,
-        'ajax_target' => $ajax_target,
+        'pagination_base' => $pretty_urls
+            ? $pretty_pagination_base
+            : str_replace(
+                '999999999',
+                '%#%',
+                add_query_arg($page_name, 999999999, $action_url)
+            ),
+        'results_target' => $results_target,
         'form' => $form,
         'forms' => $forms,
     ];
 }
 
 /**
- * Façade de rendu pour placer séparément les contrôles d'une page filtrée.
+ * Prépare et expose une liste WordPress filtrable.
+ *
+ * La classe résout le type de publication, construit et exécute la WP_Query ou
+ * réutilise celle fournie par l'appelant, normalise les résultats destinés aux
+ * cards et permet de rendre séparément la recherche, les facettes et le tri.
+ * Une requête interne est exécutée dès la construction de l'objet.
+ *
+ * Le template reste responsable du layout, du rendu des cards et de la
+ * pagination. Les méthodes search(), filters(), facets(), sort(), form() et
+ * results_message() produisent directement du HTML ; les autres méthodes sont
+ * des accesseurs sans effet de bord.
+ *
+ * Les libellés peuvent être fournis par l'appelant pour permettre leur
+ * traduction. Ne pas recréer une WP_Query dans le template : utiliser items(),
+ * current_page(), total_pages() et pagination_base().
  */
-final class Theme_Filters
+final class Theme_Listing
 {
     /** @var array<string, mixed> */
     private array $context;
 
+    /**
+     * Construit le contexte et exécute la requête de listing.
+     *
+     * `query` permet notamment de réutiliser la requête principale d'une page
+     * de recherche sans requête SQL supplémentaire. `post_type` est
+     * prioritaire. À défaut, le type est recherché dans
+     * l'archive courante, dans la meta indiquée par `post_type_meta`, puis dans
+     * la query var WordPress, sauf lorsqu'une requête externe est fournie. Les
+     * groupes `search`, `facets` et `sort` sont créés automatiquement lorsque
+     * `groups` n'est pas fourni.
+     *
+     * @param array{
+     *     post_type?: string,
+     *     post_type_meta?: string,
+     *     query?: WP_Query,
+     *     group_by?: ''|'post_type',
+     *     result_filter?: string,
+     *     request?: array<string, mixed>,
+     *     action?: string,
+     *     reset_url?: string,
+     *     search?: bool|array{
+     *         name?: string,
+     *         label?: string,
+     *         placeholder?: string,
+     *         autocomplete?: string,
+     *         acf_fields?: string|list<string>
+     *     },
+     *     taxonomies?: bool|list<string>,
+     *     hide_empty_terms?: bool,
+     *     taxonomy_relation?: 'AND'|'OR',
+     *     acf_filters?: list<array<string, mixed>>,
+     *     meta_relation?: 'AND'|'OR',
+     *     sort?: bool|array{
+     *         name?: string,
+     *         label?: string,
+     *         default?: string,
+     *         options?: array<string, array{label?: string, orderby?: string, order?: 'ASC'|'DESC'}>
+     *     },
+     *     posts_per_page?: int,
+     *     page_name?: string,
+     *     card?: string,
+     *     result_labels?: array{singular?: string, plural?: string},
+     *     submit_label?: string,
+     *     reset_label?: string,
+     *     aria_label?: string,
+     *     ajax?: bool,
+     *     ajax_group?: string,
+     *     results_target?: string,
+     *     ajax_target?: string,
+     *     pretty_urls?: bool,
+     *     groups?: array<string, array{
+     *         controls?: list<'search'|'taxonomies'|'acf'|'sort'>,
+     *         classes?: mixed,
+     *         submit_label?: string,
+     *         aria_label?: string,
+     *         ajax_submit_on_change?: bool,
+     *         show_reset?: bool,
+     *         show_result_count?: bool
+     *     }>
+     * } $options Configuration du listing et de ses contrôles.
+     */
     public function __construct(array $options = [])
     {
         if (!isset($options['groups'])) {
@@ -538,13 +811,21 @@ final class Theme_Filters
         $this->context = theme_build_filters_context($options);
     }
 
-    /** @param array{classes?: mixed} $options */
+    /**
+     * Affiche le formulaire du groupe de recherche.
+     *
+     * @param array{classes?: mixed} $options Classes ajoutées au composant filters.
+     */
     public function search(array $options = []): void
     {
         $this->render_form('search', $options);
     }
 
-    /** @param array{classes?: mixed} $options */
+    /**
+     * Affiche les filtres de taxonomies et de champs ACF.
+     *
+     * @param array{classes?: mixed} $options Classes ajoutées au composant filters.
+     */
     public function filters(array $options = []): void
     {
         $this->render_form('facets', $options);
@@ -560,17 +841,25 @@ final class Theme_Filters
         $this->filters($options);
     }
 
-    /** @param array{classes?: mixed} $options */
+    /**
+     * Affiche le formulaire de tri.
+     *
+     * @param array{classes?: mixed} $options Classes ajoutées au composant filters.
+     */
     public function sort(array $options = []): void
     {
         $this->render_form('sort', $options);
     }
 
+    /**
+     * Affiche un groupe personnalisé déclaré dans l'option `groups`.
+     */
     public function form(string $name): void
     {
         $this->render_form(sanitize_key($name));
     }
 
+    /** Retourne le titre de l'archive résolue, ou une chaîne vide. */
     public function archive_title(): string
     {
         return is_string($this->context['archive_title'] ?? null)
@@ -578,14 +867,37 @@ final class Theme_Filters
             : '';
     }
 
-    public function target(): string
+    /** Indique si le listing est utilisé sur une archive de post type. */
+    public function is_archive(): bool
     {
-        return is_string($this->context['ajax_target'] ?? null)
-            ? $this->context['ajax_target']
+        return (bool) ($this->context['is_post_type_archive'] ?? false);
+    }
+
+    /** Retourne le nom technique du post type validé. */
+    public function post_type(): string
+    {
+        return is_string($this->context['post_type'] ?? null)
+            ? $this->context['post_type']
             : '';
     }
 
-    /** @return list<array<string, mixed>> */
+    /** Retourne l'identifiant HTML de la région de résultats. */
+    public function target(): string
+    {
+        return is_string($this->context['results_target'] ?? null)
+            ? $this->context['results_target']
+            : '';
+    }
+
+    /**
+     * Retourne les publications normalisées pour le rendu des cards.
+     *
+     * Chaque entrée contient au minimum `post_id`, `type`, `date`, `datetime`,
+     * `title`, `text`, `image` et `link`, sauf modification par le filtre
+     * `theme_filters_result_item`.
+     *
+     * @return list<array<string, mixed>>
+     */
     public function items(): array
     {
         $items = $this->context['items'] ?? [];
@@ -593,6 +905,30 @@ final class Theme_Filters
         return is_array($items) && array_is_list($items) ? $items : [];
     }
 
+    /**
+     * Retourne les résultats regroupés par post type.
+     *
+     * Disponible lorsque le constructeur reçoit `group_by => 'post_type'`.
+     * Chaque groupe expose son identifiant HTML, son post type, son libellé, la
+     * card résolue et ses résultats normalisés. L'ordre des groupes est
+     * alphabétique ; l'ordre des résultats fourni par la requête est conservé.
+     *
+     * @return list<array{
+     *     id: string,
+     *     post_type: string,
+     *     label: string,
+     *     card: string,
+     *     items: list<array<string, mixed>>
+     * }>
+     */
+    public function grouped_items(): array
+    {
+        $groups = $this->context['grouped_items'] ?? [];
+
+        return is_array($groups) && array_is_list($groups) ? $groups : [];
+    }
+
+    /** Retourne le nom de card résolu, avec `page` comme fallback. */
     public function card(): string
     {
         return is_string($this->context['card'] ?? null) && $this->context['card'] !== ''
@@ -600,12 +936,25 @@ final class Theme_Filters
             : 'page';
     }
 
+    /** Indique si la page courante contient au moins un résultat. */
     public function has_results(): bool
     {
         return $this->items() !== [];
     }
 
+    /** Retourne le nombre total de résultats de la requête, toutes pages confondues. */
+    public function result_count(): int
+    {
+        return max(0, (int) ($this->context['result_count'] ?? 0));
+    }
+
     /**
+     * Affiche le message de résultat lorsqu'un filtre est actif.
+     *
+     * Le placeholder `{count}` est remplacé par un nombre placé dans un
+     * élément `<strong>`. Les messages sont fournis par l'appelant afin de
+     * rester compatibles avec la traduction du site.
+     *
      * @param array{
      *     classes?: mixed,
      *     messages?: array{zero?: mixed, singular?: mixed, plural?: mixed}
@@ -639,11 +988,13 @@ final class Theme_Filters
         <?php
     }
 
+    /** Retourne la page courante, toujours supérieure ou égale à 1. */
     public function current_page(): int
     {
         return max(1, (int) ($this->context['paged'] ?? 1));
     }
 
+    /** Retourne le nombre total de pages de la WP_Query. */
     public function total_pages(): int
     {
         $query = $this->context['query'] ?? null;
@@ -651,6 +1002,17 @@ final class Theme_Filters
         return $query instanceof WP_Query ? max(0, (int) $query->max_num_pages) : 0;
     }
 
+    /**
+     * Retourne la base de pagination contenant le placeholder `%#%`.
+     */
+    public function pagination_base(): string
+    {
+        return is_string($this->context['pagination_base'] ?? null)
+            ? $this->context['pagination_base']
+            : '';
+    }
+
+    /** Retourne le libellé pluriel du post type. */
     public function post_type_label(): string
     {
         return is_string($this->context['post_type_label'] ?? null)
@@ -658,7 +1020,14 @@ final class Theme_Filters
             : '';
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Retourne le contexte complet normalisé.
+     *
+     * À réserver aux intégrations qui ne peuvent pas utiliser les accesseurs
+     * dédiés : sa structure interne est moins stable que l'API publique.
+     *
+     * @return array<string, mixed>
+     */
     public function context(): array
     {
         return $this->context;

@@ -1,14 +1,13 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) {
-    return;
-}
+$params = component_args($params ?? null);
+if ($params === null) return;
 
 $has_explicit_aria_label = array_key_exists('aria_label', $params);
 
 $args = normalize_args($params, [
+    'id' => '',
     'trigger' => ['type' => 'btn', 'label' => 'Open dialog', 'classes' => ''],
     'close_label' => 'Close',
     'aria_label' => 'Dialog',
@@ -16,9 +15,6 @@ $args = normalize_args($params, [
     'attributes' => [],
 ]);
 
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
 
 $content_value = $args['content'] ?? null;
 $content = is_scalar($content_value) || $content_value instanceof Stringable
@@ -30,21 +26,18 @@ if (trim($content) === '') {
 }
 
 $trigger = is_array($args['trigger']) ? $args['trigger'] : [];
-$trigger_type = $to_string($trigger['type'] ?? 'btn');
+$trigger_type = component_string($trigger['type'] ?? 'btn');
 $trigger_type = strtolower($trigger_type) === 'link' ? 'link' : 'btn';
-$trigger_label = $to_string($trigger['label'] ?? '');
+$trigger_label = component_string($trigger['label'] ?? '');
 $trigger_classes = $trigger['classes'] ?? '';
 
-$title = $to_string($args['title'] ?? '');
-$close_label = $to_string($args['close_label']);
-$requested_aria_label = $to_string($args['aria_label']);
+$title = component_string($args['title'] ?? '');
+$close_label = component_string($args['close_label']);
+$requested_aria_label = component_string($args['aria_label']);
 $aria_label = $has_explicit_aria_label && $requested_aria_label !== ''
     ? $requested_aria_label
     : ($trigger_label !== '' ? $trigger_label : ($requested_aria_label ?: 'Dialog'));
-$id = sanitize_html_class($to_string($args['id'] ?? ''));
-$id = $id !== ''
-    ? $id
-    : (function_exists('wp_unique_id') ? wp_unique_id('dialog-') : uniqid('dialog-'));
+$id = component_id($args['id'], 'dialog-');
 $title_id = $id . '-title';
 
 $classes = component_classes('dialog', $args['classes']);

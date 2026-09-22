@@ -26,6 +26,7 @@ component('pagination', [
 | `prev_text` | `scalar\|Stringable` | `‹` | Libellé du lien précédent |
 | `next_text` | `scalar\|Stringable` | `›` | Libellé du lien suivant |
 | `aria_label` | `scalar\|Stringable` | `Pagination` | Nom accessible du `<nav>` |
+| `base` | `scalar\|Stringable` | `''` | Base facultative contenant `%#%`, utile pour une pagination par query string |
 | `classes` | `string\|array` | `''` | Classes supplémentaires |
 | `attributes` | `array` | `[]` | Attributs supplémentaires du `<nav>` |
 
@@ -36,6 +37,7 @@ composant.
 ## Rendu et sécurité
 
 - les liens sont produits par `paginate_links()` ;
+- une base explicite est utilisée uniquement si elle contient le placeholder `%#%` ;
 - seuls les éléments `a` et `span` attendus sont conservés ;
 - `class` et `aria-label` sont réservés ;
 - les classes et attributs libres utilisent les helpers communs.

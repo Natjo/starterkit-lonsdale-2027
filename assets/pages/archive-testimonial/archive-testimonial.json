@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "type": "page",
+  "name": "archive-testimonial",
+  "slug": "archive-testimonial",
+  "file": "archive-testimonial.php",
+  "activation": { "contentTypeArchive": "testimonial" },
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

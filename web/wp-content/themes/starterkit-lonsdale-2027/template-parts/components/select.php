@@ -1,10 +1,8 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) {
-    return;
-}
+$params = component_args($params ?? null);
+if ($params === null) return;
 
 $args = normalize_args($params, [
     'options' => [],
@@ -20,42 +18,14 @@ $args = normalize_args($params, [
     'attributes' => [],
     'select_attributes' => [],
 ]);
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
-$to_bool = static fn(mixed $value, bool $default = false): bool => filter_var(
-    $value,
-    FILTER_VALIDATE_BOOL,
-    FILTER_NULL_ON_FAILURE
-) ?? $default;
 
-$name = $to_string($args['name']);
-$options = is_array($args['options']) ? $args['options'] : [];
-if ($name === '' || $options === []) return;
-
-$normalized_options = [];
-foreach ($options as $option_key => $option) {
-    if (is_array($option)) {
-        $option_value = $to_string($option['value'] ?? '');
-        $option_label = $to_string($option['label'] ?? '');
-    } else {
-        $option_value = $to_string($option_key);
-        $option_label = $to_string($option);
-        $option = [];
-    }
-    if ($option_value === '' || $option_label === '') continue;
-
-    $normalized_options[] = [
-        'value' => $option_value,
-        'label' => $option_label,
-        'selected' => $to_bool($option['selected'] ?? false),
-        'disabled' => $to_bool($option['disabled'] ?? false),
-    ];
-}
+$name = component_string($args['name']);
+$normalized_options = component_options($args['options']);
+if ($name === '') return;
 if ($normalized_options === []) return;
 
 $requested_value = is_scalar($args['value']) || $args['value'] instanceof Stringable
-    ? $to_string($args['value'])
+    ? component_string($args['value'])
     : '';
 $selected_index = null;
 
@@ -77,7 +47,7 @@ if ($selected_index === null) {
     }
 }
 
-$placeholder = $to_string($args['placeholder']);
+$placeholder = component_string($args['placeholder']);
 if ($selected_index === null && $placeholder === '') {
     foreach ($normalized_options as $index => $option) {
         if (!$option['disabled']) {
@@ -87,14 +57,11 @@ if ($selected_index === null && $placeholder === '') {
     }
 }
 
-$requested_id = sanitize_html_class($to_string($args['id']));
-$id = $requested_id !== ''
-    ? $requested_id
-    : (function_exists('wp_unique_id') ? wp_unique_id('select-field-') : uniqid('select-field-', false));
-$label = $to_string($args['label']);
-$aria_label = $to_string($args['aria_label']) ?: $name;
-$required = $to_bool($args['required']);
-$disabled = $to_bool($args['disabled']);
+$id = component_id($args['id'], 'select-field-');
+$label = component_string($args['label']);
+$aria_label = component_string($args['aria_label']) ?: $name;
+$required = component_bool($args['required']);
+$disabled = component_bool($args['disabled']);
 $classes = component_classes('select', $args['classes']);
 $attributes = component_attributes($args['attributes'], ['class']);
 $select_attributes = component_attributes($args['select_attributes'], [

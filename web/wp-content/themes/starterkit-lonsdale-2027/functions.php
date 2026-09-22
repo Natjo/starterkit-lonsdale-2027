@@ -70,6 +70,7 @@ require_once __DIR__ . '/inc/api/maintenance.php';
 require_once __DIR__ . '/inc/front/components.php';
 require_once __DIR__ . '/inc/front/methods.php';
 require_once __DIR__ . '/inc/front/filters.php';
+require_once __DIR__ . '/inc/front/contact-form.php';
 require_once __DIR__ . '/inc/front/breadcrumb.php';
 
 require_once __DIR__ . '/vendor/autoload.php';

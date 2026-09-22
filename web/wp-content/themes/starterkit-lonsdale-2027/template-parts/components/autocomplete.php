@@ -1,10 +1,8 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) {
-    return;
-}
+$params = component_args($params ?? null);
+if ($params === null) return;
 
 $args = normalize_args($params, [
     'options' => [],
@@ -16,42 +14,25 @@ $args = normalize_args($params, [
     'classes' => '',
     'attributes' => [],
 ]);
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
-$to_bool = static fn(mixed $value, bool $default = false): bool => filter_var(
-    $value,
-    FILTER_VALIDATE_BOOL,
-    FILTER_NULL_ON_FAILURE
-) ?? $default;
-$options = is_array($args['options']) ? $args['options'] : [];
-$name = $to_string($args['name']);
+$name = component_string($args['name']);
+$normalized_options = component_options($args['options']);
 
-if ($options === [] || $name === '') return;
+if ($normalized_options === [] || $name === '') return;
 
-$base_id = function_exists('wp_unique_id') ? wp_unique_id('autocomplete-') : uniqid('autocomplete-', false);
+$base_id = component_id('', 'autocomplete-');
 $label_id = $base_id . '-label';
 $select_id = $base_id . '-select';
 $input_id = $base_id . '-input';
 $menu_id = $base_id . '-menu';
 $status_id = $base_id . '-status';
-$requested_value = $to_string($args['value']);
+$requested_value = component_string($args['value']);
 $value = '';
 $selected_label = '';
-$normalized_options = [];
-
-foreach ($options as $option_key => $option) {
-    if (is_array($option)) {
-        $option_value = $to_string($option['value'] ?? '');
-        $option_label = $to_string($option['label'] ?? '');
-    } else {
-        $option_value = $to_string($option_key);
-        $option_label = $to_string($option);
-        $option = [];
-    }
-    if ($option_value === '' || $option_label === '') continue;
-    $disabled = $to_bool($option['disabled'] ?? false);
-    $selected = $to_bool($option['selected'] ?? false);
+foreach ($normalized_options as $option) {
+    $option_value = $option['value'];
+    $option_label = $option['label'];
+    $disabled = $option['disabled'];
+    $selected = $option['selected'];
 
     if (!$disabled && $value === '' && (
         ($requested_value !== '' && $option_value === $requested_value)
@@ -61,18 +42,10 @@ foreach ($options as $option_key => $option) {
         $selected_label = $option_label;
     }
 
-    $normalized_options[] = [
-        'value' => $option_value,
-        'label' => $option_label,
-        'alt' => $to_string($option['alt'] ?? ''),
-        'disabled' => $disabled,
-    ];
 }
 
-if ($normalized_options === []) return;
-
-$label = $to_string($args['label']) ?: $name;
-$required = $to_bool($args['required'] ?? false);
+$label = component_string($args['label']) ?: $name;
+$required = component_bool($args['required'] ?? false);
 $classes = component_classes('autocomplete-field', $args['classes']);
 $attributes = component_attributes($args['attributes'], ['class', 'data-module', 'data-context']);
 ?>
@@ -98,7 +71,7 @@ $attributes = component_attributes($args['attributes'], ['class', 'data-module',
             aria-labelledby="<?= esc_attr($label_id) ?>"
             aria-describedby="<?= esc_attr($status_id) ?>"
             aria-expanded="false"
-            <?= $to_string($args['placeholder']) !== '' ? 'placeholder="' . esc_attr($to_string($args['placeholder'])) . '"' : '' ?>
+            <?= component_string($args['placeholder']) !== '' ? 'placeholder="' . esc_attr(component_string($args['placeholder'])) . '"' : '' ?>
         >
         <ul id="<?= esc_attr($menu_id) ?>" class="hidden" role="listbox"></ul>
     </div>

@@ -37,7 +37,7 @@ const getModuleElements = (container) => {
 };
 
 const isValidModuleName = (moduleName) =>
-    /^(?:common|components|heros|strates)\/[A-Za-z0-9_-]+$/.test(moduleName);
+    /^(?:common|components|heros|pages|strates)\/[A-Za-z0-9_-]+$/.test(moduleName);
 
 const isCurrentHydration = (element, token, moduleName) =>
     element.isConnected
@@ -184,7 +184,7 @@ export const loadModule = (moduleName) => {
 
     const promise = import(
         /* webpackChunkName: "[request]" */
-        /* webpackInclude: /\/(common|components|heros|strates)\/[^/]+\/[^/]+\.js$/ */
+        /* webpackInclude: /\/(common|components|heros|pages|strates)\/[^/]+\/[^/]+\.js$/ */
         `../../${moduleName}/${file}.js`
     )
         .then((module) => {

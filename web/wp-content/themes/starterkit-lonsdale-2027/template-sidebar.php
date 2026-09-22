@@ -6,28 +6,7 @@
  */
 
 $fields = theme_get_fields();
-$strates = is_array($fields['strates'] ?? null) ? $fields['strates'] : [];
-$anchor_items = [];
-$seen_targets = [];
-
-foreach ($strates as $strate) {
-    if (!is_array($strate) || array_is_list($strate)) continue;
-
-    $options = is_array($strate['options'] ?? null) && !array_is_list($strate['options'])
-        ? $strate['options']
-        : [];
-    $name = $options['name'] ?? '';
-    $name = is_scalar($name) || $name instanceof Stringable ? trim((string) $name) : '';
-    $target = $name !== '' ? sanitize_title($name) : '';
-
-    if ($target === '' || isset($seen_targets[$target])) continue;
-
-    $seen_targets[$target] = true;
-    $anchor_items[] = [
-        'label' => $name,
-        'target' => $target,
-    ];
-}
+$anchor_items = theme_get_strate_anchor_items($fields['strates'] ?? []);
 
 get_header();
 common("header-nav");

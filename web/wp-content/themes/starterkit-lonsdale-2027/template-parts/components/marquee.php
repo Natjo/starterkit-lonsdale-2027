@@ -1,23 +1,15 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) {
-    return;
-}
+$params = component_args($params ?? null);
+if ($params === null) return;
 
-$items_input = $params['items'] ?? [];
-if (!is_array($items_input) || !array_is_list($items_input)) {
-    return;
-}
+$items_input = component_list($params['items'] ?? null);
 
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
-$item_component = $to_string($params['item_component'] ?? null);
+$item_component = component_string($params['item_component'] ?? null);
 $item_component = $item_component === 'picture' ? 'picture' : null;
 $card_value = $params['card'] ?? null;
-$card = $card_value === null ? null : resolve_card_name($to_string($card_value));
+$card = $card_value === null ? null : resolve_card_name(component_string($card_value));
 
 if ($item_component !== null) {
     $items = array_values(array_filter(
@@ -54,16 +46,11 @@ if ($item_component !== null) {
     theme_prime_attachments(array_values(array_filter($items, 'is_array')));
 }
 
-$to_bool = static fn (mixed $value, bool $default): bool => filter_var(
-    $value,
-    FILTER_VALIDATE_BOOL,
-    FILTER_NULL_ON_FAILURE
-) ?? $default;
 
 $speed = is_numeric($params['speed'] ?? null) ? (float) $params['speed'] : 60.0;
 $speed = max(10.0, min(400.0, $speed));
 $direction = ($params['direction'] ?? '') === 'right' ? 'right' : 'left';
-$hydrate = $to_bool($params['hydrate'] ?? true, true);
+$hydrate = component_bool($params['hydrate'] ?? true, true);
 $aria_label = $params['aria_label'] ?? 'Contenu défilant';
 $aria_label = is_scalar($aria_label) || $aria_label instanceof Stringable
     ? trim((string) $aria_label)
@@ -95,10 +82,10 @@ $module_attributes = html_attributes([
     aria-label="<?= esc_attr($aria_label) ?>"
     data-marquee-speed="<?= esc_attr((string) $speed) ?>"
     data-marquee-direction="<?= esc_attr($direction) ?>"
-    data-marquee-scroll-acceleration="<?= $to_bool($params['scroll_acceleration'] ?? true, true) ? 'true' : 'false' ?>"
-    data-marquee-follow-scroll-direction="<?= $to_bool($params['follow_scroll_direction'] ?? true, true) ? 'true' : 'false' ?>"
-    data-marquee-pause-hover="<?= $to_bool($params['pause_on_hover'] ?? true, true) ? 'true' : 'false' ?>"
-    data-marquee-pause-focus="<?= $to_bool($params['pause_on_focus'] ?? true, true) ? 'true' : 'false' ?>"<?= $module_attributes !== '' ? ' ' . $module_attributes : '' ?><?= $attributes ?>>
+    data-marquee-scroll-acceleration="<?= component_bool($params['scroll_acceleration'] ?? true, true) ? 'true' : 'false' ?>"
+    data-marquee-follow-scroll-direction="<?= component_bool($params['follow_scroll_direction'] ?? true, true) ? 'true' : 'false' ?>"
+    data-marquee-pause-hover="<?= component_bool($params['pause_on_hover'] ?? true, true) ? 'true' : 'false' ?>"
+    data-marquee-pause-focus="<?= component_bool($params['pause_on_focus'] ?? true, true) ? 'true' : 'false' ?>"<?= $module_attributes !== '' ? ' ' . $module_attributes : '' ?><?= $attributes ?>>
     <div class="marquee-track" data-marquee-track>
         <div class="marquee-group" data-marquee-group>
             <?php foreach ($items as $item) : ?>

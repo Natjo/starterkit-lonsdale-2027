@@ -1,10 +1,8 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) {
-    return;
-}
+$params = component_args($params ?? null);
+if ($params === null) return;
 
 $args = normalize_args($params, [
     'items' => [],
@@ -27,26 +25,18 @@ $args = normalize_args($params, [
     'go_to_label' => 'Aller à la page',
 ]);
 
-$to_bool = static fn(mixed $value, bool $default = false): bool => filter_var(
-    $value,
-    FILTER_VALIDATE_BOOL,
-    FILTER_NULL_ON_FAILURE
-) ?? $default;
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
-$with_fallback = static function (mixed $value, string $fallback) use ($to_string): string {
-    $value = $to_string($value);
+$with_fallback = static function (mixed $value, string $fallback): string {
+    $value = component_string($value);
 
     return $value !== '' ? $value : $fallback;
 };
 
-$items = is_array($args['items']) && array_is_list($args['items']) ? $args['items'] : [];
+$items = component_list($args['items']);
 
-$item_component = $to_string($args['item_component']);
+$item_component = component_string($args['item_component']);
 $item_component = $item_component === 'picture' ? 'picture' : null;
 $card_value = $args['card'];
-$card = $card_value === null ? null : $to_string($card_value);
+$card = $card_value === null ? null : component_string($card_value);
 $card = $card === '' && $card_value !== null ? 'card-news' : $card;
 
 if ($item_component !== null) {
@@ -79,12 +69,12 @@ if ($item_component !== null) {
     theme_prime_attachments(array_values(array_filter($items, 'is_array')));
 }
 
-$hydrate = $to_bool($args['hydrate'], true);
+$hydrate = component_bool($args['hydrate'], true);
 $has_multiple_items = count($items) > 1;
-$navigation = $has_multiple_items && $to_bool($args['navigation'], true);
-$pagination = $has_multiple_items && $to_bool($args['pagination'], true);
-$timeline = $has_multiple_items && $to_bool($args['timeline']);
-$media = $to_string($args['media']);
+$navigation = $has_multiple_items && component_bool($args['navigation'], true);
+$pagination = $has_multiple_items && component_bool($args['pagination'], true);
+$timeline = $has_multiple_items && component_bool($args['timeline']);
+$media = component_string($args['media']);
 $classes = component_classes('slider', $args['classes']);
 
 $aria_label = $with_fallback($args['aria_label'], 'Carrousel');

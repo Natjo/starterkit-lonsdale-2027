@@ -4,12 +4,28 @@
         display: grid;
         grid-template-columns: var(--layout);
         align-content: start;
+        gap: var(--margin-sm);
         margin-bottom: var(--margin-md);
 
 
         >* {
             grid-column: ctr;
         }
+    }
+
+    .team-archive-controls {
+        display: grid;
+        gap: var(--gap);
+
+        @media #{$breakpoint-md-up} {
+            grid-template-columns: minmax(0, 1fr) minmax(20rem, 32rem);
+            align-items: end;
+        }
+    }
+
+    .team-results {
+        display: grid;
+        gap: var(--margin-sm);
     }
 
     .team-archive-list {

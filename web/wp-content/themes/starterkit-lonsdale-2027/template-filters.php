@@ -5,7 +5,7 @@
  * Template Post Type: page
  */
 
-$filters = new Theme_Filters([
+$filters = new Theme_Listing([
     'post_type' => 'project',
     'search' => [
         'label' => 'Rechercher',
@@ -16,7 +16,8 @@ $filters = new Theme_Filters([
     'taxonomy_relation' => 'AND',
     'ajax' => true,
     'ajax_group' => 'project-filters',
-    'ajax_target' => 'project-results',
+    'results_target' => 'project-results',
+    'pretty_urls' => true,
     'sort' => [
         'label' => 'Trier par',
         'default' => 'date_desc',
@@ -73,6 +74,7 @@ common("header-nav");
                     <?php component('pagination', [
                         'total' => $filters->total_pages(),
                         'current' => $filters->current_page(),
+                        'base' => $filters->pagination_base(),
                         'prev_text' => 'Précédent',
                         'next_text' => 'Suivant',
                         'aria_label' => 'Pagination des ' . $filters->post_type_label(),

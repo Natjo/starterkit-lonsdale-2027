@@ -1,8 +1,8 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) return;
+$params = component_args($params ?? null);
+if ($params === null) return;
 
 $args = normalize_args($params, [
     'type' => 'text',
@@ -28,14 +28,10 @@ $args = normalize_args($params, [
     'classes' => '',
     'attributes' => [],
 ]);
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
-$to_bool = static fn(mixed $value): bool => filter_var($value, FILTER_VALIDATE_BOOL);
-$type = strtolower($to_string($args['type']));
+$type = strtolower(component_string($args['type']));
 $type = $type === 'radio' ? 'radios' : $type;
 $allowed_types = ['text', 'search', 'textarea', 'select', 'checkbox', 'checkboxes', 'radios', 'number', 'email', 'url', 'tel', 'date', 'password'];
-$name = $to_string($args['name']);
+$name = component_string($args['name']);
 
 if (!in_array($type, $allowed_types, true) || !preg_match('/^[A-Za-z][A-Za-z0-9_.\-\[\]]*$/', $name)) return;
 
@@ -43,19 +39,18 @@ $options = is_array($args['options']) ? $args['options'] : [];
 $is_group = in_array($type, ['checkboxes', 'radios'], true);
 if (($is_group || $type === 'select') && $options === []) return;
 
-$id = sanitize_html_class($to_string($args['id']) ?: str_replace(['[', ']'], '-', $name));
-$id = $id !== '' ? $id : (function_exists('wp_unique_id') ? wp_unique_id('field-') : uniqid('field-', false));
-$label = $to_string($args['label']);
-$required = $to_bool($args['required']);
-$disabled = $to_bool($args['disabled']);
+$id = component_id(component_string($args['id']) ?: str_replace(['[', ']'], '-', $name), 'field-');
+$label = component_string($args['label']);
+$required = component_bool($args['required']);
+$disabled = component_bool($args['disabled']);
 $error_id = $id . '-error';
 $label_id = $id . '-label';
-$hint = $to_string($args['hint']);
+$hint = component_string($args['hint']);
 $hint_id = $id . '-hint';
 $describedby = trim($error_id . ($hint !== '' ? ' ' . $hint_id : ''));
-$mandatory = $to_string($args['mandatory_msg']);
-$type_mismatch = $to_string($args['type_mismatch_msg']);
-$pattern_mismatch = $to_string($args['pattern_mismatch_msg']);
+$mandatory = component_string($args['mandatory_msg']);
+$type_mismatch = component_string($args['type_mismatch_msg']);
+$pattern_mismatch = component_string($args['pattern_mismatch_msg']);
 $field_classes = ['field'];
 if ($type === 'checkbox' || $type === 'checkboxes') $field_classes[] = 'checkbox';
 if ($type === 'radios') $field_classes[] = 'radio';
@@ -66,7 +61,7 @@ $mandatory_attribute = $mandatory !== '' ? ' data-mandatory="' . esc_attr($manda
 $type_mismatch_attribute = $type_mismatch !== '' ? ' data-typemismatch="' . esc_attr($type_mismatch) . '"' : '';
 $pattern_mismatch_attribute = $pattern_mismatch !== '' ? ' data-patternmismatch="' . esc_attr($pattern_mismatch) . '"' : '';
 $validation_attributes = $mandatory_attribute . $type_mismatch_attribute . $pattern_mismatch_attribute . $field_aria;
-$value = $to_string($args['value']);
+$value = component_string($args['value']);
 ?>
 
 <div
@@ -79,18 +74,18 @@ $value = $to_string($args['value']);
     <?php endif; ?>
 
     <?php if ($type === 'textarea') : ?>
-        <textarea id="<?= esc_attr($id) ?>" name="<?= esc_attr($name) ?>" rows="<?= max(2, (int) $args['rows']) ?>"<?= $required ? ' required' : '' ?><?= $disabled ? ' disabled' : '' ?><?= $validation_attributes ?><?= $to_string($args['placeholder']) !== '' ? ' placeholder="' . esc_attr($to_string($args['placeholder'])) . '"' : '' ?>><?= esc_html($value) ?></textarea>
+        <textarea id="<?= esc_attr($id) ?>" name="<?= esc_attr($name) ?>" rows="<?= max(2, (int) $args['rows']) ?>"<?= $required ? ' required' : '' ?><?= $disabled ? ' disabled' : '' ?><?= $validation_attributes ?><?= component_string($args['placeholder']) !== '' ? ' placeholder="' . esc_attr(component_string($args['placeholder'])) . '"' : '' ?>><?= esc_html($value) ?></textarea>
 
     <?php elseif ($type === 'select') : ?>
         <select id="<?= esc_attr($id) ?>" name="<?= esc_attr($name) ?>"<?= $required ? ' required' : '' ?><?= $disabled ? ' disabled' : '' ?><?= $validation_attributes ?>>
             <?php foreach ($options as $option_key => $option) :
                 $option = is_array($option) ? $option : ['value' => $option_key, 'label' => $option];
-                $option_value = $to_string($option['value'] ?? $option_key);
-                $option_label = $to_string($option['label'] ?? $option['name'] ?? $option_value);
+                $option_value = component_string($option['value'] ?? $option_key);
+                $option_label = component_string($option['label'] ?? $option['name'] ?? $option_value);
                 if ($option_label === '') continue;
-                $selected = $to_bool($option['selected'] ?? false) || $option_value === $value;
-                $option_disabled = $to_bool($option['disabled'] ?? false);
-                $option_hidden = $to_bool($option['hidden'] ?? false);
+                $selected = component_bool($option['selected'] ?? false) || $option_value === $value;
+                $option_disabled = component_bool($option['disabled'] ?? false);
+                $option_hidden = component_bool($option['hidden'] ?? false);
             ?>
                 <option value="<?= esc_attr($option_value) ?>"<?= $selected ? ' selected' : '' ?><?= $option_disabled ? ' disabled' : '' ?><?= $option_hidden ? ' hidden' : '' ?>><?= esc_html($option_label) ?></option>
             <?php endforeach; ?>
@@ -101,13 +96,13 @@ $value = $to_string($args['value']);
             <?php $native_required_pending = $type === 'radios' && $required; ?>
             <?php foreach ($options as $index => $option) :
                 $option = is_array($option) ? $option : ['value' => $index, 'label' => $option];
-                $option_label = $to_string($option['label'] ?? $option['name'] ?? '');
+                $option_label = component_string($option['label'] ?? $option['name'] ?? '');
                 if ($option_label === '') continue;
-                $option_value = $to_string($option['value'] ?? $index);
-                $option_id = sanitize_html_class($to_string($option['id'] ?? '') ?: $id . '-' . $to_string($index));
+                $option_value = component_string($option['value'] ?? $index);
+                $option_id = sanitize_html_class(component_string($option['id'] ?? '') ?: $id . '-' . component_string($index));
                 $option_name = $type === 'checkboxes' ? $name . '[]' : $name;
-                $option_checked = $to_bool($option['checked'] ?? false) || $to_bool($option['selected'] ?? false);
-                $option_disabled = $to_bool($option['disabled'] ?? false);
+                $option_checked = component_bool($option['checked'] ?? false) || component_bool($option['selected'] ?? false);
+                $option_disabled = component_bool($option['disabled'] ?? false);
                 $option_required = $native_required_pending && !$option_disabled;
                 if ($option_required) $native_required_pending = false;
             ?>
@@ -119,7 +114,7 @@ $value = $to_string($args['value']);
         </ul>
 
     <?php elseif ($type === 'checkbox') : ?>
-        <input id="<?= esc_attr($id) ?>" type="checkbox" name="<?= esc_attr($name) ?>" value="<?= esc_attr($value !== '' ? $value : '1') ?>"<?= $to_bool($args['checked']) ? ' checked' : '' ?><?= $required ? ' required' : '' ?><?= $disabled ? ' disabled' : '' ?><?= $validation_attributes ?>>
+        <input id="<?= esc_attr($id) ?>" type="checkbox" name="<?= esc_attr($name) ?>" value="<?= esc_attr($value !== '' ? $value : '1') ?>"<?= component_bool($args['checked']) ? ' checked' : '' ?><?= $required ? ' required' : '' ?><?= $disabled ? ' disabled' : '' ?><?= $validation_attributes ?>>
         <?php if ($label !== '') : ?><label for="<?= esc_attr($id) ?>"><?= esc_html($label) ?></label><?php endif; ?>
 
     <?php else : ?>
@@ -130,12 +125,12 @@ $value = $to_string($args['value']);
             value="<?= esc_attr($value) ?>"
             <?= $required ? 'required' : '' ?>
             <?= $disabled ? 'disabled' : '' ?>
-            <?= $to_string($args['placeholder']) !== '' ? 'placeholder="' . esc_attr($to_string($args['placeholder'])) . '"' : '' ?>
-            <?= $args['min'] !== null && $type === 'number' ? 'min="' . esc_attr($to_string($args['min'])) . '"' : '' ?>
-            <?= $args['max'] !== null && $type === 'number' ? 'max="' . esc_attr($to_string($args['max'])) . '"' : '' ?>
+            <?= component_string($args['placeholder']) !== '' ? 'placeholder="' . esc_attr(component_string($args['placeholder'])) . '"' : '' ?>
+            <?= $args['min'] !== null && $type === 'number' ? 'min="' . esc_attr(component_string($args['min'])) . '"' : '' ?>
+            <?= $args['max'] !== null && $type === 'number' ? 'max="' . esc_attr(component_string($args['max'])) . '"' : '' ?>
             <?= $args['minlength'] !== null && $type === 'text' ? 'minlength="' . max(0, (int) $args['minlength']) . '"' : '' ?>
-            <?= $to_string($args['pattern']) !== '' ? 'pattern="' . esc_attr($to_string($args['pattern'])) . '"' : '' ?>
-            <?= $to_string($args['autocomplete']) !== '' ? 'autocomplete="' . esc_attr($to_string($args['autocomplete'])) . '"' : '' ?>
+            <?= component_string($args['pattern']) !== '' ? 'pattern="' . esc_attr(component_string($args['pattern'])) . '"' : '' ?>
+            <?= component_string($args['autocomplete']) !== '' ? 'autocomplete="' . esc_attr(component_string($args['autocomplete'])) . '"' : '' ?>
             <?= $validation_attributes ?>>
     <?php endif; ?>
 

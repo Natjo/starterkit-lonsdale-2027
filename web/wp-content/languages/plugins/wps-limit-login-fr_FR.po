@@ -2,12 +2,12 @@
 # This file is distributed under the same license as the Plugins - WPS Limit Login - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-07-05 16:11:54+0000\n"
+"PO-Revision-Date: 2026-09-13 16:12:00+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: GlotPress/4.0.3\n"
+"X-Generator: GlotPress/4.1.0\n"
 "Language: fr\n"
 "Project-Id-Version: Plugins - WPS Limit Login - Stable (latest release)\n"
 
@@ -287,12 +287,6 @@ msgstr "Vous pouvez débloquer une adresse IP individuellement (En cliquant sur 
 msgid "Reset Counter"
 msgstr "Réinitialiser le compteur"
 
-#: blocks/log.php:25
-msgid "%d IP is currently blocked from trying to log in"
-msgid_plural "%d IP are currently blocked from trying to log in"
-msgstr[0] "%d adresse IP est actuellement bloquée en connexion"
-msgstr[1] "%d adresses IP sont actuellement bloquées en connexion"
-
 #: blocks/log.php:11
 msgid "Statistics"
 msgstr "Statistiques"
@@ -419,3 +413,9 @@ msgstr "Enregistrer"
 #: blocks/menu.php:30 blocks/whitelist.php:14
 msgid "Whitelist"
 msgstr "Liste d’autorisation"
+
+#: blocks/log.php:25
+msgid "%d IP is currently blocked from trying to log in"
+msgid_plural "%d IP are currently blocked from trying to log in"
+msgstr[0] "%d adresse IP est actuellement bloquée et ne peut plus tenter de se connecter"
+msgstr[1] "%d adresses IP sont actuellement bloquées et ne peuvent plus tenter de se connecter"

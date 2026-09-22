@@ -1,10 +1,8 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) {
-    return;
-}
+$params = component_args($params ?? null);
+if ($params === null) return;
 
 $args = normalize_args($params, [
     'list' => [],
@@ -20,18 +18,8 @@ $args = normalize_args($params, [
 $list = is_array($args['list']) ? $args['list'] : [];
 if ($list === []) return;
 
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
-$normalize_http_url = static function (mixed $value) use ($to_string): string {
-    $url = $to_string($value);
-    if ($url === '' || filter_var($url, FILTER_VALIDATE_URL) === false) return '';
-
-    $scheme = strtolower((string) parse_url($url, PHP_URL_SCHEME));
-    return in_array($scheme, ['http', 'https'], true) ? $url : '';
-};
-$normalize_email_href = static function (mixed $value) use ($to_string): string {
-    $value = $to_string($value);
+$normalize_email_href = static function (mixed $value): string {
+    $value = component_string($value);
     if ($value === '') return '';
 
     if (str_starts_with(strtolower($value), 'mailto:')) {
@@ -40,9 +28,9 @@ $normalize_email_href = static function (mixed $value) use ($to_string): string 
 
     return filter_var($value, FILTER_VALIDATE_EMAIL) !== false ? 'mailto:' . $value : '';
 };
-$current_url = static function () use ($normalize_http_url): string {
+$current_url = static function (): string {
     if (function_exists('get_permalink') && function_exists('is_singular') && is_singular()) {
-        $permalink = $normalize_http_url(get_permalink());
+        $permalink = theme_http_url(get_permalink());
         if ($permalink !== '') return $permalink;
     }
 
@@ -54,14 +42,14 @@ $current_url = static function () use ($normalize_http_url): string {
     $path = is_string($path) && $path !== '' ? $path : '/';
     $query = is_string($query) && $query !== '' ? '?' . $query : '';
 
-    return function_exists('home_url') ? $normalize_http_url(home_url($path . $query)) : '';
+    return function_exists('home_url') ? theme_http_url(home_url($path . $query)) : '';
 };
 
-$url = $normalize_http_url($args['url']) ?: $current_url();
+$url = theme_http_url($args['url']) ?: $current_url();
 if ($url === '') return;
 
 $encoded_url = rawurlencode($url);
-$subject = $to_string($args['subject']);
+$subject = component_string($args['subject']);
 $email_query = [];
 if ($subject !== '') $email_query[] = 'subject=' . rawurlencode($subject);
 $email_query[] = 'body=' . $encoded_url;
@@ -118,7 +106,7 @@ foreach ($list as $key => $value) {
         $name = strtolower(trim($value));
     } elseif (is_array($value)) {
         $definition = $value;
-        $name = strtolower($to_string($value['name'] ?? ''));
+        $name = strtolower(component_string($value['name'] ?? ''));
     } else {
         continue;
     }
@@ -131,12 +119,12 @@ foreach ($list as $key => $value) {
         $custom_href = $definition['href'];
         $item['href'] = $name === 'email'
             ? $normalize_email_href($custom_href)
-            : $normalize_http_url($custom_href);
+            : theme_http_url($custom_href);
         if ($item['href'] === '') continue;
     }
 
-    $custom_label = $to_string($definition['label'] ?? '');
-    $custom_icon = $to_string($definition['icon'] ?? '');
+    $custom_label = component_string($definition['label'] ?? '');
+    $custom_icon = component_string($definition['icon'] ?? '');
     if ($custom_label !== '') $item['label'] = $custom_label;
     if ($custom_icon !== '') $item['icon'] = $custom_icon;
 
@@ -146,9 +134,9 @@ foreach ($list as $key => $value) {
 
 if ($items === []) return;
 
-$title = $to_string($args['title']);
-$title_id = function_exists('wp_unique_id') ? wp_unique_id('shares-title-') : uniqid('shares-title-', false);
-$aria_label = $to_string($args['aria_label']) ?: 'Partager';
+$title = component_string($args['title']);
+$title_id = component_id('', 'shares-title-');
+$aria_label = component_string($args['aria_label']) ?: 'Partager';
 $classes = component_classes('shares', $args['classes']);
 $attributes = component_attributes($args['attributes'], [
     'class',
@@ -157,8 +145,8 @@ $attributes = component_attributes($args['attributes'], [
     'data-context',
     'data-module',
 ]);
-$copied_label = $to_string($args['copied_label']) ?: 'Lien copié';
-$copy_error_label = $to_string($args['copy_error_label']) ?: 'Impossible de copier le lien';
+$copied_label = component_string($args['copied_label']) ?: 'Lien copié';
+$copy_error_label = component_string($args['copy_error_label']) ?: 'Impossible de copier le lien';
 ?>
 <nav class="<?= $classes ?>"<?= $title !== '' ? ' aria-labelledby="' . esc_attr($title_id) . '"' : ' aria-label="' . esc_attr($aria_label) . '"' ?> data-context="@visible true" data-module="components/shares"<?= $attributes ?>>
     <?php if ($title !== '') : ?>

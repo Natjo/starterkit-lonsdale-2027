@@ -1,10 +1,8 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) {
-    return;
-}
+$params = component_args($params ?? null);
+if ($params === null) return;
 
 $args = normalize_args($params, [
     'items' => [],
@@ -15,29 +13,21 @@ $args = normalize_args($params, [
     'classes' => '',
     'attributes' => [],
 ]);
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
-$to_bool = static fn(mixed $value, bool $default = false): bool => filter_var(
-    $value,
-    FILTER_VALIDATE_BOOL,
-    FILTER_NULL_ON_FAILURE
-) ?? $default;
 
-$raw_items = is_array($args['items']) && array_is_list($args['items']) ? $args['items'] : [];
+$raw_items = component_list($args['items']);
 $items = [];
 foreach ($raw_items as $item) {
     if (!is_array($item)) continue;
 
-    $item_title = $to_string($item['title'] ?? '');
+    $item_title = component_string($item['title'] ?? '');
     if ($item_title === '') continue;
 
     $content = $item['content'] ?? '';
     $items[] = [
         'title' => $item_title,
         'content' => is_scalar($content) || $content instanceof Stringable ? (string) $content : '',
-        'selected' => $to_bool($item['selected'] ?? false),
-        'disabled' => $to_bool($item['disabled'] ?? false),
+        'selected' => component_bool($item['selected'] ?? false),
+        'disabled' => component_bool($item['disabled'] ?? false),
         'tab_attributes' => is_array($item['tab_attributes'] ?? null) ? $item['tab_attributes'] : [],
         'panel_attributes' => is_array($item['panel_attributes'] ?? null) ? $item['panel_attributes'] : [],
     ];
@@ -61,14 +51,11 @@ if ($active_index === null) {
 }
 if ($active_index === null) return;
 
-$requested_id = sanitize_html_class($to_string($args['id']));
-$base_id = $requested_id !== ''
-    ? $requested_id
-    : (function_exists('wp_unique_id') ? wp_unique_id('tabs-') : uniqid('tabs-', false));
+$base_id = component_id($args['id'], 'tabs-');
 $title_id = $base_id . '-title';
-$title = $to_string($args['title']);
-$aria_label = $to_string($args['aria_label']) ?: 'Onglets';
-$orientation = strtolower($to_string($args['orientation']));
+$title = component_string($args['title']);
+$aria_label = component_string($args['aria_label']) ?: 'Onglets';
+$orientation = strtolower(component_string($args['orientation']));
 $orientation = in_array($orientation, ['horizontal', 'vertical'], true) ? $orientation : 'horizontal';
 $classes = component_classes('tabs', $args['classes']);
 $attributes = component_attributes($args['attributes'], ['id', 'class', 'data-module', 'data-context']);

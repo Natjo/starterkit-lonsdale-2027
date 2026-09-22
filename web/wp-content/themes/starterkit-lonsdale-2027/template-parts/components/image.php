@@ -1,19 +1,9 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) {
-    return;
-}
+$params = component_args($params ?? null);
+if ($params === null) return;
 
-$to_bool = static fn(mixed $value, bool $default = false): bool => filter_var(
-    $value,
-    FILTER_VALIDATE_BOOL,
-    FILTER_NULL_ON_FAILURE
-) ?? $default;
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
 
 $input = $params['image'] ?? null;
 if ($input === null || $input === '') {
@@ -23,7 +13,7 @@ if ($input === null || $input === '') {
 $responsive_sizes = [];
 if (is_array($params['sizes'] ?? null)) {
     foreach ($params['sizes'] as $responsive_size) {
-        $responsive_size = $to_string($responsive_size);
+        $responsive_size = component_string($responsive_size);
         if (
             $responsive_size !== ''
             && preg_match('/^[A-Za-z0-9_-]+$/', $responsive_size)
@@ -36,7 +26,7 @@ if (is_array($params['sizes'] ?? null)) {
 
 $default_size = $params['size'] ?? 'full';
 $resolved_input = $input;
-$input_url = !is_numeric($input) ? $to_string($input) : '';
+$input_url = !is_numeric($input) ? component_string($input) : '';
 if ($input_url !== '') {
     $attachment_id = theme_attachment_url_to_post_id($input_url);
     if ($attachment_id > 0) {
@@ -108,7 +98,7 @@ $width = (int) $primary['width'];
 $height = (int) $primary['height'];
 $primary_width = $width;
 $primary_size = $primary['size'];
-$alt = array_key_exists('alt', $params) ? $to_string($params['alt']) : (string) $primary['alt'];
+$alt = array_key_exists('alt', $params) ? component_string($params['alt']) : (string) $primary['alt'];
 $srcset = '';
 $html_sizes = '';
 
@@ -132,9 +122,9 @@ if (is_numeric($params['height'] ?? null) && (int) $params['height'] > 0) {
     $height = (int) $params['height'];
 }
 
-$preload = $to_bool($params['preload'] ?? false);
-$critical = $to_bool($params['critical'] ?? false) || $preload;
-$is_lazy = $to_bool($params['lazy'] ?? true, true) && !$critical;
+$preload = component_bool($params['preload'] ?? false);
+$critical = component_bool($params['critical'] ?? false) || $preload;
+$is_lazy = component_bool($params['lazy'] ?? true, true) && !$critical;
 
 if ($preload && function_exists('theme_enqueue_image_preload')) {
     theme_enqueue_image_preload($resolved_input, $primary_size, [
@@ -143,10 +133,10 @@ if ($preload && function_exists('theme_enqueue_image_preload')) {
     ]);
 }
 
-$fetchpriority = strtolower($to_string($params['fetchpriority'] ?? ''));
+$fetchpriority = strtolower(component_string($params['fetchpriority'] ?? ''));
 $fetchpriority = in_array($fetchpriority, ['low', 'auto', 'high'], true) ? $fetchpriority : '';
 $fetchpriority = $critical ? 'high' : ($fetchpriority === 'high' ? '' : $fetchpriority);
-$decoding = strtolower($to_string($params['decoding'] ?? 'async'));
+$decoding = strtolower(component_string($params['decoding'] ?? 'async'));
 $decoding = in_array($decoding, ['async', 'sync', 'auto'], true) ? $decoding : 'async';
 $classes = component_classes($params['classes'] ?? '');
 $attributes = component_attributes($params['attributes'] ?? [], [

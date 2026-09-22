@@ -19,6 +19,24 @@ function normalize_args(mixed $args, array $defaults = []): array
 }
 
 /**
+ * Retourne une URL HTTP(S) absolue valide ou une chaîne vide.
+ */
+function theme_http_url(mixed $value): string
+{
+    $url = is_scalar($value) || $value instanceof Stringable
+        ? trim((string) $value)
+        : '';
+
+    if ($url === '' || filter_var($url, FILTER_VALIDATE_URL) === false) {
+        return '';
+    }
+
+    $scheme = strtolower((string) parse_url($url, PHP_URL_SCHEME));
+
+    return in_array($scheme, ['http', 'https'], true) ? $url : '';
+}
+
+/**
  * Passe des arguments à un template chargé via get_template_part().
  *
  * Ne pas utiliser le nom `args` : load_template() déclare déjà $args = []
@@ -68,6 +86,59 @@ function theme_get_fields(mixed $post_id = null, bool $format_value = true): arr
     }
 
     return $cache[$key];
+}
+
+/**
+ * Construit le payload d'`anchor-nav` depuis une liste de strates ACF.
+ *
+ * Pour chaque strate, `options.name` devient le libellé visible (`label`) et
+ * sa version normalisée par `sanitize_title()` devient la cible (`target`). La
+ * cible est retournée sans caractère `#`, conformément au contrat du composant
+ * `anchor-nav`.
+ *
+ * L'ordre initial des strates est conservé. Une entrée est ignorée lorsque la
+ * liste, la strate, son tableau `options` ou son nom sont invalides, lorsque le
+ * nom produit une cible vide, ou lorsqu'une strate précédente utilise déjà la
+ * même cible. Cette normalisation correspond à celle du helper `options()`,
+ * qui applique l'ID à la section rendue.
+ *
+ * La fonction est tolérante aux données ACF absentes ou mal formées et ne
+ * produit aucun HTML.
+ *
+ * @param mixed $strates Liste ACF attendue sous la forme
+ *   `list<array{options?: array{name?: scalar|Stringable}}>`. Toute autre valeur
+ *   retourne une liste vide.
+ * @return list<array{label: string, target: string}> Entrées prêtes à être
+ *   transmises dans `component('anchor-nav', ['items' => $items])`.
+ */
+function theme_get_strate_anchor_items(mixed $strates): array
+{
+    if (!is_array($strates) || !array_is_list($strates)) {
+        return [];
+    }
+
+    $items = [];
+    $seen_targets = [];
+
+    foreach ($strates as $strate) {
+        if (!is_array($strate) || array_is_list($strate)) continue;
+
+        $options = $strate['options'] ?? null;
+        $options = is_array($options) && !array_is_list($options) ? $options : [];
+        $name = $options['name'] ?? '';
+        $name = is_scalar($name) || $name instanceof Stringable ? trim((string) $name) : '';
+        $target = $name !== '' ? sanitize_title($name) : '';
+
+        if ($target === '' || isset($seen_targets[$target])) continue;
+
+        $seen_targets[$target] = true;
+        $items[] = [
+            'label' => $name,
+            'target' => $target,
+        ];
+    }
+
+    return $items;
 }
 
 /**

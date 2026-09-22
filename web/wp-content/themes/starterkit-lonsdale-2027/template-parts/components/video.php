@@ -1,21 +1,11 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) {
-    return;
-}
+$params = component_args($params ?? null);
+if ($params === null) return;
 
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
-$to_bool = static fn(mixed $value, bool $default = false): bool => filter_var(
-    $value,
-    FILTER_VALIDATE_BOOL,
-    FILTER_NULL_ON_FAILURE
-) ?? $default;
-$is_safe_url = static function (mixed $value) use ($to_string): bool {
-    $url = $to_string($value);
+$is_safe_url = static function (mixed $value): bool {
+    $url = component_string($value);
     if ($url === '' || preg_match('/[\x00-\x1F\x7F\\\\]/', $url)) {
         return false;
     }
@@ -28,8 +18,8 @@ $is_safe_url = static function (mixed $value) use ($to_string): bool {
     $scheme = strtolower((string) ($parts['scheme'] ?? ''));
     return $scheme === '' || in_array($scheme, ['http', 'https'], true);
 };
-$resolve_url = static function (mixed $value) use ($to_string, $is_safe_url): string {
-    $url = $to_string($value);
+$resolve_url = static function (mixed $value) use ($is_safe_url): string {
+    $url = component_string($value);
     if ($url !== '' && ctype_digit($url) && function_exists('wp_get_attachment_url')) {
         $resolved = wp_get_attachment_url((int) $url);
         $url = is_string($resolved) ? trim($resolved) : '';
@@ -47,10 +37,7 @@ $mime_types = [
     'mov' => 'video/quicktime',
 ];
 if (array_key_exists('sources', $params)) {
-    if (!is_array($params['sources']) || !array_is_list($params['sources'])) {
-        return;
-    }
-    $raw_sources = $params['sources'];
+    $raw_sources = component_list($params['sources']);
 } else {
     $raw_sources = [$params['url'] ?? ''];
 }
@@ -59,7 +46,7 @@ $sources = [];
 foreach ($raw_sources as $source) {
     $declared_type = '';
     if (is_array($source)) {
-        $declared_type = strtolower($to_string($source['type'] ?? ''));
+        $declared_type = strtolower(component_string($source['type'] ?? ''));
         $source = $source['src'] ?? '';
     }
 
@@ -85,13 +72,13 @@ $is_youtube = $host === 'youtu.be' || $is_host($host, 'youtube.com') || $is_host
 $is_vimeo = $is_host($host, 'vimeo.com');
 $type = $is_youtube ? 'youtube' : ($is_vimeo ? 'vimeo' : 'video');
 
-$title = $to_string($params['title'] ?? '');
+$title = component_string($params['title'] ?? '');
 $title = $title !== '' ? $title : 'Lecteur vidéo';
-$play_label = $to_string($params['play_label'] ?? '');
+$play_label = component_string($params['play_label'] ?? '');
 $play_label = $play_label !== '' ? $play_label : 'Lire la vidéo';
 $play_label .= ' : ' . $title;
-$autoplay = $to_bool($params['autoplay'] ?? false);
-$loop = $to_bool($params['loop'] ?? false);
+$autoplay = component_bool($params['autoplay'] ?? false);
+$loop = component_bool($params['loop'] ?? false);
 $poster = $resolve_url($params['poster'] ?? '');
 $is_external_player = $type !== 'video';
 $has_facade = $poster !== '';
@@ -127,12 +114,12 @@ if ($is_youtube) {
 }
 
 $lazy_autoplay = array_key_exists('lazy_autoplay', $params)
-    ? $to_bool($params['lazy_autoplay'])
+    ? component_bool($params['lazy_autoplay'])
     : ($autoplay && !$has_facade && $type === 'video');
 $controls = array_key_exists('controls', $params)
-    ? $to_bool($params['controls'], true)
+    ? component_bool($params['controls'], true)
     : !$lazy_autoplay;
-$preload = strtolower($to_string($params['preload'] ?? 'metadata'));
+$preload = strtolower(component_string($params['preload'] ?? 'metadata'));
 $preload = in_array($preload, ['none', 'metadata', 'auto'], true) ? $preload : 'metadata';
 if ($has_facade || $lazy_autoplay) {
     $preload = 'none';
@@ -157,16 +144,14 @@ $attributes = component_attributes($params['attributes'] ?? [], [
 ]);
 
 $tracks = [];
-$tracks_input = is_array($params['tracks'] ?? null) && array_is_list($params['tracks'])
-    ? $params['tracks']
-    : [];
+$tracks_input = component_list($params['tracks'] ?? null);
 foreach ($tracks_input as $track) {
     if (!is_array($track)) {
         continue;
     }
 
     $src = $resolve_url($track['src'] ?? '');
-    $kind = strtolower($to_string($track['kind'] ?? 'subtitles'));
+    $kind = strtolower(component_string($track['kind'] ?? 'subtitles'));
     if ($src === '' || !in_array($kind, ['subtitles', 'captions', 'descriptions', 'chapters', 'metadata'], true)) {
         continue;
     }
@@ -174,9 +159,9 @@ foreach ($tracks_input as $track) {
     $tracks[] = [
         'src' => $src,
         'kind' => $kind,
-        'srclang' => preg_replace('/[^A-Za-z0-9-]/', '', $to_string($track['srclang'] ?? '')) ?? '',
-        'label' => $to_string($track['label'] ?? ''),
-        'default' => $to_bool($track['default'] ?? false),
+        'srclang' => preg_replace('/[^A-Za-z0-9-]/', '', component_string($track['srclang'] ?? '')) ?? '',
+        'label' => component_string($track['label'] ?? ''),
+        'default' => component_bool($track['default'] ?? false),
     ];
 }
 ?>

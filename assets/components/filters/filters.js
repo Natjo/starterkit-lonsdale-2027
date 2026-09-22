@@ -12,7 +12,7 @@ const getForms = (group) => Array.from(document.querySelectorAll(
 const buildUrl = (group) => {
     const forms = getForms(group);
     const action = forms[0]?.action || window.location.href;
-    const url = new URL(action, window.location.href);
+    let url = new URL(action, window.location.href);
     const params = new URLSearchParams();
     const visibleNames = new Set();
     const appendedEntries = new Set();
@@ -41,6 +41,37 @@ const buildUrl = (group) => {
             params.append(name, value);
         });
     });
+
+    const prettyForm = forms.find((form) => form.dataset.filtersPretty === "true");
+    const prettyBase = (prettyForm?.dataset.filtersPrettyBase || "").trim();
+    const prettyNames = (prettyForm?.dataset.filtersPrettyParams || "")
+        .split(",")
+        .map((name) => name.trim())
+        .filter(Boolean);
+    const pathParts = [];
+
+    if (prettyBase && prettyNames.length > 0) {
+        prettyNames.forEach((name) => {
+            const values = [
+                ...params.getAll(name),
+                ...params.getAll(`${name}[]`),
+            ].filter(Boolean);
+
+            params.delete(name);
+            params.delete(`${name}[]`);
+            if (values.length === 0) return;
+
+            pathParts.push(
+                encodeURIComponent(name),
+                values.map((value) => encodeURIComponent(value)).join(","),
+            );
+        });
+    }
+
+    if (pathParts.length > 0) {
+        url = new URL(prettyBase, window.location.href);
+        url.pathname = `${url.pathname.replace(/\/$/, "")}/${pathParts.join("/")}/`;
+    }
 
     url.search = params.toString();
     return url;

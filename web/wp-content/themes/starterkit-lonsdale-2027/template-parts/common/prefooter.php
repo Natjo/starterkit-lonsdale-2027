@@ -4,20 +4,12 @@ $args = is_array($args) ? $args : [];
 
 $to_string = static fn (mixed $value): string =>
     is_scalar($value) || $value instanceof Stringable ? trim((string) $value) : '';
-$http_url = static function (mixed $value) use ($to_string): string {
-    $url = $to_string($value);
-    if ($url === '' || filter_var($url, FILTER_VALIDATE_URL) === false) return '';
-
-    $scheme = strtolower((string) parse_url($url, PHP_URL_SCHEME));
-    return in_array($scheme, ['http', 'https'], true) ? $url : '';
-};
-
 $title = $to_string($args['title'] ?? '');
 $text = $to_string($args['text'] ?? '');
 $socials = is_array($args['socials'] ?? null) ? $args['socials'] : [];
 $newsletter_title = $to_string($args['newsletter_title'] ?? '');
 $newsletter_text = $to_string($args['newsletter_text'] ?? '');
-$newsletter_action = $http_url($args['newsletter_action'] ?? '');
+$newsletter_action = theme_http_url($args['newsletter_action'] ?? '');
 $newsletter_button = $to_string($args['newsletter_button'] ?? '');
 
 if (

@@ -26,6 +26,15 @@
     </form>
     <div id="results"><a class="initial">Résultats initiaux</a></div>
 
+    <form action="/projects/" data-filters-group="pretty" data-filters-target="pretty-results" data-filters-submit-on-change="false" data-filters-pretty="true" data-filters-pretty-base="/projects/filters/" data-filters-pretty-params="project_type,filter_sort">
+        <input type="checkbox" name="project_type[]" value="application" checked>
+        <select name="filter_sort">
+            <option value="date_desc" selected>Date</option>
+        </select>
+        <button type="submit">Filtrer</button>
+    </form>
+    <div id="pretty-results"><span class="pretty-initial">Résultats lisibles initiaux</span></div>
+
     <script type="module">
         import initializeFilters from "/assets/components/filters/filters.js";
 
@@ -38,6 +47,13 @@
         window.fetch = async (input) => {
             const url = new URL(input, window.location.href);
             requests.push(url);
+            if (url.pathname.startsWith("/projects/filters/")) {
+                const prettyForm = document.querySelector('[data-filters-group="pretty"]').outerHTML;
+                return new Response(`<!doctype html><html><head><title>Filtres lisibles</title></head><body>${prettyForm}<div id="pretty-results"><p class="pretty-updated">Mis à jour</p></div></body></html>`, {
+                    status: 200,
+                    headers: { "Content-Type": "text/html" },
+                });
+            }
             const forms = Array.from(document.querySelectorAll('[data-filters-group="projects"]'))
                 .map(form => form.outerHTML)
                 .join("");
@@ -74,7 +90,17 @@
             await tick();
             assert(requests.length === 3 && requests[2].search === "", "reset intercepted");
 
+            const destroyPretty = initializeFilters(document.querySelector('[data-filters-group="pretty"]'));
+            document.querySelector('[data-filters-group="pretty"]').requestSubmit();
+            await tick();
+            await tick();
+            const prettyRequest = requests[3];
+            assert(prettyRequest.pathname === "/projects/filters/project_type/application/filter_sort/date_desc/", "pretty filter path generated");
+            assert(prettyRequest.search === "", "pretty parameters removed from query string");
+            assert(document.querySelector("#pretty-results .pretty-updated"), "pretty target replaced");
+
             destroys.forEach(destroy => destroy?.());
+            destroyPretty?.();
             document.body.dataset.result = "ok";
         } catch (error) {
             document.body.dataset.result = error.message;

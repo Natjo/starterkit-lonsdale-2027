@@ -1,13 +1,9 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) {
-    return;
-}
+$params = component_args($params ?? null);
+if ($params === null) return;
 
-$to_string = static fn (mixed $value): string =>
-    is_scalar($value) || $value instanceof Stringable ? trim((string) $value) : '';
 
 $classes = component_classes('btn', $params['classes'] ?? '');
 $icon = is_array($params['icon'] ?? null)
@@ -27,7 +23,7 @@ if (array_key_exists('link', $params)) {
         return;
     }
 
-    $element = strtolower($to_string($params['element'] ?? 'a')) === 'span' ? 'span' : 'a';
+    $element = strtolower(component_string($params['element'] ?? 'a')) === 'span' ? 'span' : 'a';
     $link_attributes = $link['attributes'];
 
     if ($element === 'span') {
@@ -58,7 +54,7 @@ if (array_key_exists('link', $params)) {
     return;
 }
 
-$name = $to_string($params['name'] ?? '');
+$name = component_string($params['name'] ?? '');
 if ($name === '') {
     return;
 }
@@ -69,7 +65,7 @@ $type = 'button';
 foreach (array_keys($attributes_input) as $attribute_name) {
     $normalized_name = strtolower((string) $attribute_name);
     if ($normalized_name === 'type') {
-        $candidate = strtolower($to_string($attributes_input[$attribute_name]));
+        $candidate = strtolower(component_string($attributes_input[$attribute_name]));
         $type = in_array($candidate, ['button', 'submit', 'reset'], true) ? $candidate : 'button';
         unset($attributes_input[$attribute_name]);
     } elseif (in_array($normalized_name, ['class', 'href', 'target', 'rel'], true)) {

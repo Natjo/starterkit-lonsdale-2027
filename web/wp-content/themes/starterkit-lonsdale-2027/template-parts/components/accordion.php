@@ -1,13 +1,11 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) {
-    return;
-}
+$params = component_args($params ?? null);
+if ($params === null) return;
 
-$accordion_list = $params['items'] ?? [];
-if (!is_array($accordion_list) || !array_is_list($accordion_list) || $accordion_list === []) {
+$accordion_list = component_list($params['items'] ?? null);
+if ($accordion_list === []) {
     return;
 }
 
@@ -38,7 +36,7 @@ $attributes = component_attributes($params['attributes'] ?? [], [
     'data-context',
     'data-multiple',
 ]);
-$uid = function_exists('wp_unique_id') ? wp_unique_id('accordion-') : uniqid('accordion-');
+$uid = component_id('', 'accordion-');
 ?>
 <div class="<?= $classes ?>"<?= $attributes ?> data-module="components/accordion" data-context="@visible true" data-multiple="<?= $multiple ? 'true' : 'false' ?>">
     <?php foreach ($items as $index => $item) :

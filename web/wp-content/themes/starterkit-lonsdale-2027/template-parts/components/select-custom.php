@@ -1,8 +1,8 @@
 <?php
 /** @var array<string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if ($params === [] || array_is_list($params)) return;
+$params = component_args($params ?? null);
+if ($params === null) return;
 
 $has_value = array_key_exists('value', $params) && $params['value'] !== null;
 $args = normalize_args($params, [
@@ -20,49 +20,21 @@ $args = normalize_args($params, [
     'attributes' => [],
     'select_attributes' => [],
 ]);
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
-$to_bool = static fn(mixed $value, bool $default = false): bool => filter_var(
-    $value,
-    FILTER_VALIDATE_BOOL,
-    FILTER_NULL_ON_FAILURE
-) ?? $default;
 
-$name = $to_string($args['name']);
-$options = is_array($args['options']) ? $args['options'] : [];
-if ($name === '' || $options === []) return;
+$name = component_string($args['name']);
+if ($name === '') return;
 
-$multiple = $to_bool($args['multiple']);
-$required = $to_bool($args['required']);
-$disabled = $to_bool($args['disabled']);
-$normalized_options = [];
-
-foreach ($options as $option_key => $option) {
-    if (is_array($option)) {
-        $option_value = $to_string($option['value'] ?? '');
-        $option_label = $to_string($option['label'] ?? '');
-    } else {
-        $option_value = $to_string($option_key);
-        $option_label = $to_string($option);
-        $option = [];
-    }
-    if ($option_value === '' || $option_label === '') continue;
-
-    $normalized_options[] = [
-        'value' => $option_value,
-        'label' => $option_label,
-        'selected' => $to_bool($option['selected'] ?? false),
-        'disabled' => $to_bool($option['disabled'] ?? false),
-    ];
-}
+$multiple = component_bool($args['multiple']);
+$required = component_bool($args['required']);
+$disabled = component_bool($args['disabled']);
+$normalized_options = component_options($args['options']);
 if ($normalized_options === []) return;
 
 $requested_values = [];
 if ($has_value) {
     $values = $multiple && is_array($args['value']) ? $args['value'] : [$args['value']];
     foreach ($values as $value) {
-        $value = $to_string($value);
+        $value = component_string($value);
         if ($value !== '') $requested_values[] = $value;
     }
     $requested_values = array_values(array_unique($requested_values));
@@ -96,7 +68,7 @@ if ($multiple) {
         }
     }
 
-    $placeholder = $to_string($args['placeholder']);
+    $placeholder = component_string($args['placeholder']);
     if ($selected_index === null && $placeholder === '') {
         foreach ($normalized_options as $index => $option) {
             if (!$option['disabled']) {
@@ -112,21 +84,18 @@ if ($multiple) {
     unset($option);
 }
 
-$placeholder = $to_string($args['placeholder']) ?: 'Sélectionner';
+$placeholder = component_string($args['placeholder']) ?: 'Sélectionner';
 $selected_labels = array_map(
     static fn(array $option): string => $option['label'],
     array_filter($normalized_options, static fn(array $option): bool => $option['selected'])
 );
 $button_label = $selected_labels !== [] ? implode(', ', $selected_labels) : $placeholder;
-$requested_id = sanitize_html_class($to_string($args['id']));
-$base_id = $requested_id !== ''
-    ? $requested_id
-    : (function_exists('wp_unique_id') ? wp_unique_id('select-custom-') : uniqid('select-custom-', false));
+$base_id = component_id($args['id'], 'select-custom-');
 $label_id = $base_id . '-label';
 $button_id = $base_id . '-button';
 $list_id = $base_id . '-list';
-$label = $to_string($args['label']);
-$accessible_label = $label !== '' ? $label : ($to_string($args['aria_label']) ?: $name);
+$label = component_string($args['label']);
+$accessible_label = $label !== '' ? $label : (component_string($args['aria_label']) ?: $name);
 $submitted_name = $multiple && !str_ends_with($name, '[]') ? $name . '[]' : $name;
 $classes = component_classes('select-custom', $args['classes']);
 $attributes = component_attributes($args['attributes'], ['class', 'data-module', 'data-context', 'data-placeholder']);

@@ -173,6 +173,17 @@ $news_fields = theme_get_fields($news_id);
 $raw_options = theme_get_fields('option', false);
 ```
 
+`theme_get_strate_anchor_items()` transforme les `options.name` d’une liste de
+strates en payload pour `anchor-nav`. Les IDs produits correspondent à ceux que
+`options()` ajoute aux sections :
+
+```php
+$fields = theme_get_fields();
+$anchor_items = theme_get_strate_anchor_items($fields['strates'] ?? []);
+
+component('anchor-nav', ['items' => $anchor_items]);
+```
+
 `theme_prime_posts()` extrait les IDs directs et les clés `post_id` d'une
 collection, puis charge en lots les objets WordPress et leurs métadonnées. Les
 IDs déjà traités pendant la requête sont ignorés :
@@ -203,14 +214,14 @@ ne nécessitent ni Redis ni cache de page.
 
 ### Contexte des pages filtrées
 
-`Theme_Filters` fournit une façade de rendu autour de
+`Theme_Listing` fournit une façade de rendu autour de
 `theme_build_filters_context()`. Elle centralise la lecture et la validation
 des paramètres GET, la découverte facultative des taxonomies, le tri et la
 requête WordPress. Le template conserve sa configuration, l’emplacement de
 chaque formulaire et l’assemblage des cards :
 
 ```php
-$filters = new Theme_Filters([
+$filters = new Theme_Listing([
     'post_type' => 'project',
     'search' => [
         'label' => 'Rechercher',
@@ -297,7 +308,7 @@ simples utilisent `=`. `compare`, `options`, `placeholder`, `input_value`,
 comportement. Le filtre
 `theme_filters_result_item` permet d’enrichir chaque payload de card.
 
-Sans configuration `groups`, `Theme_Filters` crée les groupes `search`,
+Sans configuration `groups`, `Theme_Listing` crée les groupes `search`,
 `facets` et `sort`. Le helper procédural conserve quant à lui son comportement
 historique dans `form`. Avec
 `groups`, il expose en plus un payload par emplacement dans `forms`. Les groupes
@@ -418,12 +429,38 @@ Dans le HTML généré, attendu :
 |---------|------|
 | `inc/front/components.php` | Helpers de classes et d’attributs |
 | `inc/front/methods.php` | Dispatcher `component()` et helpers de templates |
+| `inc/front/contact-form.php` | Traitement, validation et état du formulaire de contact |
 | `template-parts/components/*.php` | Markup de chaque composant |
 | `template-parts/common/*.php` | Header, footer, etc. |
 | `template-parts/heros/*.php` | Heros de page |
 | `template-parts/cards/*.php` | Cards (news, people, etc.) |
 | `assets/{famille}/{module}/README.md` | Contrat local et assets du module |
 | `template-parts/common/footer.php` | Exemple d’usage des composants procéduraux |
+
+### Formulaire de contact
+
+`Theme_Contact_Form` centralise la lecture de la requête, le nonce, la
+validation, l’envoi avec `wp_mail()` et la redirection PRG après succès. Le
+template conserve uniquement le rendu :
+
+```php
+$contact_form = new Theme_Contact_Form([
+    'action_url' => get_permalink(),
+    'ajax' => true,
+]);
+$contact_form->handle();
+```
+
+Les méthodes `value()`, `error()`, `is_sent()`, `action_url()` et
+`nonce_field()` exposent l’état nécessaire au formulaire. Le destinataire et
+les messages `expired`, `invalid` et `failed` peuvent être fournis au
+constructeur, notamment pour un site multilingue.
+
+L’option `ajax` est désactivée par défaut. Lorsqu’elle vaut `true`, le formulaire
+doit utiliser le module `pages/template-contact` et transmettre l’URL retournée
+par `endpoint_url()` dans `data-contact-endpoint`. Le module envoie les données
+à `starter/v1/contact`; en l’absence de JavaScript ou en cas d’erreur réseau,
+le formulaire POST classique reste disponible.
 
 ---
 

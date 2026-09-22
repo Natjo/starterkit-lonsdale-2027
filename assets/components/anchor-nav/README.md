@@ -16,6 +16,21 @@ component('anchor-nav', [
 ]);
 ```
 
+Pour construire la navigation depuis les strates ACF d'une page :
+
+```php
+$fields = theme_get_fields();
+$anchor_items = theme_get_strate_anchor_items($fields['strates'] ?? []);
+
+component('anchor-nav', [
+    'items' => $anchor_items,
+]);
+```
+
+Le helper utilise `options.name` comme libellé et génère la cible avec
+`sanitize_title()`, comme le helper `options()` qui pose l’ID sur la strate. Il
+ignore les entrées invalides, vides et les cibles dupliquées.
+
 ## Payload
 
 | Clé | Type | Défaut | Rôle |

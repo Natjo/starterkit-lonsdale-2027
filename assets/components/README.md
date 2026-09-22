@@ -50,6 +50,41 @@ Un nom absent ou invalide est signalé avec `_doing_it_wrong()` lorsque
 
 ## Helpers disponibles
 
+### Normalisation du payload
+
+Chaque template commence par valider le tableau associatif reçu :
+
+```php
+$params = component_args($params ?? null);
+if ($params === null) return;
+```
+
+`component_args()` refuse les valeurs non-tableau et les tableaux positionnels.
+Son second argument facultatif permet aussi d'appliquer des valeurs par défaut.
+
+Les normalisations courantes sont centralisées :
+
+```php
+$label = component_string($args['label'] ?? '');
+$disabled = component_bool($args['disabled'] ?? false);
+$items = component_list($args['items'] ?? null);
+$options = component_options($args['options'] ?? null);
+$id = component_id($args['id'] ?? '', 'example-');
+```
+
+- `component_string()` accepte une valeur scalaire ou `Stringable`, la convertit
+  et retire les espaces aux extrémités ;
+- `component_bool()` reconnaît les représentations booléennes usuelles et permet
+  de fournir une valeur de repli ;
+- `component_list()` conserve uniquement un tableau positionnel valide ;
+- `component_options()` normalise les clés `value`, `label`, `alt`, `selected`
+  et `disabled` utilisées par les composants de sélection ;
+- `component_id()` nettoie l'identifiant fourni ou génère un identifiant unique
+  avec le préfixe demandé.
+
+Les URL absolues attendues en HTTP ou HTTPS sont validées avec le helper front
+général `theme_http_url()`.
+
 ### Classes CSS
 
 ```php
@@ -96,8 +131,8 @@ Squelette recommandé :
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) return;
+$params = component_args($params ?? null);
+if ($params === null) return;
 
 $args = normalize_args($params, [
     'title' => '',
@@ -105,9 +140,7 @@ $args = normalize_args($params, [
     'attributes' => [],
 ]);
 
-$title = is_scalar($args['title']) || $args['title'] instanceof Stringable
-    ? trim((string) $args['title'])
-    : '';
+$title = component_string($args['title']);
 
 if ($title === '') return;
 
@@ -128,7 +161,7 @@ Règles communes :
 - utiliser `esc_url()` pour une URL ;
 - réserver dans `component_attributes()` tous les attributs générés par le
   template (`class`, `id`, `href`, `type`, attributs ARIA, etc.) ;
-- normaliser explicitement les booléens avec `filter_var()` ;
+- normaliser les booléens avec `component_bool()` ;
 - ne pas ajouter d’appel de traduction dans un composant : les libellés
   variables sont fournis par l’appelant ;
 - ne pas récupérer implicitement des données ACF dans un composant générique ;

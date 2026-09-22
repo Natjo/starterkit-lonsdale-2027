@@ -72,6 +72,21 @@ function get_queried_object_id(): int
     return $queried_object_id;
 }
 
+function is_post_type_archive(): bool
+{
+    return false;
+}
+
+function get_queried_object(): mixed
+{
+    return null;
+}
+
+function get_post_meta(int $post_id, string $key = '', bool $single = false): mixed
+{
+    return $single ? '' : [];
+}
+
 function did_action(string $hook_name): int
 {
     return 0;
@@ -83,11 +98,21 @@ function paginate_links(array $args = []): array|false
     $current = (int) ($args['current'] ?? 1);
     if ($total <= 1) return false;
 
+    $url = static fn(int $page): string => isset($args['base'])
+        ? str_replace('%#%', (string) $page, (string) $args['base'])
+        : '?paged=' . $page;
+
     return [
-        '<a class="prev page-numbers" href="?paged=' . max(1, $current - 1) . '">' . ($args['prev_text'] ?? '') . '</a>',
+        '<a class="prev page-numbers" href="' . $url(max(1, $current - 1)) . '">' . ($args['prev_text'] ?? '') . '</a>',
         '<span aria-current="page" class="page-numbers current">' . $current . '</span>',
-        '<a class="next page-numbers" href="?paged=' . min($total, $current + 1) . '">' . ($args['next_text'] ?? '') . '</a>',
+        '<a class="next page-numbers" href="' . $url(min($total, $current + 1)) . '">' . ($args['next_text'] ?? '') . '</a>',
     ];
+}
+
+function add_query_arg(string $key, mixed $value, string $url): string
+{
+    return rtrim($url, '?&') . (str_contains($url, '?') ? '&' : '?')
+        . rawurlencode($key) . '=' . rawurlencode((string) $value);
 }
 
 function wp_unique_id(string $prefix = ''): string
@@ -348,6 +373,7 @@ function apply_filters(string $hook_name, mixed $value, mixed ...$args): mixed
 require_once dirname(__DIR__) . '/inc/front/methods.php';
 require_once dirname(__DIR__) . '/inc/front/components.php';
 require_once dirname(__DIR__) . '/inc/front/filters.php';
+require_once dirname(__DIR__) . '/inc/front/contact-form.php';
 require_once dirname(__DIR__) . '/inc/front/breadcrumb.php';
 require_once dirname(__DIR__) . '/inc/config/seo.php';
 
@@ -376,6 +402,58 @@ $assert_not_contains = static function (string $label, string $needle, string $a
         $failures[] = sprintf('%s: « %s » ne devrait pas être présent dans « %s »', $label, $needle, $actual);
     }
 };
+
+$assert_same('component_args fusionne un payload associatif', ['name' => 'Test'], component_args(['name' => 'Test'], ['name' => '']));
+$assert_same('component_args refuse un payload positionnel', null, component_args(['Test']));
+$assert_same('component_string normalise une valeur scalaire', 'Test', component_string(' Test '));
+$assert_same('component_string refuse une structure', 'fallback', component_string(['Test'], 'fallback'));
+$assert_same('component_bool comprend les chaînes booléennes', false, component_bool('false', true));
+$assert_same('component_bool conserve le défaut pour une valeur invalide', true, component_bool('invalid', true));
+$assert_same('component_list conserve une liste', ['first', 'second'], component_list(['first', 'second']));
+$assert_same('component_list refuse un tableau associatif', [], component_list(['name' => 'Test']));
+$assert_same('component_options normalise les options', [[
+    'value' => 'news',
+    'label' => 'News',
+    'alt' => 'Latest news',
+    'selected' => true,
+    'disabled' => false,
+]], component_options([[
+    'value' => ' news ',
+    'label' => ' News ',
+    'alt' => ' Latest news ',
+    'selected' => 'true',
+]]));
+$assert_same('component_options ignore les options incomplètes', [], component_options([['value' => 'news']]));
+$assert_same('component_id conserve un identifiant valide', 'section-test', component_id('section-test', 'component-'));
+$assert_contains('component_id génère un identifiant préfixé', 'component-', component_id('', 'component-'));
+$assert_same('theme_http_url conserve HTTPS', 'https://example.test/path', theme_http_url(' https://example.test/path '));
+$assert_same('theme_http_url refuse les protocoles dangereux', '', theme_http_url('javascript:alert(1)'));
+
+$previous_contact_status = $_GET['contact'] ?? null;
+$_GET['contact'] = 'sent';
+$contact_form = new Theme_Contact_Form([
+    'action_url' => 'https://example.test/contact/',
+    'recipient' => 'contact@example.test',
+]);
+$contact_form->handle();
+$assert_same('Theme_Contact_Form détecte le statut envoyé', true, $contact_form->is_sent());
+$assert_same('Theme_Contact_Form expose son URL d’action', 'https://example.test/contact/', $contact_form->action_url());
+$assert_same('Theme_Contact_Form initialise les champs à vide', '', $contact_form->value('name'));
+$assert_same('Theme_Contact_Form ignore les champs inconnus', '', $contact_form->value('unknown'));
+$assert_same('Theme_Contact_Form reste sans erreur hors soumission', '', $contact_form->error());
+$assert_same('Theme_Contact_Form expose le message de succès', 'Votre message a bien été envoyé.', $contact_form->success_message());
+$assert_same('Theme_Contact_Form désactive AJAX par défaut', false, $contact_form->is_ajax());
+$ajax_contact_form = new Theme_Contact_Form([
+    'action_url' => 'https://example.test/contact/',
+    'recipient' => 'contact@example.test',
+    'ajax' => true,
+]);
+$assert_same('Theme_Contact_Form accepte AJAX explicitement', true, $ajax_contact_form->is_ajax());
+if ($previous_contact_status === null) {
+    unset($_GET['contact']);
+} else {
+    $_GET['contact'] = $previous_contact_status;
+}
 
 $render = static function (string $component, array $values): string {
     global $rendering_component_fixture;
@@ -540,6 +618,26 @@ $assert_same(
     options('strate', [
         'options' => ['name' => 'Équipe " onclick="alert(1)'],
     ])
+);
+$assert_same(
+    'Les ancres de strates utilisent le nom des options et ignorent les doublons',
+    [
+        ['label' => 'Notre équipe', 'target' => 'notre-equipe'],
+        ['label' => 'Contact', 'target' => 'contact'],
+    ],
+    theme_get_strate_anchor_items([
+        ['acf_fc_layout' => 'text', 'options' => ['name' => 'Notre équipe']],
+        ['acf_fc_layout' => 'image', 'options' => ['name' => 'Notre équipe']],
+        ['acf_fc_layout' => 'text', 'options' => ['name' => '']],
+        ['acf_fc_layout' => 'text', 'options' => ['name' => ['invalid']]],
+        ['acf_fc_layout' => 'text', 'options' => ['name' => 'Contact']],
+        'invalid',
+    ])
+);
+$assert_same(
+    'Les ancres de strates refusent un payload associatif',
+    [],
+    theme_get_strate_anchor_items(['options' => ['name' => 'Introduction']])
 );
 
 component('select-lang', [
@@ -1201,6 +1299,16 @@ $assert_not_contains('Pagination protège sa classe', 'class="duplicate"', $pagi
 $assert_not_contains('Pagination protège son aria-label', 'aria-label="Dupliquée"', $pagination);
 $assert_same('Pagination ne rend rien avec une seule page', '', $render('pagination', ['total' => 1]));
 $assert_same('Pagination refuse les arguments positionnels', '', $render('pagination', [5, 2]));
+$pagination_with_base = $render('pagination', [
+    'total' => 3,
+    'current' => 1,
+    'base' => 'https://example.test/news/?hub_page=%#%',
+]);
+$assert_contains(
+    'Pagination accepte une base explicite avec placeholder',
+    'href="https://example.test/news/?hub_page=2"',
+    $pagination_with_base
+);
 
 set_query_var('template_args', ['scope' => 'before-list']);
 $render('list', [
@@ -2566,13 +2674,40 @@ $assert_not_contains('Filters ignore AJAX sans cible valide', 'data-module="comp
     'ajax' => true,
     'ajax_group' => 'project-filters',
 ]));
-$assert_same('Theme_Filters expose la recherche', true, method_exists(Theme_Filters::class, 'search'));
-$assert_same('Theme_Filters expose les filtres', true, method_exists(Theme_Filters::class, 'filters'));
-$assert_same('Theme_Filters expose les facettes', true, method_exists(Theme_Filters::class, 'facets'));
-$assert_same('Theme_Filters expose le tri', true, method_exists(Theme_Filters::class, 'sort'));
-$assert_same('Theme_Filters expose le message des résultats', true, method_exists(Theme_Filters::class, 'results_message'));
-$assert_same('Theme_Filters expose les résultats sans les rendre', true, method_exists(Theme_Filters::class, 'items'));
-$filters_facade = new Theme_Filters([
+$pretty_filters = $render('filters', [
+    'items' => [['type' => 'sort', 'name' => 'filter_sort']],
+    'ajax' => true,
+    'ajax_group' => 'project-filters',
+    'ajax_target' => 'project-results',
+    'pretty_urls' => true,
+    'pretty_base_url' => 'https://example.test/projects/filters/',
+    'pretty_params' => ['project_type', 'filter_sort'],
+]);
+$assert_contains('Filters expose la base des URL lisibles', 'data-filters-pretty="true" data-filters-pretty-base="https://example.test/projects/filters/"', $pretty_filters);
+$assert_contains('Filters expose les paramètres placés dans le chemin', 'data-filters-pretty-params="project_type,filter_sort"', $pretty_filters);
+$assert_same(
+    'Le chemin lisible des filtres est décodé en paramètres',
+    [
+        'project_type' => ['application', 'website'],
+        'filter_sort' => 'date_desc',
+        'paged' => '2',
+    ],
+    theme_parse_pretty_filters_path(
+        'project_type/application,website/filter_sort/date_desc/page/2',
+        'paged'
+    )
+);
+$assert_same('Theme_Listing expose la recherche', true, method_exists(Theme_Listing::class, 'search'));
+$assert_same('Theme_Listing expose les filtres', true, method_exists(Theme_Listing::class, 'filters'));
+$assert_same('Theme_Listing expose les facettes', true, method_exists(Theme_Listing::class, 'facets'));
+$assert_same('Theme_Listing expose le tri', true, method_exists(Theme_Listing::class, 'sort'));
+$assert_same('Theme_Listing expose le message des résultats', true, method_exists(Theme_Listing::class, 'results_message'));
+$assert_same('Theme_Listing expose le contexte archive', true, method_exists(Theme_Listing::class, 'is_archive'));
+$assert_same('Theme_Listing expose le type de contenu', true, method_exists(Theme_Listing::class, 'post_type'));
+$assert_same('Theme_Listing expose les résultats sans les rendre', true, method_exists(Theme_Listing::class, 'items'));
+$assert_same('Theme_Listing expose les résultats groupés', true, method_exists(Theme_Listing::class, 'grouped_items'));
+$assert_same('Theme_Listing expose le nombre total de résultats', true, method_exists(Theme_Listing::class, 'result_count'));
+$filters_facade = new Theme_Listing([
     'post_type' => 'missing',
     'taxonomies' => false,
     'request' => [],
@@ -2587,7 +2722,7 @@ $filters_search = trim((string) ob_get_clean());
 ob_start();
 $filters_facade->sort(['classes' => 'contract-sort']);
 $filters_sort = trim((string) ob_get_clean());
-$filters_facets_facade = new Theme_Filters([
+$filters_facets_facade = new Theme_Listing([
     'post_type' => 'missing',
     'taxonomies' => false,
     'request' => [],
@@ -2599,21 +2734,34 @@ ob_start();
 $filters_facets_facade->filters(['classes' => 'contract-facets']);
 $filters_facets = trim((string) ob_get_clean());
 $rendering_component_fixture = false;
-$assert_contains('Theme_Filters rend directement la recherche', 'class="filters filters-search ', $filters_search);
-$assert_contains('Theme_Filters ajoute les classes de la recherche', 'class="filters filters-search contract-search contract-search-wide"', $filters_search);
-$assert_contains('Theme_Filters transmet le groupe AJAX', 'data-filters-group="contract-filters"', $filters_search);
-$assert_contains('Theme_Filters ajoute les classes des facettes', 'class="filters filters-facets contract-facets"', $filters_facets);
-$assert_contains('Theme_Filters rend directement le tri', 'class="filters filters-sort ', $filters_sort);
-$assert_contains('Theme_Filters ajoute les classes du tri', 'class="filters filters-sort contract-sort"', $filters_sort);
-$assert_contains('Theme_Filters active le tri au changement', 'data-filters-submit-on-change="true"', $filters_sort);
-$assert_same('Theme_Filters expose la cible', 'contract-results', $filters_facade->target());
-$assert_same('Theme_Filters normalise une liste vide', [], $filters_facade->items());
-$assert_same('Theme_Filters ne rend pas les résultats', false, $filters_facade->has_results());
+$assert_contains('Theme_Listing rend directement la recherche', 'class="filters filters-search ', $filters_search);
+$assert_contains('Theme_Listing ajoute les classes de la recherche', 'class="filters filters-search contract-search contract-search-wide"', $filters_search);
+$assert_contains('Theme_Listing transmet le groupe AJAX', 'data-filters-group="contract-filters"', $filters_search);
+$assert_contains('Theme_Listing ajoute les classes des facettes', 'class="filters filters-facets contract-facets"', $filters_facets);
+$assert_contains('Theme_Listing rend directement le tri', 'class="filters filters-sort ', $filters_sort);
+$assert_contains('Theme_Listing ajoute les classes du tri', 'class="filters filters-sort contract-sort"', $filters_sort);
+$assert_contains('Theme_Listing active le tri au changement', 'data-filters-submit-on-change="true"', $filters_sort);
+$assert_same('Theme_Listing expose la cible', 'contract-results', $filters_facade->target());
+$results_target_facade = new Theme_Listing([
+    'post_type' => 'missing',
+    'search' => false,
+    'taxonomies' => false,
+    'sort' => false,
+    'ajax' => false,
+    'results_target' => 'hub-results',
+]);
+$assert_same(
+    'Theme_Listing expose une cible de résultats sans activer AJAX',
+    'hub-results',
+    $results_target_facade->target()
+);
+$assert_same('Theme_Listing normalise une liste vide', [], $filters_facade->items());
+$assert_same('Theme_Listing ne rend pas les résultats', false, $filters_facade->has_results());
 ob_start();
 $filters_facade->results_message();
 $filters_message_without_search = trim((string) ob_get_clean());
-$assert_same('Theme_Filters masque le message sans recherche', '', $filters_message_without_search);
-$filters_message_facade = new Theme_Filters([
+$assert_same('Theme_Listing masque le message sans recherche', '', $filters_message_without_search);
+$filters_message_facade = new Theme_Listing([
     'post_type' => 'missing',
     'taxonomies' => false,
     'request' => ['filter_search' => 'alpha'],
@@ -2621,11 +2769,11 @@ $filters_message_facade = new Theme_Filters([
 ob_start();
 $filters_message_facade->results_message(['classes' => 'contract-results-message']);
 $filters_empty_message = trim((string) ob_get_clean());
-$assert_contains('Theme_Filters affiche le message sans résultat', 'Aucun résultat pour votre recherche.', $filters_empty_message);
-$assert_contains('Theme_Filters ajoute les classes du message', 'class="filters-results-message contract-results-message"', $filters_empty_message);
+$assert_contains('Theme_Listing affiche le message sans résultat', 'Aucun résultat pour votre recherche.', $filters_empty_message);
+$assert_contains('Theme_Listing ajoute les classes du message', 'class="filters-results-message contract-results-message"', $filters_empty_message);
 $filters_message_context = $filters_message_facade->context();
 $filters_message_context['result_count'] = 2;
-$filters_context_property = new ReflectionProperty(Theme_Filters::class, 'context');
+$filters_context_property = new ReflectionProperty(Theme_Listing::class, 'context');
 $filters_context_property->setValue($filters_message_facade, $filters_message_context);
 ob_start();
 $filters_message_facade->results_message([
@@ -2634,7 +2782,7 @@ $filters_message_facade->results_message([
     ],
 ]);
 $filters_custom_message = trim((string) ob_get_clean());
-$assert_contains('Theme_Filters personnalise le message pluriel', '<strong>2</strong> matching &lt;projects&gt;.', $filters_custom_message);
+$assert_contains('Theme_Listing personnalise le message pluriel', '<strong>2</strong> matching &lt;projects&gt;.', $filters_custom_message);
 $assert_same('Filters ne rend rien sans contrôle valide', '', $render('filters', [
     'items' => [['type' => 'search', 'name' => 'invalid name']],
 ]));

@@ -11,6 +11,6 @@
     "strates": [],
     "heroes": [],
     "common": ["header-nav"],
-    "modules": []
+    "modules": ["hydrate"]
   }
 }

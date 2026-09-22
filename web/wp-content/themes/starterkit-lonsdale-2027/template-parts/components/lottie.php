@@ -1,8 +1,8 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) return;
+$params = component_args($params ?? null);
+if ($params === null) return;
 
 $args = normalize_args($params, [
     'src' => '',
@@ -20,16 +20,8 @@ $args = normalize_args($params, [
     'attributes' => [],
 ]);
 
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
-$to_bool = static fn(mixed $value, bool $default): bool => filter_var(
-    $value,
-    FILTER_VALIDATE_BOOL,
-    FILTER_NULL_ON_FAILURE
-) ?? $default;
-$to_source = static function (mixed $value) use ($to_string): string {
-    $source = $to_string($value);
+$to_source = static function (mixed $value): string {
+    $source = component_string($value);
     $path = parse_url($source, PHP_URL_PATH);
     if (
         $source === ''
@@ -64,14 +56,14 @@ if ($src === '') return;
 
 $breakpoint = filter_var($args['breakpoint'], FILTER_VALIDATE_INT);
 $breakpoint = $breakpoint !== false && $breakpoint > 0 ? $breakpoint : 768;
-$autoplay = $to_bool($args['autoplay'], false);
-$loop = $to_bool($args['loop'], false);
-$progressive_load = $to_bool($args['progressive_load'], true);
-$respect_reduced_motion = $to_bool($args['respect_reduced_motion'], true);
-$autonomous = $to_bool($args['autonomous'], true);
+$autoplay = component_bool($args['autoplay'], false);
+$loop = component_bool($args['loop'], false);
+$progressive_load = component_bool($args['progressive_load'], true);
+$respect_reduced_motion = component_bool($args['respect_reduced_motion'], true);
+$autonomous = component_bool($args['autonomous'], true);
 $width = $to_dimension($args['width']);
 $height = $to_dimension($args['height']);
-$label = $to_string($args['label']);
+$label = component_string($args['label']);
 $classes = component_classes('lottie', $args['classes']);
 $attributes = component_attributes($args['attributes'], [
     'class',

@@ -1,8 +1,8 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) return;
+$params = component_args($params ?? null);
+if ($params === null) return;
 
 $args = normalize_args($params, [
     'languages' => [],
@@ -10,19 +10,11 @@ $args = normalize_args($params, [
     'classes' => '',
     'attributes' => [],
 ]);
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
-$to_bool = static fn(mixed $value, bool $default = false): bool => filter_var(
-    $value,
-    FILTER_VALIDATE_BOOL,
-    FILTER_NULL_ON_FAILURE
-) ?? $default;
 
-$languages = is_array($args['languages']) && array_is_list($args['languages']) ? $args['languages'] : [];
+$languages = component_list($args['languages']);
 if ($languages === []) return;
 
-$label = $to_string($args['label']) ?: 'Choisir la langue';
+$label = component_string($args['label']) ?: 'Choisir la langue';
 $classes = component_classes('select-lang', $args['classes']);
 $attributes = component_attributes($args['attributes'], [
     'class',
@@ -34,10 +26,10 @@ $items = [];
 foreach ($languages as $language) {
     if (!is_array($language)) continue;
 
-    $code = strtolower($to_string($language['code'] ?? ''));
+    $code = strtolower(component_string($language['code'] ?? ''));
     $code = preg_match('/^[a-z]{2,3}(?:-[a-z0-9]{2,8})*$/', $code) ? $code : '';
-    $item_label = $to_string($language['label'] ?? '') ?: strtoupper($code);
-    $url = $to_string($language['url'] ?? '');
+    $item_label = component_string($language['label'] ?? '') ?: strtoupper($code);
+    $url = component_string($language['url'] ?? '');
 
     $url = esc_url($url);
     if ($item_label === '' || $url === '') continue;
@@ -46,8 +38,8 @@ foreach ($languages as $language) {
         'code' => $code,
         'label' => $item_label,
         'url' => $url,
-        'current' => $to_bool($language['current'] ?? false),
-        'disabled' => $to_bool($language['disabled'] ?? false),
+        'current' => component_bool($language['current'] ?? false),
+        'disabled' => component_bool($language['disabled'] ?? false),
     ];
 }
 
@@ -62,7 +54,7 @@ foreach ($items as $item) {
 }
 $current_item ??= $items[0];
 
-$uid = function_exists('wp_unique_id') ? wp_unique_id('select-lang-') : uniqid('select-lang-', false);
+$uid = component_id('', 'select-lang-');
 ?>
 
 <div class="<?= $classes ?>" data-module="components/select-lang" data-context="@visible true"<?= $attributes ?>>

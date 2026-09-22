@@ -1,8 +1,8 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) return;
+$params = component_args($params ?? null);
+if ($params === null) return;
 
 $args = normalize_args($params, [
     'title' => '',
@@ -15,12 +15,9 @@ $args = normalize_args($params, [
     'text_classes' => '',
     'text_attributes' => [],
 ]);
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
 
-$title = $to_string($args['title']);
-$text = $to_string($args['text']);
+$title = component_string($args['title']);
+$text = component_string($args['text']);
 $link = is_array($args['link']) ? $args['link'] : [];
 $link_attributes = is_array($link['attributes'] ?? null) ? $link['attributes'] : [];
 

@@ -6,7 +6,7 @@
   "file": "search.php",
   "activation": { "option": "enableSearch" },
   "dependencies": {
-    "components": ["list", "pagination", "search", "text", "title"],
+    "components": ["filters", "list", "pagination", "text", "title"],
     "cards": ["news"],
     "strates": [],
     "heroes": [],

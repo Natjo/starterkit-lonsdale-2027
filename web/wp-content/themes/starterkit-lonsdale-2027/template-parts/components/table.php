@@ -1,10 +1,8 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) {
-    return;
-}
+$params = component_args($params ?? null);
+if ($params === null) return;
 
 $args = normalize_args($params, [
     'headers' => [],
@@ -21,21 +19,13 @@ $args = normalize_args($params, [
     'table_attributes' => [],
     'caption_attributes' => [],
 ]);
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
-$first_string = static function (mixed ...$values) use ($to_string): string {
+$first_string = static function (mixed ...$values): string {
     foreach ($values as $value) {
-        $value = $to_string($value);
+        $value = component_string($value);
         if ($value !== '') return $value;
     }
     return '';
 };
-$to_bool = static fn(mixed $value, bool $default = false): bool => filter_var(
-    $value,
-    FILTER_VALIDATE_BOOL,
-    FILTER_NULL_ON_FAILURE
-) ?? $default;
 $to_span = static function (mixed $value): int {
     $value = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1, 'max_range' => 100]]);
     return $value === false ? 1 : $value;
@@ -47,8 +37,8 @@ $source_position = 0;
 foreach ($raw_headers as $source_key => $header) {
     $config = is_array($header) ? $header : [];
     $label = $first_string($config['label'] ?? null, $header);
-    $key = $to_string($config['key'] ?? (is_string($source_key) ? $source_key : ''));
-    $scope = strtolower($to_string($config['scope'] ?? 'col'));
+    $key = component_string($config['key'] ?? (is_string($source_key) ? $source_key : ''));
+    $scope = strtolower(component_string($config['scope'] ?? 'col'));
     $scope = in_array($scope, ['col', 'colgroup'], true) ? $scope : 'col';
 
     if ($label !== '') {
@@ -67,8 +57,8 @@ foreach ($raw_headers as $source_key => $header) {
 }
 if ($headers === []) return;
 
-$row_headers = $to_bool($args['row_headers']);
-$raw_rows = is_array($args['rows']) && array_is_list($args['rows']) ? $args['rows'] : [];
+$row_headers = component_bool($args['row_headers']);
+$raw_rows = component_list($args['rows']);
 $rows = [];
 foreach ($raw_rows as $raw_row) {
     if (!is_array($raw_row)) continue;
@@ -93,8 +83,8 @@ foreach ($raw_rows as $raw_row) {
 
         $config = is_array($cell) ? $cell : [];
         $content = $first_string($config['content'] ?? null, $cell);
-        $is_header = $to_bool($config['header'] ?? ($row_headers && $column_index === 0));
-        $scope = strtolower($to_string($config['scope'] ?? 'row'));
+        $is_header = component_bool($config['header'] ?? ($row_headers && $column_index === 0));
+        $scope = strtolower(component_string($config['scope'] ?? 'row'));
         $scope = in_array($scope, ['row', 'rowgroup'], true) ? $scope : 'row';
         if ($content !== '') $has_content = true;
 
@@ -115,15 +105,12 @@ foreach ($raw_rows as $raw_row) {
 }
 if ($rows === []) return;
 
-$requested_id = sanitize_html_class($to_string($args['id']));
-$base_id = $requested_id !== ''
-    ? $requested_id
-    : (function_exists('wp_unique_id') ? wp_unique_id('table-') : uniqid('table-', false));
+$base_id = component_id($args['id'], 'table-');
 $caption_id = $base_id . '-caption';
 $table_id = $base_id . '-table';
-$caption = $to_string($args['caption']);
-$accessible_caption = $caption !== '' ? $caption : ($to_string($args['aria_label']) ?: 'Tableau de données');
-$scrollable = $to_bool($args['scrollable'], true);
+$caption = component_string($args['caption']);
+$accessible_caption = $caption !== '' ? $caption : (component_string($args['aria_label']) ?: 'Tableau de données');
+$scrollable = component_bool($args['scrollable'], true);
 $classes = component_classes('table', $args['classes']);
 $table_classes = component_classes('table__table', $args['table_classes']);
 $attributes = component_attributes($args['attributes'], ['id', 'class']);

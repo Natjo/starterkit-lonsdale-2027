@@ -1,16 +1,11 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) {
-    return;
-}
+$params = component_args($params ?? null);
+if ($params === null) return;
 
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
 
-$value = $to_string($params['date'] ?? '');
+$value = component_string($params['date'] ?? '');
 if ($value === '') {
     return;
 }
@@ -19,14 +14,14 @@ $timezone = function_exists('wp_timezone')
     ? wp_timezone()
     : new DateTimeZone(date_default_timezone_get());
 
-$normalize_datetime = static function (mixed $input) use ($to_string, $timezone): string {
+$normalize_datetime = static function (mixed $input) use ($timezone): string {
     if ($input instanceof DateTimeInterface) {
         return DateTimeImmutable::createFromInterface($input)
             ->setTimezone($timezone)
             ->format('Y-m-d');
     }
 
-    $input = $to_string($input);
+    $input = component_string($input);
     if ($input === '') return '';
 
     foreach ([

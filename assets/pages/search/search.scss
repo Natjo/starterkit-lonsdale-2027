@@ -8,6 +8,17 @@
         grid-column: ctr;
     }
 
+    .search-results-region {
+        display: grid;
+        gap: var(--margin-sm);
+        min-width: 0;
+
+        &[aria-busy="true"] {
+            opacity: .55;
+            pointer-events: none;
+        }
+    }
+
     .search-page-header {
         display: grid;
         gap: 2.4rem;

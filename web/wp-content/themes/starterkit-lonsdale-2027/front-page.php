@@ -8,9 +8,9 @@ common("header-nav");
 
     <?php get_template_part('template-parts/utils/dispatch-strates'); ?>
 
-    <?php  strate('snap'); ?>
+    <?php strate('snap'); ?>
     <?php strate('anchor_nav'); ?>
-    <?php  strate('lottie'); ?>
+    <?php strate('lottie'); ?>
 </main>
 
 

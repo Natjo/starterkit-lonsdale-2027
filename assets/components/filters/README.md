@@ -5,21 +5,22 @@ ou ACF et ne modifie aucune requête : l’appelant fournit les contrôles, leur
 options et leurs valeurs actives. Son mode AJAX est une amélioration progressive :
 le formulaire GET reste entièrement fonctionnel sans JavaScript.
 
-Pour une page WordPress filtrée, utiliser l’API `Theme_Filters`. Elle construit
+Pour une page WordPress filtrée, utiliser l’API `Theme_Listing`. Elle construit
 la requête, coordonne les formulaires et rend le composant. L’appel direct à
 `component('filters', [...])` est réservé aux formulaires autonomes ou aux
 intégrations bas niveau dont le contexte est déjà construit.
 
-## Utilisation recommandée avec `Theme_Filters`
+## Utilisation recommandée avec `Theme_Listing`
 
 ```php
-$filters = new Theme_Filters([
+$filters = new Theme_Listing([
     'post_type' => 'project',
     'taxonomies' => true,
     'taxonomy_relation' => 'AND',
     'ajax' => true,
     'ajax_group' => 'project-filters',
-    'ajax_target' => 'project-results',
+    'results_target' => 'project-results',
+    'pretty_urls' => true,
     'search' => [
         'label' => 'Rechercher',
         'placeholder' => 'Rechercher un projet',
@@ -98,15 +99,52 @@ configuration ni la requête du filtre :
 <?php $filters->sort(['classes' => 'filters-sort-compact']); ?>
 ```
 
-Les classes structurelles générées par `Theme_Filters`, comme
+Les classes structurelles générées par `Theme_Listing`, comme
 `filters-search`, sont toujours conservées.
 
 `facets()` reste disponible comme alias rétrocompatible de `filters()`.
 
-`Theme_Filters` expose également `archive_title()`, `current_page()`,
+`Theme_Listing` expose également `archive_title()`, `current_page()`,
 `total_pages()`, `post_type_label()`, `context()` et `form($name)`. La classe ne
 rend pas les cards ni la pagination : le template garde le contrôle de leur
 HTML et de leur emplacement.
+
+`results_target` définit l’identifiant de la zone retourné par `target()`, avec
+ou sans AJAX. Lorsque l’AJAX est actif, cette même cible est transmise aux
+formulaires. `ajax_target` reste accepté comme alias rétrocompatible.
+
+Lorsque `post_type` n’est pas fourni, `Theme_Listing` détecte automatiquement
+le type d’une archive native. Sur une page WordPress, `post_type_meta` permet de
+lire explicitement le type dans une méta, par exemple `hub_post_type`. La
+façade expose ce contexte avec `is_archive()`, `post_type()` et
+`post_type_label()`.
+
+La page courante est déterminée depuis les query vars WordPress `paged` et
+`page`. L’option `page_name` permet d’utiliser un paramètre dédié sur une page
+WordPress, par exemple `hub_page`, afin d’éviter sa redirection canonique vers
+une fausse sous-page. `pagination_base()` fournit alors directement la base à
+transmettre au composant `pagination`.
+
+L’option `pretty_urls` place les taxonomies et le tri dans un chemin lisible :
+
+```text
+/projects/filters/project_type/application/filter_sort/date_desc/
+```
+
+Le segment réservé `filters` évite les conflits avec les pages enfant. La
+recherche textuelle et les filtres ACF restent dans la query string. Le format
+GET classique reste accepté sans JavaScript. Après l’ajout de la règle, les
+permalinks WordPress doivent être régénérés une fois.
+
+Avec ce mode, transmettre `pagination_base()` au composant de pagination :
+
+```php
+component('pagination', [
+    'total' => $filters->total_pages(),
+    'current' => $filters->current_page(),
+    'base' => $filters->pagination_base(),
+]);
+```
 
 L’action des formulaires utilise l’option `action` lorsqu’elle est fournie,
 puis l’URL de l’archive native du type de contenu. Si cette archive est
@@ -187,6 +225,9 @@ La cible est un élément existant de la page dont l’identifiant correspond à
 | `ajax_group` | `scalar\|Stringable` | `''` | Identifiant partagé par les formulaires qui pilotent les mêmes résultats |
 | `ajax_target` | `scalar\|Stringable` | `''` | Identifiant HTML, sans `#`, de la zone remplacée |
 | `ajax_submit_on_change` | `bool\|string` | `false` | Soumet le groupe au changement d’un contrôle, utile pour le tri |
+| `pretty_urls` | `bool\|string` | `false` | Convertit en segments les paramètres listés dans `pretty_params` |
+| `pretty_base_url` | `scalar\|Stringable` | `''` | Base absolue terminée par le segment des filtres |
+| `pretty_params` | `list<string>` | `[]` | Paramètres autorisés dans le chemin |
 | `classes` | `string\|array` | `''` | Classes supplémentaires |
 | `attributes` | `array` | `[]` | Attributs libres du formulaire |
 
@@ -230,7 +271,7 @@ options suivent le contrat de `component('field')` avec `value` et `label`.
 
 Les taxonomies hiérarchiques sont prises en charge par les mêmes options :
 l’appelant reste responsable de leur ordre et de la présentation de leurs
-libellés. Lorsque le composant est alimenté par `Theme_Filters` ou
+libellés. Lorsque le composant est alimenté par `Theme_Listing` ou
 `theme_build_filters_context()`, les filtres ACF configurés dans
 `acf_filters` sont traduits en `meta_query` par le helper.
 
@@ -238,5 +279,5 @@ libellés. Lorsque le composant est alimenté par `Theme_Filters` ou
 
 - `component('field', [...])` ;
 - `component('btn', [...])` ;
-- `Theme_Filters` pour l’utilisation dans une page WordPress ;
+- `Theme_Listing` pour l’utilisation dans une page WordPress ;
 - `assets/components/filters/filters.js` lorsque `ajax` est actif.

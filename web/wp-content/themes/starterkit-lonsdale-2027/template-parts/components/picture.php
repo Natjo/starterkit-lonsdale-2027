@@ -1,16 +1,9 @@
 <?php
 /** @var array<int|string, mixed>|null $params */
 
-$params = is_array($params ?? null) ? $params : [];
-if (array_is_list($params)) {
-    return;
-}
+$params = component_args($params ?? null);
+if ($params === null) return;
 
-$to_bool = static fn(mixed $value, bool $default = false): bool => filter_var(
-    $value,
-    FILTER_VALIDATE_BOOL,
-    FILTER_NULL_ON_FAILURE
-) ?? $default;
 $normalize_size = static function (mixed $size): string|array {
     if (is_array($size)) {
         $width = (int) ($size[0] ?? 0);
@@ -37,12 +30,12 @@ $classes = $params['classes'] ?? '';
 $attributes = component_attributes($params['attributes'] ?? [], ['class']);
 $fit = is_scalar($params['fit'] ?? null) ? strtolower(trim((string) $params['fit'])) : 'fluid';
 $fit = in_array($fit, ['fluid', 'cover'], true) ? $fit : 'fluid';
-$placeholder = $to_bool($params['placeholder'] ?? false);
+$placeholder = component_bool($params['placeholder'] ?? false);
 $breakpoint = is_numeric($params['breakpoint'] ?? null) ? (int) $params['breakpoint'] : 768;
 $breakpoint = $breakpoint > 0 ? $breakpoint : 768;
-$lazy = $to_bool($params['lazy'] ?? true, true);
-$preload = $to_bool($params['preload'] ?? false);
-$critical = $to_bool($params['critical'] ?? false) || $preload;
+$lazy = component_bool($params['lazy'] ?? true, true);
+$preload = component_bool($params['preload'] ?? false);
+$critical = component_bool($params['critical'] ?? false) || $preload;
 $size = $params['size'] ?? 'full';
 $desktop_size = $normalize_size($params['desktop_size'] ?? $size);
 $mobile_size = $normalize_size($params['mobile_size'] ?? $size);
