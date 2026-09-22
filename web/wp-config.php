@@ -23,8 +23,9 @@ define( 'WP_CACHE', true );
  */
 
 
-define('ENV_LOCAL', ( false !== strrpos( $_SERVER[ 'HTTP_HOST' ], '.code' ) ) );
-define('ENV_PREPROD_LONSDALE', ( false !== strrpos( $_SERVER[ 'HTTP_HOST' ], '.preprod8.lonsdale.fr' ) ) );
+$http_host = $_SERVER['HTTP_HOST'] ?? '';
+define('ENV_LOCAL', ( false !== strrpos( $http_host, '.code' ) ) );
+define('ENV_PREPROD_LONSDALE', ( false !== strrpos( $http_host, '.preprod8.lonsdale.fr' ) ) );
 define('ENV_PROD', ( !ENV_LOCAL && !ENV_PREPROD_LONSDALE ) );
 
 // wp-config.php — uniquement sur l’env de test CDN

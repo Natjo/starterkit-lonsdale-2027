@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "pages": [
+    {
+      "name": "Contact",
+      "slug": "contact",
+      "type": "page",
+      "contentMode": "content-type",
+      "template": "template-contact.php",
+      "isHome": false,
+      "heroValues": {},
+      "strates": [],
+      "children": []
+    }
+  ]
+}
