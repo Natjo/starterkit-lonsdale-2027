@@ -22,6 +22,39 @@
       "heroValues": {},
       "strates": [],
       "children": []
+    },
+    {
+      "name": "Mentions légales",
+      "slug": "mentions-legales",
+      "type": "page",
+      "contentMode": "content-type",
+      "template": "template-simple.php",
+      "isHome": false,
+      "heroValues": {},
+      "strates": [],
+      "children": []
+    },
+    {
+      "name": "Page flexible",
+      "slug": "page-flexible",
+      "type": "page",
+      "contentMode": "content-type",
+      "template": "template-flexible.php",
+      "isHome": false,
+      "heroValues": {},
+      "strates": [],
+      "children": []
+    },
+    {
+      "name": "Page hub",
+      "slug": "page-hub",
+      "type": "page",
+      "contentMode": "content-type",
+      "template": "template-hub.php",
+      "isHome": false,
+      "heroValues": {},
+      "strates": [],
+      "children": []
     }
   ]
 }
