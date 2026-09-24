@@ -2,6 +2,17 @@
   "schemaVersion": 1,
   "pages": [
     {
+      "name": "Accueil",
+      "slug": "accueil",
+      "type": "page",
+      "contentMode": "content-type",
+      "template": "default",
+      "isHome": true,
+      "heroValues": {},
+      "strates": [],
+      "children": []
+    },
+    {
       "name": "Contact",
       "slug": "contact",
       "type": "page",
