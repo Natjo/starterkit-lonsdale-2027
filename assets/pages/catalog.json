@@ -24,8 +24,8 @@
       "children": []
     },
     {
-      "name": "Mentions légales",
-      "slug": "mentions-legales",
+      "name": "Page simple",
+      "slug": "page-simple",
       "type": "page",
       "contentMode": "content-type",
       "template": "template-simple.php",
@@ -51,6 +51,17 @@
       "type": "page",
       "contentMode": "content-type",
       "template": "template-hub.php",
+      "isHome": false,
+      "heroValues": {},
+      "strates": [],
+      "children": []
+    },
+    {
+      "name": "Page sidebar",
+      "slug": "page-sidebar",
+      "type": "page",
+      "contentMode": "content-type",
+      "template": "template-sidebar.php",
       "isHome": false,
       "heroValues": {},
       "strates": [],
