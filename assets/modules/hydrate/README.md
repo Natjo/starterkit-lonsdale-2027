@@ -2,6 +2,10 @@
 
 Charge à la demande les modules JavaScript déclarés dans le HTML avec `data-module`, puis gère leur cycle de vie.
 
+Son manifeste utilise `"activation": "always"` parce que `assets/app.js`
+l’initialise globalement. Une page ou une strate ne doit donc pas le déclarer
+comme dépendance uniquement pour empêcher Forge de le supprimer.
+
 ## Markup
 
 ```html

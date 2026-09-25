@@ -3,6 +3,7 @@
   "type": "module",
   "name": "lenis",
   "slug": "lenis",
+  "activation": "always",
   "assets": {
     "js": { "loading": "eager" }
   },
