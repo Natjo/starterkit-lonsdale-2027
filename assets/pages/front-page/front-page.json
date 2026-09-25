@@ -5,7 +5,7 @@
   "slug": "front-page",
   "assets": {},
   "file": "front-page.php",
-  "activation": "always",
+  "activation": { "pageType": "home" },
   "dependencies": {
     "components": [],
     "cards": [],
