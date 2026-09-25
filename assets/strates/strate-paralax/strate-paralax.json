@@ -3,6 +3,10 @@
   "type": "strate",
   "name": "paralax",
   "slug": "paralax",
+  "assets": {
+    "css": { "loading": "split" },
+    "js": { "loading": "visible" }
+  },
   "dependencies": {
     "components": ["image","title"],
     "cards": [],

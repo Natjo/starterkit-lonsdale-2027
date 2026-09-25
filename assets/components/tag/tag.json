@@ -3,6 +3,9 @@
   "type": "component",
   "name": "tag",
   "slug": "tag",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

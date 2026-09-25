@@ -3,6 +3,9 @@
   "type": "page",
   "name": "Recherche",
   "slug": "search",
+  "assets": {
+    "css": { "loading": "once" }
+  },
   "file": "search.php",
   "activation": { "option": "enableSearch" },
   "dependencies": {

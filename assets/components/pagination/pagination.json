@@ -3,6 +3,9 @@
   "type": "component",
   "name": "pagination",
   "slug": "pagination",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

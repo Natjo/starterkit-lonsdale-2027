@@ -3,6 +3,9 @@
   "type": "module",
   "name": "hydrate",
   "slug": "hydrate",
+  "assets": {
+    "js": { "loading": "eager" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

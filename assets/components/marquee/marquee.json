@@ -3,6 +3,10 @@
   "type": "component",
   "name": "marquee",
   "slug": "marquee",
+  "assets": {
+    "css": { "loading": "normal" },
+    "js": { "loading": "eager" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

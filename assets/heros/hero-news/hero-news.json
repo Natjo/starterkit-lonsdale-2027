@@ -3,6 +3,7 @@
   "type": "hero",
   "name": "News",
   "slug": "news",
+  "assets": {},
   "dependencies": {
     "components": ["date", "picture", "title"],
     "cards": [],

@@ -3,6 +3,9 @@
   "type": "component",
   "name": "picto",
   "slug": "picto",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": ["icon"],
     "cards": [],

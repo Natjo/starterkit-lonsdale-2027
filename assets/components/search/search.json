@@ -3,6 +3,9 @@
   "type": "component",
   "name": "search",
   "slug": "search",
+  "assets": {
+    "css": { "loading": "critical" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

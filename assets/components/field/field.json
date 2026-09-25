@@ -3,6 +3,10 @@
   "type": "component",
   "name": "field",
   "slug": "field",
+  "assets": {
+    "css": { "loading": "normal" },
+    "js": { "loading": "eager" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

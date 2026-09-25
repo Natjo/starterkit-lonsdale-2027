@@ -3,6 +3,7 @@
   "type": "component",
   "name": "image",
   "slug": "image",
+  "assets": {},
   "dependencies": {
     "components": [],
     "cards": [],

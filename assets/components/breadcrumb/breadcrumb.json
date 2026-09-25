@@ -3,6 +3,9 @@
   "type": "component",
   "name": "breadcrumb",
   "slug": "breadcrumb",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

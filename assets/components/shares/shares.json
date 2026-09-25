@@ -3,6 +3,10 @@
   "type": "component",
   "name": "shares",
   "slug": "shares",
+  "assets": {
+    "css": { "loading": "normal" },
+    "js": { "loading": "visible" }
+  },
   "dependencies": {
     "components": ["icon"],
     "cards": [],

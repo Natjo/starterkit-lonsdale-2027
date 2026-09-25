@@ -3,6 +3,9 @@
   "type": "component",
   "name": "date",
   "slug": "date",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

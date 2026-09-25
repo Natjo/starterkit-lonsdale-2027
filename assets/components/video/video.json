@@ -3,6 +3,10 @@
   "type": "component",
   "name": "video",
   "slug": "video",
+  "assets": {
+    "css": { "loading": "normal" },
+    "js": { "loading": "eager" }
+  },
   "dependencies": {
     "components": ["image","icon"],
     "cards": [],

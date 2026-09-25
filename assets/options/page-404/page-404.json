@@ -5,5 +5,8 @@
   "slug": "page-404",
   "acfGroup": "group_option_404",
   "acfField": "page_404",
-  "pageSlug": "theme-options-404"
+  "pageSlug": "theme-options-404",
+  "dependencies": {
+    "components": ["btn", "text", "title"]
+  }
 }

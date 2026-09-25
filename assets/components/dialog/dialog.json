@@ -3,6 +3,10 @@
   "type": "component",
   "name": "dialog",
   "slug": "dialog",
+  "assets": {
+    "css": { "loading": "normal" },
+    "js": { "loading": "eager" }
+  },
   "dependencies": {
     "components": ["link","btn"],
     "cards": [],

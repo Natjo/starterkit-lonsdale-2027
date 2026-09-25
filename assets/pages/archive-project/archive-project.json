@@ -3,6 +3,9 @@
   "type": "page",
   "name": "archive-project",
   "slug": "archive-project",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "file": "archive-project.php",
   "activation": { "contentTypeArchive": "project" },
   "dependencies": {

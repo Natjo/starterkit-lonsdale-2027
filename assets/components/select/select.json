@@ -3,6 +3,9 @@
   "type": "component",
   "name": "select",
   "slug": "select",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

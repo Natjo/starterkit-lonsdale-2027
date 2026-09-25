@@ -3,6 +3,9 @@
   "type": "hero",
   "name": "page",
   "slug": "page",
+  "assets": {
+    "css": { "loading": "critical" }
+  },
   "dependencies": {
     "components": ["text", "title"],
     "cards": [],

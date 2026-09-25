@@ -3,6 +3,9 @@
   "type": "strate",
   "name": "snap",
   "slug": "snap",
+  "assets": {
+    "css": { "loading": "split" }
+  },
   "dependencies": {
     "components": ["section-snap", "title"],
     "cards": [],

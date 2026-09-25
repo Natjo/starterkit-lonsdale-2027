@@ -3,6 +3,10 @@
   "type": "component",
   "name": "section-snap",
   "slug": "section-snap",
+  "assets": {
+    "css": { "loading": "split" },
+    "js": { "loading": "visible" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

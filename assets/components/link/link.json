@@ -3,6 +3,9 @@
   "type": "component",
   "name": "link",
   "slug": "link",
+  "assets": {
+    "css": { "loading": "critical" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

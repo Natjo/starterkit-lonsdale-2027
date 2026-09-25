@@ -3,6 +3,10 @@
   "type": "component",
   "name": "select-custom",
   "slug": "select-custom",
+  "assets": {
+    "css": { "loading": "normal" },
+    "js": { "loading": "visible" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

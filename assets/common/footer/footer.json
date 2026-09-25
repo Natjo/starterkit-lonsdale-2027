@@ -3,6 +3,9 @@
   "type": "common",
   "name": "footer",
   "slug": "footer",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "activation": "always",
   "dependencies": {
     "components": [],

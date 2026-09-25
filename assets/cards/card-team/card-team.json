@@ -3,6 +3,9 @@
   "type": "card",
   "name": "Team",
   "slug": "team",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": ["picture", "text", "title"],
     "cards": [],

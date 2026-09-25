@@ -3,6 +3,9 @@
   "type": "strate",
   "name": "formulaire",
   "slug": "formulaire",
+  "assets": {
+    "css": { "loading": "split" }
+  },
   "dependencies": {
     "components": ["header","field","btn"],
     "cards": [],

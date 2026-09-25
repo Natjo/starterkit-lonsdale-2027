@@ -5,5 +5,8 @@
   "slug": "prefooter",
   "acfGroup": "group_common_prefooter",
   "acfField": "prefooter",
-  "pageSlug": "theme-options-prefooter"
+  "pageSlug": "theme-options-prefooter",
+  "dependencies": {
+    "components": ["newsletter", "socials", "text", "title"]
+  }
 }

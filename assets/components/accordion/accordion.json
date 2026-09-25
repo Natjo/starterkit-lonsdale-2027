@@ -3,6 +3,10 @@
   "type": "component",
   "name": "accordion",
   "slug": "accordion",
+  "assets": {
+    "css": { "loading": "normal" },
+    "js": { "loading": "visible" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

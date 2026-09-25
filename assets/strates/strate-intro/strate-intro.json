@@ -3,6 +3,9 @@
   "type": "strate",
   "name": "intro",
   "slug": "intro",
+  "assets": {
+    "css": { "loading": "split" }
+  },
   "dependencies": {
     "components": ["text"],
     "cards": [],

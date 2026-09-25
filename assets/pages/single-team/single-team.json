@@ -3,6 +3,7 @@
   "type": "page",
   "name": "Single team",
   "slug": "single-team",
+  "assets": {},
   "file": "single-team.php",
   "activation": { "contentType": "team" },
   "dependencies": {

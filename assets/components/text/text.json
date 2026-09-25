@@ -3,6 +3,9 @@
   "type": "component",
   "name": "text",
   "slug": "text",
+  "assets": {
+    "css": { "loading": "critical" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

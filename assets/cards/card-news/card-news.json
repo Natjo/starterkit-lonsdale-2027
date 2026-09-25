@@ -3,6 +3,9 @@
   "type": "card",
   "name": "News",
   "slug": "news",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": ["date", "picture", "text", "title"],
     "cards": [],

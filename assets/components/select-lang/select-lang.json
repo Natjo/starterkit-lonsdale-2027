@@ -3,6 +3,10 @@
   "type": "component",
   "name": "select-lang",
   "slug": "select-lang",
+  "assets": {
+    "css": { "loading": "normal" },
+    "js": { "loading": "visible" }
+  },
   "dependencies": {
     "components": ["icon"],
     "cards": [],

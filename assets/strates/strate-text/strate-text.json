@@ -3,6 +3,9 @@
   "type": "strate",
   "name": "text",
   "slug": "text",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": ["title","text"],
     "cards": [],

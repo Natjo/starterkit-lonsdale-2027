@@ -3,6 +3,9 @@
   "type": "card",
   "name": "keynumber",
   "slug": "keynumber",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": ["title","text"],
     "cards": [],

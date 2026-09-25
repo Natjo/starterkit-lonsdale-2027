@@ -3,6 +3,9 @@
   "type": "component",
   "name": "btn",
   "slug": "btn",
+  "assets": {
+    "css": { "loading": "critical" }
+  },
   "dependencies": {
     "components": ["icon"],
     "cards": [],

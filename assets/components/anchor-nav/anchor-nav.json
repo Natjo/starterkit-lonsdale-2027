@@ -3,6 +3,10 @@
   "type": "component",
   "name": "anchor-nav",
   "slug": "anchor-nav",
+  "assets": {
+    "css": { "loading": "split" },
+    "js": { "loading": "visible" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

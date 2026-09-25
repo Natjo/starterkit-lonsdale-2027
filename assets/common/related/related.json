@@ -3,6 +3,9 @@
   "type": "common",
   "name": "related",
   "slug": "related",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": ["title","text","list"],
     "cards": [],

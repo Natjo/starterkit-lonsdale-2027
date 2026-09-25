@@ -3,6 +3,9 @@
   "type": "strate",
   "name": "anchor_nav",
   "slug": "anchor_nav",
+  "assets": {
+    "css": { "loading": "split" }
+  },
   "dependencies": {
     "components": ["anchor-nav"],
     "cards": [],

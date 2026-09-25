@@ -3,6 +3,10 @@
   "type": "component",
   "name": "filters",
   "slug": "filters",
+  "assets": {
+    "css": { "loading": "once" },
+    "js": { "loading": "eager" }
+  },
   "dependencies": {
     "components": ["btn", "field"],
     "cards": [],

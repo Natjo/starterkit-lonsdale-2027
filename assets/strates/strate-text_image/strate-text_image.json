@@ -3,6 +3,9 @@
   "type": "strate",
   "name": "text_image",
   "slug": "text_image",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": ["title","text","picture"],
     "cards": [],

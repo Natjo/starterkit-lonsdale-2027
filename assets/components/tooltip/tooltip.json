@@ -3,6 +3,10 @@
   "type": "component",
   "name": "tooltip",
   "slug": "tooltip",
+  "assets": {
+    "css": { "loading": "normal" },
+    "js": { "loading": "eager" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

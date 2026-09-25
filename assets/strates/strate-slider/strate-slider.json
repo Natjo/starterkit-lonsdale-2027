@@ -3,6 +3,10 @@
   "type": "strate",
   "name": "slider",
   "slug": "slider",
+  "assets": {
+    "css": { "loading": "normal" },
+    "js": { "loading": "eager" }
+  },
   "dependencies": {
     "components": ["header","slider"],
     "cards": [],

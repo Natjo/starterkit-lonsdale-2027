@@ -3,6 +3,7 @@
   "type": "hero",
   "name": "Flexible",
   "slug": "flexible",
+  "assets": {},
   "dependencies": {
     "components": ["title"],
     "cards": [],

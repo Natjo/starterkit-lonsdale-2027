@@ -3,6 +3,9 @@
   "type": "module",
   "name": "breakpoint",
   "slug": "breakpoint",
+  "assets": {
+    "js": { "loading": "eager" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

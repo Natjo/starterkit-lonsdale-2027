@@ -3,6 +3,9 @@
   "type": "card",
   "name": "Project",
   "slug": "project",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": ["date", "eyebrow", "picture", "text", "title"],
     "cards": [],

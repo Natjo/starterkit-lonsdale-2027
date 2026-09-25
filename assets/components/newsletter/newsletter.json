@@ -3,6 +3,9 @@
   "type": "component",
   "name": "newsletter",
   "slug": "newsletter",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": ["btn", "field", "text", "title"],
     "cards": [],

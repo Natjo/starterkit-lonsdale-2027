@@ -3,6 +3,9 @@
   "type": "page",
   "name": "Hub",
   "slug": "template-hub",
+  "assets": {
+    "css": { "loading": "once" }
+  },
   "file": "template-hub.php",
   "activation": "selected",
   "capabilities": ["content-archive"],

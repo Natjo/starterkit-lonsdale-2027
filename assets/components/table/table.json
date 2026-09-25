@@ -3,6 +3,9 @@
   "type": "component",
   "name": "table",
   "slug": "table",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

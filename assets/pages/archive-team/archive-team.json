@@ -3,6 +3,9 @@
   "type": "page",
   "name": "archive-team",
   "slug": "archive-team",
+  "assets": {
+    "css": { "loading": "once" }
+  },
   "file": "archive-team.php",
   "activation": { "contentTypeArchive": "team" },
   "dependencies": {

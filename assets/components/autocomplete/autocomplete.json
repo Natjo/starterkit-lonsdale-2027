@@ -3,6 +3,10 @@
   "type": "component",
   "name": "autocomplete",
   "slug": "autocomplete",
+  "assets": {
+    "css": { "loading": "normal" },
+    "js": { "loading": "visible" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

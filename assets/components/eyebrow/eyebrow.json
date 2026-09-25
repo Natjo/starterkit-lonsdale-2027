@@ -3,6 +3,9 @@
   "type": "component",
   "name": "eyebrow",
   "slug": "eyebrow",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": ["icon"],
     "cards": [],

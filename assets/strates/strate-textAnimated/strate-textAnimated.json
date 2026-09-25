@@ -3,6 +3,10 @@
   "type": "strate",
   "name": "textAnimated",
   "slug": "textAnimated",
+  "assets": {
+    "css": { "loading": "split" },
+    "js": { "loading": "visible" }
+  },
   "dependencies": {
     "components": ["title"],
     "cards": [],

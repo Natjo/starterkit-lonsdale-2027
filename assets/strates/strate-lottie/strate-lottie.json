@@ -3,6 +3,9 @@
   "type": "strate",
   "name": "lottie",
   "slug": "lottie",
+  "assets": {
+    "css": { "loading": "split" }
+  },
   "dependencies": {
     "components": ["lottie"],
     "cards": [],

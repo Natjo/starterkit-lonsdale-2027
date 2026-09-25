@@ -3,6 +3,9 @@
   "type": "card",
   "name": "page",
   "slug": "page",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": ["eyebrow","title","text"],
     "cards": [],

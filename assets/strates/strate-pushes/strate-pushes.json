@@ -3,6 +3,9 @@
   "type": "strate",
   "name": "pushes",
   "slug": "pushes",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": ["header","list"],
     "cards": [],

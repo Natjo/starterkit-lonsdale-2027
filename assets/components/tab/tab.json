@@ -3,6 +3,10 @@
   "type": "component",
   "name": "tab",
   "slug": "tab",
+  "assets": {
+    "css": { "loading": "normal" },
+    "js": { "loading": "visible" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

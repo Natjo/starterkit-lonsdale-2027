@@ -3,6 +3,9 @@
   "type": "component",
   "name": "quote",
   "slug": "quote",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": ["image"],
     "cards": [],

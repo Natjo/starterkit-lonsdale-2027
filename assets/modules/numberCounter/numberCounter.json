@@ -3,6 +3,9 @@
   "type": "module",
   "name": "numberCounter",
   "slug": "numberCounter",
+  "assets": {
+    "js": { "loading": "eager" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

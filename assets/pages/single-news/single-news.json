@@ -3,6 +3,7 @@
   "type": "page",
   "name": "Single news",
   "slug": "single-news",
+  "assets": {},
   "file": "single-news.php",
   "activation": { "contentType": "news" },
   "dependencies": {

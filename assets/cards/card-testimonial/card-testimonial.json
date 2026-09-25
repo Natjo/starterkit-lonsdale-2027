@@ -3,6 +3,9 @@
   "type": "card",
   "name": "Testimonial",
   "slug": "testimonial",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": [
       "quote"

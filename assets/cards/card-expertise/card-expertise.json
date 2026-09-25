@@ -3,6 +3,9 @@
   "type": "card",
   "name": "Expertise",
   "slug": "expertise",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": ["text", "title"],
     "cards": [],

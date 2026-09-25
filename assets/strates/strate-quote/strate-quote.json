@@ -3,6 +3,7 @@
   "type": "strate",
   "name": "quote",
   "slug": "quote",
+  "assets": {},
   "dependencies": {
     "components": ["quote"],
     "cards": [],

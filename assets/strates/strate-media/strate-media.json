@@ -3,6 +3,9 @@
   "type": "strate",
   "name": "media",
   "slug": "media",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": ["picture","video"],
     "cards": [],

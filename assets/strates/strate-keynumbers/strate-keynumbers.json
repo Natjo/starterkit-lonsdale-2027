@@ -3,6 +3,9 @@
   "type": "strate",
   "name": "keynumbers",
   "slug": "keynumbers",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": ["header","list"],
     "cards": [],

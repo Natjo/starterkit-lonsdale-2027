@@ -3,6 +3,10 @@
   "type": "module",
   "name": "textAppear",
   "slug": "textAppear",
+  "assets": {
+    "css": { "loading": "normal" },
+    "js": { "loading": "eager" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

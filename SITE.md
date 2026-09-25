@@ -52,6 +52,29 @@ Les composants et modules importent directement le fichier distribué nécessair
 dans `assets/vendors/<nom>/`. WP Forge découvre directement ces dossiers ; les
 vendors ne possèdent ni manifeste propre ni fichier d’entrée imposé.
 
+### Assets déclarés par les manifestes
+
+Les manifestes existants des pages, composants, cards, strates, heroes,
+common et modules sont la source de vérité de leurs assets. La section
+`assets` ne contient une entrée que si le fichier co-localisé existe :
+
+```json
+"assets": {
+  "css": { "loading": "once" },
+  "js": { "loading": "visible" }
+}
+```
+
+Pour le CSS, `loading` accepte `normal`, `critical`, `once` ou `split`. Pour
+le JavaScript, il accepte `eager` ou `visible`; ce dernier correspond à une
+racine rendue avec `data-context="@visible true"`. Une section `assets` vide
+indique que l’élément ne possède aucun fichier SCSS ou JavaScript.
+
+Forge contrôle la déclaration par rapport aux fichiers `{nom}.scss` et
+`{nom}.js` réellement présents. Un asset déclaré sans fichier, ou un fichier
+non déclaré, est une erreur d’audit. Lors de la création du site, le mode CSS
+du manifeste est réappliqué à l’import de `app.scss`.
+
 Ne pas ajouter ces dépendances front à `package.json` pour les charger dans le
 site. `package.json` est réservé aux outils nécessaires au développement et à
 la chaîne de compilation, comme Rspack, Sass, les loaders et les outils de

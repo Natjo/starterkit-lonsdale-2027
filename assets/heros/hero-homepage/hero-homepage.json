@@ -3,6 +3,9 @@
   "type": "hero",
   "name": "homepage",
   "slug": "homepage",
+  "assets": {
+    "css": { "loading": "critical" }
+  },
   "dependencies": {
     "components": ["eyebrow", "picture", "text", "title"],
     "cards": [],

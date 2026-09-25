@@ -3,6 +3,9 @@
   "type": "component",
   "name": "socials",
   "slug": "socials",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
   "dependencies": {
     "components": ["icon"],
     "cards": [],
