@@ -6,7 +6,7 @@
   "assets": {
     "css": { "loading": "normal" }
   },
-  "activation": "always",
+  "activation": { "pageType": "any" },
   "dependencies": {
     "components": [],
     "cards": [],

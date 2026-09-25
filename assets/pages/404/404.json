@@ -7,7 +7,7 @@
     "css": { "loading": "once" }
   },
   "file": "404.php",
-  "activation": "always",
+  "activation": { "pageType": "any" },
   "dependencies": {
     "components": ["btn", "text", "title"],
     "cards": [],
