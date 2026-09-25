@@ -66,6 +66,17 @@
       "heroValues": {},
       "strates": [],
       "children": []
+    },
+    {
+      "name": "Page filters",
+      "slug": "page-filters",
+      "type": "page",
+      "contentMode": "content-type",
+      "template": "template-filters.php",
+      "isHome": false,
+      "heroValues": {},
+      "strates": [],
+      "children": []
     }
   ]
 }

@@ -5,6 +5,7 @@
   "slug": "template-hub",
   "file": "template-hub.php",
   "activation": "selected",
+  "capabilities": ["content-archive"],
   "dependencies": {
     "components": ["list", "pagination"],
     "cards": [],
