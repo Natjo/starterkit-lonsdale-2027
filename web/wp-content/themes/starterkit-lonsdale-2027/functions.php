@@ -2,8 +2,9 @@
 
 
 $cdn = defined('LSD_CDN_ORIGIN') ? rtrim(LSD_CDN_ORIGIN, '/') : '';
+$theme_slug = basename(get_template_directory());
 if ($cdn && !is_admin()) {
-    define('THEME_ASSETS', $cdn . '/wp-content/themes/starterkit-lonsdale-2027/assets/');
+    define('THEME_ASSETS', $cdn . '/wp-content/themes/' . rawurlencode($theme_slug) . '/assets/');
 } else {
     define('THEME_ASSETS', get_template_directory_uri() . '/assets/');
 }

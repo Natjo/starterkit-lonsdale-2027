@@ -4,8 +4,8 @@ common("header-nav");
 ?>
 
 <main>
-    <h1><?= wp_kses_post(get_the_archive_title()) ?></h1>
-
+    <?php hero('page', ['title' => wp_kses_post(get_the_archive_title())]); ?>
+    
     <?php if (have_posts()) : ?>
         <div class="posts-list">
             <?php while (have_posts()) : the_post(); ?>

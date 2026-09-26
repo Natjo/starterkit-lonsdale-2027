@@ -1,5 +1,13 @@
 # Configuration SEO
 
+## Pages d’options ACF
+
+L’entrée parente « Options » redirige vers la première sous-page configurée et
+n’apparaît pas une seconde fois dans son sous-menu. Seules les pages d’options
+réelles, comme « Header » ou « Page 404 », sont éditables et affichées.
+
+## SEO
+
 Yoast SEO est le propriétaire principal des titres, descriptions, canonicals,
 balises sociales, sitemaps et données structurées du site.
 

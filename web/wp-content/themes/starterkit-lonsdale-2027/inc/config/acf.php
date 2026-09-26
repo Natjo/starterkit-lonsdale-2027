@@ -26,7 +26,7 @@ add_action('acf/init', function () {
         'menu_title' => 'Options',
         'menu_slug' => 'theme-options',
         'capability' => 'manage_options',
-        'redirect' => false,
+        'redirect' => true,
     ]);
 
     acf_add_options_sub_page([
@@ -60,6 +60,10 @@ add_action('acf/init', function () {
         'parent_slug' => 'theme-options',
         'capability' => 'manage_options',
     ]);
+
+    add_action('admin_menu', static function (): void {
+        remove_submenu_page('theme-options', 'theme-options');
+    }, 999);
 });
 
 /**
