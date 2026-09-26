@@ -2355,7 +2355,14 @@
             {
                 "param": "post_template",
                 "operator": "==",
-                "value": "template-sidebar.php"
+                "value": "template-flexible-sidebar.php"
+            }
+        ],
+        [
+            {
+                "param": "post_template",
+                "operator": "==",
+                "value": "template-flexible-sidebar-navanchor.php"
             }
         ]
     ],

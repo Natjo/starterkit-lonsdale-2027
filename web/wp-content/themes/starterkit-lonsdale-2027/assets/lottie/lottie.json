@@ -3,6 +3,10 @@
   "type": "component",
   "name": "lottie",
   "slug": "lottie",
+  "assets": {
+    "css": { "loading": "split" },
+    "js": { "loading": "visible" }
+  },
   "dependencies": {
     "components": [],
     "cards": [],

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "type": "page",
+  "name": "Flexible sidebar nav anchor",
+  "slug": "template-flexible-sidebar-navanchor",
+  "assets": {
+    "css": { "loading": "once" }
+  },
+  "file": "template-flexible-sidebar-navanchor.php",
+  "activation": "selected",
+  "dependencies": {
+    "components": ["anchor-nav"],
+    "cards": [],
+    "strates": [],
+    "heroes": ["page"],
+    "common": ["header-nav"],
+    "modules": [],
+    "vendors": []
+  }
+}

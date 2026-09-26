@@ -1,1 +1,0 @@
-"use strict";(self.rspackChunkwordpress_starter_kit=self.rspackChunkwordpress_starter_kit||[]).push([[545],{240(s,r,t){t.r(r);let e=t(473).A;t.d(r,{},{default:e})}}]);

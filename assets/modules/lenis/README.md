@@ -2,9 +2,9 @@
 
 Active un défilement fluide global pour la page en chargeant le vendor Lenis à la demande.
 
-Son manifeste utilise `"activation": "always"` parce que `assets/app.js`
-l’initialise globalement. Les manifestes de pages ne doivent pas le déclarer
-comme dépendance.
+Son manifeste utilise `"activation": { "pageType": "any" }` parce que
+`assets/app.js` l’initialise globalement dès que le site possède une page. Les
+manifestes de pages ne doivent pas le déclarer comme dépendance.
 
 ## Utilisation
 

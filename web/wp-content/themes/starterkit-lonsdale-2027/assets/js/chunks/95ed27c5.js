@@ -1,2 +1,0 @@
-"use strict";(self.rspackChunkwordpress_starter_kit=self.rspackChunkwordpress_starter_kit||[]).push([[706],{65(r,e,a){a.d(e,{default:()=>n});var o=Error("Cannot find module '@modules/anchorNav/anchorNav'");throw o.code="MODULE_NOT_FOUND",o;function n(r){if(r instanceof HTMLElement)return Object(function(){var r=Error("Cannot find module '@modules/anchorNav/anchorNav'");throw r.code="MODULE_NOT_FOUND",r}())(r,{linkSelector:":scope .anchor-nav a[href^='#']",activeClass:"active"})}}}]);
-//# sourceMappingURL=95ed27c5.js.map

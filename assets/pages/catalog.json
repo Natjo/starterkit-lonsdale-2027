@@ -57,11 +57,11 @@
       "children": []
     },
     {
-      "name": "Page sidebar",
+      "name": "Page flexible sidebar nav anchor",
       "slug": "page-sidebar",
       "type": "page",
       "contentMode": "content-type",
-      "template": "template-sidebar.php",
+      "template": "template-flexible-sidebar-navanchor.php",
       "isHome": false,
       "heroValues": {},
       "strates": [],
