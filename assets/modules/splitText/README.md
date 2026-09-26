@@ -3,6 +3,9 @@
 Découpe les nœuds texte d'un élément en spans de mots et de caractères afin de
 permettre des animations individuelles, tout en conservant le HTML inline.
 
+Dans le catalogue Forge, l'ajout de ce module active également `scrollDriver`.
+L'ajout de `scrollDriver` seul n'active pas `splitText`.
+
 ## Utilisation
 
 ```js
