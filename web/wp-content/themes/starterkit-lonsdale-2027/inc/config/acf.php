@@ -30,9 +30,25 @@ add_action('acf/init', function () {
     ]);
 
     acf_add_options_sub_page([
+        'page_title' => 'Header',
+        'menu_title' => 'Header',
+        'menu_slug' => 'theme-options-header',
+        'parent_slug' => 'theme-options',
+        'capability' => 'manage_options',
+    ]);
+
+    acf_add_options_sub_page([
         'page_title' => 'Prefooter',
         'menu_title' => 'Prefooter',
         'menu_slug' => 'theme-options-prefooter',
+        'parent_slug' => 'theme-options',
+        'capability' => 'manage_options',
+    ]);
+
+    acf_add_options_sub_page([
+        'page_title' => 'Popup',
+        'menu_title' => 'Popup',
+        'menu_slug' => 'theme-options-popup',
         'parent_slug' => 'theme-options',
         'capability' => 'manage_options',
     ]);

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "type": "option",
+  "name": "Header",
+  "slug": "header",
+  "acfGroup": "group_option_header",
+  "acfField": "header",
+  "pageSlug": "theme-options-header",
+  "dependencies": {
+    "components": ["socials"]
+  }
+}

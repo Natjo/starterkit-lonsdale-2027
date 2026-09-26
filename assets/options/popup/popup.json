@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "type": "option",
+  "name": "Popup",
+  "slug": "popup",
+  "acfGroup": "group_option_popup",
+  "acfField": "popup",
+  "pageSlug": "theme-options-popup",
+  "dependencies": {
+    "components": ["dialog", "text", "title"]
+  }
+}
