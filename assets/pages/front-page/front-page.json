@@ -6,6 +6,12 @@
   "assets": {},
   "file": "front-page.php",
   "activation": { "pageType": "home" },
+  "catalog": {
+    "name": "Accueil",
+    "slug": "accueil",
+    "template": "default",
+    "isHome": true
+  },
   "dependencies": {
     "components": [],
     "cards": [],

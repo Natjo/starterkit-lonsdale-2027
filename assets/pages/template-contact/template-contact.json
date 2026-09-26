@@ -9,6 +9,7 @@
   },
   "file": "template-contact.php",
   "activation": "selected",
+  "catalog": true,
   "dependencies": {
     "components": ["btn", "field", "text", "title"],
     "cards": [],

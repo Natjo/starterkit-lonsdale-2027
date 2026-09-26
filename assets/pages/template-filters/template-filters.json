@@ -8,6 +8,7 @@
   },
   "file": "template-filters.php",
   "activation": "selected",
+  "catalog": { "name": "Page filters", "slug": "page-filters" },
   "dependencies": {
     "components": ["filters", "list", "pagination"],
     "cards": ["project"],

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "type": "page",
-  "name": "Hub filters",
+  "name": "Hub Filters",
   "slug": "template-hub-filters",
   "assets": {
     "css": { "loading": "once" }
@@ -9,6 +9,7 @@
   "file": "template-hub-filters.php",
   "activation": "selected",
   "capabilities": ["content-archive"],
+  "catalog": true,
   "dependencies": {
     "components": ["filters", "list", "pagination"],
     "cards": [],

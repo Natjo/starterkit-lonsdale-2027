@@ -1,11 +1,12 @@
 {
   "schemaVersion": 1,
   "type": "page",
-  "name": "Flexible nav anchor",
+  "name": "Flexible Nav Anchor",
   "slug": "template-flexible-navanchor",
   "assets": {},
   "file": "template-flexible-navanchor.php",
   "activation": "selected",
+  "catalog": true,
   "dependencies": {
     "components": ["anchor-nav"],
     "cards": [],

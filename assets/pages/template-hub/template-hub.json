@@ -9,6 +9,7 @@
   "file": "template-hub.php",
   "activation": "selected",
   "capabilities": ["content-archive"],
+  "catalog": { "name": "Page hub", "slug": "page-hub" },
   "dependencies": {
     "components": ["list", "pagination"],
     "cards": [],

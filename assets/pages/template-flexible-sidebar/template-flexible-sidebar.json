@@ -1,13 +1,14 @@
 {
   "schemaVersion": 1,
   "type": "page",
-  "name": "Flexible sidebar",
+  "name": "Flexible Sidebar",
   "slug": "template-flexible-sidebar",
   "assets": {
     "css": { "loading": "once" }
   },
   "file": "template-flexible-sidebar.php",
   "activation": "selected",
+  "catalog": true,
   "dependencies": {
     "components": [],
     "cards": [],

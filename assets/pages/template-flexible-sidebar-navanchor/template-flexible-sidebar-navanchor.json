@@ -1,13 +1,14 @@
 {
   "schemaVersion": 1,
   "type": "page",
-  "name": "Flexible sidebar nav anchor",
+  "name": "Flexible Sidebar Nav Anchor",
   "slug": "template-flexible-sidebar-navanchor",
   "assets": {
     "css": { "loading": "once" }
   },
   "file": "template-flexible-sidebar-navanchor.php",
   "activation": "selected",
+  "catalog": true,
   "dependencies": {
     "components": ["anchor-nav"],
     "cards": [],

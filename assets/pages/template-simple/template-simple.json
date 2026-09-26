@@ -6,6 +6,7 @@
   "assets": {},
   "file": "template-simple.php",
   "activation": "selected",
+  "catalog": { "name": "Page simple", "slug": "page-simple" },
   "dependencies": {
     "components": [],
     "cards": [],
