@@ -57,11 +57,44 @@
       "children": []
     },
     {
-      "name": "Page flexible sidebar nav anchor",
-      "slug": "page-sidebar",
+      "name": "Flexible Sidebar",
+      "slug": "flexible-sidebar",
+      "type": "page",
+      "contentMode": "content-type",
+      "template": "template-flexible-sidebar.php",
+      "isHome": false,
+      "heroValues": {},
+      "strates": [],
+      "children": []
+    },
+    {
+      "name": "Flexible Nav Anchor",
+      "slug": "flexible-nav-anchor",
+      "type": "page",
+      "contentMode": "content-type",
+      "template": "template-flexible-navanchor.php",
+      "isHome": false,
+      "heroValues": {},
+      "strates": [],
+      "children": []
+    },
+    {
+      "name": "Flexible Sidebar Nav Anchor",
+      "slug": "flexible-sidebar-nav-anchor",
       "type": "page",
       "contentMode": "content-type",
       "template": "template-flexible-sidebar-navanchor.php",
+      "isHome": false,
+      "heroValues": {},
+      "strates": [],
+      "children": []
+    },
+    {
+      "name": "Hub Filters",
+      "slug": "hub-filters",
+      "type": "page",
+      "contentMode": "content-type",
+      "template": "template-hub-filters.php",
       "isHome": false,
       "heroValues": {},
       "strates": [],
