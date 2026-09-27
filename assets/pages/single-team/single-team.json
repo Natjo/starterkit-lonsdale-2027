@@ -6,6 +6,7 @@
   "assets": {},
   "file": "single-team.php",
   "activation": { "contentType": "team" },
+  "capabilities": ["flexible-strates"],
   "dependencies": {
     "components": [],
     "cards": [],

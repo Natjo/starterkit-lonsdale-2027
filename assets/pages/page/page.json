@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "type": "page",
+  "name": "Default page",
+  "slug": "page",
+  "assets": {},
+  "file": "page.php",
+  "activation": { "pageType": "any" },
+  "capabilities": ["flexible-strates"],
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": ["page"],
+    "common": [],
+    "modules": []
+  }
+}

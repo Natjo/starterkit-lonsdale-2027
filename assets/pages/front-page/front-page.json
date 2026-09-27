@@ -6,6 +6,7 @@
   "assets": {},
   "file": "front-page.php",
   "activation": { "pageType": "home" },
+  "capabilities": ["flexible-strates"],
   "catalog": {
     "name": "Accueil",
     "slug": "accueil",

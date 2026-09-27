@@ -8,7 +8,7 @@
   },
   "file": "template-hub-filters.php",
   "activation": "selected",
-  "capabilities": ["content-archive"],
+  "capabilities": ["content-archive", "flexible-strates"],
   "catalog": true,
   "dependencies": {
     "components": ["filters", "list", "pagination"],

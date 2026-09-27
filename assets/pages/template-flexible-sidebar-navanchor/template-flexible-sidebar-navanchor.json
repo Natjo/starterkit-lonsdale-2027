@@ -8,6 +8,7 @@
   },
   "file": "template-flexible-sidebar-navanchor.php",
   "activation": "selected",
+  "capabilities": ["flexible-strates"],
   "catalog": true,
   "dependencies": {
     "components": ["anchor-nav"],

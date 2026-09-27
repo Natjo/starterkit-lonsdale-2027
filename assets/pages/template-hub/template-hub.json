@@ -8,7 +8,7 @@
   },
   "file": "template-hub.php",
   "activation": "selected",
-  "capabilities": ["content-archive"],
+  "capabilities": ["content-archive", "flexible-strates"],
   "catalog": { "name": "Page hub", "slug": "page-hub" },
   "dependencies": {
     "components": ["list", "pagination"],

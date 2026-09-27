@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "type": "page",
+  "name": "Default single",
+  "slug": "single",
+  "assets": {},
+  "file": "single.php",
+  "activation": { "contentType": "post" },
+  "capabilities": ["flexible-strates"],
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": ["page"],
+    "common": [],
+    "modules": []
+  }
+}

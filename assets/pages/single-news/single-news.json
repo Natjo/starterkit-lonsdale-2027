@@ -6,6 +6,7 @@
   "assets": {},
   "file": "single-news.php",
   "activation": { "contentType": "news" },
+  "capabilities": ["flexible-strates"],
   "dependencies": {
     "components": [],
     "cards": [],
