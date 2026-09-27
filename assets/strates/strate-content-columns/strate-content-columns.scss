@@ -1,0 +1,34 @@
+.strate-content-columns {
+    .strate-content {
+        display: grid;
+        gap: var(--gap);
+        min-width: 0;
+    }
+
+    .content-column {
+        min-width: 0;
+    }
+
+    .content-column-media {
+        margin-bottom: var(--margin-sm);
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    .content-column-title {
+        margin-bottom: 1rem;
+    }
+
+    @media #{$breakpoint-md-up} {
+        &.columns-2 .strate-content {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        &.columns-3 .strate-content {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+}

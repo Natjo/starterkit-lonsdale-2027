@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "type": "page",
+  "name": "Archive Posts",
+  "slug": "archive",
+  "assets": {},
+  "file": "archive.php",
+  "activation": { "option": "enableNativePosts" },
+  "dependencies": {
+    "components": ["pagination"],
+    "cards": [],
+    "strates": [],
+    "heroes": ["page"],
+    "common": ["header-nav"],
+    "modules": [],
+    "vendors": []
+  }
+}

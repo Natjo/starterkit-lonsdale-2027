@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "type": "strate",
+  "name": "Content columns",
+  "slug": "content-columns",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
+  "dependencies": {
+    "components": ["picture", "title", "text"],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}
