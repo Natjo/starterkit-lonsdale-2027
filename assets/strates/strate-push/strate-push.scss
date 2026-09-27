@@ -1,0 +1,34 @@
+.strate-push {
+    .strate-body,
+    .strate-media {
+        min-width: 0;
+    }
+
+    .strate-title,
+    .strate-text {
+        margin-bottom: var(--margin-sm);
+    }
+
+    .strate-media {
+        margin-top: var(--margin-sm);
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    @media #{$breakpoint-md-up} {
+        align-items: center;
+
+        .strate-body {
+            grid-column: ctr/center;
+            padding-right: var(--gap);
+        }
+
+        .strate-media {
+            grid-column: center/ctr;
+            margin-top: 0;
+        }
+    }
+}

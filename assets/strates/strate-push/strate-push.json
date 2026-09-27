@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "type": "strate",
+  "name": "Push",
+  "slug": "push",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
+  "dependencies": {
+    "components": ["header", "picture"],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}
