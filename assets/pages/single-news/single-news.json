@@ -12,6 +12,7 @@
     "cards": [],
     "strates": [],
     "heroes": ["news"],
+    "customFields": ["news"],
     "common": ["header-nav", "related"],
     "modules": []
   }
