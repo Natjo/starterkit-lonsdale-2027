@@ -12,6 +12,7 @@
     "cards": [],
     "strates": [],
     "heroes": ["page"],
+    "customFields": [],
     "common": ["header-nav", "related"],
     "modules": []
   }

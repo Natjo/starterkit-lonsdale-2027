@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "type": "page",
+  "name": "Single project",
+  "slug": "single-project",
+  "assets": {},
+  "file": "single-project.php",
+  "activation": { "contentType": "project" },
+  "capabilities": ["flexible-strates"],
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": ["page"],
+    "customFields": [],
+    "common": ["header-nav", "related"],
+    "modules": []
+  }
+}

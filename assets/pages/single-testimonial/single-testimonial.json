@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "type": "page",
+  "name": "Single testimonial",
+  "slug": "single-testimonial",
+  "assets": {},
+  "file": "single-testimonial.php",
+  "activation": { "contentType": "testimonial" },
+  "capabilities": ["flexible-strates"],
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": ["page"],
+    "customFields": [],
+    "common": ["header-nav", "related"],
+    "modules": []
+  }
+}

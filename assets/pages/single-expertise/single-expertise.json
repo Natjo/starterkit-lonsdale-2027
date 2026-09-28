@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "type": "page",
+  "name": "Single expertise",
+  "slug": "single-expertise",
+  "assets": {},
+  "file": "single-expertise.php",
+  "activation": { "contentType": "expertise" },
+  "capabilities": ["flexible-strates"],
+  "dependencies": {
+    "components": [],
+    "cards": [],
+    "strates": [],
+    "heroes": ["page"],
+    "customFields": [],
+    "common": ["header-nav", "related"],
+    "modules": []
+  }
+}
