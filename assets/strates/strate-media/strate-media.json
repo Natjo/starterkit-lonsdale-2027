@@ -6,6 +6,12 @@
   "assets": {
     "css": { "loading": "normal" }
   },
+  "defaults": {
+    "image": {
+      "__forgeStarterMediaPath": "assets/img/placeholders/strate-media.jpg",
+      "name": "strate-media.jpg"
+    }
+  },
   "dependencies": {
     "components": ["picture","video"],
     "cards": [],

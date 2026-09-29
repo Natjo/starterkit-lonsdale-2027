@@ -6,6 +6,17 @@
   "assets": {
     "css": { "loading": "normal" }
   },
+  "defaults": {
+    "link": {
+      "url": "/",
+      "title": "Découvrir",
+      "target": ""
+    },
+    "image": {
+      "__forgeStarterMediaPath": "assets/img/placeholders/strate-push.jpg",
+      "name": "strate-push.jpg"
+    }
+  },
   "dependencies": {
     "components": ["header", "picture"],
     "cards": [],

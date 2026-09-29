@@ -1,7 +1,7 @@
 # Strate `slider`
 
-Affiche un slider de cards ou d’images. Le starter utilise le mode
-cards avec le CPT `news`.
+Affiche un slider de cards ou d’images. Le starter utilise par défaut le mode
+images avec trois visuels de démonstration.
 
 Lire d’abord le [README général des strates](../README.md) et le
 [README du composant slider](../../components/slider/README.md).
@@ -38,7 +38,7 @@ strate('slider', [
 | `title` | `scalar\|Stringable` | `''` | Titre facultatif |
 | `text` | `scalar\|Stringable` | `''` | Texte facultatif |
 | `link` | `array` | `[]` | Lien interne ou externe facultatif |
-| `content_type` | `'cards'\|'images'` | `'cards'` | Nature des slides |
+| `content_type` | `'cards'\|'images'` | `'images'` | Nature des slides |
 | `post_type` | `string` | `''` | CPT des items en mode cards |
 | `card` | `string` | Valeur de `post_type` | Card utilisée lors d’un appel PHP |
 | `items` | `list<int\|array>` | `[]` | IDs ACF ou payloads de card lors d’un appel PHP |
@@ -87,6 +87,10 @@ $image_size = 'full';
 Elle ne constitue pas un champ ACF et doit être adaptée aux tailles enregistrées
 par le projet. Les images sont transmises à `picture` avec `fit => 'cover'` ;
 leur ratio reste défini dans le SCSS de la strate selon le design.
+
+Les trois placeholders du manifeste mesurent `960 × 960 px`, conformément au
+ratio carré appliqué par `.slider-image`. Forge les importe dans la médiathèque
+lors de la création du site.
 
 ## Adaptation à un projet
 

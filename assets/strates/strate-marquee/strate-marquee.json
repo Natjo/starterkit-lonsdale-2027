@@ -7,6 +7,28 @@
     "css": { "loading": "normal" },
     "js": { "loading": "eager" }
   },
+  "defaults": {
+    "images": [
+      {
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/content-column-1.jpg",
+          "name": "content-column-1.jpg"
+        }
+      },
+      {
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/content-column-2.jpg",
+          "name": "content-column-2.jpg"
+        }
+      },
+      {
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/content-column-3.jpg",
+          "name": "content-column-3.jpg"
+        }
+      }
+    ]
+  },
   "dependencies": {
     "components": ["header","marquee"],
     "cards": [],

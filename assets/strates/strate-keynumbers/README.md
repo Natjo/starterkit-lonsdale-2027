@@ -41,6 +41,10 @@ strate('keynumbers', [
 Les items sans `value` sont ignorés. La strate ne produit aucun balisage
 lorsqu’aucun chiffre valide n’est fourni.
 
+Le titre et l’introduction Lorem viennent des `default_value` ACF. Le manifeste
+préremplit quatre chiffres clés de démonstration afin que la grille soit visible
+dès l’ajout de la strate dans Forge.
+
 ## Champs ACF
 
 ```text

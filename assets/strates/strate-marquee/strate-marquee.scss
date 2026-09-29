@@ -13,4 +13,16 @@
     .marquee {
         grid-column: full;
     }
+
+    .marquee-image {
+        display: block;
+        width: min(78vw, 48rem);
+
+        img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 3 / 2;
+            object-fit: cover;
+        }
+    }
 }

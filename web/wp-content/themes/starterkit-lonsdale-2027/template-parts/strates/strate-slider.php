@@ -13,8 +13,8 @@ $to_string = static fn(mixed $value): string => is_scalar($value) || $value inst
 $hydrate = $to_bool($slider_options['hydrate'] ?? true, true);
 $media = $to_string($slider_options['media'] ?? null);
 $component_options = array_replace($slider_options, ['hydrate' => false]);
-$content_type = $to_string($args['content_type'] ?? 'cards');
-$content_type = in_array($content_type, ['cards', 'images'], true) ? $content_type : 'cards';
+$content_type = $to_string($args['content_type'] ?? 'images');
+$content_type = in_array($content_type, ['cards', 'images'], true) ? $content_type : 'images';
 $items = [];
 $card = null;
 $item_component = null;

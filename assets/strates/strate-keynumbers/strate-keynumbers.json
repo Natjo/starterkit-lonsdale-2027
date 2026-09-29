@@ -6,6 +6,38 @@
   "assets": {
     "css": { "loading": "normal" }
   },
+  "defaults": {
+    "items": [
+      {
+        "prefix": "+",
+        "value": "25",
+        "suffix": "ans",
+        "title": "Lorem ipsum",
+        "text": "<p>Dolor sit amet, consectetur adipiscing elit.</p>"
+      },
+      {
+        "prefix": "",
+        "value": "98",
+        "suffix": "%",
+        "title": "Consectetur adipiscing",
+        "text": "<p>Sed do eiusmod tempor incididunt ut labore.</p>"
+      },
+      {
+        "prefix": "+",
+        "value": "120",
+        "suffix": "",
+        "title": "Projets réalisés",
+        "text": "<p>Ut enim ad minim veniam, quis nostrud exercitation.</p>"
+      },
+      {
+        "prefix": "",
+        "value": "15",
+        "suffix": "pays",
+        "title": "Présence internationale",
+        "text": "<p>Duis aute irure dolor in reprehenderit in voluptate.</p>"
+      }
+    ]
+  },
   "dependencies": {
     "components": ["header","list"],
     "cards": [],

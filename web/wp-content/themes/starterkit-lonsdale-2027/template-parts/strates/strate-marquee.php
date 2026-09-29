@@ -14,8 +14,8 @@ $hydrate = $to_bool($marquee_options['hydrate'] ?? true, true);
 $media = $to_string($marquee_options['media'] ?? null);
 $content_type = array_key_exists('content_type', $args)
     ? $to_string($args['content_type'])
-    : 'html';
-$content_type = in_array($content_type, ['html', 'cards', 'images'], true) ? $content_type : 'html';
+    : 'images';
+$content_type = in_array($content_type, ['html', 'cards', 'images'], true) ? $content_type : 'images';
 $items = [];
 $card = null;
 $item_component = null;

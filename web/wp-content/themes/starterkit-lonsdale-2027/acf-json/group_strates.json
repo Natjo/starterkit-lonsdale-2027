@@ -1050,7 +1050,7 @@
                                 "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
                                 "id": ""
                             },
-                            "default_value": "",
+                            "default_value": "Lorem ipsum dolor sit amet",
                             "allow_in_bindings": 0,
                             "tabs": "visual",
                             "toolbar": "light",
@@ -1071,7 +1071,7 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "default_value": "",
+                            "default_value": "<p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
                             "allow_in_bindings": 0,
                             "tabs": "visual",
                             "toolbar": "full",
@@ -1131,7 +1131,7 @@
                                 "cards": "Cards",
                                 "images": "Images"
                             },
-                            "default_value": "cards",
+                        "default_value": "images",
                             "return_format": "value",
                             "allow_null": 0,
                             "layout": "horizontal",
@@ -1451,7 +1451,7 @@
                                 "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
                                 "id": ""
                             },
-                            "default_value": "",
+                            "default_value": "Lorem ipsum dolor sit amet",
                             "allow_in_bindings": 0,
                             "tabs": "visual",
                             "toolbar": "light",
@@ -1472,7 +1472,7 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "default_value": "",
+                            "default_value": "<p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
                             "allow_in_bindings": 0,
                             "tabs": "visual",
                             "toolbar": "full",
@@ -1532,7 +1532,7 @@
                                 "cards": "Cards",
                                 "images": "Images"
                             },
-                            "default_value": "cards",
+                        "default_value": "images",
                             "return_format": "value",
                             "allow_null": 0,
                             "layout": "horizontal",
@@ -1918,7 +1918,7 @@
                                 "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
                                 "id": ""
                             },
-                            "default_value": "",
+                            "default_value": "Lorem ipsum dolor sit amet",
                             "allow_in_bindings": 0,
                             "tabs": "visual",
                             "toolbar": "light",
@@ -1939,7 +1939,7 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "default_value": "",
+                            "default_value": "<p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
                             "allow_in_bindings": 0,
                             "tabs": "visual",
                             "toolbar": "full",
@@ -2346,7 +2346,7 @@
                             "required": 0,
                             "conditional_logic": 0,
                             "wrapper": { "width": "", "class": "", "id": "" },
-                            "default_value": "",
+                            "default_value": "Lorem ipsum dolor sit amet",
                             "maxlength": "",
                             "placeholder": "",
                             "prepend": "",
@@ -2362,7 +2362,7 @@
                             "required": 0,
                             "conditional_logic": 0,
                             "wrapper": { "width": "", "class": "", "id": "" },
-                            "default_value": "",
+                            "default_value": "<p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
                             "tabs": "all",
                             "toolbar": "full",
                             "media_upload": 0,

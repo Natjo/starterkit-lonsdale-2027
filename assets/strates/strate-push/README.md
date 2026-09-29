@@ -30,6 +30,11 @@ strate('push', [
 
 La strate ne produit aucun HTML lorsque les quatre contenus sont vides.
 
+Le titre et le texte Lorem viennent des `default_value` ACF. Le manifeste
+préremplit le lien avec « Découvrir » et fournit un placeholder dédié de
+`1460 × 973 px`, adapté au format WordPress `730_auto` en densité 2×. Forge
+importe cette image dans la médiathèque lors de la création du site.
+
 ## Champs ACF
 
 Le layout flexible `push` contient les champs `title`, `text`, `link` et

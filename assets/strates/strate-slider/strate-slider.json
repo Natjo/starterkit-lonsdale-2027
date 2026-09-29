@@ -7,6 +7,28 @@
     "css": { "loading": "normal" },
     "js": { "loading": "eager" }
   },
+  "defaults": {
+    "images": [
+      {
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/slider-image-1.jpg",
+          "name": "slider-image-1.jpg"
+        }
+      },
+      {
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/slider-image-2.jpg",
+          "name": "slider-image-2.jpg"
+        }
+      },
+      {
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/slider-image-3.jpg",
+          "name": "slider-image-3.jpg"
+        }
+      }
+    ]
+  },
   "dependencies": {
     "components": ["header","slider"],
     "cards": [],

@@ -30,7 +30,7 @@ sélectionné est vide.
 | Clé | Type | Défaut | Rôle |
 | --- | --- | --- | --- |
 | `media_type` | `'image'\|'video'` | `'image'` | Sélectionne le composant rendu |
-| `image` | `ID\|URL\|null` | `null` | Transmise à `component('picture')` |
+| `image` | `ID\|URL\|null` | Placeholder du manifeste | Transmise à `component('picture')` |
 | `video` | `ID\|URL\|null` | `null` | Transmise à `component('video')` |
 | `video_title` | `scalar\|Stringable` | `''` | Nom accessible du lecteur vidéo |
 | `options` | `array` | `[]` | Options communes traitées par `options()` |
@@ -55,6 +55,10 @@ acf_fc_layout = media
 Le champ URL convient aux vidéos externes ou aux fichiers accessibles par une
 URL. Pour sélectionner une vidéo dans la médiathèque sur un site client,
 remplacer ce champ par un champ Fichier retournant un ID.
+
+Le mode par défaut est `image`. Son placeholder dédié mesure `1672 × 941 px`,
+soit un ratio proche de `16:9` adapté à l’affichage pleine largeur. Forge
+l’importe dans la médiathèque lors de la création du site.
 
 ## Assets et dépendances
 

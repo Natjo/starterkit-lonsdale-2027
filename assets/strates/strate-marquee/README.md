@@ -1,7 +1,7 @@
 # Strate `marquee`
 
-Affiche un défilement continu de cards ou d’images. Le starter utilise le mode
-cards avec le CPT `news`.
+Affiche un défilement continu de cards ou d’images. Le starter utilise par
+défaut le mode images avec trois visuels de démonstration.
 
 Lire d’abord le [README général des strates](../README.md) et le
 [README du composant marquee](../../components/marquee/README.md).
@@ -46,7 +46,7 @@ strate('marquee', [
 | `title` | `scalar\|Stringable` | `''` | Titre facultatif |
 | `text` | `scalar\|Stringable` | `''` | Texte facultatif |
 | `link` | `array` | `[]` | Lien interne ou externe facultatif |
-| `content_type` | `'html'\|'cards'\|'images'` | `'html'` | Nature des items |
+| `content_type` | `'html'\|'cards'\|'images'` | `'images'` | Nature des items |
 | `post_type` | `string` | `''` | CPT en mode cards |
 | `card` | `string` | Valeur de `post_type` | Card utilisée lors d’un appel PHP |
 | `items` | `list<int\|array\|scalar\|Stringable>` | `[]` | Cards ou HTML direct |
@@ -96,8 +96,10 @@ La taille WordPress est définie au début du template :
 $image_size = 'full';
 ```
 
-Les images utilisent `picture` avec `fit => 'cover'`. Leur ratio appartient au
-SCSS de la strate et doit être adapté au projet.
+Les images utilisent `picture` avec `fit => 'cover'`. Le starter leur applique
+un ratio `3 / 2` et une largeur maximale de `48rem`. Les trois placeholders de
+`960 × 640 px` sont déclarés dans le manifeste puis importés par Forge. Ils sont
+partagés avec Content Columns afin d’éviter les doublons dans la médiathèque.
 
 ## Hydratation
 
