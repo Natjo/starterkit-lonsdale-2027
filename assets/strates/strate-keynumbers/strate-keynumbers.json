@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "components": ["header","list"],
-    "cards": [],
+    "cards": ["keynumber"],
     "strates": [],
     "heroes": [],
     "common": [],

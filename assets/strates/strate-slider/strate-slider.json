@@ -8,6 +8,7 @@
     "js": { "loading": "eager" }
   },
   "defaults": {
+    "content_type": "images",
     "images": [
       {
         "image": {
