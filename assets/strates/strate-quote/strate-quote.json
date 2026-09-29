@@ -4,6 +4,12 @@
   "name": "quote",
   "slug": "quote",
   "assets": {},
+  "defaults": {
+    "image": {
+      "__forgeStarterMediaPath": "assets/img/placeholders/strate-quote-author.jpg",
+      "name": "strate-quote-author.jpg"
+    }
+  },
   "dependencies": {
     "components": ["quote"],
     "cards": [],

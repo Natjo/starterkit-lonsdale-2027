@@ -55,7 +55,7 @@
                                 "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
                                 "id": ""
                             },
-                            "default_value": "",
+                            "default_value": "Lorem ipsum dolor sit amet",
                             "tabs": "visual",
                             "toolbar": "light",
                             "media_upload": 0,
@@ -75,7 +75,7 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "default_value": "",
+                            "default_value": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
                             "tabs": "all",
                             "toolbar": "full",
                             "media_upload": 0,
@@ -228,7 +228,7 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "default_value": "",
+                            "default_value": "Lorem ipsum dolor sit amet",
                             "maxlength": "",
                             "placeholder": "",
                             "prepend": "",
@@ -248,7 +248,7 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "default_value": "",
+                            "default_value": "<p class=\"h1\">Niveau 1 — Lorem ipsum dolor sit amet</p><p class=\"h2\">Niveau 2 — Consectetur adipiscing elit</p><p class=\"h3\">Niveau 3 — Sed do eiusmod tempor incididunt</p><p class=\"h4\">Niveau 4 — Ut labore et dolore magna aliqua</p><p>Paragraphe standard avec du <strong>texte en gras</strong>, du <em>texte en italique</em>, du <u>texte souligné</u> et un <a href=\"#\">lien hypertexte</a>.</p><p class=\"text--sm\">Texte sm — Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p><p class=\"text--lg\">Texte lg — Duis aute irure dolor in reprehenderit in voluptate velit esse.</p><p class=\"text--xl\">Texte xl — Excepteur sint occaecat cupidatat non proident.</p><p class=\"text--wd\">Texte wd — Sunt in culpa qui officia deserunt mollit anim id est laborum.</p><blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p></blockquote><ul><li>Premier élément de liste</li><li>Deuxième élément de liste</li><li>Troisième élément de liste</li></ul><ol><li>Première étape</li><li>Deuxième étape</li><li>Troisième étape</li></ol>",
                             "tabs": "all",
                             "toolbar": "full",
                             "media_upload": 0,
@@ -336,7 +336,7 @@
                                 "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
                                 "id": ""
                             },
-                            "default_value": "",
+                            "default_value": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
                             "allow_in_bindings": 1,
                             "tabs": "all",
                             "toolbar": "light",
@@ -606,7 +606,7 @@
                                 "class": "acf-field-wysiwyg--light acf-field-wysiwyg--light acf-field-wysiwyg--light",
                                 "id": ""
                             },
-                            "default_value": "",
+                            "default_value": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
                             "allow_in_bindings": 0,
                             "tabs": "visual",
                             "toolbar": "light",
@@ -653,7 +653,7 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "default_value": "",
+                            "default_value": "Jane Doe",
                             "maxlength": "",
                             "allow_in_bindings": 0,
                             "placeholder": "",
@@ -674,7 +674,7 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "default_value": "",
+                            "default_value": "Lorem Magazine",
                             "maxlength": "",
                             "allow_in_bindings": 0,
                             "placeholder": "",
@@ -695,7 +695,7 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "default_value": "",
+                            "default_value": "https://example.com",
                             "allow_in_bindings": 0,
                             "placeholder": ""
                         },

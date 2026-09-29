@@ -32,7 +32,7 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
+                    "default_value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
                     "maxlength": "",
                     "allow_in_bindings": 1,
                     "rows": 3,
@@ -53,7 +53,7 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "",
+                    "default_value": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
                     "allow_in_bindings": 0,
                     "tabs": "all",
                     "toolbar": "full",

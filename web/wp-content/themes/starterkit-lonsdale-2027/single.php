@@ -5,6 +5,8 @@ common("header-nav");
 
 <main>
     <?php while (have_posts()) : the_post(); ?>
+        <?php hero('page'); ?>
+
         <article <?php post_class(); ?>>
             <h1><?php the_title(); ?></h1>
             <?php the_content(); ?>

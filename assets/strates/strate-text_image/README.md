@@ -40,9 +40,9 @@ uniquement au dossier et au fichier PHP.
 
 | Clé | Type | Valeur ACF vide | Rôle |
 | --- | --- | --- | --- |
-| `title` | `mixed` | `''` | Transmis à `component('title')` |
-| `text` | `mixed` | `''` | Transmis à `component('text')` |
-| `image` | `ID\|URL\|null` | `null` | Transmis à `component('picture')` |
+| `title` | `mixed` | Titre Lorem ipsum | Transmis à `component('title')` |
+| `text` | `mixed` | Deux paragraphes Lorem ipsum | Transmis à `component('text')` |
+| `image` | `ID\|URL\|null` | Placeholder du manifeste | Transmis à `component('picture')` |
 | `reverse` | `bool` | `false` | Inverse les colonnes à partir du breakpoint `md` |
 | `center` | `bool` | `false` | Centre verticalement les deux colonnes |
 | `options` | `array` | `[]` | Options communes traitées par `options()` |
@@ -63,6 +63,11 @@ acf_fc_layout = text_image
 | Inverser l’ordre | `reverse` | Vrai/Faux | Booléen, défaut `false` |
 | Centrer verticalement | `center` | Vrai/Faux | Booléen, défaut `false` |
 | Options | `options` | Groupe cloné | Options communes des strates |
+
+Le titre et le texte de démonstration viennent des `default_value` ACF. Le
+placeholder dédié mesure `1460 × 973 px`, soit deux fois la largeur du format
+WordPress `730_auto`. Il est déclaré dans le manifeste : Forge l’importe dans la
+médiathèque et remplace sa référence par l’identifiant propre au site créé.
 
 ## Mise en page
 

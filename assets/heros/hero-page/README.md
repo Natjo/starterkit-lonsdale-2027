@@ -23,11 +23,11 @@ hero('page', [
 
 | Clé | Type | Défaut | Rôle |
 | --- | --- | --- | --- |
-| `title` | `mixed` | `''` | Transmis à `component('title')` |
-| `text` | `mixed` | `''` | Transmis à `component('text')` |
+| `title` | `mixed` | Lorem ipsum dans ACF | Transmis à `component('title')` |
+| `text` | `mixed` | Paragraphe Lorem ipsum dans ACF | Transmis à `component('text')` |
 
-Le titre est rendu en `h1` avec la classe `title-1`. Le template ne produit pas
-de contenu de démonstration.
+Le titre est rendu en `h1` avec la classe `title-1`. Les valeurs de démonstration
+sont définies par `default_value` dans le groupe ACF et restent modifiables.
 
 ## ACF
 

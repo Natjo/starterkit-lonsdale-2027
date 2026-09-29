@@ -4,6 +4,24 @@
   "name": "Accordion",
   "slug": "accordion",
   "assets": {},
+  "defaults": {
+    "title": "Lorem ipsum dolor sit amet",
+    "text": "<p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+    "items": [
+      {
+        "title": "Lorem ipsum dolor sit amet?",
+        "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>"
+      },
+      {
+        "title": "Consectetur adipiscing elit?",
+        "text": "<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>"
+      },
+      {
+        "title": "Sed do eiusmod tempor?",
+        "text": "<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>"
+      }
+    ]
+  },
   "dependencies": {
     "components": ["accordion", "text", "title"],
     "cards": [],

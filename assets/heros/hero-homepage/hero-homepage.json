@@ -6,6 +6,18 @@
   "assets": {
     "css": { "loading": "critical" }
   },
+  "defaults": {
+    "images": {
+      "desktop": {
+        "__forgeStarterMediaPath": "assets/img/placeholders/hero-homepage-desktop.jpg",
+        "name": "hero-homepage-desktop.jpg"
+      },
+      "mobile": {
+        "__forgeStarterMediaPath": "assets/img/placeholders/hero-homepage-mobile.jpg",
+        "name": "hero-homepage-mobile.jpg"
+      }
+    }
+  },
   "dependencies": {
     "components": ["eyebrow", "picture", "text", "title"],
     "cards": [],

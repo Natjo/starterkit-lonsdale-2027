@@ -36,6 +36,10 @@ Le layout `content-columns` contient un repeater `columns`, obligatoire, avec
 un minimum de 1 et un maximum de 3 lignes. Chaque ligne contient `title`,
 `text` et `image`.
 
+Le manifeste préremplit trois colonnes de démonstration. Leurs images dédiées
+mesurent `960 × 640 px` et sont importées dans la médiathèque par Forge lors de
+la création du site.
+
 ## Dépendances
 
 - `component('picture')` ;

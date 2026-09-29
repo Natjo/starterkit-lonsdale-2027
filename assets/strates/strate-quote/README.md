@@ -22,16 +22,19 @@ strate('quote', [
 
 | Clé | Type | Valeur vide | Rôle |
 | --- | --- | --- | --- |
-| `text` | `mixed` | `''` | Transmis à la clé `quote` du composant |
-| `image` | `ID\|URL\|null` | `null` | Image facultative |
-| `author` | `scalar\|Stringable` | `''` | Nom facultatif de l’auteur |
-| `source` | `scalar\|Stringable` | `''` | Publication ou œuvre facultative |
-| `url` | `scalar\|Stringable` | `''` | URL facultative de la source |
+| `text` | `mixed` | Citation Lorem ipsum | Transmis à la clé `quote` du composant |
+| `image` | `ID\|URL\|null` | Portrait du manifeste | Image facultative |
+| `author` | `scalar\|Stringable` | `Jane Doe` | Nom facultatif de l’auteur |
+| `source` | `scalar\|Stringable` | `Lorem Magazine` | Publication ou œuvre facultative |
+| `url` | `scalar\|Stringable` | `https://example.com` | URL facultative de la source |
 | `options` | `array` | `[]` | Options communes traitées par `options()` |
 
 Le contenu `text` est obligatoire. Une valeur vide ne produit aucun balisage.
 La taille d’image est définie directement dans le template selon le projet et
 n’est pas exposée dans ACF.
+
+Le portrait de démonstration mesure `320 × 320 px`. Forge l’importe dans la
+médiathèque, puis WordPress produit le recadrage `40_40` utilisé au rendu.
 
 ## Champs ACF
 
