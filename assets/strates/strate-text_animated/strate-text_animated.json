@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "type": "strate",
-  "name": "textAnimated",
-  "slug": "textAnimated",
+  "name": "Text animated",
+  "slug": "text_animated",
   "assets": {
     "css": { "loading": "split" },
     "js": { "loading": "visible" }

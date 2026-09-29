@@ -92,7 +92,7 @@ ob_start();
 theme_queue_module_assets('pages/404/404');
 $duplicateModuleOnceStyle = (string) ob_get_clean();
 
-ThemeAssets::queueSplit('strates/strate-textAnimated/strate-textAnimated');
+ThemeAssets::queueSplit('strates/strate-text_animated/strate-text_animated');
 
 ob_start();
 ThemeAssets::renderSplitLinks();
@@ -124,7 +124,7 @@ $bodyStart = strpos($html, '<body>');
 $mainStart = strpos($html, '<main>');
 $mainEnd = strpos($html, '</main>');
 $search = 'id="once-pages-search-search"';
-$textAnimated = 'id="split-strates-strate-textAnimated-strate-textAnimated"';
+$textAnimated = 'id="split-strates-strate-text_animated-strate-text_animated"';
 $paralax = 'id="split-strates-strate-paralax-strate-paralax"';
 $failures = [];
 
@@ -192,7 +192,7 @@ if (
     && ($textAnimatedPosition = strpos($html, $textAnimated)) !== false
     && $textAnimatedPosition > $mainStart
 ) {
-    $failures[] = 'Le CSS de textAnimated doit précéder le premier rendu de la strate.';
+    $failures[] = 'Le CSS de text_animated doit précéder le premier rendu de la strate.';
 }
 
 if (

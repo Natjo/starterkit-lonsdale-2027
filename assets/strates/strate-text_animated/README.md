@@ -1,11 +1,11 @@
-# Strate `textAnimated`
+# Strate `text_animated`
 
 Strate statique réservée au styleguide. Elle présente un titre dont les
 caractères se révèlent progressivement en fonction du scroll grâce au module
 `textAnimated`.
 
 ```php
-strate('textAnimated');
+strate('text_animated');
 ```
 
 ## Contrat
@@ -20,7 +20,7 @@ strate('textAnimated');
 ## Hydratation
 
 La strate possède son cycle de vie avec
-`data-module="strates/strate-textAnimated"`. Son module JavaScript importe
+`data-module="strates/strate-text_animated"`. Son module JavaScript importe
 `textAnimated`, lui transmet la racine de la strate et retourne directement
 son lifecycle `{ pause, resume, destroy }` à l'hydrateur.
 
@@ -35,8 +35,8 @@ seconde hydratation sur le titre.
 ## Fichiers
 
 ```text
-template-parts/strates/strate-textAnimated.php
-assets/strates/strate-textAnimated/strate-textAnimated.scss
-assets/strates/strate-textAnimated/strate-textAnimated.js
+template-parts/strates/strate-text_animated.php
+assets/strates/strate-text_animated/strate-text_animated.scss
+assets/strates/strate-text_animated/strate-text_animated.js
 assets/modules/scrollDriver/textAnimated/textAnimated.js
 ```

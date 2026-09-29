@@ -1,6 +1,6 @@
 <section
-    class="strate strate-textAnimated"
-    data-module="strates/strate-textAnimated"
+    class="strate strate-text_animated"
+    data-module="strates/strate-text_animated"
     data-context="@visible true">
     <div class="strate-content">
         <?php component('title', [

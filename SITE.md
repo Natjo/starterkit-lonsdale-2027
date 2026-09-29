@@ -371,7 +371,7 @@ responsabilité de l'appel PHP du composant et non un champ ACF du layout.
 | `slider` | Oui | Slider de cards ou d’images | SCSS et JS | Fonctionnelle et administrable |
 | `marquee` | Oui | Marquee de cards ou d’images | SCSS et JS | Fonctionnelle et administrable |
 | `formulaire` | Non | Formulaire statique de démonstration | SCSS | Réservée au styleguide |
-| `textAnimated` | Non | Titre statique animé au scroll | SCSS et JS | Réservée au styleguide |
+| `text_animated` | Non | Titre statique animé au scroll | SCSS et JS | Réservée au styleguide |
 | `paralax` | Non | Image plein écran avec titre centré et parallaxe | SCSS et JS | Réservée au styleguide |
 | `intro` | Oui | Rend le composant `intro` | Aucun asset propre | Fonctionnelle |
 | `keynumbers` | Oui | Liste de chiffres clés | SCSS | Fonctionnelle et administrable |

@@ -382,7 +382,7 @@ comportement de la strate. Les imports SCSS actifs sont déclarés dans
 | `quote` | Assemble le composant `quote` |
 | `slider` | Assemble et pilote `slider` |
 | `text` | Assemble `title` et `text` |
-| `textAnimated` | Strate statique réservée au styleguide, pilotée par `textAnimated` |
+| `text_animated` | Strate statique réservée au styleguide, pilotée par `textAnimated` |
 | `text_image` | Assemble `title`, `text` et `picture` |
 
 Ne pas considérer un template vide comme une strate terminée. Avant de

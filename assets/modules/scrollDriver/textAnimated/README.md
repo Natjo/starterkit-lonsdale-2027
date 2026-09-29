@@ -10,7 +10,7 @@ de scroll dans une plage donnée au lieu de jouer une animation d'entrée unique
 ## Statut actuel
 
 Le SCSS est inclus dans le bundle critique par `assets/app.scss`. Le module
-JavaScript est notamment utilisé par la strate statique `textAnimated` du
+JavaScript est notamment utilisé par la strate statique `text_animated` du
 styleguide. La classe `.text-animated` seule ne lance pas le comportement : le
 module doit toujours être initialisé par son propriétaire.
 

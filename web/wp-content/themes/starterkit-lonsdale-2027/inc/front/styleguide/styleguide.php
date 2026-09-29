@@ -153,7 +153,7 @@ $styleguide_news = [
 
     <?php strate('formulaire'); ?>
 
-    <?php strate('textAnimated'); ?>
+    <?php strate('text_animated'); ?>
 
     <?php strate('paralax'); ?>
 
