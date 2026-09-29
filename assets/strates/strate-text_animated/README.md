@@ -32,6 +32,9 @@ Le module partagé gère le découpage avec `splitText`, la progression avec
 `ScrollDriver` et la restauration du DOM au nettoyage. Ne pas ajouter une
 seconde hydratation sur le titre.
 
+Le manifeste déclare explicitement les modules `scrollDriver` et `splitText` :
+les deux doivent être conservés par Forge lorsqu’un site utilise cette strate.
+
 ## Fichiers
 
 ```text

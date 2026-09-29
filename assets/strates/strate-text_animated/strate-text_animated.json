@@ -13,6 +13,6 @@
     "strates": [],
     "heroes": [],
     "common": [],
-    "modules": ["scrollDriver"]
+    "modules": ["scrollDriver", "splitText"]
   }
 }
