@@ -12,7 +12,7 @@
     "cards": [],
     "strates": [],
     "heroes": ["page"],
-    "common": [],
+    "common": ["header-nav"],
     "modules": []
   }
 }
