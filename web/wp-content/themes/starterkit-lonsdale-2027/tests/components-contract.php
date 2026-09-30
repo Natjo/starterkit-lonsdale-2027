@@ -2980,43 +2980,6 @@ $assert_same('La strate keynumbers vide ne produit aucun HTML', '', $render_stra
     'items' => [['value' => '']],
 ]));
 
-$post_types_by_id = [301 => 'news', 302 => 'page', 303 => 'news'];
-$slider_cards_strate = $render_strate('slider', [
-    'title' => 'Actualités',
-    'content_type' => 'cards',
-    'post_type' => 'news',
-    'items' => [301, 302, 303],
-    'slider_options' => [
-        'navigation' => true,
-        'pagination' => false,
-        'timeline' => true,
-    ],
-]);
-$assert_contains('La strate slider rend son introduction', '<header class="component-header strate-header">', $slider_cards_strate);
-$assert_same('La strate slider filtre les cards d’un autre CPT', 2, substr_count($slider_cards_strate, 'class="card-news"'));
-$assert_contains('La strate slider transmet la navigation', 'slider-navigation', $slider_cards_strate);
-$assert_not_contains('La strate slider peut désactiver la pagination', 'slider-pagination', $slider_cards_strate);
-$assert_contains('La strate slider transmet la timeline', 'slider-timeline', $slider_cards_strate);
-$assert_contains('La strate slider possède son hydratation', 'data-module="strates/strate-slider"', $slider_cards_strate);
-$assert_not_contains('Le composant slider n’est pas hydraté deux fois', 'data-module="components/slider"', $slider_cards_strate);
-
-$GLOBALS['lsd_thumb_calls'] = [];
-$slider_images_strate = $render_strate('slider', [
-    'content_type' => 'images',
-    'images' => [
-        ['image' => 401],
-        ['image' => null],
-    ],
-]);
-$assert_same('La strate slider ignore les lignes image vides', 1, substr_count($slider_images_strate, '<li'));
-$assert_contains('La strate slider rend ses images en cover', '<picture class="picture fit-cover slider-image">', $slider_images_strate);
-$assert_contains('La strate slider transmet l’image', '<img src="401"', $slider_images_strate);
-$assert_same('La strate slider transmet sa taille d’image', [401, 'full'], $GLOBALS['lsd_thumb_calls'][0] ?? null);
-$assert_same('La strate slider vide ne produit aucun HTML', '', $render_strate('slider', [
-    'content_type' => 'images',
-    'images' => [],
-]));
-
 $manual_cards_slider = $render_strate('slider-cards', [
     'title' => 'Cards éditoriales',
     'items' => [

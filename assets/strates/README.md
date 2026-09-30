@@ -382,7 +382,7 @@ comportement de la strate. Les imports SCSS actifs sont déclarés dans
 | `keynumbers` | Assemble une liste de `card-keynumber` |
 | `logos` | Affiche une grille statique de logos |
 | `marquee` | Assemble et pilote `marquee` |
-| `media` | Ancienne variante image/vidéo, conservée pour les contenus existants |
+| `media` | Permet de choisir entre image et vidéo dans une même strate |
 | `image` | Affiche uniquement une image |
 | `video` | Affiche uniquement une vidéo, avec poster facultatif |
 | `pushes` | Sélection de contenus existants, dans l’ordre choisi |
@@ -392,7 +392,6 @@ comportement de la strate. Les imports SCSS actifs sont déclarés dans
 | `slider-images` | Slider d’images saisies dans le BO |
 | `slider-cards` | Slider de cards éditoriales saisies dans le BO |
 | `quote` | Assemble le composant `quote` |
-| `slider` | Assemble et pilote `slider` |
 | `snap` | Parcourt des sections éditoriales configurées par repeater |
 | `steps` | Affiche des étapes numérotées |
 | `text` | Assemble `title` et `text` |

@@ -1,10 +1,8 @@
 # Strate `media`
 
-> Variante historique conservée pour les contenus déjà enregistrés. Pour une
-> nouvelle page, choisir `image` ou `video` dans le catalogue.
-
 Affiche une image ou une vidéo sur le rail défini par les options communes de
-strate.
+strate. Elle convient aux projets qui préfèrent une seule strate avec un choix
+image/vidéo ; `image` et `video` restent disponibles comme variantes séparées.
 
 Lire d’abord le [README général des strates](../README.md).
 
