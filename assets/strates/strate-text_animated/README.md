@@ -14,6 +14,8 @@ strate('text_animated');
 - son contenu est volontairement écrit directement dans le template ;
 - elle n'est pas déclarée dans le flexible content ACF ;
 - le premier descendant `.text-animated` est la cible de l'animation ;
+- la révélation reprend la couleur de texte héritée : elle fonctionne donc sur
+  un fond clair comme sur un fond sombre ;
 - avec `prefers-reduced-motion: reduce`, le titre reste lisible et n'est pas
   découpé en caractères.
 

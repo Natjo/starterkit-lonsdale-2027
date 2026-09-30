@@ -6,7 +6,9 @@ $to_string = static fn(mixed $value): string => is_scalar($value) || $value inst
     : '';
 
 $post_type = sanitize_key($to_string($args['post_type'] ?? ''));
-$card = sanitize_key($to_string($args['card'] ?? $post_type));
+$configured_card = $to_string($args['card'] ?? '')
+    ?: apply_filters('theme_content_type_card', $post_type, $post_type);
+$card = sanitize_key($to_string($configured_card));
 $resolved_card = resolve_card_name($card);
 $can_render_items = $post_type !== ''
     && post_type_exists($post_type)
@@ -16,10 +18,10 @@ $mode = $to_string($args['mode'] ?? 'manual');
 $mode = in_array($mode, ['manual', 'automatic'], true) ? $mode : 'manual';
 $limit = is_numeric($args['limit'] ?? null) ? (int) $args['limit'] : 3;
 $limit = max(1, min(12, $limit));
-$items = [];
+$ids = [];
 
 if ($can_render_items && $mode === 'automatic') {
-    $items = get_posts([
+    $posts = get_posts([
         'post_type' => $post_type,
         'post_status' => 'publish',
         'posts_per_page' => $limit,
@@ -29,58 +31,23 @@ if ($can_render_items && $mode === 'automatic') {
         'ignore_sticky_posts' => true,
         'suppress_filters' => false,
     ]);
+    foreach ($posts as $post) {
+        $id = is_object($post)
+            ? (isset($post->ID) ? (int) $post->ID : 0)
+            : filter_var($post, FILTER_VALIDATE_INT);
+        if ($id > 0) $ids[$id] = $id;
+    }
+    theme_prime_posts(array_values($ids));
 } elseif ($can_render_items) {
     $selected = is_array($args['items'] ?? null) ? $args['items'] : [];
     theme_prime_posts($selected);
 
-    foreach ($selected as $item) {
-        $id = filter_var($item, FILTER_VALIDATE_INT);
-        if ($id !== false && $id > 0 && get_post_type($id) === $post_type) {
-            $items[] = $id;
-        }
+    foreach (theme_collect_post_ids($selected) as $id) {
+        if (get_post_type($id) === $post_type) $ids[$id] = $id;
     }
 }
 
-$items = array_values(array_unique(array_filter(array_map(
-    static function (mixed $item): int {
-        if (is_object($item) && isset($item->ID)) {
-            return max(0, (int) $item->ID);
-        }
-
-        $id = filter_var($item, FILTER_VALIDATE_INT);
-        return $id !== false && $id > 0 ? $id : 0;
-    },
-    $items
-))));
-theme_prime_posts($items);
-
-if ($post_type === 'news' && $resolved_card === 'card-news' && function_exists('get_field')) {
-    $items = array_map(static function (int $post_id): array {
-        $hero = get_field('hero-news', $post_id);
-        $hero = is_array($hero) && !array_is_list($hero) ? $hero : [];
-        $images = is_array($hero['images'] ?? null) && !array_is_list($hero['images'])
-            ? $hero['images']
-            : [];
-
-        $title = is_scalar($hero['title'] ?? null) || ($hero['title'] ?? null) instanceof Stringable
-            ? trim((string) $hero['title'])
-            : '';
-        if ($title === '') {
-            $title = trim((string) get_the_title($post_id));
-        }
-
-        return [
-            'post_id' => $post_id,
-            'date' => $hero['date'] ?? '',
-            'title' => $title,
-            'image' => $images['desktop'] ?? null,
-            'link' => [
-                'url' => get_permalink($post_id),
-                'title' => $title,
-            ],
-        ];
-    }, $items);
-}
+$items = array_values(array_filter(array_map('theme_post_card_item', array_values($ids))));
 
 $title = $args['title'] ?? '';
 $text = $args['text'] ?? '';
@@ -95,18 +62,20 @@ if (!$has_header && $items === []) {
 ?>
 
 <section <?= options('strate strate-pushes', $args) ?>>
-    <?php component('header', [
-        'title' => $title,
-        'title_classes' => 'title-2 strate-title',
-        'text' => $text,
-        'text_classes' => 'rte strate-text',
-        'link' => $link,
-        'classes' => 'strate-header',
-    ]); ?>
+    <div class="strate-inner">
+        <?php component('header', [
+            'title' => $title,
+            'title_classes' => 'title-2 strate-title',
+            'text' => $text,
+            'text_classes' => 'rte strate-text',
+            'link' => $link,
+            'classes' => 'strate-header',
+        ]); ?>
 
-    <?php component('list', [
-        'items' => $items,
-        'card' => $card,
-        'classes' => 'strate-list',
-    ]); ?>
+        <?php component('list', [
+            'items' => $items,
+            'card' => $card,
+            'classes' => 'strate-list',
+        ]); ?>
+    </div>
 </section>

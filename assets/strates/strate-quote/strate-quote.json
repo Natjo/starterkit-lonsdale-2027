@@ -3,7 +3,9 @@
   "type": "strate",
   "name": "quote",
   "slug": "quote",
-  "assets": {},
+  "assets": {
+    "css": { "loading": "split" }
+  },
   "defaults": {
     "image": {
       "__forgeStarterMediaPath": "assets/img/placeholders/strate-quote-author.jpg",

@@ -201,6 +201,74 @@ function theme_prime_posts(array $items): array
 }
 
 /**
+ * Prépare le payload commun aux cards à partir d'une publication.
+ * Les valeurs facultatives du groupe ACF `push` remplacent leurs équivalents
+ * WordPress un champ à la fois, quel que soit le type de publication.
+ *
+ * @return array<string, mixed>|null
+ */
+function theme_post_card_item(int $post_id): ?array
+{
+    $post_type = $post_id > 0 ? get_post_type($post_id) : false;
+    if (!is_string($post_type)) return null;
+
+    $title = trim((string) get_the_title($post_id));
+
+    $post_type_object = get_post_type_object($post_type);
+    $type = trim((string) ($post_type_object?->labels->singular_name ?? ''));
+    $item = [
+        'post_id' => $post_id,
+        'type' => $type !== '' ? $type : ucwords(str_replace(['-', '_'], ' ', $post_type)),
+        'date' => get_the_date('', $post_id),
+        'datetime' => get_the_date('Y-m-d', $post_id),
+        'title' => $title,
+        'text' => get_the_excerpt($post_id),
+        'image' => get_post_thumbnail_id($post_id),
+        'link' => ['url' => get_permalink($post_id), 'title' => $title],
+    ];
+
+    $fields = theme_get_fields($post_id);
+    $push = $fields['push'] ?? null;
+    $push = is_array($push) && !array_is_list($push) ? $push : [];
+    foreach (['title', 'text'] as $name) {
+        $value = $push[$name] ?? null;
+        if ((is_scalar($value) || $value instanceof Stringable) && trim((string) $value) !== '') {
+            $item[$name] = trim((string) $value);
+        }
+    }
+
+    $date = $push['date'] ?? null;
+    if (is_string($date) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $date) === 1) {
+        $timezone = function_exists('wp_timezone') ? wp_timezone() : new DateTimeZone(date_default_timezone_get());
+        $parsed = DateTimeImmutable::createFromFormat('!Y-m-d', $date, $timezone);
+        $errors = DateTimeImmutable::getLastErrors();
+        if ($parsed !== false && ($errors === false || ($errors['warning_count'] === 0 && $errors['error_count'] === 0))
+            && $parsed->format('Y-m-d') === $date) {
+            $item['datetime'] = $date;
+            $item['date'] = function_exists('wp_date') && function_exists('get_option')
+                ? wp_date((string) get_option('date_format'), $parsed->getTimestamp(), $timezone)
+                : $parsed->format('d/m/Y');
+        }
+    }
+
+    $images = $push['images'] ?? null;
+    $images = is_array($images) && !array_is_list($images) ? $images : [];
+    foreach ([$images['desktop'] ?? null, $images['mobile'] ?? null, $push['image'] ?? null] as $image) {
+        $image_id = filter_var($image, FILTER_VALIDATE_INT);
+        if ($image_id !== false && $image_id > 0) {
+            $item['image'] = $image_id;
+            break;
+        }
+    }
+
+    if ($item['title'] === '') return null;
+    $item['link']['title'] = $item['title'];
+
+    $filtered = apply_filters('theme_post_card_item', $item, $post_id, $post_type);
+    return is_array($filtered) && !array_is_list($filtered) ? $filtered : $item;
+}
+
+/**
  * Extrait uniquement les IDs placés dans un payload explicitement dédié aux images.
  *
  * @return list<int>

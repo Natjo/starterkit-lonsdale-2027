@@ -1,0 +1,10 @@
+.strate-quote {
+    .quote {
+        grid-column: ctr;
+        justify-self: center;
+    }
+
+    @media #{$breakpoint-md-down} {}
+
+    @media #{$breakpoint-md-up} {}
+}

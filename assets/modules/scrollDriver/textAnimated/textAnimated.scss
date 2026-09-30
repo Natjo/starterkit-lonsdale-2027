@@ -1,6 +1,5 @@
 .text-animated {
     --softness: 6;
-    color: rgba(255, 255, 255, .25);
     contain: paint;
 
 
@@ -19,8 +18,8 @@
 
     .char {
         color: color-mix(in srgb,
-                rgba(255, 255, 255, .25) calc((1 - var(--progress)) * 100%),
-                #fff calc(var(--progress) * 100%));
+                transparent calc((1 - var(--progress)) * 75%),
+                currentColor calc(25% + var(--progress) * 75%));
     }
 }
 

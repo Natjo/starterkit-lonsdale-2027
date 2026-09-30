@@ -263,7 +263,7 @@ function wp_check_filetype(string $path): array
 
 function get_fields(mixed $post_id = null, bool $format_value = true): array|false
 {
-    global $get_fields_calls;
+    global $get_fields_calls, $push_fields_by_id;
     $get_fields_calls[] = [$post_id, $format_value];
 
     if ($post_id === 'option') {
@@ -272,11 +272,13 @@ function get_fields(mixed $post_id = null, bool $format_value = true): array|fal
 
     if (!is_int($post_id) || $post_id <= 0) return false;
 
-    return [
+    $fields = [
         'title' => 'Actualité ' . $post_id,
         'text' => '<p>Contenu du post ' . $post_id . '</p>',
         'source' => 'Source ' . $post_id,
     ];
+    if (isset($push_fields_by_id[$post_id])) $fields['push'] = $push_fields_by_id[$post_id];
+    return $fields;
 }
 
 function get_field(string $selector, mixed $post_id = null): mixed
@@ -295,6 +297,21 @@ function get_field(string $selector, mixed $post_id = null): mixed
 function get_the_title(int $post_id = 0): string
 {
     return 'Titre WordPress ' . $post_id;
+}
+
+function get_the_date(string $format = '', int $post_id = 0): string
+{
+    return $format === 'Y-m-d' ? '2026-07-20' : '20/07/2026';
+}
+
+function get_the_excerpt(int $post_id = 0): string
+{
+    return 'Extrait ' . $post_id;
+}
+
+function get_post_thumbnail_id(int $post_id = 0): int
+{
+    return 0;
 }
 
 function get_permalink(int $post_id = 0): string
@@ -3026,12 +3043,40 @@ $manual_pushes = $render_strate('pushes', [
 ]);
 $assert_contains('La strate pushes rend son introduction', '<header class="component-header strate-header">', $manual_pushes);
 $assert_contains('La strate pushes rend son lien interne', 'href="/actualites/"', $manual_pushes);
-$assert_contains('La strate pushes rend les News sélectionnées', 'Actualité 101', $manual_pushes);
+$assert_contains('La strate pushes rend les News sélectionnées', 'Titre WordPress 101', $manual_pushes);
 $assert_not_contains('La strate pushes refuse les contenus d’un autre CPT', 'Actualité 102', $manual_pushes);
 $assert_same('La strate pushes déduplique sa sélection', 1, substr_count($manual_pushes, 'class="card-news"'));
 
+$registered_post_types[] = 'project';
+$post_types_by_id[201] = 'project';
+$project_pushes = $render_strate('pushes', [
+    'mode' => 'manual',
+    'post_type' => 'project',
+    'items' => [201],
+]);
+$assert_contains('La strate pushes accepte un autre CPT', 'class="card-project"', $project_pushes);
+$assert_contains('La card Project reçoit le titre normalisé', 'Titre WordPress 201', $project_pushes);
+
+$post_types_by_id[202] = 'project';
+$push_fields_by_id[202] = ['title' => 'Titre Push', 'text' => '', 'date' => '', 'images' => ['desktop' => 0, 'mobile' => 702]];
+$partial_push = theme_post_card_item(202);
+$assert_same('Le titre Push remplace le titre WordPress', 'Titre Push', $partial_push['title'] ?? null);
+$assert_same('La description vide garde l’extrait WordPress', 'Extrait 202', $partial_push['text'] ?? null);
+$assert_same('La date vide garde la date WordPress', '2026-07-20', $partial_push['datetime'] ?? null);
+$assert_same('L’image mobile sert de repli à la desktop vide', 702, $partial_push['image'] ?? null);
+$assert_same('Le lien reprend le titre Push', 'Titre Push', $partial_push['link']['title'] ?? null);
+
+$post_types_by_id[203] = 'page';
+$push_fields_by_id[203] = ['text' => '<p>Description Push</p>', 'date' => '2026-08-03'];
+$page_push = theme_post_card_item(203);
+$assert_same('Une page accepte le groupe Push', '<p>Description Push</p>', $page_push['text'] ?? null);
+$assert_same('Le groupe Push renseigne la date normalisée', '2026-08-03', $page_push['datetime'] ?? null);
+$assert_same('Le titre WordPress reste disponible sans titre Push', 'Titre WordPress 203', $page_push['title'] ?? null);
+
 $get_posts_calls = [];
 $get_posts_result = [(object) ['ID' => 1201], (object) ['ID' => 1202]];
+$post_types_by_id[1201] = 'news';
+$post_types_by_id[1202] = 'news';
 $meta_cache_calls = [];
 $post_cache_calls = [];
 $automatic_pushes = $render_strate('pushes', [
@@ -3046,8 +3091,7 @@ $assert_same('La remontée automatique charge les objets posts', false, array_ke
 $assert_same('La remontée automatique groupe le cache des posts', [[1201, 1202], false, false], $post_cache_calls[0] ?? null);
 $assert_same('La remontée automatique précharge les métadonnées', ['post', [1201, 1202]], $meta_cache_calls[0] ?? null);
 $assert_same('La remontée automatique rend les résultats', 2, substr_count($automatic_pushes, 'class="card-news"'));
-$assert_contains('La remontée automatique mappe le titre du hero News', 'Actualité 1201', $automatic_pushes);
-$assert_contains('La remontée automatique mappe l’image desktop du hero News', '<picture class="picture fit-cover card-image">', $automatic_pushes);
+$assert_contains('La remontée automatique utilise le titre WordPress par défaut', 'Titre WordPress 1201', $automatic_pushes);
 $assert_contains('La remontée automatique ajoute le permalien de la News', 'href="https://example.test/news/1201/"', $automatic_pushes);
 
 $get_posts_calls = [];

@@ -1,38 +1,28 @@
 .strate-text_image {
 
-    .strate-media {
-        img {
-            width: 100%;
-            height: auto;
-        }
-    }
-
     @media #{$breakpoint-md-down} {}
 
     @media #{$breakpoint-md-up} {
-        .strate-body {
-            grid-column: ctr/center;
-            grid-row: 1;
-            padding-inline: 0 var(--gap);
-
-            .strate-title {
-                margin-bottom: 1rem;
-            }
+        .strate-inner {
+            grid-column: ctr;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: var(--gap);
         }
 
-        .strate-media {
-            grid-column: center/ctr;
-            grid-row: 1;
+        .strate-title {
+            margin-bottom: 1rem;
         }
 
         &.reverse {
-            .strate-body {
-                grid-column: center/ctr;
-                padding-inline: var(--gap) 0;
+            .strate-content {
+                grid-row: 1;
+                grid-column: 2;
             }
 
             .strate-media {
-                grid-column: ctr/center;
+                grid-row: 1;
+                grid-column: 1;
             }
         }
 

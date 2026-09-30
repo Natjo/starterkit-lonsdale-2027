@@ -192,6 +192,19 @@ IDs déjà traités pendant la requête sont ignorés :
 theme_prime_posts([123, ['post_id' => 456]]);
 ```
 
+`theme_post_card_item($post_id)` construit le payload commun des cards :
+`post_id`, type, date, titre, extrait, image mise en avant et lien. Le filtre
+`theme_post_card_item` permet à un CPT d'adapter ce payload pour tous les
+listings, y compris les strates `pushes` et `Theme_Listing`.
+
+Le groupe ACF facultatif `Field - Push` expose un champ racine `push` avec
+`title`, `text`, `date` et `images.desktop` / `images.mobile`. Il peut être
+affecté à une page, un article ou un CPT. Chaque valeur renseignée remplace
+son équivalent WordPress ; un champ vide conserve le titre, l’extrait, la date
+ou l’image mise en avant du post. L’image desktop a priorité sur la mobile.
+Le permalien reste celui du post et son libellé suit le titre retenu. Si le
+groupe n’est pas affecté ou renseigné, la card fonctionne sans lui.
+
 `theme_prime_attachments()` est réservé aux payloads explicitement dédiés aux
 images. Il reconnaît les IDs directs, les tableaux ACF avec `ID` ou `id`, ainsi
 que les clés `image`, `images`, `desktop` et `mobile`. Il ne parcourt pas les

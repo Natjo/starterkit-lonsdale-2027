@@ -10,21 +10,23 @@ $classes = [
 ?>
 
 <section <?= options($classes, $args) ?>>
-    <div class="strate-body">
-        <?php component('title', [
-            'title' => $args['title'],
-            'classes' => 'title-2 strate-title',
-        ]); ?>
+    <div class="strate-inner">
+        <div class="strate-content">
+            <?php component('title', [
+                'title' => $args['title'],
+                'classes' => 'title-2 strate-title',
+            ]); ?>
 
-        <?php component('text', [
-            'text' => $args['text'],
-            'classes' => 'rte strate-text',
+            <?php component('text', [
+                'text' => $args['text'],
+                'classes' => 'rte strate-text',
+            ]) ?>
+        </div>
+
+        <?php component('picture', [
+            'image' => $args['image'] ?? null,
+            'size' => '730_auto',
+            'classes' => 'strate-media',
         ]) ?>
     </div>
-
-    <?php component('picture', [
-        'image' => $args['image'] ?? null,
-        'size' => '730_auto',
-        'classes' => 'strate-media',
-    ]) ?>
 </section>

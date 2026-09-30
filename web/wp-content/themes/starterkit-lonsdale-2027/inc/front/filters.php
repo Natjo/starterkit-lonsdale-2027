@@ -452,19 +452,9 @@ function theme_build_filters_context(array $options = []): array
         $item_singular_label = $item_singular_label !== ''
             ? $item_singular_label
             : ($group_by === 'post_type' ? $fallback_label : $singular_label);
-        $title = trim((string) get_the_title($post_id));
-        if ($title === '') return;
-
-        $item = [
-            'post_id' => $post_id,
-            'type' => $item_singular_label,
-            'date' => get_the_date('', $post_id),
-            'datetime' => get_the_date('Y-m-d', $post_id),
-            'title' => $title,
-            'text' => get_the_excerpt($post_id),
-            'image' => get_post_thumbnail_id($post_id),
-            'link' => ['url' => get_permalink($post_id), 'title' => $title],
-        ];
+        $item = theme_post_card_item($post_id);
+        if ($item === null) return;
+        $item['type'] = $item_singular_label;
         $filtered_item = apply_filters($result_filter, $item, $post_id, $item_post_type);
         $item = is_array($filtered_item) && !array_is_list($filtered_item) ? $filtered_item : $item;
         $items[] = $item;

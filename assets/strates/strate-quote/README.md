@@ -55,7 +55,7 @@ acf_fc_layout = quote
 
 ## Assets et dépendances
 
-La strate n’a pas d’asset propre. Elle utilise :
+La strate possède un fichier SCSS chargé en `split`. Elle utilise aussi :
 
 - `options()` ;
 - `component('quote', [...])`.
