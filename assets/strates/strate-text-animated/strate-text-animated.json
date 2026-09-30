@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "type": "strate",
+  "name": "Text animated",
+  "slug": "text-animated",
+  "assets": {
+    "css": { "loading": "split" },
+    "js": { "loading": "visible" }
+  },
+  "defaults": {},
+  "dependencies": {
+    "components": ["title"],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": ["scrollDriver", "splitText"]
+  }
+}

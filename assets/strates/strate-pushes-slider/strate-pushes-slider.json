@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "type": "strate",
+  "name": "pushes-slider",
+  "slug": "pushes-slider",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
+  "defaults": {
+    "title": "À découvrir",
+    "post_type": "news",
+    "limit": 3,
+    "aria_label": "Carrousel des contenus",
+    "slider_options": {
+      "navigation": true,
+      "pagination": true,
+      "timeline": false
+    }
+  },
+  "dependencies": {
+    "components": ["header", "slider"],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

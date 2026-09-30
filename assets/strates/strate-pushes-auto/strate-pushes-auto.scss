@@ -1,0 +1,7 @@
+.strate-pushes-auto {
+    @media #{$breakpoint-md-up} {
+        .list {
+            --list-columns: 3;
+        }
+    }
+}

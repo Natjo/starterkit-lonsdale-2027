@@ -1,0 +1,22 @@
+.strate-pushes-slider {
+    .strate-inner {
+        min-width: 0;
+    }
+
+    .slider {
+        --nb: 1;
+        min-width: 0;
+    }
+
+    @media #{$breakpoint-md-up} {
+        .slider {
+            --nb: 2;
+        }
+    }
+
+    @media #{$breakpoint-lg-up} {
+        .slider {
+            --nb: 3;
+        }
+    }
+}

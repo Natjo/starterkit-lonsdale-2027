@@ -92,16 +92,16 @@ ob_start();
 theme_queue_module_assets('pages/404/404');
 $duplicateModuleOnceStyle = (string) ob_get_clean();
 
-ThemeAssets::queueSplit('strates/strate-text_animated/strate-text_animated');
+ThemeAssets::queueSplit('strates/strate-text-animated/strate-text-animated');
 
 ob_start();
 ThemeAssets::renderSplitLinks();
 $textAnimatedLink = (string) ob_get_clean();
 
-ThemeAssets::queueSplit('strates/strate-paralax/strate-paralax');
+ThemeAssets::queueSplit('strates/strate-snap/strate-snap');
 ob_start();
 ThemeAssets::renderSplitLinks();
-$paralaxLink = (string) ob_get_clean();
+$snapLink = (string) ob_get_clean();
 starter_enqueue_preload_image([
     'href' => 'https://example.test/image-718.webp',
     'type' => 'image/webp',
@@ -115,7 +115,7 @@ $html = ThemeAssets::processBufferedHtml(
     . '</head><body>'
     . $textAnimatedLink
     . '<main>Contenu</main>'
-    . $paralaxLink
+    . $snapLink
     . '</body></html>'
 );
 
@@ -124,8 +124,8 @@ $bodyStart = strpos($html, '<body>');
 $mainStart = strpos($html, '<main>');
 $mainEnd = strpos($html, '</main>');
 $search = 'id="once-pages-search-search"';
-$textAnimated = 'id="split-strates-strate-text_animated-strate-text_animated"';
-$paralax = 'id="split-strates-strate-paralax-strate-paralax"';
+$textAnimated = 'id="split-strates-strate-text-animated-strate-text-animated"';
+$snap = 'id="split-strates-strate-snap-strate-snap"';
 $failures = [];
 
 if (substr_count($fontPreloads, 'rel="preload"') !== 2) {
@@ -175,7 +175,7 @@ if ($duplicateModuleOnceStyle !== '') {
     $failures[] = 'Le CSS once d’un module doit être dédupliqué.';
 }
 
-foreach ([$textAnimated, $paralax] as $id) {
+foreach ([$textAnimated, $snap] as $id) {
     $position = strpos($html, $id);
 
     if ($position === false || ($bodyStart !== false && $position < $bodyStart)) {
@@ -192,15 +192,15 @@ if (
     && ($textAnimatedPosition = strpos($html, $textAnimated)) !== false
     && $textAnimatedPosition > $mainStart
 ) {
-    $failures[] = 'Le CSS de text_animated doit précéder le premier rendu de la strate.';
+    $failures[] = 'Le CSS de text-animated doit précéder le premier rendu de la strate.';
 }
 
 if (
     $mainEnd !== false
-    && ($paralaxPosition = strpos($html, $paralax)) !== false
-    && $paralaxPosition < $mainEnd
+    && ($snapPosition = strpos($html, $snap)) !== false
+    && $snapPosition < $mainEnd
 ) {
-    $failures[] = 'Le CSS de paralax doit être émis à son point de rendu.';
+    $failures[] = 'Le CSS de snap doit être émis à son point de rendu.';
 }
 
 if ($headEnd !== false && str_contains(substr($html, 0, $headEnd), 'id="split-strates-')) {

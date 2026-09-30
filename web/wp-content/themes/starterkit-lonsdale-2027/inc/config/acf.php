@@ -18,6 +18,28 @@ add_filter('acf/json/save_file_name', static function (string $filename, array $
         : $filename;
 }, 10, 3);
 
+/**
+ * Conserve les sous-champs des anciennes lignes du flexible content après
+ * renommage des layouts du catalogue.
+ *
+ * ACF stocke les noms des layouts dans la valeur brute du champ `strates`.
+ * Ce filtre doit intervenir avant son propre `load_value` (priorité 10).
+ */
+function theme_normalize_strate_layout_names(mixed $value, mixed $post_id, array $field): mixed
+{
+    if (($field['key'] ?? '') !== 'field_669e66a6b1d81' || !is_array($value)) return $value;
+
+    foreach ($value as &$layout) {
+        if ($layout === 'text_image') $layout = 'text-image';
+        if ($layout === 'text_animated') $layout = 'text-animated';
+        if ($layout === 'content-columns') $layout = 'columns-content';
+    }
+    unset($layout);
+
+    return $value;
+}
+add_filter('acf/load_value', 'theme_normalize_strate_layout_names', 5, 3);
+
 add_action('acf/init', function () {
     if (!function_exists('acf_add_options_page')) return;
 
@@ -96,13 +118,29 @@ function theme_card_post_type_choices(): array
     return $choices;
 }
 
-add_filter('acf/load_field/key=field_6a64efd427ede', function (array $field): array {
+add_filter('acf/load_field/key=field_6a64efd427ede_auto', function (array $field): array {
     $field['choices'] = theme_card_post_type_choices();
 
     if (!isset($field['choices'][$field['default_value'] ?? ''])) {
         $field['default_value'] = array_key_first($field['choices']) ?? '';
     }
 
+    return $field;
+});
+
+add_filter('acf/load_field/key=field_6a64efd427ede_more', function (array $field): array {
+    $field['choices'] = theme_card_post_type_choices();
+    if (!isset($field['choices'][$field['default_value'] ?? ''])) {
+        $field['default_value'] = array_key_first($field['choices']) ?? '';
+    }
+    return $field;
+});
+
+add_filter('acf/load_field/key=field_6a64efd427ede_slider', function (array $field): array {
+    $field['choices'] = theme_card_post_type_choices();
+    if (!isset($field['choices'][$field['default_value'] ?? ''])) {
+        $field['default_value'] = array_key_first($field['choices']) ?? '';
+    }
     return $field;
 });
 

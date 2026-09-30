@@ -1,0 +1,29 @@
+.strate-slider-cards {
+    .strate-content {
+        display: grid;
+        grid-template-columns: subgrid;
+        grid-column: full;
+        min-width: 0;
+    }
+
+    .strate-header {
+        grid-column: ctr;
+    }
+
+    .slider {
+        --nb: 1;
+        grid-column: ctr;
+    }
+
+    @media #{$breakpoint-md-up} {
+        .slider {
+            --nb: 2;
+        }
+    }
+
+    @media #{$breakpoint-lg-up} {
+        .slider {
+            --nb: 3;
+        }
+    }
+}

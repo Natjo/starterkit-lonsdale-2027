@@ -1,0 +1,12 @@
+.strate-pushes-more {
+    @media #{$breakpoint-md-up} {
+        .list {
+            --list-columns: 3;
+        }
+    }
+
+    .pushes-more-next {
+        display: inline-block;
+        margin-top: var(--margin-sm);
+    }
+}

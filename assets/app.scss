@@ -64,6 +64,7 @@
 @import "cards/card-page/card-page";
 @import "cards/card-keynumber/card-keynumber";
 @import "cards/card-project/card-project";
+@import "cards/card-slide/card-slide";
 
 // pages — once : bundle dédié, contenu inline uniquement sur le template correspondant
 @import "pages/404/404" once;
@@ -80,17 +81,23 @@
 // strates — split : bundle dédié, <link> injecté au premier rendu
 // Pour un petit module rarement utilisé, `once` injecte son contenu dans <style> au premier rendu.
 // @import "strates/strate-quizz/strate-quizz" split;
-@import "strates/strate-text_image/strate-text_image";
+@import "strates/strate-text-image/strate-text-image";
+@import "strates/strate-columns-content/strate-columns-content";
+@import "strates/strate-steps/strate-steps";
+@import "strates/strate-logos/strate-logos";
 @import "strates/strate-text/strate-text";
 @import "strates/strate-intro/strate-intro" split;
 @import "strates/strate-media/strate-media";
+@import "strates/strate-image/strate-image";
+@import "strates/strate-video/strate-video";
 @import "strates/strate-pushes/strate-pushes";
+@import "strates/strate-pushes-auto/strate-pushes-auto";
+@import "strates/strate-pushes-more/strate-pushes-more";
+@import "strates/strate-pushes-slider/strate-pushes-slider";
 @import "strates/strate-slider/strate-slider";
+@import "strates/strate-slider-images/strate-slider-images";
+@import "strates/strate-slider-cards/strate-slider-cards";
 @import "strates/strate-marquee/strate-marquee";
-@import "strates/strate-formulaire/strate-formulaire" split;
-@import "strates/strate-text_animated/strate-text_animated" split;
-@import "strates/strate-paralax/strate-paralax" split;
+@import "strates/strate-text-animated/strate-text-animated" split;
 @import "strates/strate-snap/strate-snap" split;
-@import "strates/strate-anchor_nav/strate-anchor_nav" split;
-@import "strates/strate-lottie/strate-lottie" split;
 @import "strates/strate-quote/strate-quote" split;

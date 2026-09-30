@@ -13,6 +13,34 @@
         align-items: center;
     }
 
+    .snap-panel-content {
+        grid-column: ctr;
+        display: grid;
+        align-items: center;
+        gap: var(--gap);
+        min-width: 0;
+
+        @media #{$breakpoint-md-up} {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    .snap-panel-body,
+    .snap-panel-image {
+        min-width: 0;
+    }
+
+    .snap-panel-text,
+    .snap-panel-link {
+        margin-top: 2rem;
+    }
+
+    .snap-panel-image {
+        max-height: calc(100vh - var(--header-height) - 4rem);
+        width: 100%;
+        object-fit: contain;
+    }
+
     @media #{$breakpoint-lg-up} {
         > .strate {
             align-items: center;

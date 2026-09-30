@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "type": "strate",
+  "name": "slider-cards",
+  "slug": "slider-cards",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
+  "defaults": {
+    "title": "À découvrir",
+    "items": [
+      { "title": "Premier sujet", "text": "<p>Découvrez ce premier sujet.</p>" },
+      { "title": "Deuxième sujet", "text": "<p>Découvrez ce deuxième sujet.</p>" },
+      { "title": "Troisième sujet", "text": "<p>Découvrez ce troisième sujet.</p>" }
+    ],
+    "aria_label": "Carrousel des sujets",
+    "slider_options": {
+      "navigation": true,
+      "pagination": true,
+      "timeline": false
+    }
+  },
+  "dependencies": {
+    "components": ["header", "slider"],
+    "cards": ["slide"],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

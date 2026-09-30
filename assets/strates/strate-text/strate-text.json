@@ -6,6 +6,10 @@
   "assets": {
     "css": { "loading": "normal" }
   },
+  "defaults": {
+    "title": "Lorem ipsum dolor sit amet",
+    "text": "<p class=\"h1\">Niveau 1 — Lorem ipsum dolor sit amet</p><p class=\"h2\">Niveau 2 — Consectetur adipiscing elit</p><p class=\"h3\">Niveau 3 — Sed do eiusmod tempor incididunt</p><p class=\"h4\">Niveau 4 — Ut labore et dolore magna aliqua</p><p>Paragraphe standard avec du <strong>texte en gras</strong>, du <em>texte en italique</em>, du <u>texte souligné</u> et un <a href=\"#\">lien hypertexte</a>.</p><p class=\"text--sm\">Texte sm — Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p><p class=\"text--lg\">Texte lg — Duis aute irure dolor in reprehenderit in voluptate velit esse.</p><p class=\"text--xl\">Texte xl — Excepteur sint occaecat cupidatat non proident.</p><p class=\"text--wd\">Texte wd — Sunt in culpa qui officia deserunt mollit anim id est laborum.</p><blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p></blockquote><ul><li>Premier élément de liste</li><li>Deuxième élément de liste</li><li>Troisième élément de liste</li></ul><ol><li>Première étape</li><li>Deuxième étape</li><li>Troisième étape</li></ol>"
+  },
   "dependencies": {
     "components": ["title","text"],
     "cards": [],

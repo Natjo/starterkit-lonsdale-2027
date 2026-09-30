@@ -6,8 +6,15 @@
   "assets": {
     "css": { "loading": "split" }
   },
+  "defaults": {
+    "slides": [
+      { "title": "Introduction", "text": "<p>Lorem ipsum dolor sit amet.</p>", "background_color": "color-1" },
+      { "title": "Expertises", "text": "<p>Consectetur adipiscing elit.</p>", "background_color": "color-2" },
+      { "title": "Projets", "text": "<p>Sed do eiusmod tempor.</p>", "background_color": "color-3" }
+    ]
+  },
   "dependencies": {
-    "components": ["section-snap", "title"],
+    "components": ["section-snap", "title", "text", "picture", "btn"],
     "cards": [],
     "strates": [],
     "heroes": [],

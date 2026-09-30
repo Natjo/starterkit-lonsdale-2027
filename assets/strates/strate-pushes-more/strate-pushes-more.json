@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "type": "strate",
+  "name": "pushes-more",
+  "slug": "pushes-more",
+  "assets": {
+    "css": { "loading": "normal" },
+    "js": { "loading": "visible" }
+  },
+  "defaults": {
+    "title": "Toutes les actualités",
+    "text": "<p>Parcourez nos dernières publications.</p>",
+    "post_type": "news",
+    "limit": 3,
+    "more_label": "Voir plus"
+  },
+  "dependencies": {
+    "components": ["header", "list"],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

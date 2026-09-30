@@ -35,6 +35,7 @@ Le mode HTML utilisé par le styleguide reste disponible lors d’un appel PHP :
 
 ```php
 strate('marquee', [
+    'content_type' => 'html',
     'items' => ['<strong>Design</strong>', '<span>Digital</span>'],
 ]);
 ```
@@ -99,7 +100,7 @@ $image_size = 'full';
 Les images utilisent `picture` avec `fit => 'cover'`. Le starter leur applique
 un ratio `3 / 2` et une largeur maximale de `48rem`. Les trois placeholders de
 `960 × 640 px` sont déclarés dans le manifeste puis importés par Forge. Ils sont
-partagés avec Content Columns afin d’éviter les doublons dans la médiathèque.
+partagés avec Columns Content afin d’éviter les doublons dans la médiathèque.
 
 ## Hydratation
 

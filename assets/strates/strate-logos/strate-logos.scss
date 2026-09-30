@@ -1,0 +1,37 @@
+.strate-logos {
+    .strate-content {
+        grid-column: ctr;
+        min-width: 0;
+    }
+
+    .strate-header {
+        margin-bottom: var(--margin-sm);
+    }
+
+    .logos-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+        gap: var(--gap);
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .logos-item {
+        display: grid;
+        place-items: center;
+        min-width: 0;
+    }
+
+    .logos-link {
+        display: block;
+    }
+
+    .logos-image img {
+        display: block;
+        width: 100%;
+        max-height: 12rem;
+        object-fit: contain;
+    }
+}

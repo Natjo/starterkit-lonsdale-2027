@@ -5,49 +5,21 @@ $to_string = static fn(mixed $value): string => is_scalar($value) || $value inst
     ? trim((string) $value)
     : '';
 
-$post_type = sanitize_key($to_string($args['post_type'] ?? ''));
-$configured_card = $to_string($args['card'] ?? '')
-    ?: apply_filters('theme_content_type_card', $post_type, $post_type);
-$card = sanitize_key($to_string($configured_card));
-$resolved_card = resolve_card_name($card);
-$can_render_items = $post_type !== ''
-    && post_type_exists($post_type)
-    && $resolved_card !== '';
+$selected = is_array($args['items'] ?? null) ? $args['items'] : [];
+theme_prime_posts($selected);
+$items = [];
+foreach (theme_collect_post_ids($selected) as $post_id) {
+    $post_type = get_post_type($post_id);
+    if (!is_string($post_type)) continue;
 
-$mode = $to_string($args['mode'] ?? 'manual');
-$mode = in_array($mode, ['manual', 'automatic'], true) ? $mode : 'manual';
-$limit = is_numeric($args['limit'] ?? null) ? (int) $args['limit'] : 3;
-$limit = max(1, min(12, $limit));
-$ids = [];
-
-if ($can_render_items && $mode === 'automatic') {
-    $posts = get_posts([
-        'post_type' => $post_type,
-        'post_status' => 'publish',
-        'posts_per_page' => $limit,
-        'orderby' => 'date',
-        'order' => 'DESC',
-        'no_found_rows' => true,
-        'ignore_sticky_posts' => true,
-        'suppress_filters' => false,
-    ]);
-    foreach ($posts as $post) {
-        $id = is_object($post)
-            ? (isset($post->ID) ? (int) $post->ID : 0)
-            : filter_var($post, FILTER_VALIDATE_INT);
-        if ($id > 0) $ids[$id] = $id;
-    }
-    theme_prime_posts(array_values($ids));
-} elseif ($can_render_items) {
-    $selected = is_array($args['items'] ?? null) ? $args['items'] : [];
-    theme_prime_posts($selected);
-
-    foreach (theme_collect_post_ids($selected) as $id) {
-        if (get_post_type($id) === $post_type) $ids[$id] = $id;
-    }
+    $configured_card = apply_filters('theme_content_type_card', $post_type, $post_type);
+    $card_name = is_scalar($configured_card) || $configured_card instanceof Stringable
+        ? sanitize_key(trim((string) $configured_card))
+        : '';
+    $card_name = resolve_card_name($card_name);
+    $item = $card_name !== '' ? theme_post_card_item($post_id) : null;
+    if ($item !== null) $items[] = ['card' => $card_name, 'data' => $item];
 }
-
-$items = array_values(array_filter(array_map('theme_post_card_item', array_values($ids))));
 
 $title = $args['title'] ?? '';
 $text = $args['text'] ?? '';
@@ -56,9 +28,7 @@ $has_header = $to_string($title) !== ''
     || $to_string($text) !== ''
     || ($to_string($link['url'] ?? '') !== '' && $to_string($link['title'] ?? '') !== '');
 
-if (!$has_header && $items === []) {
-    return;
-}
+if (!$has_header && $items === []) return;
 ?>
 
 <section <?= options('strate strate-pushes', $args) ?>>
@@ -72,10 +42,12 @@ if (!$has_header && $items === []) {
             'classes' => 'strate-header',
         ]); ?>
 
-        <?php component('list', [
-            'items' => $items,
-            'card' => $card,
-            'classes' => 'strate-list',
-        ]); ?>
+        <?php if ($items !== []) : ?>
+            <ul class="list strate-list" role="list">
+                <?php foreach ($items as $item) : ?>
+                    <li class="item"><?php card($item['card'], $item['data']); ?></li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
     </div>
 </section>

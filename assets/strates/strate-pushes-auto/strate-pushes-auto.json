@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "type": "strate",
+  "name": "pushes-auto",
+  "slug": "pushes-auto",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
+  "defaults": {
+    "title": "Dernières actualités",
+    "text": "<p>Découvrez nos dernières publications.</p>",
+    "post_type": "news",
+    "limit": 3
+  },
+  "dependencies": {
+    "components": ["header", "list"],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

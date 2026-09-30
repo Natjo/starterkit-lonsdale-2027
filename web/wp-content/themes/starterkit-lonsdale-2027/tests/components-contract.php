@@ -109,7 +109,7 @@ function paginate_links(array $args = []): array|false
     ];
 }
 
-function add_query_arg(string $key, mixed $value, string $url): string
+function add_query_arg(string $key, mixed $value, string $url = 'https://example.test/current/'): string
 {
     return rtrim($url, '?&') . (str_contains($url, '?') ? '&' : '?')
         . rawurlencode($key) . '=' . rawurlencode((string) $value);
@@ -263,7 +263,7 @@ function wp_check_filetype(string $path): array
 
 function get_fields(mixed $post_id = null, bool $format_value = true): array|false
 {
-    global $get_fields_calls, $push_fields_by_id;
+    global $get_fields_calls, $card_fields_by_id, $business_fields_by_id;
     $get_fields_calls[] = [$post_id, $format_value];
 
     if ($post_id === 'option') {
@@ -277,7 +277,8 @@ function get_fields(mixed $post_id = null, bool $format_value = true): array|fal
         'text' => '<p>Contenu du post ' . $post_id . '</p>',
         'source' => 'Source ' . $post_id,
     ];
-    if (isset($push_fields_by_id[$post_id])) $fields['push'] = $push_fields_by_id[$post_id];
+    if (isset($card_fields_by_id[$post_id])) $fields['card'] = $card_fields_by_id[$post_id];
+    if (isset($business_fields_by_id[$post_id])) $fields = array_merge($fields, $business_fields_by_id[$post_id]);
     return $fields;
 }
 
@@ -384,6 +385,9 @@ function add_filter(mixed ...$args): void
 
 function apply_filters(string $hook_name, mixed $value, mixed ...$args): mixed
 {
+    if ($hook_name === 'theme_card_field_map') {
+        return $GLOBALS['card_field_map_by_type'][$args[0] ?? ''] ?? [];
+    }
     return $value;
 }
 
@@ -393,6 +397,7 @@ require_once dirname(__DIR__) . '/inc/front/filters.php';
 require_once dirname(__DIR__) . '/inc/front/contact-form.php';
 require_once dirname(__DIR__) . '/inc/front/breadcrumb.php';
 require_once dirname(__DIR__) . '/inc/config/seo.php';
+require_once dirname(__DIR__) . '/inc/config/acf.php';
 
 /** @var list<string> $failures */
 $failures = [];
@@ -611,9 +616,9 @@ $assert_same(
 
 $assert_same(
     'Les options de strate conservent un tableau de classes initiales',
-    'class="strate strate-text_image reverse ctr-sm mb-lg"',
+    'class="strate strate-text-image reverse ctr-sm mb-lg"',
     options(
-        ['strate', 'strate-text_image', 'reverse', ''],
+        ['strate', 'strate-text-image', 'reverse', ''],
         [
             'options' => [
                 'container' => 'sm',
@@ -622,6 +627,41 @@ $assert_same(
         ]
     )
 );
+
+$loaded_templates_before_rename_tests = $loaded_templates;
+$queued_modules_before_rename_tests = $queued_modules;
+$text_image_strate = $render_strate('text-image', [
+    'title' => 'Titre image',
+    'text' => '<p>Texte image.</p>',
+    'image' => 401,
+]);
+$assert_contains('La strate renommée utilise sa classe canonique', 'strate-text-image', $text_image_strate);
+$assert_contains('La strate renommée conserve le titre', 'Titre image', $text_image_strate);
+$text_animated_strate = $render_strate('text-animated', []);
+$assert_contains('La strate animée hydrate le nouveau chemin', 'data-module="strates/strate-text-animated"', $text_animated_strate);
+$columns_content_strate = $render_strate('columns-content', [
+    'columns' => [['title' => 'Première colonne', 'text' => '<p>Contenu éditorial.</p>']],
+]);
+$assert_contains('La strate de colonnes utilise sa nouvelle classe', 'strate-columns-content', $columns_content_strate);
+$assert_contains('La strate de colonnes conserve son contenu', 'Première colonne', $columns_content_strate);
+$assert_same(
+    'Les anciens layouts ACF sont normalisés avant chargement',
+    ['text-image', 'text-animated', 'columns-content', 'intro'],
+    theme_normalize_strate_layout_names(
+        ['text_image', 'text_animated', 'content-columns', 'intro'],
+        123,
+        ['key' => 'field_669e66a6b1d81']
+    )
+);
+
+$loaded_templates_before_alias = count($loaded_templates);
+strate('text_image', []);
+$assert_same('L’ancien nom text_image redirige vers le template renommé', 'template-parts/strates/strate-text-image', $loaded_templates[$loaded_templates_before_alias] ?? null);
+$loaded_templates_before_columns_alias = count($loaded_templates);
+strate('content-columns', []);
+$assert_same('L’ancien nom content-columns redirige vers le template renommé', 'template-parts/strates/strate-columns-content', $loaded_templates[$loaded_templates_before_columns_alias] ?? null);
+$loaded_templates = $loaded_templates_before_rename_tests;
+$queued_modules = $queued_modules_before_rename_tests;
 $assert_same(
     'Les options de strate exposent un identifiant normalisé',
     'class="strate strate-text mb-0" id="notre-equipe"',
@@ -2852,31 +2892,6 @@ $legacy_form = trim((string) ob_get_clean());
 $rendering_component_fixture = false;
 $assert_same('L’ancien composant form est retiré', '', $legacy_form);
 
-$form_strate = $render_strate('formulaire', [
-    'title' => 'Titre à ignorer',
-    'fields' => [['type' => 'text', 'name' => 'ignored']],
-]);
-$assert_contains('La strate formulaire rend sa section', '<section class="strate strate-formulaire">', $form_strate);
-$assert_contains('La strate formulaire rend son titre', '<h2 class="title title-2">Formulaire complet</h2>', $form_strate);
-$assert_not_contains('La strate formulaire ignore le contenu transmis', 'Titre à ignorer', $form_strate);
-$assert_not_contains('La strate formulaire ignore les fields transmis', 'name="ignored"', $form_strate);
-$assert_contains('La strate formulaire hydrate la validation', 'data-module="components/field"', $form_strate);
-$assert_same('La strate formulaire rend ses douze champs', 12, substr_count($form_strate, 'class="invalid-msg"'));
-$assert_contains('La strate formulaire contient un champ texte', 'type="text"', $form_strate);
-$assert_contains('La strate formulaire contient un champ e-mail', 'type="email"', $form_strate);
-$assert_contains('La strate formulaire contient un téléphone', 'type="tel"', $form_strate);
-$assert_contains('La strate formulaire contient une URL', 'type="url"', $form_strate);
-$assert_contains('La strate formulaire contient un mot de passe', 'type="password"', $form_strate);
-$assert_contains('La strate formulaire contient un nombre', 'type="number"', $form_strate);
-$assert_contains('La strate formulaire contient une date', 'type="date"', $form_strate);
-$assert_contains('La strate formulaire contient une liste', '<select id="formulaire-demo-subject"', $form_strate);
-$assert_contains('La strate formulaire contient une zone de texte', '<textarea id="formulaire-demo-message"', $form_strate);
-$assert_contains('La strate formulaire contient des radios', 'type="radio" name="contact_method"', $form_strate);
-$assert_contains('La strate formulaire contient des cases groupées', 'type="checkbox" name="interests[]"', $form_strate);
-$assert_contains('La strate formulaire contient le consentement', 'type="checkbox" name="consent"', $form_strate);
-$assert_contains('La strate formulaire rend le bouton d’envoi', '<button type="submit" class="btn btn-1">', $form_strate);
-$assert_contains('La strate formulaire rend le bouton de reset', '<button type="reset" class="btn">', $form_strate);
-
 $assert_same(
     'La strate media ne rend rien sans source',
     '',
@@ -2905,6 +2920,20 @@ $legacy_media_strate = $render_strate('media', [
 ]);
 $assert_contains('La strate media conserve le sélecteur historique', 'data-type="vimeo"', $legacy_media_strate);
 $assert_contains('La strate media conserve l’ancien titre', 'title="Ancienne vidéo"', $legacy_media_strate);
+
+$image_strate = $render_strate('image', ['image' => 123]);
+$assert_contains('La strate image utilise sa classe dédiée', '<section class="strate strate-image">', $image_strate);
+$assert_contains('La strate image utilise picture', '<picture', $image_strate);
+$assert_same('La strate image vide ne produit aucun HTML', '', $render_strate('image', ['image' => null]));
+
+$video_strate = $render_strate('video', [
+    'video' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    'video_title' => 'Présentation vidéo',
+]);
+$assert_contains('La strate video utilise sa classe dédiée', '<section class="strate strate-video">', $video_strate);
+$assert_contains('La strate video utilise le composant', 'data-type="youtube"', $video_strate);
+$assert_contains('La strate video transmet le titre', 'title="Présentation vidéo"', $video_strate);
+$assert_same('La strate video vide ne produit aucun HTML', '', $render_strate('video', ['video' => '']));
 
 $quote_strate = $render_strate('quote', [
     'text' => '<p>Citation minimale.</p>',
@@ -2988,6 +3017,27 @@ $assert_same('La strate slider vide ne produit aucun HTML', '', $render_strate('
     'images' => [],
 ]));
 
+$manual_cards_slider = $render_strate('slider-cards', [
+    'title' => 'Cards éditoriales',
+    'items' => [
+        ['title' => 'Card libre 1', 'text' => '<p>Description libre.</p>'],
+        ['title' => 'Card libre 2', 'link' => ['url' => '/libre/', 'title' => 'Lire']],
+        ['title' => '', 'text' => '', 'image' => null],
+    ],
+]);
+$assert_same('Le slider manuel rend deux cards sans post', 2, substr_count($manual_cards_slider, 'class="card-slide"'));
+$assert_contains('Le slider manuel transmet le texte', 'Description libre.', $manual_cards_slider);
+$assert_contains('Le slider manuel conserve le lien éditorial', 'href="/libre/"', $manual_cards_slider);
+$assert_contains('Le slider manuel hydrate le composant', 'data-module="components/slider"', $manual_cards_slider);
+$assert_same('Le slider manuel vide ne produit aucun HTML', '', $render_strate('slider-cards', ['items' => []]));
+
+$image_only_slider = $render_strate('slider-images', [
+    'images' => [['image' => 401], ['image' => null]],
+]);
+$assert_same('Le slider images ignore les lignes vides', 1, substr_count($image_only_slider, '<li'));
+$assert_contains('Le slider images utilise picture', '<picture class="picture fit-cover slider-image">', $image_only_slider);
+$assert_same('Le slider images vide ne produit aucun HTML', '', $render_strate('slider-images', ['images' => []]));
+
 $post_types_by_id = [501 => 'news', 502 => 'page', 503 => 'news'];
 $marquee_cards_strate = $render_strate('marquee', [
     'title' => 'News en continu',
@@ -3020,6 +3070,7 @@ $assert_contains('La strate marquee rend ses images en cover', '<picture class="
 $assert_same('La strate marquee transmet sa taille d’image', [601, 'full'], $GLOBALS['lsd_thumb_calls'][0] ?? null);
 
 $marquee_html_strate = $render_strate('marquee', [
+    'content_type' => 'html',
     'items' => ['<strong>Contenu libre</strong>'],
 ]);
 $assert_contains('La strate marquee conserve son mode HTML direct', '<strong>Contenu libre</strong>', $marquee_html_strate);
@@ -3037,41 +3088,49 @@ $manual_pushes = $render_strate('pushes', [
         'title' => 'Toutes les actualités',
         'target' => '',
     ],
-    'mode' => 'manual',
-    'post_type' => 'news',
     'items' => [101, 102, '101', -1],
 ]);
 $assert_contains('La strate pushes rend son introduction', '<header class="component-header strate-header">', $manual_pushes);
 $assert_contains('La strate pushes rend son lien interne', 'href="/actualites/"', $manual_pushes);
 $assert_contains('La strate pushes rend les News sélectionnées', 'Titre WordPress 101', $manual_pushes);
-$assert_not_contains('La strate pushes refuse les contenus d’un autre CPT', 'Actualité 102', $manual_pushes);
+$assert_contains('La strate pushes accepte plusieurs types de contenus', 'class="card-page"', $manual_pushes);
 $assert_same('La strate pushes déduplique sa sélection', 1, substr_count($manual_pushes, 'class="card-news"'));
 
 $registered_post_types[] = 'project';
 $post_types_by_id[201] = 'project';
 $project_pushes = $render_strate('pushes', [
-    'mode' => 'manual',
-    'post_type' => 'project',
     'items' => [201],
 ]);
 $assert_contains('La strate pushes accepte un autre CPT', 'class="card-project"', $project_pushes);
 $assert_contains('La card Project reçoit le titre normalisé', 'Titre WordPress 201', $project_pushes);
 
 $post_types_by_id[202] = 'project';
-$push_fields_by_id[202] = ['title' => 'Titre Push', 'text' => '', 'date' => '', 'images' => ['desktop' => 0, 'mobile' => 702]];
+$card_fields_by_id[202] = ['title' => 'Titre Card', 'text' => '', 'date' => '', 'images' => ['desktop' => 0, 'mobile' => 702]];
 $partial_push = theme_post_card_item(202);
-$assert_same('Le titre Push remplace le titre WordPress', 'Titre Push', $partial_push['title'] ?? null);
+$assert_same('Le titre Card remplace le titre WordPress', 'Titre Card', $partial_push['title'] ?? null);
 $assert_same('La description vide garde l’extrait WordPress', 'Extrait 202', $partial_push['text'] ?? null);
 $assert_same('La date vide garde la date WordPress', '2026-07-20', $partial_push['datetime'] ?? null);
 $assert_same('L’image mobile sert de repli à la desktop vide', 702, $partial_push['image'] ?? null);
-$assert_same('Le lien reprend le titre Push', 'Titre Push', $partial_push['link']['title'] ?? null);
+$assert_same('Le lien reprend le titre Card', 'Titre Card', $partial_push['link']['title'] ?? null);
 
 $post_types_by_id[203] = 'page';
-$push_fields_by_id[203] = ['text' => '<p>Description Push</p>', 'date' => '2026-08-03'];
+$card_fields_by_id[203] = ['text' => '<p>Description Card</p>', 'date' => '2026-08-03'];
 $page_push = theme_post_card_item(203);
-$assert_same('Une page accepte le groupe Push', '<p>Description Push</p>', $page_push['text'] ?? null);
-$assert_same('Le groupe Push renseigne la date normalisée', '2026-08-03', $page_push['datetime'] ?? null);
-$assert_same('Le titre WordPress reste disponible sans titre Push', 'Titre WordPress 203', $page_push['title'] ?? null);
+$assert_same('Une page accepte le groupe Card', '<p>Description Card</p>', $page_push['text'] ?? null);
+$assert_same('Le groupe Card renseigne la date normalisée', '2026-08-03', $page_push['datetime'] ?? null);
+$assert_same('Le titre WordPress reste disponible sans titre Card', 'Titre WordPress 203', $page_push['title'] ?? null);
+
+$card_field_map_by_type['project'] = ['date' => 'project_date', 'text' => 'project_summary'];
+$post_types_by_id[204] = 'project';
+$business_fields_by_id[204] = ['project_date' => '20270915', 'project_summary' => 'Résumé métier'];
+$mapped_card = theme_post_card_item(204);
+$assert_same('Le champ métier alimente la date de la card', '2027-09-15', $mapped_card['datetime'] ?? null);
+$assert_same('Le champ métier alimente la description de la card', 'Résumé métier', $mapped_card['text'] ?? null);
+$post_types_by_id[205] = 'project';
+$business_fields_by_id[205] = ['project_date' => '2027-09-15'];
+$card_fields_by_id[205] = ['date' => '2027-10-01'];
+$override_card = theme_post_card_item(205);
+$assert_same('La variante Card prime sur le champ métier', '2027-10-01', $override_card['datetime'] ?? null);
 
 $get_posts_calls = [];
 $get_posts_result = [(object) ['ID' => 1201], (object) ['ID' => 1202]];
@@ -3079,8 +3138,7 @@ $post_types_by_id[1201] = 'news';
 $post_types_by_id[1202] = 'news';
 $meta_cache_calls = [];
 $post_cache_calls = [];
-$automatic_pushes = $render_strate('pushes', [
-    'mode' => 'automatic',
+$automatic_pushes = $render_strate('pushes-auto', [
     'post_type' => 'news',
     'limit' => 99,
 ]);
@@ -3095,10 +3153,43 @@ $assert_contains('La remontée automatique utilise le titre WordPress par défau
 $assert_contains('La remontée automatique ajoute le permalien de la News', 'href="https://example.test/news/1201/"', $automatic_pushes);
 
 $get_posts_calls = [];
+$slider_pushes = $render_strate('pushes-slider', [
+    'title' => 'À découvrir',
+    'post_type' => 'news',
+    'limit' => 6,
+    'slider_options' => ['navigation' => true, 'pagination' => true, 'timeline' => false],
+]);
+$assert_same('Le slider automatique interroge le CPT demandé', 'news', $get_posts_calls[0]['post_type'] ?? null);
+$assert_same('Le slider automatique utilise sa limite', 6, $get_posts_calls[0]['posts_per_page'] ?? null);
+$assert_contains('Le slider de pushes hydrate le composant', 'data-module="components/slider"', $slider_pushes);
+$assert_contains('Le slider de pushes affiche les cards', 'class="card-news"', $slider_pushes);
+$assert_contains('Le slider de pushes affiche sa navigation', 'class="slider-navigation"', $slider_pushes);
+
+$get_posts_calls = [];
+$get_posts_result = [(object) ['ID' => 1301], (object) ['ID' => 1302], (object) ['ID' => 1303]];
+$post_types_by_id[1301] = 'news';
+$post_types_by_id[1302] = 'news';
+$post_types_by_id[1303] = 'news';
+$more_pushes = $render_strate('pushes-more', ['post_type' => 'news', 'limit' => 2]);
+$assert_same('Voir plus récupère un contenu supplémentaire', 3, $get_posts_calls[0]['posts_per_page'] ?? null);
+$assert_same('Voir plus commence au premier lot', 0, $get_posts_calls[0]['offset'] ?? null);
+$assert_same('Voir plus affiche seulement la taille du lot', 2, substr_count($more_pushes, 'class="card-news"'));
+$assert_contains('Voir plus expose un lien de secours', 'pushes_more_1=2', $more_pushes);
+$assert_contains('Voir plus hydrate son module', 'data-module="strates/strate-pushes-more/strate-pushes-more"', $more_pushes);
+
+$_GET['pushes_more_2'] = '2';
+$get_posts_calls = [];
+$get_posts_result = [(object) ['ID' => 1303]];
+$last_pushes = $render_strate('pushes-more', ['post_type' => 'news', 'limit' => 2]);
+$assert_same('Voir plus décale la requête du second lot', 2, $get_posts_calls[0]['offset'] ?? null);
+$assert_not_contains('Voir plus masque le lien après le dernier lot', 'class="pushes-more-next"', $last_pushes);
+unset($_GET['pushes_more_2']);
+
+$get_posts_calls = [];
 $assert_same(
     'La remontée automatique refuse un CPT non enregistré',
     '',
-    $render_strate('pushes', ['mode' => 'automatic', 'post_type' => 'invalid'])
+    $render_strate('pushes-auto', ['post_type' => 'invalid'])
 );
 $assert_same('Un CPT invalide ne lance aucune requête', [], $get_posts_calls);
 
@@ -3106,39 +3197,57 @@ $get_posts_result = [];
 $assert_same(
     'La strate pushes vide ne produit aucun HTML',
     '',
-    $render_strate('pushes', ['mode' => 'manual', 'items' => []])
+    $render_strate('pushes', ['items' => []])
 );
 
 $snap_strate = $render_strate('snap', [
-    'strates' => [['acf_fc_layout' => 'text']],
+    'slides' => [
+        ['title' => 'Introduction', 'text' => '<p>Texte snap.</p>', 'background_color' => 'color-1'],
+        ['title' => 'Expertises', 'image' => 401, 'background_color' => 'color-2', 'link' => ['url' => '/expertises/', 'title' => 'Découvrir']],
+        ['title' => 'Projets', 'background_color' => 'color-3'],
+        ['title' => 'Sans fond', 'background_color' => 'none'],
+        ['text' => '<p>Sans titre.</p>'],
+    ],
 ]);
 $assert_contains('La strate snap hydrate le composant section snap', 'data-module="components/section-snap"', $snap_strate);
 $assert_not_contains('La strate snap ne conserve pas son ancien module', 'data-module="strates/strate-snap"', $snap_strate);
 $assert_contains('La strate snap rend sa navigation', 'class="snap-nav"', $snap_strate);
-$assert_same('La strate snap rend ses quatre panneaux statiques', 4, substr_count($snap_strate, 'class="strate strate-snap-panel'));
+$assert_same('La strate snap rend les panneaux avec titre', 4, substr_count($snap_strate, 'class="strate strate-snap-panel'));
 $assert_contains('La strate snap rend un panneau noir', 'strate-snap-panel bg-color-1', $snap_strate);
 $assert_contains('La strate snap rend un panneau bleu', 'strate-snap-panel bg-color-2', $snap_strate);
 $assert_contains('La strate snap rend un panneau gris', 'strate-snap-panel bg-color-3', $snap_strate);
-$assert_not_contains('La strate snap ignore les arguments transmis', 'acf_fc_layout', $snap_strate);
+$assert_contains('La strate snap rend le texte', 'Texte snap.', $snap_strate);
+$assert_contains('La strate snap rend le lien', 'href="/expertises/"', $snap_strate);
+$assert_contains('La strate snap rend l’image', 'snap-panel-image', $snap_strate);
+$assert_same('La strate snap vide ne produit aucun HTML', '', $render_strate('snap', ['slides' => []]));
 preg_match_all('/href="#([^"]+)"/', $snap_strate, $snap_ids);
 $assert_same('La strate snap produit quatre ancres uniques', 4, count(array_unique($snap_ids[1] ?? [])));
 
-$anchor_nav_strate = $render_strate('anchor_nav', [
-    'items' => [['label' => 'Ignoré', 'target' => 'ignored']],
+$steps_strate = $render_strate('steps', [
+    'title' => 'Notre méthode',
+    'steps' => [
+        ['title' => 'Écouter', 'text' => '<p>Votre besoin.</p>'],
+        ['title' => 'Créer', 'link' => ['url' => '/contact/', 'title' => 'Nous contacter']],
+        ['text' => 'Sans titre'],
+    ],
 ]);
-$assert_contains('La strate anchor nav hydrate son composant', 'data-module="components/anchor-nav"', $anchor_nav_strate);
-$assert_contains('La strate anchor nav rend sa navigation', 'class="anchor-nav"', $anchor_nav_strate);
-$assert_contains('La strate anchor nav rend sa première cible', 'href="#anchor-1"', $anchor_nav_strate);
-$assert_contains('La strate anchor nav rend sa dernière cible', 'href="#anchor-3"', $anchor_nav_strate);
-$assert_same('La strate anchor nav rend ses trois liens statiques', 3, substr_count($anchor_nav_strate, '<li>'));
-$assert_same('La strate anchor nav rend ses trois sections statiques', 3, substr_count($anchor_nav_strate, '<section id="anchor-'));
-$assert_not_contains('La strate anchor nav ignore les items transmis', 'ignored', $anchor_nav_strate);
+$assert_contains('La strate steps rend une liste ordonnée', '<ol class="steps-list">', $steps_strate);
+$assert_same('La strate steps ignore les lignes sans titre', 2, substr_count($steps_strate, 'class="steps-item"'));
+$assert_contains('La strate steps rend le texte', 'Votre besoin.', $steps_strate);
+$assert_contains('La strate steps rend le lien', 'href="/contact/"', $steps_strate);
+$assert_same('La strate steps vide ne produit aucun HTML', '', $render_strate('steps', ['steps' => []]));
 
-$lottie_strate = $render_strate('lottie', []);
-$assert_contains('La strate lottie utilise le composant lottie', 'data-module="components/lottie"', $lottie_strate);
-$assert_contains('La strate lottie utilise son animation de test', 'data-lottie-src="https://example.test/theme/assets/lottie/animation.json"', $lottie_strate);
-$assert_contains('La strate lottie active la lecture automatique', 'data-lottie-autoplay="true"', $lottie_strate);
-$assert_contains('La strate lottie active la boucle', 'data-lottie-loop="true"', $lottie_strate);
+$logos_strate = $render_strate('logos', [
+    'logos' => [
+        ['name' => 'Partenaire', 'image' => 401, 'link' => ['url' => 'https://example.test', 'title' => 'Voir le site', 'target' => '_blank']],
+        ['image' => 402],
+        ['name' => 'Sans image'],
+    ],
+]);
+$assert_same('La strate logos ignore les lignes sans image', 2, substr_count($logos_strate, 'class="logos-item"'));
+$assert_contains('La strate logos rend le nom accessible', 'alt="Partenaire"', $logos_strate);
+$assert_contains('La strate logos protège les liens externes', 'rel="noopener noreferrer"', $logos_strate);
+$assert_same('La strate logos vide ne produit aucun HTML', '', $render_strate('logos', ['logos' => []]));
 
 if ($failures !== []) {
     fwrite(STDERR, implode("\n\n", $failures) . "\n");

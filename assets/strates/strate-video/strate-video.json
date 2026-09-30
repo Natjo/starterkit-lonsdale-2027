@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "type": "strate",
+  "name": "video",
+  "slug": "video",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
+  "defaults": {
+    "video": "",
+    "video_title": "Présentation vidéo"
+  },
+  "dependencies": {
+    "components": ["video"],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

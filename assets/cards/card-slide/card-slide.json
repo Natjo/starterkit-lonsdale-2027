@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "type": "card",
+  "name": "Slide",
+  "slug": "slide",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
+  "dependencies": {
+    "components": ["picture", "title", "text"],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  },
+  "fields": [
+    { "name": "title", "label": "Titre", "type": "text", "required": false },
+    { "name": "text", "label": "Texte", "type": "wysiwyg", "required": false },
+    { "name": "image", "label": "Image", "type": "image", "required": false },
+    { "name": "link", "label": "Lien", "type": "link", "required": false }
+  ]
+}

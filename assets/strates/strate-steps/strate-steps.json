@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "type": "strate",
+  "name": "Steps",
+  "slug": "steps",
+  "assets": { "css": { "loading": "normal" } },
+  "defaults": {
+    "title": "Comment ça marche",
+    "steps": [
+      { "title": "Découvrir", "text": "<p>Présentez la première étape.</p>" },
+      { "title": "Construire", "text": "<p>Présentez la deuxième étape.</p>" },
+      { "title": "Partager", "text": "<p>Présentez la dernière étape.</p>" }
+    ]
+  },
+  "dependencies": {
+    "components": ["header", "title", "text", "link"],
+    "cards": [], "strates": [], "heroes": [], "common": [], "modules": []
+  }
+}

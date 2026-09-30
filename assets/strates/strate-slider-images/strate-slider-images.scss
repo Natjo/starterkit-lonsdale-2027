@@ -1,0 +1,27 @@
+.strate-slider-images {
+    .strate-content {
+        display: grid;
+        grid-template-columns: subgrid;
+        grid-column: full;
+        min-width: 0;
+    }
+
+    .strate-header {
+        grid-column: ctr;
+    }
+
+    .slider {
+        --nb: 1;
+        grid-column: ctr / fluid;
+    }
+
+    .slider-image {
+        aspect-ratio: 1;
+    }
+
+    @media #{$breakpoint-md-up} {
+        .slider {
+            --nb: 2;
+        }
+    }
+}

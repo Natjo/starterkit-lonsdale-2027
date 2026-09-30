@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "type": "strate",
+  "name": "image",
+  "slug": "image",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
+  "defaults": {
+    "image": {
+      "__forgeStarterMediaPath": "assets/img/placeholders/strate-media.jpg",
+      "name": "strate-media.jpg"
+    }
+  },
+  "dependencies": {
+    "components": ["picture"],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

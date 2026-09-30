@@ -1,5 +1,9 @@
 # Strate `slider`
 
+> Variante historique conservée temporairement pour les contenus ACF déjà
+> enregistrés. Pour un nouveau site, choisir `slider-images`, `slider-cards`
+> (contenu éditorial manuel) ou `pushes-slider` (publications automatiques).
+
 Affiche un slider de cards ou d’images. Le starter utilise par défaut le mode
 images avec trois visuels de démonstration.
 

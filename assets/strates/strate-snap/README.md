@@ -1,17 +1,34 @@
 # Strate `snap`
 
-Strate statique de démonstration composée de quatre sections colorées. Elle les
-parcourt comme un slider vertical sur ordinateur, sans Swiper ni `lenis-snap`.
+Strate composée de sections éditoriales configurées dans le repeater ACF
+`slides`. Elle les parcourt comme un slider vertical sur ordinateur, sans
+Swiper ni `lenis-snap`.
 La navigation et le comportement sont délégués au composant `section-snap`.
 
 ## Appel
 
 ```php
-strate('snap');
+strate('snap', [
+    'slides' => [
+        [
+            'title' => 'Expertises',
+            'text' => '<p>Notre savoir-faire.</p>',
+            'image' => 123,
+            'link' => ['url' => '/expertises/', 'title' => 'Découvrir'],
+            'background_color' => 'color-2',
+        ],
+    ],
+]);
 ```
 
-Les arguments transmis sont ignorés. La strate rend toujours quatre panneaux
-de démonstration : noir, bleu, gris et blanc. Elle n’est pas déclarée dans ACF.
+Chaque ligne contient un titre obligatoire, un texte WYSIWYG, une image ID,
+un lien ACF et une couleur de fond facultatifs. Les couleurs autorisées sont
+`color-1`, `color-2` et `color-3` ; `none` laisse le fond par défaut. Une ligne
+sans titre est ignorée. Si aucune ligne valide ne reste, la strate ne produit
+aucun HTML. Le titre sert aussi de libellé dans la navigation.
+
+Le manifeste fournit trois sections de démonstration préremplies dans Forge.
+L'onglet Options ACF reprend les options communes des strates.
 
 Le composant configure la ligne d’activation :
 
@@ -35,7 +52,7 @@ contrôle sa sortie par le bas.
 dans cette strate, le snap et ses variables de progression sont désactivés. Si
 l'option est omise, `sectionSnap` reste actif quelle que soit la largeur.
 
-Les panneaux restent écrits dans le template de la strate. Leur navigation est
+Les panneaux sont produits à partir du repeater. Leur navigation est
 produite avec `component('section-snap', ...)`. Leurs IDs restent uniques si la
 démonstration est rendue plusieurs fois sur une même page. Chaque panneau mesure exactement
 `calc(100vh - var(--header-height))`, sans marge entre les panneaux, et son

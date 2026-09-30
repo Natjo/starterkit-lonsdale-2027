@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "type": "strate",
+  "name": "Columns content",
+  "slug": "columns-content",
+  "assets": {
+    "css": { "loading": "normal" }
+  },
+  "defaults": {
+    "columns": [
+      {
+        "title": "Lorem ipsum dolor sit amet",
+        "text": "<p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/content-column-1.jpg",
+          "name": "content-column-1.jpg"
+        }
+      },
+      {
+        "title": "Ut enim ad minim veniam",
+        "text": "<p>Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/content-column-2.jpg",
+          "name": "content-column-2.jpg"
+        }
+      },
+      {
+        "title": "Duis aute irure dolor",
+        "text": "<p>In reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>",
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/content-column-3.jpg",
+          "name": "content-column-3.jpg"
+        }
+      }
+    ]
+  },
+  "dependencies": {
+    "components": ["picture", "title", "text"],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

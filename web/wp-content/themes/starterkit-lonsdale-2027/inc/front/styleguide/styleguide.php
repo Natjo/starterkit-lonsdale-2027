@@ -151,11 +151,7 @@ $styleguide_news = [
 
     <!-- strates -->
 
-    <?php strate('formulaire'); ?>
-
-    <?php strate('text_animated'); ?>
-
-    <?php strate('paralax'); ?>
+    <?php strate('text-animated'); ?>
 
     <?php strate('keynumbers', [
         'title' => 'Nos chiffres clés',
@@ -185,11 +181,14 @@ $styleguide_news = [
         ],
     ]); ?>
 
-    <?php strate('slider', [
-        'title' => 'Strate slider',
-        'text' => '<p>Un exemple complet de la strate avec son introduction et des cartes actualité.</p>',
-        'items' => $styleguide_news,
-        'card' => 'news',
+    <?php strate('slider-cards', [
+        'title' => 'Slider de cards éditoriales',
+        'text' => '<p>Des cards saisies directement dans la strate, sans publication associée.</p>',
+        'items' => [
+            ['title' => 'Premier sujet', 'text' => '<p>Une description courte.</p>'],
+            ['title' => 'Deuxième sujet', 'text' => '<p>Une autre description.</p>'],
+            ['title' => 'Troisième sujet', 'text' => '<p>Un dernier exemple.</p>'],
+        ],
         'slider_options' => [
             'navigation' => true,
             'pagination' => true,

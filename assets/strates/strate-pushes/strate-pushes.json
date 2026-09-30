@@ -6,8 +6,13 @@
   "assets": {
     "css": { "loading": "normal" }
   },
+  "defaults": {
+    "title": "À la une",
+    "text": "<p>Sélectionnez les contenus à mettre en avant.</p>",
+    "items": []
+  },
   "dependencies": {
-    "components": ["header","list"],
+    "components": ["header"],
     "cards": [],
     "strates": [],
     "heroes": [],

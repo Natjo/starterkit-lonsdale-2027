@@ -202,8 +202,8 @@ function theme_prime_posts(array $items): array
 
 /**
  * Prépare le payload commun aux cards à partir d'une publication.
- * Les valeurs facultatives du groupe ACF `push` remplacent leurs équivalents
- * WordPress un champ à la fois, quel que soit le type de publication.
+ * Priorité par champ : groupe ACF `card`, champ métier déclaré pour le CPT,
+ * puis donnée WordPress. Aucun groupe ni mapping n'est obligatoire.
  *
  * @return array<string, mixed>|null
  */
@@ -228,17 +228,31 @@ function theme_post_card_item(int $post_id): ?array
     ];
 
     $fields = theme_get_fields($post_id);
-    $push = $fields['push'] ?? null;
-    $push = is_array($push) && !array_is_list($push) ? $push : [];
+    $card = $fields['card'] ?? null;
+    $card = is_array($card) && !array_is_list($card) ? $card : [];
+    $field_map = apply_filters('theme_card_field_map', [], $post_type, $post_id);
+    $field_map = is_array($field_map) && !array_is_list($field_map) ? $field_map : [];
+    $business_value = static function (string $name) use ($field_map, $fields): mixed {
+        $field_name = $field_map[$name] ?? null;
+        return is_string($field_name) && $field_name !== '' ? ($fields[$field_name] ?? null) : null;
+    };
+
     foreach (['title', 'text'] as $name) {
-        $value = $push[$name] ?? null;
-        if ((is_scalar($value) || $value instanceof Stringable) && trim((string) $value) !== '') {
-            $item[$name] = trim((string) $value);
+        foreach ([$card[$name] ?? null, $business_value($name)] as $value) {
+            if ((is_scalar($value) || $value instanceof Stringable) && trim((string) $value) !== '') {
+                $item[$name] = trim((string) $value);
+                break;
+            }
         }
     }
 
-    $date = $push['date'] ?? null;
-    if (is_string($date) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $date) === 1) {
+    foreach ([$card['date'] ?? null, $business_value('date')] as $date) {
+        if (!is_string($date)) continue;
+        $date = trim($date);
+        if (preg_match('/^\d{8}$/', $date) === 1) {
+            $date = substr($date, 0, 4) . '-' . substr($date, 4, 2) . '-' . substr($date, 6, 2);
+        }
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $date) !== 1) continue;
         $timezone = function_exists('wp_timezone') ? wp_timezone() : new DateTimeZone(date_default_timezone_get());
         $parsed = DateTimeImmutable::createFromFormat('!Y-m-d', $date, $timezone);
         $errors = DateTimeImmutable::getLastErrors();
@@ -248,12 +262,13 @@ function theme_post_card_item(int $post_id): ?array
             $item['date'] = function_exists('wp_date') && function_exists('get_option')
                 ? wp_date((string) get_option('date_format'), $parsed->getTimestamp(), $timezone)
                 : $parsed->format('d/m/Y');
+            break;
         }
     }
 
-    $images = $push['images'] ?? null;
+    $images = $card['images'] ?? null;
     $images = is_array($images) && !array_is_list($images) ? $images : [];
-    foreach ([$images['desktop'] ?? null, $images['mobile'] ?? null, $push['image'] ?? null] as $image) {
+    foreach ([$images['desktop'] ?? null, $images['mobile'] ?? null, $card['image'] ?? null, $business_value('image')] as $image) {
         $image_id = filter_var($image, FILTER_VALIDATE_INT);
         if ($image_id !== false && $image_id > 0) {
             $item['image'] = $image_id;
@@ -266,6 +281,53 @@ function theme_post_card_item(int $post_id): ?array
 
     $filtered = apply_filters('theme_post_card_item', $item, $post_id, $post_type);
     return is_array($filtered) && !array_is_list($filtered) ? $filtered : $item;
+}
+
+/**
+ * Prépare un lot de cards récentes pour les strates de remontée automatique.
+ * Le dernier contenu supplémentaire sert uniquement à détecter « Voir plus ».
+ *
+ * @return array{items: list<array<string, mixed>>, has_more: bool}
+ */
+function theme_pushes_items(string $post_type, int $limit, int $page = 1, bool $lookahead = false): array
+{
+    if ($post_type === '' || !post_type_exists($post_type)) return ['items' => [], 'has_more' => false];
+
+    $limit = max(1, min(12, $limit));
+    $page = max(1, $page);
+    $posts = get_posts([
+        'post_type' => $post_type,
+        'post_status' => 'publish',
+        'posts_per_page' => $limit + ($lookahead ? 1 : 0),
+        'offset' => ($page - 1) * $limit,
+        'orderby' => 'date',
+        'order' => 'DESC',
+        'no_found_rows' => true,
+        'ignore_sticky_posts' => true,
+        'suppress_filters' => false,
+    ]);
+    $has_more = $lookahead && count($posts) > $limit;
+    $posts = array_slice($posts, 0, $limit);
+    $ids = [];
+    foreach ($posts as $post) {
+        $id = is_object($post)
+            ? (isset($post->ID) ? (int) $post->ID : 0)
+            : filter_var($post, FILTER_VALIDATE_INT);
+        if ($id > 0) $ids[$id] = $id;
+    }
+    theme_prime_posts(array_values($ids));
+
+    return [
+        'items' => array_values(array_filter(array_map('theme_post_card_item', array_values($ids)))),
+        'has_more' => $has_more,
+    ];
+}
+
+/** Identifiant stable selon l'ordre des strates rendues sur une page. */
+function theme_pushes_more_instance_id(): int
+{
+    static $instance = 0;
+    return ++$instance;
 }
 
 /**
@@ -610,6 +672,14 @@ function theme_prescan_hero_assets(array $fields): void
 function strate(string $name, array $args = []): void
 {
     $name = trim($name);
+
+    // Compatibilité des contenus enregistrés avant l'harmonisation des slugs.
+    $name = match ($name) {
+        'text_image' => 'text-image',
+        'text_animated' => 'text-animated',
+        'content-columns' => 'columns-content',
+        default => $name,
+    };
 
     if ($name === '' || !preg_match('#^[A-Za-z0-9_-]+$#', $name)) {
         return;

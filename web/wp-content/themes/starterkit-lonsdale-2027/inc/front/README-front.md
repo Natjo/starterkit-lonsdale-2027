@@ -197,13 +197,30 @@ theme_prime_posts([123, ['post_id' => 456]]);
 `theme_post_card_item` permet à un CPT d'adapter ce payload pour tous les
 listings, y compris les strates `pushes` et `Theme_Listing`.
 
-Le groupe ACF facultatif `Field - Push` expose un champ racine `push` avec
+Le groupe ACF facultatif `Field - Card` expose un champ racine `card` avec
 `title`, `text`, `date` et `images.desktop` / `images.mobile`. Il peut être
-affecté à une page, un article ou un CPT. Chaque valeur renseignée remplace
-son équivalent WordPress ; un champ vide conserve le titre, l’extrait, la date
-ou l’image mise en avant du post. L’image desktop a priorité sur la mobile.
-Le permalien reste celui du post et son libellé suit le titre retenu. Si le
-groupe n’est pas affecté ou renseigné, la card fonctionne sans lui.
+affecté à une page, un article ou un CPT. Chaque valeur renseignée prime sur
+le champ métier correspondant, puis sur la valeur WordPress. L’image desktop
+a priorité sur la mobile. Le permalien reste celui du post et son libellé suit
+le titre retenu. Sans groupe `card`, la card fonctionne avec les champs métier
+configurés ou les valeurs WordPress.
+
+Un CPT peut déclarer les noms de ses champs métier avec le filtre
+`theme_card_field_map` :
+
+```php
+add_filter('theme_card_field_map', static function (array $map, string $post_type): array {
+    return $post_type === 'event'
+        ? ['date' => 'event_date', 'text' => 'event_summary', 'image' => 'event_image']
+        : $map;
+}, 10, 2);
+```
+
+Les clés possibles sont `title`, `text`, `date`, `image`. Les valeurs sont des
+noms de champs ACF racine ; aucune convention n’est imposée aux CPT. Les dates
+ACF `Y-m-d` et `Ymd` sont acceptées. Un mapping absent, un champ vide ou une
+date invalide laisse jouer le repli suivant. Il n’est pas nécessaire de saisir
+la même date une deuxième fois dans `card.date`.
 
 `theme_prime_attachments()` est réservé aux payloads explicitement dédiés aux
 images. Il reconnaît les IDs directs, les tableaux ACF avec `ID` ou `id`, ainsi

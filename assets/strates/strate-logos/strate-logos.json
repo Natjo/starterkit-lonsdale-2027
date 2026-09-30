@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "type": "strate",
+  "name": "Logos",
+  "slug": "logos",
+  "assets": { "css": { "loading": "normal" } },
+  "defaults": {
+    "title": "Nos partenaires",
+    "text": "<p>Découvrez les organisations qui nous accompagnent.</p>",
+    "logos": []
+  },
+  "dependencies": {
+    "components": ["header", "picture"],
+    "cards": [], "strates": [], "heroes": [], "common": [], "modules": []
+  }
+}

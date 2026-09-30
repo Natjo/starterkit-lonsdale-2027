@@ -1,0 +1,40 @@
+.strate-steps {
+    .strate-content {
+        grid-column: ctr;
+        min-width: 0;
+    }
+
+    .strate-header {
+        margin-bottom: var(--margin-sm);
+    }
+
+    .steps-list {
+        display: grid;
+        gap: var(--gap);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        counter-reset: step;
+
+        @media #{$breakpoint-md-up} {
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+        }
+    }
+
+    .steps-item {
+        min-width: 0;
+        counter-increment: step;
+
+        &::before {
+            display: block;
+            margin-bottom: 2rem;
+            content: counter(step, decimal-leading-zero);
+            font: inherit;
+        }
+    }
+
+    .steps-text,
+    .steps-link {
+        margin-top: 1rem;
+    }
+}

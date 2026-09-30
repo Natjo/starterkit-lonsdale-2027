@@ -54,12 +54,17 @@ disponible sur la page d'accueil et les contenus du CPT `news`.
 Le nom du layout ACF doit correspondre exactement au suffixe du fichier :
 
 ```text
-acf_fc_layout = text_image
-template       = strate-text_image.php
-appel          = strate('text_image', $strate)
+acf_fc_layout = text-image
+template       = strate-text-image.php
+appel          = strate('text-image', $strate)
 ```
 
 Le dispatcher ignore les entrées invalides et les layouts sans nom.
+Le dispatcher accepte encore les anciens noms `text_image`, `text_animated`
+et `content-columns` si ces valeurs lui parviennent. Le thème normalise aussi les anciennes valeurs
+du champ flexible `strates` avant le chargement ACF : les sous-champs existants
+de `text_image` restent accessibles sans migration manuelle de la base.
+Il en va de même pour `content-columns`, renommé `columns-content`.
 
 ### Ajouter un layout ACF
 
@@ -372,18 +377,27 @@ comportement de la strate. Les imports SCSS actifs sont déclarés dans
 | Strate | État actuel |
 | --- | --- |
 | `accordion` | Assemble le composant `accordion` |
-| `formulaire` | Strate statique réservée au styleguide |
+| `columns-content` | Affiche une à trois colonnes éditoriales |
 | `intro` | Squelette vide |
 | `keynumbers` | Assemble une liste de `card-keynumber` |
+| `logos` | Affiche une grille statique de logos |
 | `marquee` | Assemble et pilote `marquee` |
-| `media` | Affiche une image ou une vidéo |
-| `paralax` | Strate statique plein écran avec image animée au scroll |
-| `pushes` | Sélection manuelle ou remontée automatique de contenus |
+| `media` | Ancienne variante image/vidéo, conservée pour les contenus existants |
+| `image` | Affiche uniquement une image |
+| `video` | Affiche uniquement une vidéo, avec poster facultatif |
+| `pushes` | Sélection de contenus existants, dans l’ordre choisi |
+| `pushes-auto` | Remontée automatique des derniers contenus d’un CPT |
+| `pushes-more` | Remontée automatique avec chargement progressif « Voir plus » |
+| `pushes-slider` | Remontée automatique dans un carrousel |
+| `slider-images` | Slider d’images saisies dans le BO |
+| `slider-cards` | Slider de cards éditoriales saisies dans le BO |
 | `quote` | Assemble le composant `quote` |
 | `slider` | Assemble et pilote `slider` |
+| `snap` | Parcourt des sections éditoriales configurées par repeater |
+| `steps` | Affiche des étapes numérotées |
 | `text` | Assemble `title` et `text` |
-| `text_animated` | Strate statique réservée au styleguide, pilotée par `textAnimated` |
-| `text_image` | Assemble `title`, `text` et `picture` |
+| `text-animated` | Strate statique réservée au styleguide, pilotée par `textAnimated` |
+| `text-image` | Assemble `title`, `text` et `picture` |
 
 Ne pas considérer un template vide comme une strate terminée. Avant de
 l’utiliser, vérifier son PHP et son README local.

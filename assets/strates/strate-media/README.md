@@ -1,5 +1,8 @@
 # Strate `media`
 
+> Variante historique conservée pour les contenus déjà enregistrés. Pour une
+> nouvelle page, choisir `image` ou `video` dans le catalogue.
+
 Affiche une image ou une vidéo sur le rail défini par les options communes de
 strate.
 
