@@ -44,7 +44,7 @@ l’accueil.
 
 Le menu est rendu avec `wp_nav_menu()`, sans fallback. Le walker partagé
 `inc/front/header-nav-walker.php` enveloppe chaque `ul.sub-menu` dans un
-`div.wrapper-level`, à tous les niveaux enfants. Le `ul` principal n'a pas
+`div.level1 > div.wrapper-sub-menu`, à tous les niveaux enfants. Le `ul` principal n'a pas
 de wrapper. Le formulaire utilise `component('search', [...])`.
 
 Le walker retire des `li` les classes techniques `menu-item`,
@@ -77,6 +77,18 @@ L’initialisation reste active pendant toute la durée de la page. Elle ne
 retourne pas de lifecycle destiné à l’hydrateur.
 
 ## Navigation mobile
+
+À l'ouverture, le focus va au premier élément interactif visible de `#nav`.
+Le déplacement attend deux frames de rendu pour laisser démarrer la
+transition de visibilité, au clic comme avec Entrée ; une fermeture l'annule.
+Tab et Maj+Tab bouclent dans la navigation ; les éléments masqués, désactivés
+et les descendants `inert` sont exclus. Un menu vide reçoit lui-même le focus.
+Échap ferme le panneau et rend le focus à `.btn-nav`. Fermée sur mobile,
+la navigation est `inert` ; le piège de focus est retiré à la fermeture et
+sur desktop. Le bouton reste utilisable au clic pour refermer le panneau.
+
+Contrat des trois variantes :
+`node web/wp-content/themes/starterkit-lonsdale-2027/tests/header-nav-mobile-focus-contract.mjs`.
 
 Le breakpoint JavaScript correspond au breakpoint CSS mobile :
 

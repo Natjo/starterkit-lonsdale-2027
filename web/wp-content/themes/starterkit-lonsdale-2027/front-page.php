@@ -1,6 +1,6 @@
 <?php
 get_header();
-common("header-nav-subnav");
+common("header-nav-mega");
 ?>
 
 <main>

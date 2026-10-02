@@ -12,19 +12,19 @@ parent conserve son lien. Sur ordinateur, le sous-menu s'ouvre au survol
 ou lorsque Tab place le focus dans son parent, sans bouton supplémentaire.
 Sur mobile ou sur un appareil sans survol, un bouton distinct ouvre les enfants
 sans détourner le lien parent.
-Chaque `ul.sub-menu` est enveloppé dans un `div.wrapper-level`, comme dans
+Chaque `ul.sub-menu` est enveloppé dans un `div.level1`, comme dans
 le header standard, à tous les niveaux enfants. Le `ul` principal reste sans
 wrapper. Le JavaScript place le bouton d'ouverture avant ce wrapper.
 Le walker retire les classes techniques des `li` (`menu-item`,
 `menu-item-type-*`, `menu-item-object-*`, `menu-item-{ID}` et
 `menu-item-has-children`), mais conserve les états actifs et les classes personnalisées.
-Le JavaScript repère les parents par leur enfant direct `.wrapper-level`.
+Le JavaScript repère les parents par leur enfant direct `.level1`.
 La classe `is-submenu-open` du parent affiche ce wrapper ; les sous-menus
 sont masqués au repos. Ouvrir un sous-menu ferme ses frères, au clic comme
 au survol. Sur mobile, les wrappers reprennent leur place dans le flux.
 
 Sur ordinateur, `--submenu-height` vaut `0px` sur chaque wrapper fermé.
-Le CSS lui attribue `6rem` sur `.is-submenu-open > .wrapper-level`,
+Le CSS lui attribue `6rem` sur `.is-submenu-open > .level1`,
 puis `0px` à la fermeture. Wrapper et `ul` utilisent `height: var(--submenu-height)`
 et la même transition de `250ms`. Le contenu est aligné en bas, avec `overflow: hidden`
 sur le `ul` uniquement pendant le dévoilement. Une fois ouvert,
@@ -59,6 +59,15 @@ standard s'appliquent aussi à cette variante.
 
 `Navigation` gère uniquement le panneau mobile : burger, fermeture par lien
 ou Échap, retour du focus sur le burger avec Échap et `data-lenis-prevent`.
+À l'ouverture, le premier élément interactif visible reçoit le focus.
+Le déplacement attend deux frames de rendu pour la transition de visibilité,
+au clic comme avec Entrée, et est annulé si le panneau est refermé.
+Tab et Maj+Tab restent dans `#nav` et excluent les éléments masqués,
+désactivés ou `inert`. Si le menu est vide, `#nav` reçoit le focus.
+Échap ferme tout le panneau, y compris depuis un sous-menu, et rend le
+focus au burger. La navigation mobile fermée est `inert` ; aucun piège
+de focus n'est actif sur desktop.
+Test : `tests/header-nav-mobile-focus-contract.mjs` (depuis le dossier du thème).
 Classes et attributs sont modifiés seulement si leur valeur change. Le timer
 de `300ms` retire `is-nav-animating` après une bascule ; l'initialisation et
 les changements de breakpoint réinitialisent le panneau sans transition.
@@ -91,3 +100,16 @@ Sur macOS, Chrome est détecté à son emplacement habituel ; ailleurs, définir
 Échap, l'animation et son clipping temporaire, les niveaux imbriqués, le
 bouton tactile, le mobile, la réduction des animations et l'idempotence.
 Il crée un profil temporaire et le supprime après fermeture du navigateur.
+
+## Structure du panneau
+
+```html
+<div class="level1" id="…">
+    <div class="wrapper-sub-menu">
+        <ul class="sub-menu">…</ul>
+    </div>
+</div>
+```
+
+Le panneau contrôlé est `level1` (ID, `aria-controls`, `inert`, état ouvert).
+La div intérieure `wrapper-sub-menu` entoure la liste.

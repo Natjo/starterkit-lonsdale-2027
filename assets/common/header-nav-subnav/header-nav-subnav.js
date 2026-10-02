@@ -7,12 +7,12 @@ function Submenus(root) {
     root.classList.add('has-submenu-controls');
 
     const nav = root.querySelector('#nav');
-    const level1s = [...root.querySelectorAll('.header-nav-menu > li > .wrapper-level')];
+    const level1s = [...root.querySelectorAll('.nav-menu > li > .level1, .header-nav-menu > li > .level1')];
     const alignLevel1 = () => {
         if (!nav) return;
         const navRight = nav.getBoundingClientRect().right;
         const states = level1s.map((wrapper) => {
-            const submenu = wrapper.querySelector(':scope > .sub-menu');
+            const submenu = wrapper.querySelector(':scope > .wrapper-sub-menu > .sub-menu');
             // Measure the default left alignment, independently of the current class.
             return !mobile.matches && submenu
                 && wrapper.getBoundingClientRect().left + submenu.getBoundingClientRect().width - 6 > navRight + 1;
@@ -38,19 +38,19 @@ function Submenus(root) {
     }
 
     root.querySelectorAll('li').forEach((parent, index) => {
-        const wrapper = parent.querySelector(':scope > .wrapper-level');
-        const submenu = wrapper?.querySelector(':scope > .sub-menu');
+        const wrapper = parent.querySelector(':scope > .level1');
+        const submenu = wrapper?.querySelector(':scope > .wrapper-sub-menu > .sub-menu');
         const link = parent.querySelector(':scope > a');
         if (!submenu || !link) return;
 
         wrapper.inert = true;
 
-        submenu.id = `${root.id}-submenu-${index + 1}`;
+        if (!wrapper.id) wrapper.id = `${root.id}-submenu-${index + 1}`;
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'submenu-toggle';
         button.setAttribute('aria-label', `${root.dataset.submenuLabel || 'Sous-menu'} ${link.textContent.trim()}`);
-        button.setAttribute('aria-controls', submenu.id);
+        button.setAttribute('aria-controls', wrapper.id);
         button.setAttribute('aria-expanded', 'false');
         const icon = document.createElement('span');
         icon.textContent = '+';
@@ -110,6 +110,7 @@ function Submenus(root) {
     });
 
     const closeAll = () => controls.forEach((close) => close(false));
+    root.addEventListener('navigation-close', closeAll);
     document.addEventListener('pointerdown', (event) => {
         if (!root.contains(event.target)) closeAll();
     });
@@ -129,56 +130,88 @@ function Submenus(root) {
 function Navigation(root) {
     const button = root.querySelector('.btn-nav');
     const nav = root.querySelector('#nav');
-
     if (!button || !nav) return;
 
-    const mobileMedia = window.matchMedia(MOBILE_MEDIA);
+    const mobile = window.matchMedia(MOBILE_MEDIA);
+    const originalTabindex = nav.getAttribute('tabindex');
     let transitionTimer = 0;
-
-    const setOpen = (open, animate = true) => {
-        const changed = root.classList.contains('is-open') !== open;
-        if (!changed && animate) return;
-
-        clearTimeout(transitionTimer);
-        transitionTimer = 0;
-        if (root.classList.contains('is-nav-animating') !== animate) {
-            root.classList.toggle('is-nav-animating', animate);
-        }
-
-        if (animate) {
-            transitionTimer = window.setTimeout(() => {
-                root.classList.remove('is-nav-animating');
-                transitionTimer = 0;
-            }, 300);
-        }
-
-        if (changed) root.classList.toggle('is-open', open);
-        if (button.getAttribute('aria-expanded') !== String(open)) {
-            button.setAttribute('aria-expanded', String(open));
-        }
-        if (nav.hasAttribute('data-lenis-prevent') !== open) {
-            nav.toggleAttribute('data-lenis-prevent', open);
+    let focusFrame = 0;
+    const focusableElements = () => [...nav.querySelectorAll('a[href], button, input, select, textarea, [tabindex], [contenteditable="true"]')]
+        .filter((element) => element.tabIndex >= 0 && !element.matches(':disabled')
+            && !element.closest('[inert]') && element.getClientRects().length
+            && getComputedStyle(element).visibility === 'visible');
+    const focusFirst = () => {
+        const first = focusableElements()[0];
+        if (!first) nav.setAttribute('tabindex', '-1');
+        (first ?? nav).focus({ preventScroll: true });
+    };
+    const containFocus = (event) => {
+        if (!nav.contains(event.target)) focusFirst();
+    };
+    const onKeydown = (event) => {
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            event.stopPropagation();
+            setOpen(false);
+            button.focus({ preventScroll: true });
+        } else if (event.key === 'Tab') {
+            const items = focusableElements();
+            const first = items[0];
+            const last = items[items.length - 1];
+            if (!first || !nav.contains(document.activeElement)
+                || (event.shiftKey && (document.activeElement === first || document.activeElement === nav))
+                || (!event.shiftKey && (document.activeElement === last || document.activeElement === nav))) {
+                event.preventDefault();
+                (event.shiftKey ? last ?? nav : first ?? nav).focus({ preventScroll: true });
+            }
         }
     };
-
-    button.addEventListener('click', () => {
-        if (mobileMedia.matches) setOpen(!root.classList.contains('is-open'));
+    const setOpen = (open, animate = true) => {
+        open = open && mobile.matches;
+        const changed = root.classList.contains('is-open') !== open;
+        if (!changed && animate) return;
+        clearTimeout(transitionTimer);
+        cancelAnimationFrame(focusFrame);
+        focusFrame = 0;
+        root.classList.toggle('is-nav-animating', animate);
+        if (animate) transitionTimer = window.setTimeout(() => {
+            root.classList.remove('is-nav-animating');
+            transitionTimer = 0;
+        }, 300);
+        root.classList.toggle('is-open', open);
+        button.setAttribute('aria-expanded', String(open));
+        nav.toggleAttribute('data-lenis-prevent', open);
+        nav.inert = mobile.matches && !open;
+        if (open) {
+            document.addEventListener('keydown', onKeydown, true);
+            document.addEventListener('focusin', containFocus);
+            focusFrame = requestAnimationFrame(() => {
+                focusFrame = 0;
+                if (!mobile.matches || !root.classList.contains('is-open')) return;
+                focusFrame = requestAnimationFrame(() => {
+                    focusFrame = 0;
+                    if (mobile.matches && root.classList.contains('is-open')) focusFirst();
+                });
+            });
+        } else {
+            document.removeEventListener('keydown', onKeydown, true);
+            document.removeEventListener('focusin', containFocus);
+            root.dispatchEvent(new Event('navigation-close'));
+            if (originalTabindex === null) nav.removeAttribute('tabindex');
+            else nav.setAttribute('tabindex', originalTabindex);
+            if (mobile.matches && nav.contains(document.activeElement)) button.focus({ preventScroll: true });
+        }
+    };
+    button.addEventListener('click', () => setOpen(!root.classList.contains('is-open')));
+    button.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' || !mobile.matches) return;
+        event.preventDefault();
+        if (!event.repeat) setOpen(!root.classList.contains('is-open'));
     });
-
     nav.addEventListener('click', (event) => {
-        if (root.classList.contains('is-open') && event.target instanceof Element && event.target.closest('a')) {
-            setOpen(false);
-        }
+        if (root.classList.contains('is-open') && event.target instanceof Element && event.target.closest('a')) setOpen(false);
     });
-
-    root.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && root.classList.contains('is-open')) {
-            setOpen(false);
-            button.focus();
-        }
-    });
-
-    mobileMedia.addEventListener('change', () => setOpen(false, false));
+    mobile.addEventListener('change', () => setOpen(false, false));
     setOpen(false, false);
 }
 

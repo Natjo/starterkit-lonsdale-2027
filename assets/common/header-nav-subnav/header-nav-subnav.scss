@@ -54,17 +54,6 @@
         display: flex;
     }
 
-    .header-search {
-        input[type="search"] {
-            padding-block: .9rem;
-        }
-
-        .search-submit {
-            min-width: auto;
-            padding-block: .9rem;
-        }
-    }
-
     .nav-logo {
         margin-right: auto;
     }
@@ -139,6 +128,10 @@
         }
     }
 
+    .wrapper-sub-menu {
+        display: contents;
+    }
+
     // Desktop
     @media #{$breakpoint-md-up} {
         .nav-menu li {
@@ -150,9 +143,8 @@
 
         --submenu-height: 6rem;
 
-        .wrapper-sub-menu {
+        .level1 {
             --height: 0px;
-
             pointer-events: none;
             transition: height .25s ease;
             position: absolute;
@@ -177,10 +169,9 @@
             }
         }
 
-        .wrapper-sub-menu.right {
+        .level1.right {
             justify-content: flex-end;
         }
-
 
         .sub-menu {
             display: flex;
@@ -196,7 +187,7 @@
             box-sizing: border-box;
         }
 
-        .wrapper-sub-menu.right>.sub-menu {
+        .level1.right>.wrapper-sub-menu>.sub-menu {
             margin-left: 0;
             margin-right: -6px;
         }
@@ -206,28 +197,28 @@
             height: var(--submenu-height);
         }
 
-        .is-submenu-open>.wrapper-sub-menu {
+        .is-submenu-open>.level1 {
             --height: var(--submenu-height);
             pointer-events: auto;
         }
 
         // Clip the reveal, then allow deeper menu levels to extend outside the ul.
-        .is-submenu-revealed>.wrapper-sub-menu>.sub-menu {
+        .is-submenu-revealed>.level1>.wrapper-sub-menu>.sub-menu {
             overflow: visible;
         }
 
         &:not(.has-submenu-controls) li {
 
-            &:hover>.wrapper-sub-menu,
-            &:focus-within>.wrapper-sub-menu {
+            &:hover>.level1,
+            &:focus-within>.level1 {
                 visibility: visible;
                 pointer-events: auto;
                 height: auto;
                 transition-delay: 0s;
             }
 
-            .wrapper-sub-menu>.sub-menu,
-            .wrapper-sub-menu.right>.sub-menu {
+            .level1>.wrapper-sub-menu>.sub-menu,
+            .level1.right>.wrapper-sub-menu>.sub-menu {
                 height: auto;
                 position: static;
             }
@@ -242,16 +233,12 @@
         #nav {
             gap: 2rem;
         }
-
-        .header-search {
-            width: clamp(22rem, 24vw, 34rem);
-        }
     }
 
     // Mobile
     @media #{$breakpoint-md-down} {
 
-        .wrapper-sub-menu>.sub-menu {
+        .level1>.wrapper-sub-menu>.sub-menu {
             height: auto;
             width: 100%;
             margin-left: 0;
@@ -264,7 +251,7 @@
             margin-left: auto;
         }
 
-        .wrapper-sub-menu {
+        .level1 {
             display: none;
             position: static;
             border: 0;
@@ -278,7 +265,7 @@
             }
         }
 
-        .is-submenu-open>.wrapper-sub-menu {
+        .is-submenu-open>.level1 {
             display: block;
         }
 
@@ -305,7 +292,7 @@
             transition: none;
         }
 
-        &:not(.has-submenu-controls) .wrapper-sub-menu {
+        &:not(.has-submenu-controls) .level1 {
             display: block;
             visibility: visible;
             pointer-events: auto;
@@ -347,12 +334,6 @@
             flex-direction: column;
         }
 
-        .header-search {
-            flex: 0 0 auto;
-            width: 100%;
-            max-width: 64rem;
-        }
-
         &.is-open #nav {
             visibility: visible;
             pointer-events: auto;
@@ -376,7 +357,7 @@
         transition: none;
 
         &.is-scroll-ready,
-        .wrapper-sub-menu,
+        .level1,
         .sub-menu,
         .btn-nav span,
         .btn-nav-line,

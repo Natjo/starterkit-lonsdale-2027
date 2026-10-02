@@ -23,7 +23,7 @@ Le footer utilise le même walker que les headers
 pas d'attribut `id`. Les classes techniques `menu-item`, `menu-item-type-*`,
 `menu-item-object-*`, `menu-item-{ID}` et `menu-item-has-children` sont
 retirées ; les classes personnalisées et les états de page active restent.
-Chaque `ul.sub-menu` enfant est entouré d'un `div.wrapper-level`.
+Chaque `ul.sub-menu` enfant est entouré de `div.level1 > div.wrapper-sub-menu`.
 
 ## Données WordPress
 
