@@ -52,6 +52,32 @@ autres common et modules nécessaires au site :
 
 Tout appel statique fait par le common doit être reflété dans ce manifeste.
 
+## Variantes dans Forge
+
+Un common peut proposer plusieurs versions sous une seule entrée du catalogue.
+Le manifeste de chaque variante déclare le nom canonique qu'elle remplace :
+
+```json
+"variantOf": "header-nav"
+```
+
+Par exemple, `assets/common/header-nav-complex/header-nav-complex.json`
+décrit une variante de `header-nav`. Elle garde son propre PHP, ses assets,
+son README et ses dépendances. Forge affiche cette version dans un select,
+et les dépendances du site suivent la version sélectionnée.
+
+Au build, Forge copie la variante choisie vers le nom canonique et renomme ses
+fichiers, identifiants CSS, chemins JS et attributs `data-module`. Le manifeste
+généré reprend le slug canonique, ses règles d'activation et les dépendances
+de la variante ; `variantOf` est retiré. Les versions non utilisées sont
+supprimées du site créé. Les pages continuent à appeler le nom canonique.
+
+Ce contrat s'applique à tous les common, notamment header, footer et prefooter.
+La variante doit désigner un common de base existant, sans chaîne de variantes,
+et ne pas dépendre du common qu'elle remplace. Ses données WordPress doivent
+respecter le contrat du rôle choisi (menus, options ACF) ; ces identifiants
+métier restent explicites dans son PHP et doivent exister dans le projet.
+
 ## Appel PHP
 
 ```php

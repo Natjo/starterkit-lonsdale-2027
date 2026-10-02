@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "type": "common",
+  "name": "Navigation avec sous-menus",
+  "slug": "header-nav-complex",
+  "variantOf": "header-nav",
+  "assets": {
+    "css": { "loading": "critical" },
+    "js": { "loading": "eager" }
+  },
+  "dependencies": {
+    "components": ["icon", "search"],
+    "cards": [], "strates": [], "heroes": [], "common": [], "modules": []
+  }
+}

@@ -40,8 +40,16 @@ l’accueil.
 | Recherche courante | `get_search_query()` |
 | Libellés accessibles | domaine de traduction `theme` |
 
-Le menu est rendu avec `wp_nav_menu()`, sans conteneur supplémentaire et sans
-fallback. Le formulaire utilise `component('search', [...])`.
+Le menu est rendu avec `wp_nav_menu()`, sans fallback. Le walker partagé
+`inc/front/header-nav-walker.php` enveloppe chaque `ul.sub-menu` dans un
+`div.wrapper-level`, à tous les niveaux enfants. Le `ul` principal n'a pas
+de wrapper. Le formulaire utilise `component('search', [...])`.
+
+Le walker retire des `li` les classes techniques `menu-item`,
+`menu-item-type-*`, `menu-item-object-*`, `menu-item-{ID}` et
+`menu-item-has-children`. Les classes de page active et les classes personnalisées sont
+conservées. Les attributs `id` des `li` et du `ul` principal sont supprimés ;
+les identifiants des sous-menus restent disponibles pour `aria-controls`.
 
 ## Initialisation JavaScript
 

@@ -1,0 +1,349 @@
+#header-nav-complex {
+    position: fixed;
+    inset: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    height: var(--header-height);
+    padding-inline: var(--ctr-offset);
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text);
+    background: color-mix(in srgb, var(--color-bg) 94%, transparent);
+    backdrop-filter: blur(1.2rem);
+    z-index: 100;
+    transition: background-color .2s ease, transform .3s ease;
+    border-bottom: 1px solid var(--color-border);
+
+    &.is-scroll-ready {
+        transition: height .3s ease, transform .3s ease;
+    }
+
+    &.is-hidden:not(.is-open) {
+        transform: translate3d(0, -100%, 0);
+    }
+
+    .header-nav-menu li {
+        position: relative;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+--submenu-height : 6rem;
+
+    .wrapper-level {
+        --height: 0px;
+
+        pointer-events: none;
+        transition: height .25s ease;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #fff;
+        height: var(--height);
+
+        &:before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: -100vw;
+            width: 200vw;
+            height: 100%;
+            background-color: #fff;
+            z-index: -1;
+        }
+    }
+
+
+
+    .sub-menu {
+        display: flex;
+        align-items: end;
+        gap: 4rem;
+        height: var(--height);
+        overflow: hidden;
+        transition: height .25s ease;
+        padding: 0 6px;
+        margin-left: -6px;
+        box-sizing: border-box;
+    }
+
+    .sub-menu>li {
+        width: max-content;
+        height: var(--submenu-height);
+    }
+
+    .is-submenu-open>.wrapper-level {
+        --height: var(--submenu-height);;
+        pointer-events: auto;
+    }
+
+    // Clip the reveal, then allow deeper menu levels to extend outside the ul.
+    .is-submenu-revealed>.wrapper-level>.sub-menu {
+        overflow: visible;
+    }
+
+    &:not(.has-submenu-controls) li {
+
+        &:hover>.wrapper-level,
+        &:focus-within>.wrapper-level {
+            visibility: visible;
+            pointer-events: auto;
+            height: auto;
+            transition-delay: 0s;
+        }
+
+        .wrapper-level>.sub-menu {
+            height: auto;
+            position: static;
+        }
+    }
+
+    .header-submenu-toggle {
+        display: none;
+        padding: .5rem 1rem;
+        border: 0;
+        color: inherit;
+        background: transparent;
+        font: inherit;
+        cursor: pointer;
+
+        &:focus-visible {
+            outline: 2px solid var(--color-2);
+            outline-offset: 2px;
+        }
+    }
+
+
+    .header-nav-menu {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        height: 100%;
+    }
+
+    #nav {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        height: 100%;
+    }
+
+    .header-search {
+        width: clamp(22rem, 24vw, 34rem);
+
+        input[type="search"] {
+            padding-block: .9rem;
+        }
+
+        .search-submit {
+            min-width: auto;
+            padding-block: .9rem;
+        }
+    }
+
+    .header-nav-logo {
+        margin-right: auto;
+    }
+
+    .header-nav-menu a {
+        display: inline-flex;
+        font-weight: 500;
+        text-decoration: underline;
+        text-decoration-color: transparent;
+        text-underline-offset: .3em;
+
+        &:hover,
+        &[aria-current="page"] {
+            color: var(--color-2);
+            text-decoration-color: currentColor;
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--color-2);
+            outline-offset: .3rem;
+        }
+    }
+
+    .btn-nav {
+        display: none;
+        appearance: none;
+        position: relative;
+        z-index: 2;
+        flex: 0 0 auto;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: .4rem;
+        width: 4.8rem;
+        height: 4.8rem;
+        margin: 0;
+        padding: 0;
+        border: 1px solid currentColor;
+        border-radius: var(--radius);
+        color: inherit;
+        background: transparent;
+        cursor: pointer;
+
+        span {
+            display: block;
+            width: 2rem;
+            height: .2rem;
+            border-radius: 999rem;
+            background: currentColor;
+            transform-origin: center;
+            transition: opacity .2s ease, transform .25s ease;
+        }
+
+        &:focus-visible {
+            outline: 2px solid currentColor;
+            outline-offset: 3px;
+        }
+
+        &[aria-expanded="true"] {
+            span:nth-child(1) {
+                transform: translateY(.6rem) rotate(45deg);
+            }
+
+            span:nth-child(2) {
+                opacity: 0;
+                transform: scaleX(.4);
+            }
+
+            span:nth-child(3) {
+                transform: translateY(-.6rem) rotate(-45deg);
+            }
+        }
+    }
+
+
+
+    @media #{$breakpoint-md-down} {
+
+        .wrapper-level>.sub-menu {
+            height: auto;
+            margin-left: 0;
+            padding-left: 0;
+        }
+
+        .header-submenu-toggle {
+            display: inline-flex;
+            margin-left: auto;
+        }
+
+        .wrapper-level {
+            display: none;
+            position: static;
+            border: 0;
+            height: auto;
+            overflow: visible;
+            transition: none;
+            width: 100%;
+
+            &::before {
+                display: none;
+            }
+        }
+
+        .is-submenu-open>.wrapper-level {
+            display: block;
+        }
+
+        .header-nav-menu li {
+            flex-wrap: wrap;
+            height: auto;
+            width: 100%;
+        }
+
+        .sub-menu,
+        .sub-menu .sub-menu {
+            position: static;
+            min-width: 0;
+            padding-block: .5rem;
+            border: 0;
+            margin-left: 2rem;
+            display: flex;
+            overflow: visible;
+            transition: none;
+        }
+
+        &:not(.has-submenu-controls) .wrapper-level {
+            display: block;
+            visibility: visible;
+            pointer-events: auto;
+        }
+              .btn-nav {
+            display: flex;
+        }
+
+        #nav {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 3rem;
+            height: 100vh;
+            height: 100dvh;
+            padding: var(--header-height) var(--ctr-offset) var(--ctr-offset);
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            color: var(--color-text);
+            background: var(--color-bg);
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateX(-100%);
+        }
+
+        &.is-nav-animating #nav {
+            transition:
+                visibility .2s ease,
+                transform .25s ease;
+        }
+
+        .header-nav-menu {
+            flex: 0 0 auto;
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .header-search {
+            flex: 0 0 auto;
+            width: 100%;
+            max-width: 64rem;
+        }
+
+        &.is-open #nav {
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateX(0);
+        }
+
+        &.is-open {
+            color: var(--color-text);
+        }
+    }
+
+    @media (hover: none) {
+        .header-submenu-toggle {
+            display: inline-flex;
+        }
+    }
+
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: none;
+
+        &.is-scroll-ready,
+        .wrapper-level,
+        .sub-menu,
+        .btn-nav span,
+        .btn-nav-line,
+        &.is-nav-animating #nav {
+            transition: none;
+        }
+    }
+}

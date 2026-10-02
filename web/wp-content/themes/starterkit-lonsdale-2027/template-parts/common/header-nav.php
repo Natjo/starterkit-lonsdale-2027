@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../inc/front/header-nav-walker.php';
 $location = 'menu-header';
 $nav_label = __('Navigation principale', 'theme');
 $toggle_label = __('Menu', 'theme');
@@ -26,6 +27,8 @@ $has_menu = has_nav_menu($location);
                 'theme_location' => $location,
                 'container' => false,
                 'menu_class' => 'header-nav-menu',
+                'items_wrap' => '<ul class="%2$s">%3$s</ul>',
+                'walker' => new Theme_Header_Nav_Walker(),
                 'fallback_cb' => false,
             ]);
             ?>
