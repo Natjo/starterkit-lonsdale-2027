@@ -51,6 +51,11 @@ autres common et modules nécessaires au site :
 ```
 
 Tout appel statique fait par le common doit être reflété dans ce manifeste.
+Les emplacements utilisés par `wp_nav_menu()` sont déclarés dans
+`dependencies.menus`, avec leurs identifiants exacts, par exemple
+`"menus": ["menu-header"]`. Chaque emplacement doit posséder un manifeste
+dans `assets/menus`. Forge ajoute ces menus automatiquement, sans analyser
+ni exécuter le PHP.
 
 ## Variantes dans Forge
 
@@ -61,7 +66,7 @@ Le manifeste de chaque variante déclare le nom canonique qu'elle remplace :
 "variantOf": "header-nav"
 ```
 
-Par exemple, `assets/common/header-nav-complex/header-nav-complex.json`
+Par exemple, `assets/common/header-nav-subnav/header-nav-subnav.json`
 décrit une variante de `header-nav`. Elle garde son propre PHP, ses assets,
 son README et ses dépendances. Forge affiche cette version dans un select,
 et les dépendances du site suivent la version sélectionnée.

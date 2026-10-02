@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 
-const source = readFileSync(new URL('../../../../../assets/common/header-nav-complex/header-nav-complex.js', import.meta.url), 'utf8');
+const source = readFileSync(new URL('../../../../../assets/common/header-nav-subnav/header-nav-subnav.js', import.meta.url), 'utf8');
 const code = source.slice(source.indexOf('function HeaderScroll('), source.indexOf('const initializedHeaders'));
 
 function fixture(options) {
@@ -84,4 +84,4 @@ assert.equal(hidden.root.classList.contains('is-hidden'), true);
 hidden.scroll(20);
 assert.equal(hidden.root.classList.contains('is-hidden'), false);
 
-console.log('Header complex scroll: OK (disabled options, state changes only, passive RAF, direction, focus)');
+console.log('Header subnav scroll: OK (disabled options, state changes only, passive RAF, direction, focus)');

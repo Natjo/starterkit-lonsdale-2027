@@ -6,6 +6,37 @@ function Submenus(root) {
     const controls = new Map();
     root.classList.add('has-submenu-controls');
 
+    const nav = root.querySelector('#nav');
+    const level1s = [...root.querySelectorAll('.header-nav-menu > li > .wrapper-level')];
+    const alignLevel1 = () => {
+        if (!nav) return;
+        const navRight = nav.getBoundingClientRect().right;
+        const states = level1s.map((wrapper) => {
+            const submenu = wrapper.querySelector(':scope > .sub-menu');
+            // Measure the default left alignment, independently of the current class.
+            return !mobile.matches && submenu
+                && wrapper.getBoundingClientRect().left + submenu.getBoundingClientRect().width - 6 > navRight + 1;
+        });
+        level1s.forEach((wrapper, index) => {
+            if (wrapper.classList.contains('right') !== Boolean(states[index])) {
+                wrapper.classList.toggle('right', Boolean(states[index]));
+            }
+        });
+    };
+    let alignmentFrame = 0;
+    const scheduleAlignment = () => {
+        if (alignmentFrame) return;
+        alignmentFrame = requestAnimationFrame(() => {
+            alignmentFrame = 0;
+            alignLevel1();
+        });
+    };
+    if (level1s.length) {
+        window.addEventListener('resize', scheduleAlignment, { passive: true });
+        document.fonts?.ready.then(scheduleAlignment);
+        alignLevel1();
+    }
+
     root.querySelectorAll('li').forEach((parent, index) => {
         const wrapper = parent.querySelector(':scope > .wrapper-level');
         const submenu = wrapper?.querySelector(':scope > .sub-menu');
@@ -17,7 +48,7 @@ function Submenus(root) {
         submenu.id = `${root.id}-submenu-${index + 1}`;
         const button = document.createElement('button');
         button.type = 'button';
-        button.className = 'header-submenu-toggle';
+        button.className = 'submenu-toggle';
         button.setAttribute('aria-label', `${root.dataset.submenuLabel || 'Sous-menu'} ${link.textContent.trim()}`);
         button.setAttribute('aria-controls', submenu.id);
         button.setAttribute('aria-expanded', 'false');
@@ -30,6 +61,7 @@ function Submenus(root) {
         const setOpen = (open) => {
             if (open === parent.classList.contains('is-submenu-open')) return;
             if (open) {
+                if (level1s.includes(wrapper)) alignLevel1();
                 for (const [sibling, close] of controls) {
                     if (sibling !== parent && sibling.parentElement === parent.parentElement) close(false);
                 }
@@ -225,7 +257,7 @@ function HeaderScroll(root, {
 const initializedHeaders = new WeakSet();
 
 export default function HeaderNav() {
-    const headerNav = document.getElementById("header-nav-complex");
+    const headerNav = document.getElementById("header-nav-subnav");
 
     if (!headerNav || initializedHeaders.has(headerNav)) return;
     initializedHeaders.add(headerNav);

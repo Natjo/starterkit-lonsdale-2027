@@ -13,6 +13,8 @@ du graphe de dépendances Forge et ne dépend pas d'un faux manifeste de page.
 ```
 
 Le common ne reçoit aucun argument.
+Son manifeste déclare `dependencies.menus: ["menu-footer"]` ; Forge ajoute
+automatiquement ce menu et l'affecte à son emplacement à l'installation.
 
 ## Rendu du menu
 

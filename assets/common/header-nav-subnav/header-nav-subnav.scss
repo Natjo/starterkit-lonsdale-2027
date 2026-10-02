@@ -1,4 +1,4 @@
-#header-nav-complex {
+#header-nav-subnav {
     position: fixed;
     inset: 0 0 auto;
     display: flex;
@@ -7,13 +7,20 @@
     gap: 2rem;
     height: var(--header-height);
     padding-inline: var(--ctr-offset);
-    border-bottom: 1px solid var(--color-border);
-    color: var(--color-text);
-    background: color-mix(in srgb, var(--color-bg) 94%, transparent);
-    backdrop-filter: blur(1.2rem);
+    background-color: #fff;
     z-index: 100;
     transition: background-color .2s ease, transform .3s ease;
-    border-bottom: 1px solid var(--color-border);
+
+    // Keep the separator above the sub-navigation backgrounds.
+    &::after {
+        content: "";
+        position: absolute;
+        inset: auto 0 -1px;
+        height: 1px;
+        background: var(--color-border);
+        pointer-events: none;
+        z-index: 1;
+    }
 
     &.is-scroll-ready {
         transition: height .3s ease, transform .3s ease;
@@ -23,85 +30,7 @@
         transform: translate3d(0, -100%, 0);
     }
 
-    .header-nav-menu li {
-        position: relative;
-        height: 100%;
-        display: flex;
-        align-items: center;
-    }
-
---submenu-height : 6rem;
-
-    .wrapper-level {
-        --height: 0px;
-
-        pointer-events: none;
-        transition: height .25s ease;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: #fff;
-        height: var(--height);
-
-        &:before {
-            content: "";
-            display: block;
-            position: absolute;
-            top: 0;
-            left: -100vw;
-            width: 200vw;
-            height: 100%;
-            background-color: #fff;
-            z-index: -1;
-        }
-    }
-
-
-
-    .sub-menu {
-        display: flex;
-        align-items: end;
-        gap: 4rem;
-        height: var(--height);
-        overflow: hidden;
-        transition: height .25s ease;
-        padding: 0 6px;
-        margin-left: -6px;
-        box-sizing: border-box;
-    }
-
-    .sub-menu>li {
-        width: max-content;
-        height: var(--submenu-height);
-    }
-
-    .is-submenu-open>.wrapper-level {
-        --height: var(--submenu-height);;
-        pointer-events: auto;
-    }
-
-    // Clip the reveal, then allow deeper menu levels to extend outside the ul.
-    .is-submenu-revealed>.wrapper-level>.sub-menu {
-        overflow: visible;
-    }
-
-    &:not(.has-submenu-controls) li {
-
-        &:hover>.wrapper-level,
-        &:focus-within>.wrapper-level {
-            visibility: visible;
-            pointer-events: auto;
-            height: auto;
-            transition-delay: 0s;
-        }
-
-        .wrapper-level>.sub-menu {
-            height: auto;
-            position: static;
-        }
-    }
-
-    .header-submenu-toggle {
+    .submenu-toggle {
         display: none;
         padding: .5rem 1rem;
         border: 0;
@@ -116,24 +45,16 @@
         }
     }
 
-
-    .header-nav-menu {
+    .nav-menu {
         display: flex;
-        align-items: center;
         gap: 2rem;
-        height: 100%;
     }
 
     #nav {
         display: flex;
-        align-items: center;
-        gap: 2rem;
-        height: 100%;
     }
 
     .header-search {
-        width: clamp(22rem, 24vw, 34rem);
-
         input[type="search"] {
             padding-block: .9rem;
         }
@@ -144,11 +65,11 @@
         }
     }
 
-    .header-nav-logo {
+    .nav-logo {
         margin-right: auto;
     }
 
-    .header-nav-menu a {
+    .nav-menu a {
         display: inline-flex;
         font-weight: 500;
         text-decoration: underline;
@@ -218,22 +139,132 @@
         }
     }
 
+    // Desktop
+    @media #{$breakpoint-md-up} {
+        .nav-menu li {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        --submenu-height: 6rem;
+
+        .wrapper-sub-menu {
+            --height: 0px;
+
+            pointer-events: none;
+            transition: height .25s ease;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            background: #fff;
+            height: var(--height);
+
+            &:before {
+                content: "";
+                display: block;
+                position: absolute;
+                top: 0;
+                left: -100vw;
+                width: 200vw;
+                height: 100%;
+                background-color: #fff;
+                z-index: -1;
+            }
+        }
+
+        .wrapper-sub-menu.right {
+            justify-content: flex-end;
+        }
 
 
+        .sub-menu {
+            display: flex;
+            flex: 0 0 auto;
+            width: max-content;
+            align-items: end;
+            gap: 4rem;
+            height: var(--height);
+            overflow: hidden;
+            transition: height .25s ease;
+            padding: 0 6px;
+            margin-left: -6px;
+            box-sizing: border-box;
+        }
+
+        .wrapper-sub-menu.right>.sub-menu {
+            margin-left: 0;
+            margin-right: -6px;
+        }
+
+        .sub-menu>li {
+            width: max-content;
+            height: var(--submenu-height);
+        }
+
+        .is-submenu-open>.wrapper-sub-menu {
+            --height: var(--submenu-height);
+            pointer-events: auto;
+        }
+
+        // Clip the reveal, then allow deeper menu levels to extend outside the ul.
+        .is-submenu-revealed>.wrapper-sub-menu>.sub-menu {
+            overflow: visible;
+        }
+
+        &:not(.has-submenu-controls) li {
+
+            &:hover>.wrapper-sub-menu,
+            &:focus-within>.wrapper-sub-menu {
+                visibility: visible;
+                pointer-events: auto;
+                height: auto;
+                transition-delay: 0s;
+            }
+
+            .wrapper-sub-menu>.sub-menu,
+            .wrapper-sub-menu.right>.sub-menu {
+                height: auto;
+                position: static;
+            }
+        }
+
+        .nav-menu,
+        #nav {
+            align-items: center;
+            height: 100%;
+        }
+
+        #nav {
+            gap: 2rem;
+        }
+
+        .header-search {
+            width: clamp(22rem, 24vw, 34rem);
+        }
+    }
+
+    // Mobile
     @media #{$breakpoint-md-down} {
 
-        .wrapper-level>.sub-menu {
+        .wrapper-sub-menu>.sub-menu {
             height: auto;
+            width: 100%;
             margin-left: 0;
+            margin-right: 0;
             padding-left: 0;
         }
 
-        .header-submenu-toggle {
+        .submenu-toggle {
             display: inline-flex;
             margin-left: auto;
         }
 
-        .wrapper-level {
+        .wrapper-sub-menu {
             display: none;
             position: static;
             border: 0;
@@ -247,34 +278,40 @@
             }
         }
 
-        .is-submenu-open>.wrapper-level {
+        .is-submenu-open>.wrapper-sub-menu {
             display: block;
         }
 
-        .header-nav-menu li {
+        .nav-menu li {
+            position: relative;
+            display: flex;
+            align-items: center;
             flex-wrap: wrap;
             height: auto;
             width: 100%;
         }
 
-        .sub-menu,
-        .sub-menu .sub-menu {
+        .sub-menu {
             position: static;
             min-width: 0;
             padding-block: .5rem;
             border: 0;
             margin-left: 2rem;
             display: flex;
+            flex: 0 0 auto;
+            align-items: end;
+            gap: 4rem;
             overflow: visible;
             transition: none;
         }
 
-        &:not(.has-submenu-controls) .wrapper-level {
+        &:not(.has-submenu-controls) .wrapper-sub-menu {
             display: block;
             visibility: visible;
             pointer-events: auto;
         }
-              .btn-nav {
+
+        .btn-nav {
             display: flex;
         }
 
@@ -304,7 +341,7 @@
                 transform .25s ease;
         }
 
-        .header-nav-menu {
+        .nav-menu {
             flex: 0 0 auto;
             align-items: flex-start;
             flex-direction: column;
@@ -327,8 +364,9 @@
         }
     }
 
-    @media (hover: none) {
-        .header-submenu-toggle {
+    // Desktop tactile
+    @media #{$breakpoint-md-up} and (hover: none) {
+        .submenu-toggle {
             display: inline-flex;
         }
     }
@@ -338,7 +376,7 @@
         transition: none;
 
         &.is-scroll-ready,
-        .wrapper-level,
+        .wrapper-sub-menu,
         .sub-menu,
         .btn-nav span,
         .btn-nav-line,

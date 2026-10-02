@@ -1,14 +1,15 @@
 {
   "schemaVersion": 1,
   "type": "common",
-  "name": "Navigation avec sous-menus",
-  "slug": "header-nav-complex",
+  "name": "Navigation avec sous-navigation",
+  "slug": "header-nav-subnav",
   "variantOf": "header-nav",
   "assets": {
     "css": { "loading": "critical" },
     "js": { "loading": "eager" }
   },
   "dependencies": {
+    "menus": ["menu-header"],
     "components": ["icon", "search"],
     "cards": [], "strates": [], "heroes": [], "common": [], "modules": []
   }

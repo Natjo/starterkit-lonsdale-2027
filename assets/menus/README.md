@@ -13,3 +13,9 @@ Emplacements fournis :
 
 Le manifeste déclare un emplacement disponible, sans imposer son rendu dans un
 common ou un composant.
+
+Un common (ou un autre manifeste de rendu) déclare les emplacements qu'il
+utilise dans `dependencies.menus`, par exemple `["menu-header"]`. Forge ajoute
+ces menus au site automatiquement et les protège tant qu'ils sont requis.
+Les menus sont créés et affectés à leurs emplacements pendant l'installation ;
+leurs pages restent à choisir dans Forge ou dans le BO WordPress.

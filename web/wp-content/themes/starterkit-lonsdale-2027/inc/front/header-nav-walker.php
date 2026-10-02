@@ -26,7 +26,7 @@ final class Theme_Header_Nav_Walker extends Walker_Nav_Menu
 
     public function start_lvl(&$output, $depth = 0, $args = null)
     {
-        $output .= '<div class="wrapper-level">';
+        $output .= '<div class="wrapper-sub-menu">';
         parent::start_lvl($output, $depth, $args);
     }
 

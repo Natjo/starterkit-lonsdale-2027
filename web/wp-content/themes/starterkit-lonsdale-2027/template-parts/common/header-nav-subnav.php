@@ -7,8 +7,8 @@ $site_name = get_bloginfo('name');
 $has_menu = has_nav_menu($location);
 ?>
 
-<header id="header-nav-complex" role="banner" data-submenu-label="<?= esc_attr(__('Afficher le sous-menu', 'theme')) ?>">
-    <a class="header-nav-logo" href="<?= esc_url(home_url('/')) ?>" aria-label="<?= esc_attr($site_name) ?>">
+<header id="header-nav-subnav" role="banner" data-submenu-label="<?= esc_attr(__('Afficher le sous-menu', 'theme')) ?>">
+    <a class="nav-logo" href="<?= esc_url(home_url('/')) ?>" aria-label="<?= esc_attr($site_name) ?>">
         <?php component('icon', ['name' => 'logo', 'width' => 54, 'height' => 55]); ?>
         <span class="sr-only"><?= esc_html($site_name) ?></span>
     </a>
@@ -26,7 +26,7 @@ $has_menu = has_nav_menu($location);
             wp_nav_menu([
                 'theme_location' => $location,
                 'container' => false,
-                'menu_class' => 'header-nav-menu',
+                'menu_class' => 'nav-menu',
                 'items_wrap' => '<ul class="%2$s">%3$s</ul>',
                 'walker' => new Theme_Header_Nav_Walker(),
                 'fallback_cb' => false,

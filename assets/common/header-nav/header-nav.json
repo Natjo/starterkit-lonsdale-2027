@@ -8,6 +8,7 @@
     "js": { "loading": "eager" }
   },
   "dependencies": {
+    "menus": ["menu-header"],
     "components": ["icon", "search"],
     "cards": [],
     "strates": [],

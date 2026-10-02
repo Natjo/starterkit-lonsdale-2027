@@ -3,6 +3,8 @@
 Variante de `header-nav`, déclarée avec `variantOf` dans son manifeste.
 Forge la propose dans le select Version du header et la renomme en `header-nav`
 au build. Les pages conservent leurs appels à `common('header-nav')`.
+Le manifeste déclare `dependencies.menus: ["menu-header"]` ; ce menu est
+ajouté automatiquement par Forge et affecté à son emplacement au build.
 
 Elle utilise le même menu WordPress `menu-header`, le logo et la recherche que
 le header standard. La hiérarchie du menu détermine les sous-menus ; chaque
@@ -35,6 +37,14 @@ et des interactions. Sur mobile, les wrappers fermés restent
 en `display: none` pour ne pas laisser d'espace dans le panneau. Les
 transitions sont désactivées avec `prefers-reduced-motion: reduce`.
 Wrapper et sous-menu se touchent sans espace pour garder un survol continu.
+Sur ordinateur, le wrapper prend la largeur de son parent. Les sous-menus de
+premier niveau restent alignés à gauche, sauf si leur bord droit dépasserait
+la navigation : le JS ajoute alors `.right` au wrapper pour les ferrer à droite.
+Le calcul est refait à l'ouverture, après chargement des polices et au
+redimensionnement (regroupé dans une RAF). La classe est retirée lorsque
+l'espace redevient suffisant ou sur mobile.
+Un pseudo-élément `::after` superpose la bordure basse du header aux fonds
+des sous-menus, sans intercepter les interactions ni créer d'espace au survol.
 Le focus du bouton tactile n'ouvre pas le menu avant son clic : un clic produit
 une seule bascule.
 L'initialisation du header est idempotente pour éviter les boutons en double.
@@ -57,7 +67,7 @@ Sans JavaScript, les sous-menus restent accessibles au survol et au focus sur
 ordinateur ; leurs liens sont visibles dans la navigation mobile.
 
 Pour prévisualiser cette variante dans le starter, utiliser
-`common('header-nav-complex')`. `assets/app.js` initialise la version standard
+`common('header-nav-subnav')`. `assets/app.js` initialise la version standard
 ou complexe selon la racine présente. Un seul header doit être rendu par page.
 
 ## Vérification navigateur
@@ -71,8 +81,8 @@ listener actif reste passif et ses mises à jour sont regroupées dans une RAF.
 Après compilation des assets, exécuter depuis la racine du starter :
 
 ```sh
-node web/wp-content/themes/starterkit-lonsdale-2027/tests/header-nav-complex-scroll-contract.mjs
-node web/wp-content/themes/starterkit-lonsdale-2027/tests/header-nav-complex-browser-contract.mjs
+node web/wp-content/themes/starterkit-lonsdale-2027/tests/header-nav-subnav-scroll-contract.mjs
+node web/wp-content/themes/starterkit-lonsdale-2027/tests/header-nav-subnav-browser-contract.mjs
 ```
 
 Le test utilise Chrome headless et le protocole DevTools, sans dépendance npm.

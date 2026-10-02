@@ -11,6 +11,8 @@ menu est affecté à l’emplacement WordPress `menu-header`, sa navigation.
 
 Le common ne reçoit aucun argument. Il récupère directement ses données
 globales dans WordPress.
+Son manifeste déclare `dependencies.menus: ["menu-header"]` : Forge ajoute
+automatiquement ce menu et l'affecte à son emplacement à l'installation.
 
 ## Rendu
 

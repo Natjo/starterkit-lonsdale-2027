@@ -8,6 +8,7 @@
   },
   "activation": { "pageType": "any" },
   "dependencies": {
+    "menus": ["menu-footer"],
     "components": [],
     "cards": [],
     "strates": [],
