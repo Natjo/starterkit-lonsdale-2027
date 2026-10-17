@@ -11,6 +11,8 @@
  * maintenable et mise à jour sans réécrire index.php.
  */
 
+require_once __DIR__ . '/csp-cache.php';
+
 if (!function_exists('wp_static_pre_wp_valid_generation_token')) {
     function wp_static_pre_wp_valid_generation_token($base_dir, $request_token) {
         if (!is_string($request_token) || $request_token === '') {
@@ -135,6 +137,9 @@ if (!function_exists('wp_static_serve_pre_wp')) {
                 continue;
             }
 
+            $cached = wp_static_read_csp_cache($real, dirname(rtrim($base_dir, '/\\')));
+            if ($cached === null) continue;
+            wp_static_send_csp_headers($cached['headers']);
             $mtime = filemtime($real);
             $etag = '"' . md5($mtime . '-' . filesize($real)) . '"';
 
@@ -156,7 +161,8 @@ if (!function_exists('wp_static_serve_pre_wp')) {
                 exit;
             }
 
-            readfile($real);
+            if ($cached['html'] === null) readfile($real);
+            else echo $cached['html'];
             exit;
         }
     }

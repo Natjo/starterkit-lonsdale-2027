@@ -8,6 +8,7 @@
  */
 
 if (!defined('ABSPATH')) exit;
+require_once __DIR__ . '/csp-cache.php';
 
 define('WP_STATIC_DIR', WP_CONTENT_DIR . '/static-pages');
 define('WP_STATIC_RESULT_TRANSIENT_PREFIX', 'wp_static_generation_result_');
@@ -5004,6 +5005,9 @@ function wp_static_output_error_page_static($http_code = 404)
         return false;
     }
 
+    $cached = wp_static_read_csp_cache($real_file, WP_CONTENT_DIR);
+    if ($cached === null) return false;
+    wp_static_send_csp_headers($cached['headers']);
     status_header((int) $http_code);
     header('Content-Type: text/html; charset=UTF-8');
     header('X-Static-Cache: HIT-404');
@@ -5014,7 +5018,8 @@ function wp_static_output_error_page_static($http_code = 404)
     header('ETag: ' . $etag);
     header('Cache-Control: public, max-age=0, must-revalidate');
 
-    readfile($real_file);
+    if ($cached['html'] === null) readfile($real_file);
+    else echo $cached['html'];
     exit;
 }
 
@@ -5687,6 +5692,14 @@ function wp_static_generate_urls($urls, &$result, $rebuild_deps = false)
             continue;
         }
 
+        $csp_original = $html;
+        $csp_headers = [];
+        foreach (['Content-Security-Policy', 'Content-Security-Policy-Report-Only'] as $csp_name) {
+            $csp_value = wp_remote_retrieve_header($response, strtolower($csp_name));
+            if ($csp_value !== '') $csp_headers[$csp_name] = $csp_value;
+        }
+        $csp_revision = (string) wp_remote_retrieve_header($response, 'x-theme-csp-revision');
+
         // Extrait puis retire le marqueur de dépendances inséré pendant le rendu.
         $page_ids = [];
         if (preg_match('/<!--\s*wp-static-deps:([0-9,]*)\s*-->/', $html, $m)) {
@@ -5740,6 +5753,12 @@ function wp_static_generate_urls($urls, &$result, $rebuild_deps = false)
             continue;
         }
 
+        $html = wp_static_pack_csp($html, $csp_original, $csp_headers, $csp_revision);
+        if ($html === null) {
+            $result['failed']++;
+            wp_static_add_result_message($result, 'CSP incompatible avec le post-traitement HTML : ' . $url, true);
+            continue;
+        }
         if (!wp_static_atomic_write($static_file, $html)) {
             $result['failed']++;
             wp_static_add_result_message($result, 'Impossible d’écrire le fichier statique pour ' . $url, true);
@@ -6420,6 +6439,10 @@ function wp_static_serve_static_page()
             return;
         }
 
+        $cached = wp_static_read_csp_cache($real_file, WP_CONTENT_DIR);
+        if ($cached === null) return;
+        wp_static_send_csp_headers($cached['headers']);
+
         // Les fichiers générés sont toujours du HTML : on évite l'ouverture de
         // la base fileinfo à chaque requête.
         header('Content-Type: text/html; charset=UTF-8');
@@ -6447,7 +6470,8 @@ function wp_static_serve_static_page()
             exit;
         }
 
-        readfile($real_file);
+        if ($cached['html'] === null) readfile($real_file);
+        else echo $cached['html'];
         exit; // Arrête l'exécution de WordPress
     }
 }

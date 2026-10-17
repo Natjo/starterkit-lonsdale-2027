@@ -46,6 +46,7 @@ require_once __DIR__ . '/inc/config/image-sizes.php';
 require_once __DIR__ . '/inc/config/cleanup.php';
 require_once __DIR__ . '/inc/config/disable-comments.php';
 require_once __DIR__ . '/inc/config/security.php';
+require_once __DIR__ . '/inc/config/csp.php';
 require_once __DIR__ . '/inc/config/acf.php';
 if (THEME_ENABLE_SEARCH) {
     require_once __DIR__ . '/inc/config/search.php';
@@ -81,7 +82,8 @@ add_action('template_redirect', function () {
         return;
     }
 
-    ob_start([ThemeAssets::class, 'processBufferedHtml']);
+    ob_start(static fn (string $html): string => Theme_CSP::finalize(ThemeAssets::processBufferedHtml($html)), 0,
+        Theme_CSP::enabled() ? PHP_OUTPUT_HANDLER_CLEANABLE | PHP_OUTPUT_HANDLER_REMOVABLE : PHP_OUTPUT_HANDLER_STDFLAGS);
 }, 0);
 
 add_filter('template_include', function (string $template): string {
@@ -147,6 +149,7 @@ add_action('wp_head', function () {
         $css .= $heroCss;
     }
 
+    Theme_CSP::registerInline('style', $css);
     printf(
         '<style id="critical-css">%s</style>' . "\n",
         $css

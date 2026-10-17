@@ -7,6 +7,9 @@
     "css": { "loading": "critical" }
   },
   "defaults": {
+    "suptitle": "Lorem ipsum",
+    "title": "Lorem ipsum dolor sit amet",
+    "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
     "images": {
       "desktop": {
         "__forgeStarterMediaPath": "assets/img/placeholders/hero-homepage-desktop.jpg",

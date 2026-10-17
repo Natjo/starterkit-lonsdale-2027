@@ -3212,6 +3212,15 @@ $assert_contains('La strate logos rend le nom accessible', 'alt="Partenaire"', $
 $assert_contains('La strate logos protège les liens externes', 'rel="noopener noreferrer"', $logos_strate);
 $assert_same('La strate logos vide ne produit aucun HTML', '', $render_strate('logos', ['logos' => []]));
 
+$homepage_manifest = json_decode((string) file_get_contents(dirname(__DIR__, 5) . '/assets/heros/hero-homepage/hero-homepage.json'), true, 512, JSON_THROW_ON_ERROR);
+$homepage_defaults = $homepage_manifest['defaults'] ?? [];
+foreach (['suptitle', 'title', 'text'] as $homepage_name) {
+    $assert_same('Le catalogue Homepage préremplit ' . $homepage_name, true, is_string($homepage_defaults[$homepage_name] ?? null) && trim($homepage_defaults[$homepage_name]) !== '');
+}
+$assert_contains('Le texte Homepage est éditorial', '<p>', $homepage_defaults['text'] ?? '');
+$assert_same('Le catalogue Homepage conserve le placeholder desktop', 'assets/img/placeholders/hero-homepage-desktop.jpg', $homepage_defaults['images']['desktop']['__forgeStarterMediaPath'] ?? '');
+$assert_same('Le catalogue Homepage conserve le placeholder mobile', 'assets/img/placeholders/hero-homepage-mobile.jpg', $homepage_defaults['images']['mobile']['__forgeStarterMediaPath'] ?? '');
+
 if ($failures !== []) {
     fwrite(STDERR, implode("\n\n", $failures) . "\n");
     exit(1);

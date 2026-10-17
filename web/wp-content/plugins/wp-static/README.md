@@ -205,6 +205,24 @@ pour couvrir le cas de course résiduel.
 
 ## Service des pages statiques
 
+### CSP et hashes inline
+
+Les en-têtes CSP de la réponse générée sont enregistrés avec le HTML dans une
+enveloppe interne au même fichier atomique. Les services PHP (pré-WordPress,
+fallback et page 404) retirent cette enveloppe et renvoient les en-têtes, y compris
+avant une réponse 304. Le digest SHA-256 lie l'enveloppe au HTML stocké.
+Une modification de `wp-content/theme-csp.json` invalide les anciennes pages et
+laisse WordPress répondre jusqu'à leur régénération. Les anciens fichiers sans
+enveloppe ne sont plus servis lorsqu'une configuration CSP existe.
+
+La génération refuse les post-traitements qui changent les balises script/style
+après le calcul des hashes, plutôt que de les autoriser automatiquement. Les
+en-têtes sont bornés et les caractères de contrôle sont refusés. Une configuration
+absente conserve la compatibilité avec le cache historique.
+Les exemples Apache/nginx qui servent directement `index.html`, ainsi que le ZIP
+exporté, ne restaurent pas ces en-têtes : prévoir une intégration serveur spécifique
+avant de les utiliser pour un site CSP. L'enveloppe seule n'applique aucune CSP.
+
 Quand l'option est activée, `wp_static_serve_static_page()` est branché sur `init` (priorité 1) :
 
 - Ignore l'admin, la recherche et les requêtes non-GET.

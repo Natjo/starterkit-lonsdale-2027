@@ -138,6 +138,7 @@ final class ThemeAssets
             $handle = 'once-' . str_replace('/', '-', $modulePath);
             $css = str_ireplace('</style', '<\/style', $css);
 
+            if (class_exists('Theme_CSP')) Theme_CSP::registerInline('style', $css);
             printf('<style id="%s">%s</style>' . "\n", esc_attr($handle), $css);
             self::$renderedOnceModules[$modulePath] = true;
         }
@@ -231,14 +232,19 @@ final class ThemeAssets
         }
 
         if (preg_match('#<style id="critical-css">.*?</style>#s', $html)) {
-            return preg_replace(
+            return preg_replace_callback(
                 '#(<style id="critical-css">)(.*?)(</style>)#s',
-                '$1$2' . $heroCss . '$3',
+                static function (array $match) use ($heroCss): string {
+                    $css = $match[2] . $heroCss;
+                    if (class_exists('Theme_CSP') && Theme_CSP::isTrustedInline('style', $match[2])) Theme_CSP::registerInline('style', $css);
+                    return $match[1] . $css . $match[3];
+                },
                 $html,
                 1
             );
         }
 
+        if (class_exists('Theme_CSP')) Theme_CSP::registerInline('style', $heroCss);
         return str_replace(
             '</head>',
             '<style id="critical-css">' . $heroCss . '</style>' . "\n</head>",

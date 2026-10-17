@@ -1,5 +1,42 @@
 # Configuration SEO
 
+## Content Security Policy
+
+La CSP front est désactivée sans `wp-content/theme-csp.json`. Forge écrit ce
+fichier uniquement après « Appliquer au site » : `version: 1`, `enabled` booléen,
+`mode: report|enforce`, `policy` (une ligne, 8 Ko maximum). Aucun secret n'y figure.
+L'administration, REST, AJAX et WP-CLI ne reçoivent pas cette politique.
+
+`inc/config/csp.php` prépare l'en-tête avec `wp_headers`, puis le tampon de rendu
+existant finalise la politique après les modifications de `ThemeAssets`.
+Les hashes SHA-256 portent sur les octets exacts (fins de ligne HTML normalisées)
+des CSS critical/once, y compris la concaténation tardive des heroes, et des scripts
+WordPress `app-js-js-extra/before/after`. Ils sont ajoutés aux directives
+`style-src-elem` / `script-src-elem` sans assouplir les attributs style/onclick.
+Une configuration mal formée passe en blocage restrictif et écrit une erreur PHP.
+Une politique concurrente PHP n'est pas écrasée : l'erreur est journalisée.
+
+Un producteur PHP fiable peut appeler `Theme_CSP::registerInline('script', $code)`
+ou `registerInline('style', $css)` sur le contenu exact qu'il imprime.
+`theme_csp_inline_script_ids` permet une liste explicite de scripts WordPress
+additionnels. Ne jamais appeler ces APIs sur du HTML éditorial, ni autoriser un
+script simplement parce que son ID apparaît dans la page. Les plugins non
+intégrés restent bloqués/signalés. Les attributs inline, scripts injectés après
+chargement et fragments AJAX contenant de nouveaux styles inline ne sont pas
+automatiquement autorisés. Une CSP stricte peut nécessiter de les externaliser.
+
+Commencer en Report-Only et tester toutes les pages avant le blocage. Retirer les
+anciennes balises meta et vérifier Apache/CDN : PHP ne peut pas détecter un en-tête
+ajouté après sa réponse. Ne pas flusher/modifier le HTML après la finalisation.
+La réponse est tamponnée, ce qui conserve tout le HTML en mémoire. Au-delà de
+16 Ko d'en-tête, les hashes ne sont pas ajoutés et une erreur est journalisée.
+
+WP Static conserve politique et HTML dans une enveloppe atomique et les restitue
+dans son service PHP (pré-WordPress compris). Les anciens caches sont contournés
+après une modification du JSON et doivent être régénérés. Un serveur qui sert
+directement les fichiers HTML, un export ZIP statique ou un autre plugin de cache
+doit intégrer lui-même les en-têtes : ce mode n'est pas automatiquement couvert.
+
 ## Pages d’options ACF
 
 L’entrée parente « Options » redirige vers la première sous-page configurée et

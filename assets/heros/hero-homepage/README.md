@@ -24,10 +24,14 @@ hero('homepage', ['title' => 'Test']);
 ]
 ```
 
-Le manifeste fournit deux images de démonstration depuis
+Le manifeste fournit un surtitre, un titre et un texte Lorem ipsum, ainsi que
+deux images de démonstration depuis
 `assets/img/placeholders/`. Forge les affiche comme valeurs initiales puis les
 importe dans la médiathèque lors de la création du site. Les identifiants ACF
 enregistrés sont donc propres à chaque installation WordPress.
+Ces valeurs servent au préremplissage dans Forge, pas de fallback PHP : un champ
+volontairement vidé reste vide. Pour un site déjà créé, la synchronisation du
+catalogue ne remplace pas les contributions existantes.
 
 ## Acf
 | Nom       | id         | Type de champ   | Obligatoire | administrable |
