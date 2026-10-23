@@ -12,7 +12,7 @@
     "components": [],
     "cards": [],
     "strates": [],
-    "heroes": ["page"],
+    "heroes": ["flexible"],
     "common": ["header-nav"],
     "modules": []
   }

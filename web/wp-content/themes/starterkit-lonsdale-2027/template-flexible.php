@@ -9,7 +9,7 @@ common("header-nav");
 ?>
 
 <main>
-    <?php hero('page'); ?>
+    <?php hero('flexible'); ?>
     
     <?php get_template_part('template-parts/utils/dispatch-strates'); ?>
 </main>
