@@ -2,7 +2,7 @@
     .main-content {
         display: grid;
         grid-template-columns: var(--layout);
-        margin-bottom: var(--margin-md);
+        margin-bottom: var(--space-md);
 
         >* {
             grid-column: ctr;

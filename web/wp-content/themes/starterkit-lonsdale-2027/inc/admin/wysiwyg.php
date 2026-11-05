@@ -19,6 +19,22 @@ function wysiwyg_css($mce_css)
     return $mce_css;
 }
 
+add_filter('tiny_mce_before_init', 'theme_wysiwyg_rte_body_class');
+function theme_wysiwyg_rte_body_class($init)
+{
+    $classes = preg_split('/\s+/', (string) ($init['body_class'] ?? ''), -1, PREG_SPLIT_NO_EMPTY);
+    $classes[] = 'rte';
+    $init['body_class'] = implode(' ', array_unique($classes));
+    $init['forced_root_block'] = 'p';
+    $init['force_br_newlines'] = false;
+    $init['force_p_newlines'] = true;
+    $init['wpautop'] = false;
+    $init['tadv_noautop'] = true;
+    $init['indent'] = true;
+
+    return $init;
+}
+
 // Toolbar ACF « Light » : gras uniquement.
 add_filter('acf/fields/wysiwyg/toolbars', 'theme_acf_wysiwyg_toolbars');
 function theme_acf_wysiwyg_toolbars(array $toolbars): array
@@ -50,13 +66,22 @@ function theme_acf_wysiwyg_tinymce_light_settings(): void
         'acf-input',
         <<<'JS'
         acf.addFilter('wysiwyg_tinymce_settings', function (init, id, field) {
+            const classes = (init.body_class || '').split(/\s+/).filter(Boolean);
+            if (!classes.includes('rte')) classes.push('rte');
+            init.body_class = classes.join(' ');
+            init.forced_root_block = 'p';
+            init.force_br_newlines = false;
+            init.force_p_newlines = true;
+            init.wpautop = false;
+            init.tadv_noautop = true;
+            init.indent = true;
+
             if (field.get('toolbar') !== 'light') {
                 return init;
             }
 
             init.body_class = ((init.body_class || '') + ' mce-toolbar-light').trim();
-            init.wpautop = false;
-            init.tadv_noautop = true;
+            init.indent = false;
             init.forced_root_block = false;
             init.force_br_newlines = true;
             init.force_p_newlines = false;
@@ -78,11 +103,11 @@ function theme_acf_is_wysiwyg_light_field(array $field): bool
 function theme_acf_wysiwyg_light_sanitize(string $value): string
 {
     $value = str_replace(["\r\n", "\r"], "\n", $value);
+    $value = preg_replace('/<b\b([^>]*)>/i', '<strong$1>', $value);
+    $value = preg_replace('/<\/b>/i', '</strong>', $value);
     $value = preg_replace('/<\/p>\s*<p[^>]*>/i', '<br>', $value);
     $value = preg_replace('/<p[^>]*>/i', '', $value);
     $value = preg_replace('/<\/p>/i', '<br>', $value);
-    $value = preg_replace('/<b\b([^>]*)>/i', '<strong$1>', $value);
-    $value = preg_replace('/<\/b>/i', '</strong>', $value);
     $value = preg_replace('/\n+/', '<br>', $value);
     $value = preg_replace('/(<br\s*\/?>\s*){2,}/i', '<br>', $value);
     $value = preg_replace('/^(<br\s*\/?>\s*)+/i', '', $value);
@@ -129,7 +154,6 @@ add_filter('tiny_mce_before_init', 'wysiwyg_block_formats');
 function wysiwyg_block_formats($init)
 {
     $block_formats = array(
-        'Niveau 1=h1',
         'Niveau 2=h2',
         'Niveau 3=h3',
         'Niveau 4=h4',
@@ -171,79 +195,24 @@ function wysiwyg_override_buttons($buttons) {
 
 // styles
 add_filter('tiny_mce_before_init', function($initArray) {
-    $style_formats = array(  
-        array(  
-            'title' => 'Niveau 1',  
-            'block' => 'p',  
-            'classes' => 'h1',
-            'remove_classes' => 'h2 h3 h4 h5 h6',
-            'wrapper' => false,
-            'exact' => true
-            
-        ),  
-        array(  
-            'title' => 'Niveau 2',  
-            'block' => 'p',  
-            'classes' => 'h2',
-            'remove_classes' => 'h1 h3 h4 h5 h6',
+    $style_formats = array(
+        array(
+            'title' => 'Intro',
+            'block' => 'p',
+            'classes' => 'intro',
+            'remove_classes' => 'h1 h2 h3 h4 h5 h6 text--sm text--lg text--xl text--wd',
             'wrapper' => false,
             'exact' => true
         ),
-        array(  
-            'title' => 'Niveau 3',  
-            'block' => 'p',  
-            'classes' => 'h3',
-            'remove_classes' => 'h1 h2 h4 h5 h6',
-            'wrapper' => false,
-            'exact' => true
-        ),
-        array(  
-            'title' => 'Niveau 4',  
-            'block' => 'p',  
-            'classes' => 'h4',
-            'remove_classes' => 'h1 h2 h3 h5 h6',
-            'wrapper' => false,
-            'exact' => true
-        ),
-
-        array(  
-            'title' => 'Texte (sm - 14px)',  
-            'block' => 'p',  
-            'classes' => 'text--sm',
-            'remove_classes' => 'h1 h2 h3 h4 h5 h6',
-            'wrapper' => false,
-            'exact' => true
-        ),
-
-        array(  
-            'title' => 'Texte (lg - 18px)',  
-            'block' => 'p',  
-            'classes' => 'text--lg',
-            'remove_classes' => 'h1 h2 h3 h4 h5 h6',
-            'wrapper' => false,
-            'exact' => true
-        ),
-
-        array(  
-            'title' => 'Texte (xl - 20px)',  
-            'block' => 'p',  
-            'classes' => 'text--xl',
-            'remove_classes' => 'h1 h2 h3 h4 h5 h6',
-            'wrapper' => false,
-            'exact' => true
-        ),
-
-        array(  
-            'title' => 'Texte (wd - 24px)',  
-            'block' => 'p',  
-            'classes' => 'text--wd',
-            'remove_classes' => 'h1 h2 h3 h4 h5 h6',
-            'wrapper' => false,
+        array(
+            'title' => 'Petit texte',
+            'inline' => 'small',
             'exact' => true
         ),
     );  
 
     $initArray['style_formats'] = wp_json_encode( $style_formats );
+    $initArray['style_formats_merge'] = false;
     
     $initArray['formats'] = wp_json_encode(array(
         'underline' => array('inline' => 'u', 'exact' => true)

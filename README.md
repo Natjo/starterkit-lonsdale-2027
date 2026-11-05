@@ -65,9 +65,17 @@ make composer require monolog/monolog
 make prod
 ```
 
-`make prod` peut être utilisé pendant que le watcher Docker tourne : il ne
-supprime pas les chunks déjà présents. Pour une génération finale entièrement
-propre, arrêter d’abord le service Node puis lancer la commande dédiée :
+Les compilations production et watch nettoient les anciens chunks après la
+réussite de tous les compilateurs partageant le dossier de sortie. La liste
+provient des assets Rspack, y compris les assets en cache : aucune analyse du
+JavaScript ni suppression avant compilation. Seuls les chunks hashés obsolètes
+et leurs `.map`, `.gz`, `.br` sont retirés ; les fichiers principaux, CSS et
+fichiers personnalisés restent hors de ce nettoyage. Une erreur de compilation
+bloque le nettoyage. La coordination est locale à un processus de compilation :
+ne pas lancer deux builds/watchers simultanément sur le même thème.
+
+Arrêter le watcher avant un build production. Pour une génération entièrement
+propre de tous les assets (pas seulement des chunks), utiliser la commande dédiée :
 
 ```bash
 docker compose -f .docker/docker-compose.yml stop nodejs

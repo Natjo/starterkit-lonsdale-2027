@@ -15,6 +15,7 @@ const svgoLoader = path.resolve(__dirname, "loaders/svgo-loader.js");
 const optimizeSvgUtils = path.resolve(__dirname, "utils/optimize-svg.js");
 const { optimizeSvgCopyTransform } = require("./utils/optimize-svg");
 const { pruneOnDemandAssets } = require("./prune-on-demand-assets");
+const { ChunkCleanupCoordinator, PruneChunksPlugin } = require("./prune-chunks");
 const assetsRoot = path.resolve(__dirname, "../assets");
 const copyIgnoredFiles = ["**/.DS_Store", "**/.gitkeep"];
 
@@ -375,6 +376,8 @@ function createRspackConfigs() {
         );
     }
 
+    const chunks = new ChunkCleanupCoordinator(configs.map(compiler => compiler.name));
+    for (const compiler of configs) compiler.plugins.push(new PruneChunksPlugin(chunks, compiler.name));
     return configs;
 }
 

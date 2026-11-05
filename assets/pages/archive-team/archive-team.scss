@@ -4,8 +4,8 @@
         display: grid;
         grid-template-columns: var(--layout);
         align-content: start;
-        gap: var(--margin-sm);
-        margin-bottom: var(--margin-md);
+        gap: var(--space-sm);
+        margin-bottom: var(--space-md);
 
 
         >* {
@@ -25,7 +25,7 @@
 
     .team-results {
         display: grid;
-        gap: var(--margin-sm);
+        gap: var(--space-sm);
     }
 
     .team-archive-list {

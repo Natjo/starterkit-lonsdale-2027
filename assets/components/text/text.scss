@@ -1,38 +1,51 @@
 /* rich text */
 .rte {
     line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
 
     h2 {
-        margin-bottom: 2.8rem;
         font-size: 2rem;
         font-weight: 700;
-        line-height: 1.25;
     }
 
     h3 {
         font-size: 1.8rem;
         font-weight: 600;
-        margin-bottom: 2rem
     }
 
     h4,
     h5 {
-        margin-bottom: 1rem;
         font-size: 1.6rem;
         font-weight: 700;
     }
 
-    p {
-        margin-bottom: 1.6rem;
+    :is(h2, h3, h4, h5) {
+        margin-top: 1rem;
+    }
+
+    > :is(h2, h3, h4, h5):first-child {
+        margin-top: 0;
+    }
+
+    hr {
+        margin: 0;
+        border: none;
+        border-top: 1px dashed currentColor;
     }
 
     ul,
     ol {
         display: flex;
         flex-direction: column;
-        gap: .5rem;
-        margin-bottom: 2rem;
-        padding-left: 2rem;
+        gap: 2rem;
+
+        ul,
+        ol {
+            margin-top: 1.4rem;
+            padding-left: 2rem;
+        }
 
         li::marker {
             color: var(--color-2);
@@ -40,7 +53,8 @@
     }
 
     ul {
-        list-style: disc;
+        list-style: inside disc;
+
 
     }
 
@@ -64,7 +78,6 @@
 
     blockquote {
         max-width: 80rem;
-        margin-bottom: 2rem;
         padding-left: 2rem;
         border-left: .3rem solid var(--color-2);
 
@@ -74,8 +87,21 @@
         }
     }
 
-    *:nth-last-child(1) {
-        margin-bottom: 0;
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        padding: 1rem;
+        border: 1px solid currentColor;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    th {
+        font-weight: 700;
     }
 
     img {
@@ -86,12 +112,10 @@
     @media #{$breakpoint-lg-up} {
         h2 {
             font-size: 2.8rem;
-            margin-bottom: 3.2rem
         }
 
         h3 {
             font-size: 2.2rem;
-            margin-bottom: 3.2rem
         }
     }
 }

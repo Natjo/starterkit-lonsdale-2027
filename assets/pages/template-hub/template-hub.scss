@@ -3,7 +3,7 @@
         display: grid;
         grid-template-columns: var(--layout);
         align-content: start;
-        margin-bottom: var(--margin-md);
+        margin-bottom: var(--space-md);
 
         >* {
             grid-column: ctr;

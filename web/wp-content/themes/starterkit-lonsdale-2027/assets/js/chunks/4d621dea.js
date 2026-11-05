@@ -1,1 +1,0 @@
-(self.rspackChunkwordpress_starter_kit=self.rspackChunkwordpress_starter_kit||[]).push([[489],{770(){}}]);

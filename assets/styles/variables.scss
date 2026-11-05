@@ -64,10 +64,10 @@
     --header-height-expanded: 7rem;
     --gap: 2rem;
 
-    --margin-xs: 3rem;
-    --margin-sm: 4rem;
-    --margin-md: 4rem;
-    --margin-lg: 6rem;
+    --space-xs: 3rem;
+    --space-sm: 4rem;
+    --space-md: 4rem;
+    --space-lg: 6rem;
   }
 }
 
@@ -77,10 +77,10 @@
     --header-height-expanded: 9rem;
     --gap: 2rem;
 
-    --margin-xs: 2rem;
-    --margin-sm: 5rem;
-    --margin-md: 8rem;
-    --margin-lg: 11rem;
+    --space-xs: 2rem;
+    --space-sm: 5rem;
+    --space-md: 8rem;
+    --space-lg: 11rem;
 
     /* layout avec ctr-sm et center*/
    /* --ctr-col: calc((var(--ctr-width) - (11) * var(--gap)) / 12 + var(--gap));

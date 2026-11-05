@@ -1,8 +1,8 @@
 .search-page {
     display: grid;
     grid-template-columns: var(--layout);
-    gap: var(--margin-sm) 0;
-    padding-block: calc(var(--header-height) + var(--margin-sm)) var(--margin-md);
+    gap: var(--space-sm) 0;
+    padding-block: calc(var(--header-height) + var(--space-sm)) var(--space-md);
 
     > * {
         grid-column: ctr;
@@ -10,7 +10,7 @@
 
     .search-results-region {
         display: grid;
-        gap: var(--margin-sm);
+        gap: var(--space-sm);
         min-width: 0;
 
         &[aria-busy="true"] {
@@ -30,7 +30,7 @@
 
     .search-layout {
         display: grid;
-        gap: var(--margin-sm);
+        gap: var(--space-sm);
         min-width: 0;
     }
 
@@ -62,7 +62,7 @@
     }
 
     .search-results {
-        gap: var(--margin-sm);
+        gap: var(--space-sm);
     }
 
     .search-list {

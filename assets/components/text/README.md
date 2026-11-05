@@ -64,6 +64,12 @@ Produit :
 </div>
 ```
 
+## Tableaux RTE
+
+Avec la classe `rte`, les tableaux occupent toute la largeur disponible, avec
+des bordures fusionnées de la couleur du texte, des cellules espacées et
+alignées en haut à gauche, et des en-têtes en gras.
+
 ## Dépendances
 
 - `component_classes()` ;

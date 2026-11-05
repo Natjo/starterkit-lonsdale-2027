@@ -1,14 +1,14 @@
 .prefooter {
     display: grid;
     grid-template-columns: var(--layout);
-    padding-block: var(--margin-md);
+    padding-block: var(--space-md);
     color: var(--color-text-invert);
     background: var(--color-1);
 
     .prefooter-content {
         display: grid;
         grid-column: ctr;
-        gap: var(--margin-sm);
+        gap: var(--space-sm);
         min-width: 0;
     }
 
@@ -31,7 +31,7 @@
 
         .prefooter-intro,
         .prefooter-newsletter {
-            padding-right: var(--margin-sm);
+            padding-right: var(--space-sm);
         }
     }
 }

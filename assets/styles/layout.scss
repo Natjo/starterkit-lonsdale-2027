@@ -96,9 +96,9 @@ body {
         grid-column: var(--ctr);
     }
 
-    --mb: var(--margin-md);
-    --pt: var(--margin-md);
-    --pb: var(--margin-md);
+    --mb: var(--space-md);
+    --pt: var(--space-md);
+    --pb: var(--space-md);
 
     margin-bottom: var(--mb);
     margin-top: var(--mt, 0);

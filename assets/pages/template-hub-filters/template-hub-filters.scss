@@ -14,12 +14,12 @@
     display: grid;
     grid-template-columns: var(--layout);
     align-content: start;
-    margin-bottom: var(--margin-md);
+    margin-bottom: var(--space-md);
   }
 
   .main-header {
     grid-column: sidebar / ctr-end;
-    margin-bottom: var(--margin-sm);
+    margin-bottom: var(--space-sm);
   }
 
   .main-sidebar {
