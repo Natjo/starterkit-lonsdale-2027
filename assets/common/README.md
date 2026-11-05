@@ -227,6 +227,7 @@ peine de lancer son initialisation deux fois.
 
 | Nom | Appel | Documentation |
 | --- | --- | --- |
+| `breadcrumb` | `common('breadcrumb')` | [`breadcrumb/README.md`](breadcrumb/README.md) |
 | `header-nav` | `common('header-nav')` | [`header-nav/README.md`](header-nav/README.md) |
 | `related` | `common('related')` | [`related/README.md`](related/README.md) |
 | `prefooter` | `common('prefooter')` | [`prefooter/README.md`](prefooter/README.md) |

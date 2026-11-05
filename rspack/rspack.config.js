@@ -1,13 +1,5 @@
-const { getOnceEntries, getSplitEntries } = require("./parse-split-imports");
-
-if (!process.env.WP_THEME_NAME) {
-    throw new Error("WP_THEME_NAME is required (e.g. WP_THEME_NAME=lonsdale-richard npm run prod)");
-}
-
-const splitEntries = {
-    ...getSplitEntries(),
-    ...getOnceEntries(),
-};
+const { validateThemeName } = require("./output-safety");
+const themeName = validateThemeName();
 
 const config = {
     entries: {
@@ -21,14 +13,10 @@ const config = {
             admin: ["./assets/styles/utils/admin.scss"],
             "admin-rte": ["./assets/styles/utils/admin-rte.scss"],
         },
-        split: splitEntries,
     },
-    domain: process.env.DOMAIN,
-    proxy: `https://${process.env.DOMAIN}/`,
-    port: process.env.NODE_PORT,
-    theme_name: process.env.WP_THEME_NAME,
+    theme_name: themeName,
     output_filename: "js/[name].js",
-    assets_publicPath: `/wp-content/themes/${process.env.WP_THEME_NAME}/assets/`,
+    assets_publicPath: `/wp-content/themes/${themeName}/assets/`,
     debug: process.env.NODE_ENV === "development",
 };
 

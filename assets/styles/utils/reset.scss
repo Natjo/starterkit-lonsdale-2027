@@ -1,19 +1,23 @@
 h1,
 h2,
 h3,
-h4 {
+h4,
+ol,
+ul,
+p,
+img,
+figure,
+fieldset,
+blockquote,
+dl,
+dd {
     margin: 0;
 }
 
 ol,
 ul {
-    margin: 0;
     padding-left: 0;
     list-style: none;
-}
-
-p {
-    margin: 0;
 }
 
 a {
@@ -21,39 +25,20 @@ a {
     text-decoration: none;
 }
 
-img {
-    display: block;
-    margin: 0;
-}
-
-figure {
-    margin: 0;
-}
-
-picture {
+img,
+picture,
+iframe,
+svg,
+video {
     display: block;
 }
 
-canvas {
-    display: block;
-}
-
-iframe {
-    display: block;
-    border: 0;
-}
-
+iframe,
 fieldset {
-    margin: 0;
-    padding: 0;
     border: 0;
 }
 
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
-}
-
+fieldset,
 tbody,
 thead,
 tr,
@@ -62,21 +47,9 @@ td {
     padding: 0;
 }
 
-svg {
-    display: block;
-}
-
-video {
-    display: block;
-}
-
-blockquote {
-    margin: 0;
-}
-
-dl,
-dd {
-    margin: 0;
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 button {
@@ -89,6 +62,6 @@ button {
     border: 0;
 }
 
-:where(h1, h2, h3, h4, h5, h6, p, li, dt, dd, label, figcaption) {
+:where(h1, h2, h3, h4, h5, h6, p, li, dt, dd, label) {
     text-box: trim-both cap alphabetic;
 }

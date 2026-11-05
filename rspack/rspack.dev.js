@@ -13,7 +13,7 @@ const devOptimization = {
                     inline: 2,
                     drop_console: false,
                     drop_debugger: false,
-                    passes: 2,
+                    passes: 1,
                 },
                 mangle: true,
                 format: {
@@ -31,7 +31,7 @@ const devOptimization = {
     runtimeChunk: false,
 };
 
-module.exports = createRspackConfigs().map((compilerConfig) => ({
+module.exports = createRspackConfigs({ development: true }).map((compilerConfig) => ({
     ...compilerConfig,
     mode: "development",
     devtool: "source-map",

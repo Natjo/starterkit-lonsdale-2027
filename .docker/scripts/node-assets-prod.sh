@@ -1,16 +1,9 @@
 #!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+COMPOSE_FILE="${COMPOSE_FILE:-.docker/docker-compose.yml}"
 
-set -e
-
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-YELLOW='\033[0;93m'
-NC='\033[0m'
-
-source ".docker/.env"
-
-APP_NAME=$(echo "$APP_NAME")
-
-docker exec -it ${APP_NAME}-node pnpm run prod
-
+# Keep production assets in place: restarting the watcher would overwrite them.
+docker compose -f "$COMPOSE_FILE" stop nodejs
+docker compose -f "$COMPOSE_FILE" run --rm --no-deps nodejs pnpm install --frozen-lockfile
+docker compose -f "$COMPOSE_FILE" run --rm --no-deps nodejs pnpm run prod

@@ -65,25 +65,27 @@ make composer require monolog/monolog
 make prod
 ```
 
-Les compilations production et watch nettoient les anciens chunks après la
-réussite de tous les compilateurs partageant le dossier de sortie. La liste
-provient des assets Rspack, y compris les assets en cache : aucune analyse du
-JavaScript ni suppression avant compilation. Seuls les chunks hashés obsolètes
-et leurs `.map`, `.gz`, `.br` sont retirés ; les fichiers principaux, CSS et
-fichiers personnalisés restent hors de ce nettoyage. Une erreur de compilation
-bloque le nettoyage. La coordination est locale à un processus de compilation :
-ne pas lancer deux builds/watchers simultanément sur le même thème.
+Les compilations production et watch nettoient les anciens assets générés
+uniquement après la réussite de tous les compilateurs. Un inventaire Rspack
+(`assets/.rspack-assets.json`) permet de vérifier tous les fichiers et leurs
+empreintes SHA-256, sans analyser le JavaScript minifié. Les fichiers manuels
+hors des chemins réservés aux sorties générées sont conservés.
 
-Arrêter le watcher avant un build production. Pour une génération entièrement
-propre de tous les assets (pas seulement des chunks), utiliser la commande dédiée :
+Un verrou empêche deux builds/watchers d’écrire simultanément dans le même
+thème. `make prod` arrête le watcher Node, installe les dépendances du lockfile
+puis compile dans un conteneur temporaire. Il laisse les assets de production
+en place. `pnpm run prod:clean` est un alias de `prod` : aucun effacement global
+n’est effectué avant compilation.
+
+Pour reprendre le développement ensuite :
 
 ```bash
-docker compose -f .docker/docker-compose.yml stop nodejs
-docker compose -f .docker/docker-compose.yml run --rm --no-deps nodejs pnpm run prod:clean
+docker compose -f .docker/docker-compose.yml up -d nodejs
 ```
 
-Pour reprendre le développement ensuite, redémarrer `nodejs` ; le watcher
-réémettra alors les assets de développement.
+Le watcher réémettra alors les assets de développement. Le contrat des imports
+`critical`, `shared`, `split`, `once`, du nettoyage et du verrou est documenté
+dans [rspack/README.md](rspack/README.md).
 
 ---
 

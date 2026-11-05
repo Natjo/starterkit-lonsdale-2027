@@ -18,7 +18,7 @@
     "homepage": "https://gitlab.com/lonsdale/Wordpress_Starter_Kit#readme",
     "scripts": {
         "prod": "NODE_ENV=production rspack build --config rspack/rspack.prod.js && node rspack/check-build-assets.js",
-        "prod:clean": "node rspack/clean-theme-assets.js && pnpm run prod",
+        "prod:clean": "pnpm run prod",
         "dev": "NODE_ENV=development rspack build --watch --config rspack/rspack.dev.js",
         "build:analyze": "NODE_ENV=production rspack build --config rspack/rspack.prod.js --profile --json > stats.json",
         "check:assets": "node rspack/check-build-assets.js",
@@ -28,18 +28,21 @@
         "test:php:assets": "docker compose -f .docker/docker-compose.yml exec -T wordpress php /var/www/html/wp-content/themes/starterkit-lonsdale-2027/tests/theme-assets-contract.php",
         "test:php:webp": "docker compose -f .docker/docker-compose.yml exec -T wordpress php /var/www/html/wp-content/plugins/wp-webp/tests/wp-webp-contract.php",
         "test:php:static": "docker compose -f .docker/docker-compose.yml exec -T wordpress php /var/www/html/wp-content/plugins/wp-static/tests/wp-static-contract.php",
-        "check": "pnpm run check:js && pnpm run test:php"
+        "check": "pnpm run check:js && pnpm run test:build && pnpm run test:php",
+        "test:build": "node --test tests/prune-chunks-contract.cjs tests/rspack-build-contract.cjs",
+        "test:build:browser": "node tests/rspack-browser-contract.mjs"
     },
     "devDependencies": {
-        "@rspack/cli": "^2.0.1",
-        "@rspack/core": "^2.0.1",
-        "autoprefixer": "^10.4.16",
-        "css-loader": "^7.1.2",
-        "postcss": "^8.4.32",
-        "postcss-loader": "^7.3.3",
-        "sass": "^1.32.5",
-        "sass-loader": "^16.0.0",
-        "svgo": "^4.0.1"
+        "@rspack/cli": "^2.3.1",
+        "@rspack/core": "^2.3.1",
+        "autoprefixer": "^10.6.2",
+        "css-loader": "^7.1.5",
+        "postcss": "^8.5.32",
+        "postcss-loader": "^7.3.4",
+        "sass": "^1.107.1",
+        "sass-loader": "^16.0.8",
+        "svgo": "^4.1.0",
+        "webpack": "^5.112.2"
     },
     "sideEffects": [
         "*.css",

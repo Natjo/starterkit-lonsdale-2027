@@ -135,6 +135,7 @@ services:
       start_period: 5s
 
   nodejs:
+    init: true
     build:
       context: .
       dockerfile: node/Dockerfile
@@ -162,13 +163,13 @@ services:
       - 3001:3001
     restart: unless-stopped
     command: >
-      bash -c "
+      bash -ec "
         PKG_HASH=$$(md5sum package.json pnpm-lock.yaml 2>/dev/null | md5sum | cut -d' ' -f1);
         if [ ! -f node_modules/.pkg_hash ] || [ \"$$PKG_HASH\" != \"$$(cat node_modules/.pkg_hash)\" ]; then
           pnpm install --frozen-lockfile;
           echo $$PKG_HASH > node_modules/.pkg_hash;
         fi;
-        pnpm run dev
+        exec env NODE_ENV=development node node_modules/@rspack/cli/bin/rspack.js build --watch --config rspack/rspack.dev.js
       "
 
 volumes:

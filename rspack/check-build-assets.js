@@ -3,22 +3,18 @@
 const fs = require("fs");
 const path = require("path");
 const { getOnceEntries, getSplitEntries } = require("./parse-split-imports");
+const { validateThemeName, getThemeAssetsDirectory } = require("./output-safety");
+const { verifyInventory } = require("./asset-inventory");
 
-const themeName = process.env.WP_THEME_NAME;
-
-if (!themeName) {
-    console.error("WP_THEME_NAME is required");
-    process.exit(1);
-}
-
+validateThemeName();
 const assetsDirectory = process.env.THEME_ASSETS_DIR
     ? path.resolve(process.env.THEME_ASSETS_DIR)
-    : path.resolve(
-          __dirname,
-          "../web/wp-content/themes",
-          themeName,
-          "assets",
-      );
+    : getThemeAssetsDirectory();
+const inventory = verifyInventory(assetsDirectory);
+for (const compiler of ["critical", "app", "admin", "split"]) {
+    if (!inventory.compilers.includes(compiler)) throw new Error(`Inventaire incomplet : compilateur ${compiler} absent.`);
+}
+const ownedFiles = new Set(inventory.files.map(entry => entry.name));
 const requiredFiles = [
     "css/critical.css",
     "css/app.css",
@@ -67,42 +63,9 @@ for (const relativePath of collectCopiedFiles(lottieSourceDirectory)) {
     }
 }
 
-const invalidFiles = requiredFiles.filter((relativePath) => {
-    const file = path.join(assetsDirectory, relativePath);
-
-    return !fs.existsSync(file) || !fs.statSync(file).isFile() || fs.statSync(file).size === 0;
-});
-
-const appFile = path.join(assetsDirectory, "js/app.js");
-const missingChunks = [];
-
-if (fs.existsSync(appFile)) {
-    const appSource = fs.readFileSync(appFile, "utf8");
-    const chunkHashes = new Set(
-        [...appSource.matchAll(/\b\d+:\s*["']([a-f0-9]{8})["']/g)]
-            .map((match) => match[1]),
-    );
-
-    for (const hash of chunkHashes) {
-        const chunk = path.join(assetsDirectory, `js/chunks/${hash}.js`);
-
-        if (
-            !fs.existsSync(chunk)
-            || !fs.statSync(chunk).isFile()
-            || fs.statSync(chunk).size === 0
-        ) {
-            missingChunks.push(`js/chunks/${hash}.js`);
-        }
-    }
-}
-
-invalidFiles.push(...missingChunks);
-
+const invalidFiles = requiredFiles.filter(relativePath => !ownedFiles.has(relativePath));
 if (invalidFiles.length > 0) {
-    console.error(
-        `Build assets incomplet : fichier(s) absent(s) ou vide(s)\n- ${invalidFiles.join("\n- ")}`,
-    );
+    console.error(`Build assets incomplet : fichier(s) non produit(s) par la compilation\n- ${invalidFiles.join("\n- ")}`);
     process.exit(1);
 }
-
-console.log(`Build assets: OK (${requiredFiles.length} fichiers + chunks dynamiques)`);
+console.log(`Build assets: OK (${inventory.files.length} fichiers vérifiés par inventaire et SHA-256)`);

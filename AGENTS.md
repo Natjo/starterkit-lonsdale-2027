@@ -40,6 +40,7 @@ compilés dans les dossiers `assets/css/` et `assets/js/` du thème.
 | Card | [`assets/cards/README.md`](assets/cards/README.md), puis le README local |
 | Helpers front | [`inc/front/README-front.md`](web/wp-content/themes/starterkit-lonsdale-2027/inc/front/README-front.md) |
 | Configuration SEO | [`inc/config/README.md`](web/wp-content/themes/starterkit-lonsdale-2027/inc/config/README.md) |
+| Builder Rspack et assets compilés | [`rspack/README.md`](rspack/README.md) |
 
 Mettre à jour le README local lorsqu'un contrat public, une option, une valeur
 par défaut ou une limite change.
@@ -200,10 +201,13 @@ docker compose -f .docker/docker-compose.yml exec -T wordpress \
   php /var/www/html/wp-content/themes/starterkit-lonsdale-2027/tests/components-contract.php
 ```
 
-Build de production des assets :
+Build de production des assets (arrête le watcher pour éviter deux écritures
+concurrentes dans le thème) :
 
 ```bash
-docker compose -f .docker/docker-compose.yml exec -T nodejs pnpm run prod
+make prod
+# Relancer le développement ensuite, si nécessaire :
+docker compose -f .docker/docker-compose.yml up -d nodejs
 ```
 
 Pour une modification documentaire uniquement, `git diff --check` suffit. Pour

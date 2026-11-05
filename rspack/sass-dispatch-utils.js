@@ -5,11 +5,6 @@
 const fs = require("fs");
 const path = require("path");
 
-const IMPORT_RE =
-    /^@import\s+["']([^"']+)["'](?:\s+(?:critical|shared|split|once))*\s*;/;
-
-const SCSS_IMPORT_RE = /@import\s+["']([^"']+)["']/g;
-
 const BREAKPOINTS_IMPORT = "styles/breakpoints";
 
 const IGNORED_IMPORTS = new Set([
@@ -17,50 +12,15 @@ const IGNORED_IMPORTS = new Set([
     "styles/settings",
 ]);
 
-const HERO_PREFIX = "heros/";
-
-function isHeroCriticalImport(importPath, flags) {
-    return flags.includes("critical") && importPath.startsWith(HERO_PREFIX);
-}
-
-function isStylesPath(importPath) {
-    return importPath.startsWith("styles/");
-}
-
-function parseImportLine(line) {
-    const match = line.match(IMPORT_RE);
-
-    if (!match) {
-        return null;
-    }
-
-    const flags = [
-        ...line.matchAll(/\s+(critical|shared|split|once)\b/g),
-    ].map((entry) => entry[1]);
-
-    return {
-        path: match[1],
-        flags,
-    };
-}
+const { parseAppImports, isHeroCritical: isHeroCriticalImport } = require("./sass-imports");
 
 function dispatchAppScss(source, mode) {
     const critical = [];
     const app = [];
     const heroCritical = [];
 
-    for (const line of source.split("\n")) {
-        const trimmed = line.trim();
-
-        if (trimmed === "" || trimmed.startsWith("//")) {
-            continue;
-        }
-
-        const parsed = parseImportLine(trimmed);
-
-        if (!parsed || IGNORED_IMPORTS.has(parsed.path)) {
-            continue;
-        }
+    for (const parsed of parseAppImports(source)) {
+        if (IGNORED_IMPORTS.has(parsed.path)) continue;
 
         const isExplicitShared = parsed.flags.includes("shared");
         const isCritical = parsed.flags.includes("critical");
@@ -79,16 +39,6 @@ function dispatchAppScss(source, mode) {
         if (isExplicitShared) {
             app.push(parsed.path);
             critical.push(parsed.path);
-            continue;
-        }
-
-        if (isStylesPath(parsed.path)) {
-            if (isCritical) {
-                critical.push(parsed.path);
-            } else {
-                app.push(parsed.path);
-            }
-
             continue;
         }
 
@@ -122,7 +72,6 @@ function resolveScssFile(importPath, loadPaths) {
                   path.join(loadPath, `${importPath}.sass`),
                   path.join(loadPath, `${importPath}.css`),
                   path.join(loadPath, `${importPath}/index.scss`),
-                  path.join(loadPath, `_${path.basename(importPath)}.scss`),
                   path.join(
                       loadPath,
                       path.dirname(importPath),
@@ -140,58 +89,8 @@ function resolveScssFile(importPath, loadPaths) {
     return null;
 }
 
-function collectScssDependencyTree(entryImportPaths, loadPaths) {
-    /** @type {Set<string>} */
-    const files = new Set();
-    /** @type {string[]} */
-    const queue = [...entryImportPaths];
-
-    while (queue.length > 0) {
-        const importPath = queue.shift();
-        const file = resolveScssFile(importPath, loadPaths);
-
-        if (!file || files.has(file)) {
-            continue;
-        }
-
-        files.add(file);
-
-        const content = fs.readFileSync(file, "utf8");
-
-        for (const match of content.matchAll(SCSS_IMPORT_RE)) {
-            const nestedImport = match[1];
-
-            if (
-                nestedImport.startsWith("http://") ||
-                nestedImport.startsWith("https://")
-            ) {
-                continue;
-            }
-
-            queue.push(nestedImport);
-        }
-    }
-
-    return files;
-}
-
-function heroImportPathToName(importPath) {
-    const match = importPath.match(/^heros\/hero-([^/]+)\/hero-\1$/);
-
-    return match ? match[1] : importPath.replace(/^heros\//, "");
-}
-
 module.exports = {
     BREAKPOINTS_IMPORT,
-    IGNORED_IMPORTS,
-    HERO_PREFIX,
-    IMPORT_RE,
-    SCSS_IMPORT_RE,
-    collectScssDependencyTree,
     dispatchAppScss,
-    heroImportPathToName,
-    isHeroCriticalImport,
-    isStylesPath,
-    parseImportLine,
     resolveScssFile,
 };

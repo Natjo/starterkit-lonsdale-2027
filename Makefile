@@ -1,8 +1,6 @@
 .PHONY: init start start-build stop composer sonar crawl prod
 
 COMPOSE_FILE := .docker/docker-compose.yml
-APP_NAME := $(shell grep '^PROJECT_NAME=' .docker/.env 2>/dev/null | cut -d= -f2- | tr -d '\r' || echo "starterkit-v2")
-NODE_CONTAINER := $(APP_NAME)-node
 
 init:
 	.docker/init.sh $(filter-out $@,$(MAKECMDGOALS))
@@ -25,9 +23,7 @@ crawl:
 	open http://127.0.0.1:5050
 
 prod:
-	@docker inspect -f '{{.State.Running}}' $(NODE_CONTAINER) 2>/dev/null | grep -q true \
-		|| docker compose -f $(COMPOSE_FILE) up -d nodejs
-	docker exec -it $(NODE_CONTAINER) pnpm run prod
+	COMPOSE_FILE="$(COMPOSE_FILE)" bash .docker/scripts/node-assets-prod.sh
 
 %:
 	@:

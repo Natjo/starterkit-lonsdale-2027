@@ -52,7 +52,8 @@ function pruneChunks(outputPath, assetNames) {
 
 /** One coordinator for all compilers sharing this output. Cached assets are included. */
 class ChunkCleanupCoordinator {
-    constructor(names) {
+    constructor(names, { finalize } = {}) {
+        this.finalize = finalize;
         this.states = new Map(names.map(name => [name, { pending: true, successful: false, assets: new Set(), output: null }]));
     }
     begin(name) { this.states.get(name).pending = true; }
@@ -63,11 +64,13 @@ class ChunkCleanupCoordinator {
             pending: false, successful: !hasErrors,
             assets: new Set(compilation.getAssets().map(asset => asset.name)), output,
         });
-        if (process.env.RSPACK_DEFER_CHUNK_CLEANUP === "1") return [];
         const states = [...this.states.values()];
         if (states.some(state => state.pending || !state.successful)) return [];
         if (new Set(states.map(state => path.resolve(state.output))).size !== 1) throw new Error("Chunk compilers must share one output directory.");
-        return pruneChunks(output, states.flatMap(state => [...state.assets]));
+        const names = states.flatMap(state => [...state.assets]);
+        const deferCleanup = process.env.RSPACK_DEFER_CHUNK_CLEANUP === "1";
+        if (this.finalize) return this.finalize(output, names, { compilers: [...this.states.keys()], deferCleanup });
+        return deferCleanup ? [] : pruneChunks(output, names);
     }
 }
 
@@ -83,7 +86,7 @@ class PruneChunksPlugin {
         compiler.hooks.failed.tap(label, () => this.coordinator.fail(this.name));
         compiler.hooks.done.tap(label, stats => {
             const removed = this.coordinator.done(this.name, stats.compilation, compiler.options.output.path, stats.hasErrors());
-            if (removed.length) compiler.getInfrastructureLogger(label).info(`Removed ${removed.length} old chunk file(s).`);
+            if (removed.length) compiler.getInfrastructureLogger(label).info(`Removed ${removed.length} obsolete build asset(s).`);
         });
     }
 }

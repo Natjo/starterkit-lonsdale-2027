@@ -3,8 +3,7 @@ const path = require("path");
 const rspack = require("@rspack/core");
 const {
     APP_SCSS,
-    getOnceEntries,
-    getSplitEntries,
+    getDynamicEntries,
 } = require("./parse-split-imports");
 
 const isDev = config.debug;
@@ -14,7 +13,9 @@ const parseSplitImports = path.resolve(__dirname, "parse-split-imports.js");
 const svgoLoader = path.resolve(__dirname, "loaders/svgo-loader.js");
 const optimizeSvgUtils = path.resolve(__dirname, "utils/optimize-svg.js");
 const { optimizeSvgCopyTransform } = require("./utils/optimize-svg");
-const { pruneOnDemandAssets } = require("./prune-on-demand-assets");
+const { publishInventory } = require("./asset-inventory");
+const { BuildOutputLock, BuildLockPlugin } = require("./build-lock");
+const { getThemeAssetsDirectory } = require("./output-safety");
 const { ChunkCleanupCoordinator, PruneChunksPlugin } = require("./prune-chunks");
 const assetsRoot = path.resolve(__dirname, "../assets");
 const copyIgnoredFiles = ["**/.DS_Store", "**/.gitkeep"];
@@ -28,21 +29,7 @@ class WatchDynamicEntriesPlugin {
     }
 }
 
-class PruneOnDemandAssetsPlugin {
-    apply(compiler) {
-        compiler.hooks.afterEmit.tap("PruneOnDemandAssetsPlugin", (compilation) => {
-            const removed = pruneOnDemandAssets(compiler.options.output.path);
-
-            if (removed.length > 0) {
-                compilation.getLogger("PruneOnDemandAssetsPlugin").info(
-                    `Removed ${removed.length} orphan on-demand asset(s).`,
-                );
-            }
-        });
-    }
-}
-
-const createScssUse = (withDispatch = false) => [
+const createScssUse = (withDispatch = false, isDev = config.debug) => [
     rspack.CssExtractRspackPlugin.loader,
     {
         loader: "css-loader",
@@ -84,8 +71,8 @@ const createScssUse = (withDispatch = false) => [
 /**
  * @param {{
  *   name: string,
- *   entry: Record<string, string | string[]>,
- *   clean?: boolean,
+ *   entry: Record<string, string | string[]> | (() => Record<string, string | string[]>),
+ *   development?: boolean,
  *   withCopy?: boolean,
  *   watchDynamicEntries?: boolean,
  * }} options
@@ -95,18 +82,15 @@ function createRspackConfig({
     entry,
     withCopy = false,
     watchDynamicEntries = false,
+    development = config.debug,
 }) {
+    const isDev = development;
     return {
         name,
         devtool: isDev ? "eval-cheap-module-source-map" : false,
         entry,
         output: {
-            path: path.join(
-                __dirname,
-                "./../web/wp-content/themes",
-                config.theme_name,
-                "assets",
-            ),
+            path: getThemeAssetsDirectory(config.theme_name),
             filename: config.output_filename,
             publicPath: config.assets_publicPath,
             chunkFilename: "./js/chunks/[contenthash:8].js",
@@ -150,6 +134,11 @@ function createRspackConfig({
                       svgoLoader,
                       optimizeSvgUtils,
                       APP_SCSS,
+                      path.join(__dirname, "sass-imports.js"),
+                      path.join(__dirname, "asset-inventory.js"),
+                      path.join(__dirname, "output-safety.js"),
+                      path.join(__dirname, "build-lock.js"),
+                      path.join(__dirname, "prune-chunks.js"),
                   ],
                   storage: {
                       type: "filesystem",
@@ -197,15 +186,15 @@ function createRspackConfig({
                     oneOf: [
                         {
                             test: /app\.scss$/,
-                            use: createScssUse(true),
+                            use: createScssUse(true, isDev),
                         },
                         {
                             resourceQuery: /dispatch=split/,
-                            use: createScssUse(true),
+                            use: createScssUse(true, isDev),
                         },
                         {
                             test: /\.(sass|scss)$/,
-                            use: createScssUse(),
+                            use: createScssUse(false, isDev),
                         },
                     ],
                 },
@@ -268,7 +257,6 @@ function createRspackConfig({
             new rspack.CssExtractRspackPlugin({
                 filename: "css/[name].css",
             }),
-            ...(name === "app" ? [new PruneOnDemandAssetsPlugin()] : []),
             ...(watchDynamicEntries ? [new WatchDynamicEntriesPlugin()] : []),
             ...(withCopy
                 ? [
@@ -326,6 +314,7 @@ function createRspackConfig({
                 : []),
         ],
         optimization: {
+            emitOnErrors: false,
             moduleIds: "deterministic",
             chunkIds: "deterministic",
             usedExports: true,
@@ -343,41 +332,42 @@ function createRspackConfig({
     };
 }
 
-function createRspackConfigs() {
+function createRspackConfigs({ development = config.debug } = {}) {
+    const isDev = development;
     const configs = [
         createRspackConfig({
+            development,
             name: "critical",
             entry: config.entries.critical,
         }),
         createRspackConfig({
+            development,
             name: "app",
             entry: config.entries.app,
             withCopy: true,
         }),
         createRspackConfig({
+            development,
             name: "admin",
             entry: config.entries.admin,
         }),
     ];
 
-    const getDynamicEntries = () => ({
-        ...getSplitEntries(),
-        ...getOnceEntries(),
+    configs.push(createRspackConfig({
+        development,
+        name: "split",
+        entry: isDev ? getDynamicEntries : getDynamicEntries(),
+        watchDynamicEntries: isDev,
+    }));
+    const lock = new BuildOutputLock();
+    const chunks = new ChunkCleanupCoordinator(configs.map(compiler => compiler.name), {
+        finalize: (output, names, options) => publishInventory(output, names, {
+            ...options, mode: isDev ? "development" : "production",
+        }),
     });
-    const splitEntries = getDynamicEntries();
-
-    if (splitEntries && Object.keys(splitEntries).length > 0) {
-        configs.push(
-            createRspackConfig({
-                name: "split",
-                entry: isDev ? getDynamicEntries : splitEntries,
-                watchDynamicEntries: isDev,
-            }),
-        );
-    }
-
-    const chunks = new ChunkCleanupCoordinator(configs.map(compiler => compiler.name));
-    for (const compiler of configs) compiler.plugins.push(new PruneChunksPlugin(chunks, compiler.name));
+    for (const compiler of configs) compiler.plugins.push(
+        new BuildLockPlugin(lock), new PruneChunksPlugin(chunks, compiler.name),
+    );
     return configs;
 }
 

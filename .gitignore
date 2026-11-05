@@ -75,3 +75,5 @@ static-pages/
 web/wp-content/wp-static-generating.lock
 web/wp-content/wp-static-pending.lock
 
+# Rspack process lock (never commit a running build lease)
+.rspack-build.lock/

@@ -1,23 +1,15 @@
 #!/usr/bin/env node
-
-const fs = require("fs");
-const path = require("path");
-
-const themeName = process.env.WP_THEME_NAME;
-
-if (!themeName) {
-    console.error("WP_THEME_NAME is required");
-    process.exit(1);
-}
-
-const assetsDir = path.join(
-    __dirname,
-    "../web/wp-content/themes",
-    themeName,
-    "assets",
-);
-
-for (const dir of ["css", "js", "fonts", "video", "favicon", "img", "lottie"]) {
-    fs.rmSync(path.join(assetsDir, dir), { recursive: true, force: true });
-    fs.mkdirSync(path.join(assetsDir, dir), { recursive: true });
-}
+// Never erase the last working build before recompiling.
+const { getThemeAssetsDirectory } = require('./output-safety');
+const { BuildOutputLock } = require('./build-lock');
+const { readInventory, verifyInventory, publishInventory } = require('./asset-inventory');
+const output = getThemeAssetsDirectory();
+const lock = new BuildOutputLock();
+lock.acquire(output, 'clean');
+try {
+    const inventory = verifyInventory(output, readInventory(output));
+    const removed = publishInventory(output, inventory.files.map(entry => entry.name), {
+        compilers: inventory.compilers, mode: inventory.mode,
+    });
+    console.log(`Nettoyage Rspack : ${removed.length} ancien(s) fichier(s) retiré(s).`);
+} finally { lock.release(); }

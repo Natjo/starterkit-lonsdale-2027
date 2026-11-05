@@ -11,7 +11,7 @@ const prodOptimization = {
                     ecma: 2020,
                     comparisons: false,
                     inline: 2,
-                    drop_console: true,
+                    drop_console: false,
                     drop_debugger: true,
                     pure_funcs: ["console.log", "console.info", "console.debug"],
                     passes: 2,
@@ -29,7 +29,7 @@ const prodOptimization = {
     concatenateModules: true,
 };
 
-module.exports = createRspackConfigs().map((compilerConfig) => ({
+module.exports = createRspackConfigs({ development: false }).map((compilerConfig) => ({
     ...compilerConfig,
     mode: "production",
     optimization: {
