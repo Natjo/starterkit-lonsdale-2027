@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Yoast SEO &#8211; Advanced SEO with real-time guidance and built-in AI - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-10-13 05:46:59+0000\n"
+"PO-Revision-Date: 2026-10-30 13:25:59+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -464,16 +464,6 @@ msgstr "Appliquez les suggestions d’IA pour améliorer le contenu en 1 clic"
 msgid "Create optimized SEO titles & meta descriptions in seconds"
 msgstr "Créez des titres et des méta descriptions SEO optimisés en quelques secondes"
 
-#: src/presenters/admin/sidebar-presenter.php:86 js/dist/ai-consent.js:2
-#: js/dist/ai-content-planner.js:237 js/dist/ai-generator.js:2
-#: js/dist/block-editor.js:237 js/dist/bulk-editor-page.js:2
-#: js/dist/classic-editor.js:2 js/dist/editor-modules.js:195
-#: js/dist/externals-components.js:105 js/dist/general-page.js:5
-#: js/dist/integrations-page.js:58 js/dist/new-settings.js:5
-#: js/dist/redirects.js:2 js/dist/support.js:5
-msgid "Receive clear SEO and readability guidance to optimize your products"
-msgstr "Recevez des conseils clairs en matière de SEO et de lisibilité pour optimiser vos produits"
-
 #: src/presenters/admin/sidebar-presenter.php:85 js/dist/ai-consent.js:2
 #: js/dist/ai-content-planner.js:237 js/dist/ai-generator.js:2
 #: js/dist/block-editor.js:237 js/dist/bulk-editor-page.js:2
@@ -573,7 +563,7 @@ msgid "Your recent posts are using default %1$s, which can make them easy to ove
 msgstr "Vos publications récentes utilisent le format par défaut %1$s, ce qui peut les rendre difficiles à repérer dans les résultats de recherche. Mettez-les à jour manuellement ou %2$sdécouvrez comment %3$sYoast AI Generate%4$s peut les améliorer pour vous.%5$s"
 
 #: src/alerts/application/default-seo-data/default-seo-data-alert.php:182
-#: js/dist/bulk-editor-page.js:8 js/dist/bulk-editor-page.js:21
+#: js/dist/bulk-editor-page.js:8 js/dist/bulk-editor-page.js:24
 msgid "SEO titles"
 msgstr "Titres SEO"
 
@@ -619,7 +609,7 @@ msgstr "Votre extension %1$s ne peut pas être mise à jour car votre abonnement
 msgid "%1$s30%% OFF - Black Friday %2$s"
 msgstr "%1$s30%% de réduction - Black Friday %2$s"
 
-#: admin/class-premium-upsell-admin-block.php:213 js/dist/general-page.js:7
+#: admin/class-premium-upsell-admin-block.php:214 js/dist/general-page.js:7
 #: js/dist/new-settings.js:7
 msgid "Get 30% off now!"
 msgstr "Obtenez 30 % de réduction maintenant !"
@@ -913,8 +903,8 @@ msgstr "La classe %1$s ne doit pas être instanciée avant que le global %2$s ne
 #. translators: %s expands to Yoast SEO Premium
 #. translators: %s expands to product name: "Yoast WooCommerce SEO" or "Yoast
 #. SEO Premium"
-#: admin/class-premium-upsell-admin-block.php:219
-#: admin/class-premium-upsell-admin-block.php:221 js/dist/general-page.js:7
+#: admin/class-premium-upsell-admin-block.php:220
+#: admin/class-premium-upsell-admin-block.php:222 js/dist/general-page.js:7
 #: js/dist/new-settings.js:7
 msgid "Explore %s now!"
 msgstr "Explorer %s maintenant !"
@@ -1075,7 +1065,7 @@ msgid "Finish your %s"
 msgstr "Finissez votre %s"
 
 #: inc/class-wpseo-rank.php:156 inc/class-wpseo-rank.php:245
-#: js/dist/block-editor.js:696 js/dist/editor-modules.js:194
+#: js/dist/block-editor.js:697 js/dist/editor-modules.js:194
 #: js/dist/editor-modules.js:477 js/dist/externals-components.js:163
 #: js/dist/externals-components.js:463
 #: js/dist/frontend-inspector-resources.js:1
@@ -1183,7 +1173,7 @@ msgstr "Nous devons analyser une partie de vos données SEO à nouveau suite à 
 
 #: src/presenters/admin/sidebar-presenter.php:21
 #: js/dist/ai-content-planner.js:75 js/dist/block-editor.js:75
-#: js/dist/block-editor.js:621 js/dist/classic-editor.js:311
+#: js/dist/block-editor.js:620 js/dist/classic-editor.js:310
 #: js/dist/editor-modules.js:190 js/dist/externals-components.js:159
 #: js/dist/general-page.js:5 js/dist/new-settings.js:5 js/dist/support.js:5
 msgid "BLACK FRIDAY | 30% OFF"
@@ -1714,8 +1704,8 @@ msgstr "Découvrez comment les analyses peuvent vous aider à améliorer votre c
 msgid "Find relevant data about your content right in the Insights section in the Yoast SEO metabox. You’ll see what words you use most often and if they’re a match with your keywords! "
 msgstr "Trouvez des données pertinentes sur votre contenu directement dans la section « Analyses » de la boite méta Yoast SEO. Vous verrez quels mots vous utilisez le plus souvent et s’ils correspondent à vos mots-clés ! "
 
-#: admin/views/class-yoast-feature-toggles.php:112 js/dist/block-editor.js:621
-#: js/dist/block-editor.js:712 js/dist/classic-editor.js:311
+#: admin/views/class-yoast-feature-toggles.php:112 js/dist/block-editor.js:620
+#: js/dist/block-editor.js:713 js/dist/classic-editor.js:310
 #: js/dist/new-settings.js:28 js/dist/new-settings.js:524
 msgid "Insights"
 msgstr "Analyses"
@@ -2276,7 +2266,7 @@ msgstr "Nous avons des formations gratuites et payantes pour vous apprendre le r
 msgid "Check out %1$s"
 msgstr "Jetez un œil à %1$s"
 
-#: admin/metabox/class-metabox.php:383 js/dist/block-editor.js:737
+#: admin/metabox/class-metabox.php:383 js/dist/block-editor.js:738
 #: js/dist/new-settings.js:21 js/dist/new-settings.js:31
 #: js/dist/new-settings.js:35 js/dist/new-settings.js:40
 #: js/dist/new-settings.js:92 js/dist/new-settings.js:410
@@ -2501,8 +2491,8 @@ msgstr "Découvrez en quoi les permaliens sont importants pour votre référence
 #. translators: %s expands to Yoast SEO Premium
 #. translators: %s expands to product name: "Yoast WooCommerce SEO" or "Yoast
 #. SEO Premium"
-#: admin/class-premium-upsell-admin-block.php:181
-#: admin/class-premium-upsell-admin-block.php:192 js/dist/general-page.js:6
+#: admin/class-premium-upsell-admin-block.php:182
+#: admin/class-premium-upsell-admin-block.php:193 js/dist/general-page.js:6
 #: js/dist/new-settings.js:6
 msgid "Upgrade to %s"
 msgstr "Mettre à niveau vers %s"
@@ -2540,10 +2530,11 @@ msgid "Focus keyphrase not set."
 msgstr "Expression clé principale non définie."
 
 #. translators: %s expands to Yoast SEO Premium
+#. translators: %s expands to Yoast WooCommerce SEO.
 #. translators: WooCommerce SEO
 #: admin/class-premium-popup.php:81
-#: admin/watchers/class-slug-change-watcher.php:228
-#: js/dist/externals-components.js:438
+#: admin/watchers/class-slug-change-watcher.php:228 js/dist/block-editor.js:697
+#: js/dist/classic-editor.js:597 js/dist/externals-components.js:438
 msgid "Get %s"
 msgstr "%s"
 
@@ -3091,10 +3082,11 @@ msgstr "Ancien assistant de configuration"
 #: js/dist/ai-generator.js:282 js/dist/block-editor.js:85
 #: js/dist/block-editor.js:97 js/dist/block-editor.js:136
 #: js/dist/block-editor.js:244 js/dist/block-editor.js:249
-#: js/dist/block-editor.js:261 js/dist/block-editor.js:697
-#: js/dist/block-editor.js:698 js/dist/bulk-editor-page.js:2
+#: js/dist/block-editor.js:261 js/dist/block-editor.js:698
+#: js/dist/block-editor.js:699 js/dist/bulk-editor-page.js:2
 #: js/dist/bulk-editor-page.js:5 js/dist/bulk-editor-page.js:6
-#: js/dist/bulk-editor-page.js:15 js/dist/classic-editor.js:2
+#: js/dist/bulk-editor-page.js:15 js/dist/bulk-editor-page.js:22
+#: js/dist/bulk-editor-page.js:23 js/dist/classic-editor.js:2
 #: js/dist/editor-modules.js:195 js/dist/editor-modules.js:245
 #: js/dist/editor-modules.js:260 js/dist/editor-modules.js:475
 #: js/dist/externals-components.js:100 js/dist/externals-components.js:104
@@ -3193,7 +3185,7 @@ msgid "Cornerstone content"
 msgstr "Contenu pilier"
 
 #: admin/class-yoast-form.php:149 admin/class-yoast-form.php:154
-#: js/dist/bulk-editor-page.js:20 js/dist/general-page.js:45
+#: js/dist/bulk-editor-page.js:23 js/dist/general-page.js:45
 #: js/dist/new-settings.js:9
 msgid "Save changes"
 msgstr "Enregistrer les modifications"
@@ -3297,7 +3289,7 @@ msgstr "Fonctionnalités"
 #: src/abilities/user-interface/abilities/abstract-post-seo-data-ability.php:122
 #: src/abilities/user-interface/abilities/abstract-post-seo-data-ability.php:123
 #: src/abilities/user-interface/abilities/update-post-seo-data-ability.php:213
-#: js/dist/bulk-editor-page.js:21
+#: js/dist/bulk-editor-page.js:24
 #: js/dist/externals/replacementVariableEditor.js:71
 #: js/dist/externals/searchMetadataPreviews.js:102 js/dist/new-settings.js:18
 #: js/dist/new-settings.js:24 js/dist/new-settings.js:28
@@ -3418,7 +3410,7 @@ msgstr "Retire l’onglet de l’analyse de lisibilité du gestionnaire de méta
 #: inc/class-wpseo-rank.php:208 inc/class-wpseo-rank.php:240
 #: src/task-list/application/tasks/child-tasks/improve-content-readability-child.php:52
 #: src/task-list/application/tasks/child-tasks/improve-content-seo-child.php:52
-#: js/dist/block-editor.js:696 js/dist/bulk-editor-page.js:8
+#: js/dist/block-editor.js:697 js/dist/bulk-editor-page.js:8
 #: js/dist/editor-modules.js:194 js/dist/editor-modules.js:477
 #: js/dist/externals-components.js:163 js/dist/externals/analysis.js:410
 #: js/dist/externals/dashboardFrontend.js:4
@@ -3438,7 +3430,7 @@ msgstr "Nous avons détecté les problèmes suivants qui affectent le référenc
 
 #: inc/class-wpseo-rank.php:138
 #: src/abilities/application/score-retriever.php:140
-#: js/dist/block-editor.js:696 js/dist/editor-modules.js:194
+#: js/dist/block-editor.js:697 js/dist/editor-modules.js:194
 #: js/dist/editor-modules.js:477 js/dist/externals-components.js:163
 #: js/dist/frontend-inspector-resources.js:1
 msgid "Not available"
@@ -3596,7 +3588,7 @@ msgstr "Erreur 404 : Page introuvable"
 
 #. Plugin Name of the plugin
 #: wp-seo.php admin/capabilities/class-capability-manager-integration.php:74
-#: src/presenters/meta-description-presenter.php:36 js/dist/block-editor.js:745
+#: src/presenters/meta-description-presenter.php:36 js/dist/block-editor.js:746
 msgid "Yoast SEO"
 msgstr "Yoast SEO"
 
@@ -3621,7 +3613,7 @@ msgstr "Les chiffres ne sont pas acceptés"
 #: inc/class-wpseo-rank.php:218 inc/class-wpseo-rank.php:250
 #: src/task-list/application/tasks/child-tasks/improve-content-readability-child.php:50
 #: src/task-list/application/tasks/child-tasks/improve-content-seo-child.php:50
-#: js/dist/block-editor.js:696 js/dist/editor-modules.js:194
+#: js/dist/block-editor.js:697 js/dist/editor-modules.js:194
 #: js/dist/editor-modules.js:477 js/dist/externals-components.js:163
 #: js/dist/externals/analysis.js:410 js/dist/externals/dashboardFrontend.js:4
 #: js/dist/frontend-inspector-resources.js:1
@@ -3629,7 +3621,7 @@ msgid "Good"
 msgstr "Bon"
 
 #. translators: %s expands to the name of a post type (plural).
-#: inc/class-upgrade.php:1555 inc/options/class-wpseo-option-titles.php:309
+#: inc/class-upgrade.php:1574 inc/options/class-wpseo-option-titles.php:309
 msgid "%s Archive"
 msgstr "%s Archive"
 
@@ -3731,12 +3723,6 @@ msgstr "Cet outil vous permet de modifier rapidement des fichiers importants pou
 #: admin/pages/tools.php:36
 msgid "File editor"
 msgstr "Éditeur de fichiers"
-
-#: admin/pages/tools.php:42
-#: src/bulk-editor/user-interface/bulk-editor-integration.php:228
-#: js/dist/bulk-editor-page.js:22
-msgid "Bulk editor"
-msgstr "Éditeur par lot"
 
 #: inc/class-wpseo-replace-vars.php:107
 msgid "A replacement variable can only contain alphanumeric characters, an underscore or a dash. Try renaming your variable."
@@ -3888,7 +3874,7 @@ msgid "Replaced with the slug which caused the 404"
 msgstr "Remplacé par le slug qui a causé l’erreur 404"
 
 #. translators: %s expands to the variable used for term title.
-#: inc/class-upgrade.php:1558 inc/options/class-wpseo-option-titles.php:345
+#: inc/class-upgrade.php:1577 inc/options/class-wpseo-option-titles.php:345
 #: src/editors/framework/seo/terms/title-data-provider.php:27
 msgid "%s Archives"
 msgstr "Archives des %s"
@@ -3942,6 +3928,12 @@ msgstr "Vous ne pouvez pas annuler une variable de remplacement standard de WPSE
 #: inc/class-wpseo-replace-vars.php:1524
 msgid "Replaced with the posts focus keyphrase"
 msgstr "Remplacé par l’expression clé principale de la publication."
+
+#: admin/pages/tools.php:42
+#: src/bulk-editor/user-interface/bulk-editor-integration.php:269
+#: js/dist/bulk-editor-page.js:25
+msgid "Bulk editor"
+msgstr "Éditeur groupé"
 
 #: admin/views/tabs/network/restore-site.php:23
 #: admin/views/tabs/network/restore-site.php:28
@@ -4078,7 +4070,7 @@ msgstr "Méta Desc."
 #: inc/class-wpseo-rank.php:213
 #: src/task-list/application/tasks/child-tasks/improve-content-readability-child.php:51
 #: src/task-list/application/tasks/child-tasks/improve-content-seo-child.php:51
-#: js/dist/block-editor.js:696 js/dist/editor-modules.js:194
+#: js/dist/block-editor.js:697 js/dist/editor-modules.js:194
 #: js/dist/editor-modules.js:477 js/dist/externals-components.js:163
 #: js/dist/externals/analysis.js:410 js/dist/externals/dashboardFrontend.js:4
 #: js/dist/frontend-inspector-resources.js:1
@@ -4167,8 +4159,8 @@ msgid "Preview &#8220;%s&#8221;"
 msgstr "Prévisualiser &#8220;%s&#8221;"
 
 #: admin/class-bulk-editor-list-table.php:849 js/dist/bulk-editor-page.js:20
-#: js/dist/externals/dashboardFrontend.js:4 js/dist/general-page.js:44
-#: js/dist/general-page.js:59
+#: js/dist/bulk-editor-page.js:22 js/dist/externals/dashboardFrontend.js:4
+#: js/dist/general-page.js:44 js/dist/general-page.js:59
 msgid "Edit"
 msgstr "Modifier"
 
@@ -4219,13 +4211,13 @@ msgstr "URL du profil Facebook"
 msgid "Social"
 msgstr "Réseaux sociaux"
 
-#: admin/class-admin.php:212 src/integrations/settings-integration.php:380
+#: admin/class-admin.php:212 src/integrations/settings-integration.php:382
 #: src/presenters/meta-description-presenter.php:37 js/dist/how-to-block.js:7
 msgid "Settings"
 msgstr "Réglages"
 
 #: admin/class-yoast-network-admin.php:43 src/config/schema-types.php:163
-#: src/integrations/settings-integration.php:645 js/dist/new-settings.js:9
+#: src/integrations/settings-integration.php:647 js/dist/new-settings.js:9
 #: js/dist/new-settings.js:592
 msgid "None"
 msgstr "Aucun"

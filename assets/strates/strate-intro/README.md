@@ -23,3 +23,6 @@ une contribution existante.
 ## Dépendances
 
 - `component('text', [...])`.
+
+La strate ne produit aucun HTML sans contenu exploitable. Les champs absents
+sont traités comme vides.

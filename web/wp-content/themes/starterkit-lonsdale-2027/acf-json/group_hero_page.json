@@ -69,6 +69,11 @@
                 "param": "page_type",
                 "operator": "!=",
                 "value": "front_page"
+            },
+            {
+                "param": "page_template",
+                "operator": "!=",
+                "value": "template-flexible.php"
             }
         ]
     ],
@@ -84,5 +89,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1789478862
+    "modified": 1793960426
 }

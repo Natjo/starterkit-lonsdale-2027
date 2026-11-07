@@ -22,7 +22,7 @@ $listing = new Theme_Listing([
             'title_desc' => ['label' => 'Titre Z–A', 'orderby' => 'title', 'order' => 'DESC'],
         ],
     ],
-    'page_name' => 'hub_page',
+    'pagination_slug' => 'hub_page',
     'ajax' => true,
     'ajax_group' => 'hub-filters',
     'results_target' => 'hub-filter-results',

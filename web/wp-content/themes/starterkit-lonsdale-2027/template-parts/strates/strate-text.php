@@ -1,5 +1,8 @@
 <?php
-$args = get_template_args();
+$args = get_template_args(['title' => '', 'text' => '', 'items' => []]);
+$args['title'] = component_string($args['title']);
+$args['text'] = component_string($args['text']);
+if ($args['title'] === '' && $args['text'] === '') return;
 ?>
 
 <section <?= options("strate strate-text", $args) ?>>

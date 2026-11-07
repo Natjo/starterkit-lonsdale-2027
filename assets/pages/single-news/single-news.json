@@ -5,15 +5,26 @@
   "slug": "single-news",
   "assets": {},
   "file": "single-news.php",
-  "activation": { "contentType": "news" },
-  "capabilities": ["flexible-strates"],
+  "activation": {
+    "contentType": "news"
+  },
+  "capabilities": [
+    "flexible-strates"
+  ],
   "dependencies": {
     "components": [],
     "cards": [],
     "strates": [],
-    "heroes": ["news"],
-    "customFields": ["news"],
-    "common": ["header-nav", "related"],
+    "heroes": [
+      "post"
+    ],
+    "customFields": [
+      "news"
+    ],
+    "common": [
+      "header-nav",
+      "related"
+    ],
     "modules": []
   }
 }

@@ -29,7 +29,7 @@ $next_url = $batch['has_more'] ? add_query_arg($page_key, $page + 1) : '';
 ?>
 
 <section <?= options('strate strate-pushes-more', $args) ?>
-    data-module="strates/strate-pushes-more/strate-pushes-more"
+    data-module="strates/strate-pushes-more"
     data-context="@visible true"
     data-pushes-more-instance="<?= esc_attr((string) $instance) ?>">
     <div class="strate-inner">

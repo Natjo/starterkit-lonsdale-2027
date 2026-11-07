@@ -29,6 +29,10 @@ mode facultatif par import :
 | once | CSS dédié sous `css/once/`, injecté inline par le helper PHP |
 | hero critical | CSS dédié, ajouté au critical inline quand le hero est rendu |
 
+Les styles d’impression `styles/utils/print` sont importés sans suffixe dans
+`app.scss` : ils restent dans `app.css`, sous `@media print`, sans requête
+supplémentaire ni inclusion dans le critical.
+
 Un parseur commun respecte les commentaires `//` et `/* ... */`, les imports
 sur plusieurs lignes et plusieurs instructions sur une même ligne. Un doublon
 identique est dédupliqué ; des modes contradictoires provoquent une erreur.

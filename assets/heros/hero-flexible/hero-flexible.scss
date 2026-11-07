@@ -1,0 +1,28 @@
+.hero-flexible {
+    padding-bottom: var(--space-md);
+
+    .hero-inner{
+        display: grid;
+        grid-template-columns: 1fr .5fr;
+        gap: var(--gap);
+        align-items: center;
+    }
+
+    .hero-content {
+        padding-block: var(--space-sm) 0;
+        display: flex;
+        flex-direction: column;
+        gap: 3.6rem;
+    }
+
+    .hero-image {
+        aspect-ratio: 1;
+        width: 100%;
+        height: auto;
+        overflow: hidden;  
+    }
+
+    @media #{$breakpoint-lg-down} {}
+
+    @media #{$breakpoint-lg-up} {}
+}

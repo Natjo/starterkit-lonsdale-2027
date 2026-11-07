@@ -24,8 +24,12 @@ card('news', 123);
 ```
 
 L’ID doit être un entier strictement positif. `card()` récupère les champs ACF
-du post, ajoute `post_id`, puis transmet le payload au template avec
+du post et les données normalisées de `theme_post_card_item()` (groupe `card`,
+mapping métier, puis replis WordPress), ajoute `post_id`, puis transmet le payload au template avec
 `get_template_args()`.
+
+Les posts absents, non publics ou protégés par mot de passe ne sont jamais
+rendus, même pour un administrateur. Une surcharge ne contourne pas ce contrôle.
 
 ## Depuis un contenu personnalisé
 
@@ -48,7 +52,7 @@ card('news', [
 ]);
 ```
 
-Les champs ACF sont chargés en premier. Les valeurs données explicitement dans
+Les champs ACF et les données normalisées sont chargés en premier. Les valeurs données explicitement dans
 le tableau les remplacent. `post_id` reste toujours l’entier validé.
 
 Dans une card :

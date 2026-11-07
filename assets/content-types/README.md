@@ -18,3 +18,11 @@ chaîne vide indique qu’aucune card dédiée n’est imposée.
 Un Content Type avec `isPublic: false` et `hasArchive: false` reste disponible
 dans l’administration et peut être chargé explicitement pour être affiché dans
 une card ou une strate, sans exposer de page individuelle ni d’archive.
+
+## Champs métier des cards
+
+Dans `inc/datatypes.php`, la définition d’un CPT peut déclarer `card_fields`,
+un mapping des clés `title`, `text`, `date`, `image`, `images` vers des noms ACF racine.
+Le filtre `theme_card_field_map` transmet ce mapping au préparateur commun.
+News utilise `['text' => 'field-news', 'images' => 'images']` pour sa description
+et ses images responsive.

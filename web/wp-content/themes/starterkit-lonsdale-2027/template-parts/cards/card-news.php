@@ -16,7 +16,7 @@ $tag = $url !== '' ? 'a' : 'div';
 <article class="card-news">
     <<?= $tag ?> class="card-content"<?php if ($url !== '') : ?> href="<?= esc_url($url) ?>"<?php if ($target !== '') : ?> target="<?= esc_attr($target) ?>"<?= $target === '_blank' ? ' rel="noopener noreferrer"' : '' ?><?php endif; ?><?php endif; ?>>
         <?php component('picture', [
-            'image' => $args['image'] ?? null,
+            'images' => $args['images'] ?? $args['image'] ?? null,
             'size' => $args['image_size'] ?? 'large',
             'fit' => 'cover',
             'classes' => 'card-image',

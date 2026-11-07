@@ -15,7 +15,7 @@ function theme_get_news_seo_data(?int $post_id = null): array
     static $cache = [];
 
     if (!array_key_exists($post_id, $cache)) {
-        $hero = get_field('hero-news', $post_id);
+        $hero = get_field('hero-post', $post_id);
         $cache[$post_id] = is_array($hero) && !array_is_list($hero) ? $hero : [];
     }
 

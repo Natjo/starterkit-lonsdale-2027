@@ -1,4 +1,5 @@
 <?php
+
 /** @var array<int|string, mixed>|null $params */
 
 $params = component_args($params ?? null);
@@ -29,24 +30,32 @@ $classes = component_classes('quote', $args['classes']);
 $attributes = component_attributes($args['attributes'], ['class']);
 ?>
 
-<figure class="<?= $classes ?>"<?= $attributes ?>>
-    <?php if ($has_image) : ?>
-        <?php component('image', [
-            'image' => $image,
-            'size' => $args['image_size'],
-            'classes' => 'quote-image',
-        ]); ?>
-    <?php endif; ?>
+<figure class="<?= $classes ?>" <?= $attributes ?>>
+    <?php component('icon', [
+        'name' => 'quote',
+        'width' => 38,
+        'height' => 32,
+        'classes' => 'quote-mark',
+    ]); ?>
 
     <blockquote class="quote-content"><?= wp_kses_post($quote) ?></blockquote>
     <?php if ($author !== '' || $source !== '') : ?>
         <figcaption class="quote-caption">
-            <?php if ($author !== '') : ?><span class="quote-author"><?= esc_html($author) ?></span><?php endif; ?>
-            <?php if ($source !== '') : ?>
-                <cite class="quote-source">
-                    <?php if ($url !== '') : ?><a href="<?= $url ?>"><?= esc_html($source) ?></a><?php else : ?><?= esc_html($source) ?><?php endif; ?>
-                </cite>
+            <?php if ($has_image) : ?>
+                <?php component('image', [
+                    'image' => $image,
+                    'size' => $args['image_size'],
+                    'classes' => 'quote-image',
+                ]); ?>
             <?php endif; ?>
+            <div class="caption-content">
+                <?php if ($author !== '') : ?><span class="quote-author"><?= esc_html($author) ?></span><?php endif; ?>
+                <?php if ($source !== '') : ?>
+                    <cite class="quote-source">
+                        <?php if ($url !== '') : ?><a href="<?= $url ?>"><?= esc_html($source) ?></a><?php else : ?><?= esc_html($source) ?><?php endif; ?>
+                    </cite>
+                <?php endif; ?>
+            </div>
         </figcaption>
     <?php endif; ?>
 </figure>

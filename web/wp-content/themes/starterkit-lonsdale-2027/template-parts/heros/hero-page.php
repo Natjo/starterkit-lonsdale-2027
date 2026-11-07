@@ -6,11 +6,12 @@ $args = get_template_args();
     <div class="hero-content">
         <?php component('title', array_replace($args, [
             'hx' => 1,
-            'classes' => 'title-1',
+            'classes' => 'title-1 hero-title',
         ])); ?>
+
         <?php component('text', [
             'text' => $args['text'] ?? '',
-            'classes' => 'intro',
+            'classes' => 'hero-text',
         ]); ?>
     </div>
 </header>

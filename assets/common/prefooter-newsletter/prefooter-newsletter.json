@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "type": "common",
+  "name": "Préfooter avec newsletter",
+  "slug": "prefooter-newsletter",
+  "assets": {
+    "css": {
+      "loading": "normal"
+    }
+  },
+  "dependencies": {
+    "components": [
+      "newsletter",
+      "socials",
+      "text",
+      "title"
+    ],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  },
+  "variantOf": "prefooter"
+}

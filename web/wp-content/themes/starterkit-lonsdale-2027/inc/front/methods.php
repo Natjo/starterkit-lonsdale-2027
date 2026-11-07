@@ -204,12 +204,16 @@ function theme_prime_posts(array $items): array
  * Prépare le payload commun aux cards à partir d'une publication.
  * Priorité par champ : groupe ACF `card`, champ métier déclaré pour le CPT,
  * puis donnée WordPress. Aucun groupe ni mapping n'est obligatoire.
+ * Les posts absents, non publics ou protégés sont exclus, quels que soient les droits courants.
  *
  * @return array<string, mixed>|null
  */
 function theme_post_card_item(int $post_id): ?array
 {
-    $post_type = $post_id > 0 ? get_post_type($post_id) : false;
+    $post = $post_id > 0 ? get_post($post_id) : null;
+    if (!$post || !is_post_publicly_viewable($post) || $post->post_password !== '') return null;
+
+    $post_type = get_post_type($post_id);
     if (!is_string($post_type)) return null;
 
     $title = trim((string) get_the_title($post_id));
@@ -266,14 +270,22 @@ function theme_post_card_item(int $post_id): ?array
         }
     }
 
-    $images = $card['images'] ?? null;
-    $images = is_array($images) && !array_is_list($images) ? $images : [];
-    foreach ([$images['desktop'] ?? null, $images['mobile'] ?? null, $card['image'] ?? null, $business_value('image')] as $image) {
-        $image_id = filter_var($image, FILTER_VALIDATE_INT);
-        if ($image_id !== false && $image_id > 0) {
-            $item['image'] = $image_id;
-            break;
+    // Conserver les variantes responsive tout en fournissant l’image simple
+    // attendue par les cards qui n’utilisent pas encore le groupe images.
+    $item['images'] = [];
+    foreach ([$card['images'] ?? null, ['desktop' => $card['image'] ?? null],
+        $business_value('images'), ['desktop' => $business_value('image')],
+        ['desktop' => $item['image']]] as $candidate) {
+        if (!is_array($candidate)) continue;
+        $images = [];
+        foreach (['desktop', 'mobile'] as $variant) {
+            $id = filter_var($candidate[$variant] ?? null, FILTER_VALIDATE_INT);
+            if ($id !== false && $id > 0) $images[$variant] = $id;
         }
+        if ($images === []) continue;
+        $item['images'] = $images;
+        $item['image'] = $images['desktop'] ?? $images['mobile'];
+        break;
     }
 
     if ($item['title'] === '') return null;
@@ -589,6 +601,25 @@ function hero(string $name, ?array $args = null): void
     if ($args === null) {
         $fields = theme_get_fields();
         $hero = $fields["hero-{$name}"] ?? null;
+        // Anciennes pages Flexible : les champs étaient contribués dans hero-page.
+        if ($name === 'flexible'
+            && !metadata_exists('post', get_queried_object_id(), 'hero-flexible')
+            && is_array($fields['hero-page'] ?? null)) {
+            $hero = $fields['hero-page'] ?? null;
+        }
+        // Une page jamais enregistrée peut afficher des valeurs par défaut dans
+        // le BO sans posséder les références meta nécessaires à get_fields().
+        if (!is_array($hero) && is_singular()
+            && function_exists('acf_get_field_groups') && function_exists('acf_get_fields')) {
+            $post_id = get_queried_object_id();
+            foreach (acf_get_field_groups(['post_id' => $post_id]) as $group) {
+                foreach (acf_get_fields($group) ?: [] as $field) {
+                    if (($field['name'] ?? '') !== "hero-{$name}") continue;
+                    $hero = get_field($field['key'], $post_id);
+                    break 2;
+                }
+            }
+        }
         $args = is_array($hero) ? $hero : [];
     }
 
@@ -685,6 +716,14 @@ function strate(string $name, array $args = []): void
         return;
     }
 
+    if ($args !== [] && array_is_list($args)) return;
+    if (locate_template("template-parts/strates/strate-{$name}.php") === '') {
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            _doing_it_wrong(__FUNCTION__, "Unknown strate: {$name}", '2.0.0');
+        }
+        return;
+    }
+
     theme_queue_module_assets("strates/strate-{$name}/strate-{$name}");
     $previousArgs = get_query_var('template_args', null);
     set_template_args($args);
@@ -750,8 +789,15 @@ function resolve_card_data(mixed $data): ?array
         return $args;
     }
 
+    $item = theme_post_card_item($post_id);
+    if ($item === null) return null;
+
     $fields = theme_get_fields($post_id);
-    $args = array_replace($fields, $args);
+    if (array_key_exists('image', $args) && !array_key_exists('images', $args)) {
+        // Une surcharge explicite de l’image simple remplace aussi les variantes.
+        $item['images'] = $args['image'];
+    }
+    $args = array_replace($fields, $item, $args);
     $args['post_id'] = $post_id;
 
     return $args;

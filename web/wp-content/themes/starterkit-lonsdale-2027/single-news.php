@@ -4,7 +4,7 @@ common("header-nav");
 ?>
 
 <main>
-    <?php hero('news'); ?>
+    <?php hero('post'); ?>
 
     <?php while (have_posts()) : the_post(); ?>
         <article <?php post_class('news-content'); ?>>

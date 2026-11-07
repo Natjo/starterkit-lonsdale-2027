@@ -139,8 +139,8 @@ HeaderScroll(headerNav, {
 });
 ```
 
-Le header devient donc compact après `100px`, mais il ne se masque pas
-actuellement pendant un scroll descendant. Passer `hideOnScroll` à `true`
+Le header reçoit donc l’état `is-compact` après `100px`, sans changement
+de hauteur dans le CSS actuel. Il ne se masque pas pendant un scroll descendant. Passer `hideOnScroll` à `true`
 active ce second comportement.
 
 La lecture de `window.scrollY` utilise un listener passif et est limitée à une
@@ -152,9 +152,9 @@ Si la page est rechargée après avoir scrollé, `is-compact` est appliquée
 immédiatement sans transition.
 
 Lorsque la page est prête — immédiatement si elle est déjà chargée, sinon après
-`pageshow` — deux frames sont attendues avant que `is-scroll-ready` active les
-futures transitions de hauteur. Le header ne passe donc pas visuellement de sa
-hauteur normale à sa hauteur compacte pendant le chargement.
+`pageshow` — deux frames sont attendues avant d’ajouter `is-scroll-ready`,
+qui autorise les transitions définies dans le SCSS. La hauteur reste celle de
+`--header-height` tant qu’aucun style compact spécifique n’est ajouté.
 
 ### Focus clavier
 
@@ -171,30 +171,25 @@ Un header masqué redevient visible dès que le focus entre dans l’un de ses
 | `is-compact` | État compact du header après le seuil. |
 | `is-hidden` | Header déplacé hors écran pendant un scroll descendant. |
 | `is-scroll-ready` | Transitions de hauteur autorisées après le rendu initial. |
-| `has-compact-header` | État miroir sur `<html>` qui synchronise la hauteur globale. |
+| `has-compact-header` | État compact miroir sur `<html>`, disponible pour les styles du projet. |
 
 ## CSS
 
-Le SCSS utilise `#header-nav` comme racine. La hauteur normale vient de
-`--header-height-expanded` et la hauteur compacte de
-`--header-height-compact`. `HeaderScroll()` publie l’état compact sur `<html>`
-afin que `--header-height` reflète la hauteur réelle dans tout le document :
+Le SCSS utilise `#header-nav` comme racine. Sa hauteur est définie par la seule
+variable globale `--header-height`, déclarée dans `assets/styles/variables.scss` :
 
 ```scss
 :root {
-    --header-height-expanded: 9rem;
-    --header-height-compact: 7rem;
-    --header-height: var(--header-height-expanded);
-}
-
-:root.has-compact-header {
-    --header-height: var(--header-height-compact);
+    --header-height: 9rem;
 }
 ```
 
-Le panneau mobile utilise la même variable dans son padding supérieur. Modifier
-la hauteur compacte conserve donc l’alignement entre le header et le contenu du
-menu.
+Elle vaut actuellement `7rem` sur mobile et `9rem` à partir de `768px`.
+Le panneau mobile utilise cette même variable dans son padding supérieur.
+
+`HeaderScroll()` ajoute toujours `is-compact` au header et `has-compact-header`
+à `<html>` après le seuil, mais ces classes ne modifient plus automatiquement
+la hauteur. Un effet compact éventuel doit être défini explicitement en CSS.
 
 La recherche possède une largeur limitée sur desktop et occupe toute la
 largeur disponible dans le panneau mobile.

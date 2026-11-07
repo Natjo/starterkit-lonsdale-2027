@@ -120,7 +120,7 @@ façade expose ce contexte avec `is_archive()`, `post_type()` et
 `post_type_label()`.
 
 La page courante est déterminée depuis les query vars WordPress `paged` et
-`page`. L’option `page_name` permet d’utiliser un paramètre dédié sur une page
+`page`. L’option `pagination_slug` permet d’utiliser un paramètre dédié sur une page
 WordPress, par exemple `hub_page`, afin d’éviter sa redirection canonique vers
 une fausse sous-page. `pagination_base()` fournit alors directement la base à
 transmettre au composant `pagination`.
@@ -281,3 +281,10 @@ libellés. Lorsque le composant est alimenté par `Theme_Listing` ou
 - `component('btn', [...])` ;
 - `Theme_Listing` pour l’utilisation dans une page WordPress ;
 - `assets/components/filters/filters.js` lorsque `ajax` est actif.
+
+## Listing sans formulaire
+
+Pour une pagination AJAX seule, placer `$listing->results_attributes()` sur
+la région contenant la liste et la pagination. Le coordinateur accepte cette
+racine sans formulaire et conserve les liens natifs en repli. Déclarer la
+dépendance `components: ["filters"]` dans le manifeste du template.

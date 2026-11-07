@@ -54,9 +54,10 @@ l'option est omise, `sectionSnap` reste actif quelle que soit la largeur.
 
 Les panneaux sont produits à partir du repeater. Leur navigation est
 produite avec `component('section-snap', ...)`. Leurs IDs restent uniques si la
-démonstration est rendue plusieurs fois sur une même page. Chaque panneau mesure exactement
+démonstration est rendue plusieurs fois sur une même page. Chaque panneau mesure au minimum
 `calc(100vh - var(--header-height))`, sans marge entre les panneaux, et son
-ancre l’aligne immédiatement sous le header fixe.
+ancre l’aligne immédiatement sous le header fixe. Un contenu long agrandit le
+panneau ; les images portrait sont contenues dans la hauteur disponible.
 
 ## Navigation verticale
 

@@ -91,3 +91,6 @@ Dépendances :
 - `component('title', [...])` ;
 - `component('text', [...])` ;
 - `component('picture', [...])`.
+
+La strate ne produit aucun HTML sans contenu exploitable. Les champs absents
+sont traités comme vides.

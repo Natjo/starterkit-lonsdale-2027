@@ -54,7 +54,7 @@ Le thème conserve uniquement les adaptations liées à son modèle de données 
   second `BreadcrumbList` autonome lorsque le plugin est actif ;
 - `inc/config/seo.php` déclare les entrées du CPT `news` comme
   `NewsArticle` ;
-- le titre, la date et l’image du groupe ACF `hero-news` alimentent le
+- le titre, la date et l’image du groupe ACF `hero-post` alimentent le
   `NewsArticle` ;
 - l’image du hero sert de secours Open Graph et Twitter uniquement lorsqu’une
   image sociale propre à la News n’a pas été définie dans Yoast.

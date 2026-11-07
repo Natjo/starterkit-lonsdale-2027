@@ -1,5 +1,13 @@
 <?php
-$args = get_template_args();
+$args = get_template_args(['title' => '', 'text' => '', 'items' => []]);
+$args['title'] = component_string($args['title']);
+$args['text'] = component_string($args['text']);
+$args['items'] = array_values(array_filter(is_array($args['items']) ? $args['items'] : [],
+    static fn ($item): bool => is_array($item)
+        && component_string($item['title'] ?? '') !== ''
+        && component_string($item['text'] ?? '') !== ''));
+
+if ($args['title'] === '' && $args['text'] === '' && $args['items'] === []) return;
 ?>
 
 <section <?= options("strate strate-accordion", $args) ?>>

@@ -81,23 +81,18 @@ Comportement actuel du template :
 
 ## Champs ACF attendus
 
-Pour un appel par ID, les noms de champs ACF doivent correspondre aux clés du
-payload :
+Pour un appel par ID, les données sont normalisées par
+`theme_post_card_item()` : groupe ACF `card`, mapping métier du CPT, puis
+valeurs WordPress.
 
-```text
-date
-datetime
-title
-text
-image
-image_size
-link
-```
+Pour le CPT News, `inc/datatypes.php` déclare
+`'card_fields' => ['text' => 'field-news', 'images' => 'images']` : le champ **Description** du groupe
+**Card - news** alimente donc le texte de la card, dans le hub et les autres
+listings. Un `card.text` renseigné reste prioritaire ; une description vide
+laisse le repli sur l’extrait WordPress.
 
-`post_id` est fourni automatiquement et ne nécessite aucun champ ACF. Lorsqu’un
-projet stocke ces données dans un groupe, l’appelant doit construire le payload
-attendu par la card. `common/related` effectue par exemple le mapping du groupe
-`hero-news`, dont l’image desktop est transmise à la clé `image`.
+Les payloads explicites utilisent directement `text`. `post_id` est fourni
+automatiquement et ne nécessite aucun champ ACF.
 
 ## Dans une liste
 
@@ -133,3 +128,11 @@ component('slider', [
   du payload sont vides.
 - Les classes et attributs personnalisés de l’élément `<article>` ne font pas
   partie du contrat actuel.
+
+## Images responsive
+
+Le groupe ACF **Images** de **Card - news** fournit `images.desktop` et
+`images.mobile` (IDs). Les deux variantes sont transmises au composant `picture`.
+Le groupe `card.images` ou `card.image` reste prioritaire s’il est renseigné.
+Sans image métier, l’image mise en avant sert de repli. Le payload `image`
+reste accepté pour une image simple ; `images` explicite est prioritaire.

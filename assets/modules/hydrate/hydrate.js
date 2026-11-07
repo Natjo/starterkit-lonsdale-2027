@@ -88,6 +88,7 @@ const watchMediaCondition = (element) => {
     const media = element.dataset.moduleMedia;
 
     if (!media) {
+        stopMediaWatcher(element);
         return true;
     }
 
@@ -105,9 +106,8 @@ const watchMediaCondition = (element) => {
         return true;
     }
 
-    if (mediaWatchers.has(element)) {
-        return false;
-    }
+    if (mediaWatchers.get(element)?.media === media) return false;
+    stopMediaWatcher(element);
 
     const onChange = () => {
         if (!mql.matches) {
@@ -120,7 +120,7 @@ const watchMediaCondition = (element) => {
         hydrateElement(element);
     };
 
-    mediaWatchers.set(element, { mql, onChange });
+    mediaWatchers.set(element, { mql, onChange, media });
     if (mql.addEventListener) {
         mql.addEventListener("change", onChange);
     } else {
@@ -324,8 +324,14 @@ const startLifecycleObserver = (element, lifecycle) => {
 const initModule = (element, ModuleConstructor, token, moduleName) => {
     if (!isCurrentHydration(element, token, moduleName)) return;
 
+    if (!watchMediaCondition(element)) {
+        hydrationTokens.delete(element);
+        hydratedElements.delete(element);
+        return;
+    }
+
     if (!ModuleConstructor) {
-        hydratedElements.set(element, { status: "error" });
+        hydratedElements.set(element, { status: "error", moduleName });
         return;
     }
 
@@ -335,6 +341,7 @@ const initModule = (element, ModuleConstructor, token, moduleName) => {
 
         hydratedElements.set(element, {
             status: "loaded",
+            moduleName,
             ...lifecycle,
         });
 
@@ -342,7 +349,7 @@ const initModule = (element, ModuleConstructor, token, moduleName) => {
         startLifecycleObserver(element, lifecycle);
     } catch (error) {
         console.error(`[Hydrate] Error initializing module: ${element.dataset.module}`, error);
-        hydratedElements.set(element, { status: "error", error });
+        hydratedElements.set(element, { status: "error", moduleName, error });
     }
 };
 
@@ -365,13 +372,14 @@ const runHydration = (element, moduleName, token) => {
 export const hydrateElement = (element) => {
     if (!element?.dataset || !element.isConnected) return;
 
+    const moduleName = element.dataset.module?.trim();
     const existing = hydratedElements.get(element);
 
-    if (existing && existing.status !== "error") {
+    if (existing && existing.moduleName !== moduleName) {
+        destroy(element);
+    } else if (existing && existing.status !== "error") {
         return;
     }
-
-    const moduleName = element.dataset.module?.trim();
 
     if (!moduleName || !isValidModuleName(moduleName)) {
         if (moduleName) console.error(`[Hydrate] Invalid module name: ${moduleName}`);
@@ -385,7 +393,7 @@ export const hydrateElement = (element) => {
     cancelVisibilityWait(element);
     const token = Symbol(moduleName);
     hydrationTokens.set(element, token);
-    hydratedElements.set(element, { status: "pending", token });
+    hydratedElements.set(element, { status: "pending", token, moduleName });
 
     runHydration(element, moduleName, token);
 };

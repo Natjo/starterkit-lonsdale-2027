@@ -46,7 +46,7 @@ Les strates éditoriales proviennent du flexible content ACF `strates`,
 disponible sur la page d'accueil et les contenus du CPT `news`.
 `template-parts/utils/dispatch-strates.php` :
 
-1. récupère les champs de la page avec `get_fields()` ;
+1. récupère les champs de la page avec `theme_get_fields()` ;
 2. parcourt `strates` ;
 3. lit `acf_fc_layout` ;
 4. transmet tout le tableau du layout à `strate()`.
@@ -157,7 +157,7 @@ Chaque `.strate` utilise la grille globale :
 .strate {
     display: grid;
     grid-template-columns: var(--layout);
-    --ctr: fluid;
+    --ctr: ctr;
 
     > * {
         grid-column: var(--ctr);
@@ -165,7 +165,7 @@ Chaque `.strate` utilise la grille globale :
 }
 ```
 
-Par défaut, les enfants directs d’une strate occupent donc `fluid`.
+Par défaut, les enfants directs d’une strate occupent donc `ctr`.
 
 ### Rails disponibles
 
@@ -192,10 +192,10 @@ réellement disponibles sont :
 
 | Valeur ACF | Classe produite | Effet |
 | --- | --- | --- |
-| absente | aucune | La strate conserve son défaut `fluid` |
+| absente | aucune | La strate conserve son défaut `ctr` |
 | `fluid` | `ctr-fluid` | Force `--ctr: fluid` |
 | `full` | `ctr-full` | Force `--ctr: full` |
-| `sm` | `ctr-sm` | Force `--ctr: ctr-sm` à partir de `1025px`; reste `fluid` en dessous |
+| `sm` | `ctr-sm` | Force `--ctr: ctr-sm` à partir de `1025px`; reste `ctr` en dessous |
 
 Il n’existe pas actuellement de classe `.ctr-ctr`. Pour placer une zone sur le
 rail `ctr`, le SCSS de la strate doit utiliser explicitement :
@@ -290,7 +290,7 @@ Règles :
 Une strate de démonstration ou de styleguide peut être entièrement statique :
 
 ```php
-strate('formulaire');
+strate('text-animated');
 ```
 
 Elle doit indiquer dans son README qu’elle ignore les arguments transmis. Une
@@ -308,31 +308,27 @@ et porte elle-même le module :
 
 ```php
 <section
-    <?= options('strate strate-slider', $args) ?>
-    data-module="strates/strate-slider"
+    <?= options('strate strate-marquee', $args) ?>
+    data-module="strates/strate-marquee"
     data-context="@visible true">
-
-    <?php component('slider', [
-        'items' => $args['items'] ?? [],
-        'hydrate' => false,
-    ]); ?>
+    <div class="strate-content">
+        <?php component('marquee', [
+            'items' => $args['items'] ?? [],
+            'hydrate' => false,
+        ]); ?>
+    </div>
 </section>
 ```
 
-Le JavaScript de la strate importe alors le contrôleur du composant et retourne
-son nettoyage :
+Le JavaScript délègue alors le cycle de vie au composant :
 
 ```js
-import { Slider } from '@components/slider/slider';
+import initMarquee from '@components/marquee/marquee';
 
-export default function initStrateSlider(root) {
-    const element = root.querySelector('.slider');
+export default function initStrateMarquee(root) {
+    const element = root.querySelector(':scope > .strate-content > .marquee');
     if (!element) return;
-
-    const slider = new Slider(element);
-    slider.add();
-
-    return () => slider.remove();
+    return initMarquee(element);
 }
 ```
 
@@ -378,7 +374,7 @@ comportement de la strate. Les imports SCSS actifs sont déclarés dans
 | --- | --- |
 | `accordion` | Assemble le composant `accordion` |
 | `columns-content` | Affiche une à trois colonnes éditoriales |
-| `intro` | Squelette vide |
+| `intro` | Texte éditorial d’introduction |
 | `keynumbers` | Assemble une liste de `card-keynumber` |
 | `logos` | Affiche une grille statique de logos |
 | `marquee` | Assemble et pilote `marquee` |
@@ -416,3 +412,18 @@ champs ACF ou une hydratation spécifiques. Il doit contenir :
 
 Le README local est la source de vérité de la strate. Une IA doit le lire avant
 de modifier son template ou ses assets.
+
+Les payloads positionnels non vides sont ignorés. Un template de strate absent
+ne charge aucun asset ; il émet un diagnostic lorsque `WP_DEBUG` est actif.
+
+## Contrôles de régression
+
+- `php web/wp-content/themes/starterkit-lonsdale-2027/tests/components-contract.php` ;
+- `node tests/strates-hydration-browser-contract.mjs` (Chrome installé) ;
+- contrat WordPress, sans création de contenu en base :
+
+```sh
+docker compose -f .docker/docker-compose.yml run --rm --no-deps -T \
+  -v "$PWD/tests:/tmp/starter-tests:ro" wordpress \
+  wp --allow-root eval-file /tmp/starter-tests/strates-wordpress-contract.php
+```

@@ -1,4 +1,5 @@
 <?php
+
 /** @var array<int|string, mixed>|null $params */
 
 $params = component_args($params ?? null);
@@ -176,7 +177,6 @@ foreach ($tracks_input as $track) {
             allowfullscreen<?= $has_facade ? ' tabindex="-1"' : '' ?>></iframe>
     <?php else : ?>
         <video
-            <?= $poster !== '' ? 'poster="' . esc_url($poster) . '"' : '' ?>
             title="<?= esc_attr($title) ?>"
             preload="<?= esc_attr($preload) ?>"
             <?= $controls ? 'controls' : '' ?>
@@ -184,10 +184,10 @@ foreach ($tracks_input as $track) {
             <?= $lazy_autoplay ? 'muted playsinline data-lazy-autoplay' : '' ?>
             <?= $loop ? 'loop' : '' ?><?= $has_facade ? ' tabindex="-1"' : '' ?>>
             <?php foreach ($sources as $source) : ?>
-                <source src="<?= esc_url($source['src']) ?>"<?= $source['type'] !== '' ? ' type="' . esc_attr($source['type']) . '"' : '' ?>>
+                <source src="<?= esc_url($source['src']) ?>" <?= $source['type'] !== '' ? ' type="' . esc_attr($source['type']) . '"' : '' ?>>
             <?php endforeach ?>
             <?php foreach ($tracks as $track) : ?>
-                <track src="<?= esc_url($track['src']) ?>" kind="<?= esc_attr($track['kind']) ?>"<?= $track['srclang'] !== '' ? ' srclang="' . esc_attr($track['srclang']) . '"' : '' ?><?= $track['label'] !== '' ? ' label="' . esc_attr($track['label']) . '"' : '' ?><?= $track['default'] ? ' default' : '' ?>>
+                <track src="<?= esc_url($track['src']) ?>" kind="<?= esc_attr($track['kind']) ?>" <?= $track['srclang'] !== '' ? ' srclang="' . esc_attr($track['srclang']) . '"' : '' ?><?= $track['label'] !== '' ? ' label="' . esc_attr($track['label']) . '"' : '' ?><?= $track['default'] ? ' default' : '' ?>>
             <?php endforeach ?>
         </video>
     <?php endif ?>
@@ -202,7 +202,17 @@ foreach ($tracks_input as $track) {
                     'decoding' => 'async',
                 ]); ?>
             <?php endif ?>
-            <span class="play" aria-hidden="true"><?php component('icon', ['name' => 'play', 'width' => 60, 'height' => 60]); ?></span>
+            
+            <?php component('btn', [
+                'element' => "span",
+                'name' => 'lire la video',
+                'classes' => 'play btn-play',
+                'icon' => [
+                    'name' => 'play',
+                    'width' => 30,
+                    'height' => 35,
+                ],
+            ]); ?>
         </button>
     <?php endif ?>
 </div>

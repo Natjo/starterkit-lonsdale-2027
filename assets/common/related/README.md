@@ -40,14 +40,15 @@ Sur une page individuelle News, le contenu consulté est exclu de la requête.
 Le common ne produit aucun HTML si le CPT `news` n’existe pas ou s’il ne
 contient aucune publication.
 
-Pour chaque résultat, le common transforme `hero-news.date`,
-`hero-news.title` et l’ID `hero-news.images.desktop` en payload direct pour
-`card-news`, puis ajoute le permalien WordPress. La card reste ainsi
-indépendante de la structure ACF du CPT.
+Chaque résultat utilise `theme_post_card_item()`, comme le hub : groupe ACF
+`card`, mapping métier déclaré par le CPT, puis replis WordPress. Pour News,
+la description et les images desktop/mobile viennent de **Card - news**.
+Aucun mapping spécifique au hero n’est effectué. Les contenus non publics
+ou protégés et les payloads sans titre exploitable sont exclus.
 
 ## Rendu
 
-Les identifiants sont transmis à :
+Les payloads normalisés sont transmis à :
 
 ```php
 component('list', [

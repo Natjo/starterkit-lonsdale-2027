@@ -4,10 +4,16 @@
   "name": "prefooter",
   "slug": "prefooter",
   "assets": {
-    "css": { "loading": "normal" }
+    "css": {
+      "loading": "normal"
+    }
   },
   "dependencies": {
-    "components": ["newsletter", "socials", "text", "title"],
+    "components": [
+      "socials",
+      "text",
+      "title"
+    ],
     "cards": [],
     "strates": [],
     "heroes": [],

@@ -7,11 +7,11 @@ if (!is_array($strates) || $strates === []) {
 }
 
 foreach ($strates as $strate) {
-    if (!is_array($strate)) {
+    if (!is_array($strate) || array_is_list($strate)) {
         continue;
     }
 
-    $layout = isset($strate['acf_fc_layout']) ? trim((string) $strate['acf_fc_layout']) : '';
+    $layout = component_string($strate['acf_fc_layout'] ?? '');
 
     if ($layout === '') {
         continue;

@@ -1,6 +1,7 @@
 // CSS
 @import "styles/styles" critical;
 @import "styles/fonts" critical;
+@import "styles/utils/print";
 
 // vendors
 @import "vendors/lenis/lenis" critical;
@@ -16,6 +17,7 @@
 @import "common/header-nav-mega/header-nav-mega" critical;
 @import "common/related/related";
 @import "common/prefooter/prefooter";
+@import "common/prefooter-newsletter/prefooter-newsletter" split;
 @import "common/footer/footer";
 
 // components
@@ -60,6 +62,8 @@
 // heros
 @import "heros/hero-homepage/hero-homepage" critical;
 @import "heros/hero-page/hero-page" critical;
+@import "heros/hero-flexible/hero-flexible" critical;
+@import "heros/hero-post/hero-post" critical;
 
 
 // cards
@@ -93,6 +97,8 @@
 @import "strates/strate-media/strate-media";
 @import "strates/strate-image/strate-image";
 @import "strates/strate-video/strate-video";
+@import "strates/strate-push/strate-push";
+@import "strates/strate-keynumbers/strate-keynumbers";
 @import "strates/strate-pushes/strate-pushes";
 @import "strates/strate-pushes-auto/strate-pushes-auto";
 @import "strates/strate-pushes-more/strate-pushes-more";

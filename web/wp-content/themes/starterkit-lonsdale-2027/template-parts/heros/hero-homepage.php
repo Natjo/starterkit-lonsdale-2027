@@ -7,19 +7,22 @@ $args = get_template_args();
         <?php component('eyebrow', [
             'eyebrow' => $args['suptitle'] ?? '',
         ]); ?>
+
         <?php component('title', array_replace($args, [
             'hx' => 1,
-            'classes' => 'title-1',
+            'classes' => 'title-1 hero-title',
         ])); ?>
+
         <?php component('text', [
             'text' => $args['text'] ?? '',
-            'classes' => 'intro',
+            'classes' => 'hero-text',
         ]); ?>
     </div>
 
     <?php component('picture', [
         'images' => $args['images'] ?? null,
-        'classes' => 'bg',
+        'classes' => 'hero-bg',
+        'fit' => "cover",
         'preload' => true,
     ]); ?>
 </header>

@@ -4,10 +4,17 @@
   "name": "News",
   "slug": "news",
   "assets": {
-    "css": { "loading": "normal" }
+    "css": {
+      "loading": "normal"
+    }
   },
   "dependencies": {
-    "components": ["date", "picture", "text", "title"],
+    "components": [
+      "date",
+      "picture",
+      "text",
+      "title"
+    ],
     "cards": [],
     "strates": [],
     "heroes": [],
@@ -44,6 +51,28 @@
       "label": "Image",
       "type": "image",
       "required": false
+    },
+    {
+      "name": "images",
+      "label": "Images responsive",
+      "type": "group",
+      "required": false,
+      "sub_fields": [
+        {
+          "name": "desktop",
+          "label": "Desktop",
+          "type": "image",
+          "return_format": "id",
+          "required": false
+        },
+        {
+          "name": "mobile",
+          "label": "Mobile",
+          "type": "image",
+          "return_format": "id",
+          "required": false
+        }
+      ]
     },
     {
       "name": "image_size",

@@ -9,7 +9,9 @@ $listing = new Theme_Listing([
     'search' => false,
     'taxonomies' => false,
     'sort' => false,
-    'page_name' => 'hub_page',
+    'pagination_slug' => 'page',
+    'pretty_urls' => true,
+   // 'ajax' => true,
 ]);
 
 get_header();
@@ -25,7 +27,7 @@ common('header-nav');
     <?php endif; ?>
 
     <section class="hub-results">
-        <div class="hub-content">
+        <div class="hub-content" <?= $listing->results_attributes() ?>>
             <?php if ($listing->has_results()) : ?>
                 <?php component('list', [
                     'items' => $listing->items(),

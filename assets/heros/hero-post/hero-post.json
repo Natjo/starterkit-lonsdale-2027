@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "type": "hero",
+  "name": "Post",
+  "slug": "post",
+  "assets": {
+    "css": {
+      "loading": "critical"
+    }
+  },
+  "dependencies": {
+    "components": [
+      "date",
+      "picture",
+      "title",
+      "tag"
+    ],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
+  }
+}

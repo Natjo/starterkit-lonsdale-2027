@@ -47,7 +47,7 @@ supportées.
 | `images` | `ID\|URL\|array{desktop?,mobile?}` | — | Compatibilité simple ou variantes responsive |
 | `desktop_size` | `string\|array{int,int}` | valeur de `size` | Taille WordPress desktop |
 | `mobile_size` | `string\|array{int,int}` | valeur de `size` | Taille WordPress mobile |
-| `fit` | `'fluid'\|'cover'` | `'fluid'` | Comportement dimensionnel de l’image |
+| `fit` | `'fluid'\|'cover'` | aucune classe de fit | Comportement dimensionnel de l’image |
 | `alt` | `scalar\|Stringable` | alt WordPress | Texte alternatif du fallback |
 | `classes` | `string\|array` | `''` | Classes du `<picture>` |
 | `attributes` | `array` | `[]` | Attributs du `<picture>` |
@@ -66,7 +66,11 @@ variante respective.
 
 ## Ajustement dans le conteneur
 
-Le mode `fluid`, utilisé par défaut, conserve les proportions naturelles :
+Sans `fit`, aucune classe `fit-*` n’est ajoutée. La classe structurelle `picture`
+et les classes personnalisées restent présentes. Une valeur vide ou invalide
+ne produit pas de classe de fit non plus.
+
+Le mode explicite `fit => 'fluid'` ajoute `fit-fluid` et conserve les proportions naturelles :
 
 ```css
 width: 100%;
@@ -132,7 +136,7 @@ component('picture', [
 Produit :
 
 ```html
-<picture class="picture fit-fluid placeholder strate-image"></picture>
+<picture class="picture placeholder strate-image"></picture>
 ```
 
 ## Sécurité

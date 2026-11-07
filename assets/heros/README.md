@@ -35,6 +35,11 @@ Sans second argument, `hero()` charge automatiquement le champ ACF
 hero('homepage'); // get_field('hero-homepage')
 ```
 
+Sur un contenu singulier dont le groupe n’a jamais été enregistré, le helper
+résout le champ par sa clé ACF parmi les groupes applicables pour récupérer
+les valeurs par défaut visibles dans le BO. Ce repli ne remplace pas un groupe
+déjà enregistré, même si ses champs sont vides.
+
 Un tableau associatif fourni explicitement remplace entièrement cette lecture :
 
 ```php
@@ -226,7 +231,7 @@ nécessite donc pas de relancer manuellement la compilation.
 | --- | --- | --- |
 | `homepage` | `hero('homepage')` | [`hero-homepage/README.md`](hero-homepage/README.md) |
 | `page` | `hero('page')` | [`hero-page/README.md`](hero-page/README.md) |
-| `news` | `hero('news')` | [`hero-news/README.md`](hero-news/README.md) |
+| `post` | `hero('post')` | [`hero-post/README.md`](hero-post/README.md) |
 
 ## Vérification
 

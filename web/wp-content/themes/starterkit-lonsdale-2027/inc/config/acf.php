@@ -190,3 +190,21 @@ add_filter('acf/load_field/key=field_6a66b2b10b107', function (array $field): ar
 
     return $field;
 });
+
+/** Preserve existing hero data when the ACF group is renamed from news to post. */
+function theme_load_legacy_post_hero_value(mixed $value, mixed $post_id, array $field): mixed
+{
+    $name = $field['name'] ?? '';
+    if (!is_string($name)
+        || ($name !== 'hero-post' && !str_starts_with($name, 'hero-post_'))
+        || !is_numeric($post_id) || (int) $post_id <= 0
+        || metadata_exists('post', (int) $post_id, $name)) {
+        return $value;
+    }
+
+    $legacy_name = 'hero-news' . substr($name, strlen('hero-post'));
+    return metadata_exists('post', (int) $post_id, $legacy_name)
+        ? get_post_meta((int) $post_id, $legacy_name, true)
+        : $value;
+}
+add_filter('acf/load_value', 'theme_load_legacy_post_hero_value', 6, 3);

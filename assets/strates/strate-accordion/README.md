@@ -35,3 +35,6 @@ les utilise uniquement pour préremplir une nouvelle instance.
 - `component('title', [...])` ;
 - `component('text', [...])` ;
 - `component('accordion', [...])`.
+
+La strate ne produit aucun HTML sans contenu exploitable. Les champs absents
+sont traités comme vides.

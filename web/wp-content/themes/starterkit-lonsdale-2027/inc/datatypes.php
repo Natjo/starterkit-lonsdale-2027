@@ -9,6 +9,7 @@ add_action('init', function () {
             'menu_icon' => 'dashicons-rss',
             'supports' => ['title', 'author'],
             'card' => 'news',
+            'card_fields' => ['text' => 'field-news', 'images' => 'images'],
             'has_archive' => false,
         ],
         'project' => [
@@ -88,6 +89,10 @@ add_action('init', function () {
     add_filter('theme_content_type_card', static function ($card, $post_type) use ($content_types) {
         $configured_card = $content_types[$post_type]['card'] ?? '';
         return is_string($configured_card) && $configured_card !== '' ? $configured_card : $card;
+    }, 10, 2);
+
+    add_filter('theme_card_field_map', static function (array $map, string $post_type) use ($content_types): array {
+        return array_replace($map, $content_types[$post_type]['card_fields'] ?? []);
     }, 10, 2);
 
     $taxonomies = [

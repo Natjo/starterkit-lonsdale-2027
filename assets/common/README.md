@@ -231,4 +231,5 @@ peine de lancer son initialisation deux fois.
 | `header-nav` | `common('header-nav')` | [`header-nav/README.md`](header-nav/README.md) |
 | `related` | `common('related')` | [`related/README.md`](related/README.md) |
 | `prefooter` | `common('prefooter')` | [`prefooter/README.md`](prefooter/README.md) |
+| `prefooter-newsletter` | `common('prefooter-newsletter')` | [`prefooter-newsletter/README.md`](prefooter-newsletter/README.md) |
 | `footer` | `common('footer')` | [`footer/README.md`](footer/README.md) |

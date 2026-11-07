@@ -6,6 +6,26 @@ add_filter('query_vars', static function (array $query_vars): array {
     return array_values(array_unique($query_vars));
 });
 
+// Un CPT et sa page Hub peuvent partager un slug (ex. /news/).
+// Ses règles single passent alors avant la pagination native des pages.
+add_filter('request', static function (array $vars): array {
+    global $wp;
+    if (is_admin() || !preg_match('#^(.+?)/page/([1-9][0-9]*)/?$#', $wp->request ?? '', $matches)) {
+        return $vars;
+    }
+    $page = get_page_by_path($matches[1]);
+    if (!$page || $page->post_status !== 'publish'
+        || get_page_template_slug($page->ID) !== 'template-hub.php') {
+        return $vars;
+    }
+    foreach (array_merge(get_post_types([], 'names'), ['name', 'page', 'attachment', 'attachment_id', 'post_type', 'error']) as $key) {
+        unset($vars[$key]);
+    }
+    $vars['pagename'] = $matches[1];
+    $vars['paged'] = (int) $matches[2];
+    return $vars;
+});
+
 add_action('init', static function (): void {
     add_rewrite_rule(
         '^(.+?)/filters(?:/(.*))?/?$',
@@ -19,7 +39,7 @@ add_action('init', static function (): void {
  *
  * @return array<string, string|list<string>>
  */
-function theme_parse_pretty_filters_path(mixed $path, string $page_name = 'paged'): array
+function theme_parse_pretty_filters_path(mixed $path, string $pagination_slug = 'paged'): array
 {
     if (!is_scalar($path)) return [];
 
@@ -31,7 +51,7 @@ function theme_parse_pretty_filters_path(mixed $path, string $page_name = 'paged
 
     for ($index = 0; $index + 1 < count($segments); $index += 2) {
         $raw_name = rawurldecode($segments[$index]);
-        $name = $raw_name === 'page' ? $page_name : sanitize_key($raw_name);
+        $name = $raw_name === 'page' ? $pagination_slug : sanitize_key($raw_name);
         if ($name === '') continue;
 
         $raw_values = explode(',', rawurldecode($segments[$index + 1]));
@@ -58,13 +78,13 @@ function theme_build_filters_context(array $options = []): array
         ? trim((string) $value)
         : '';
     $request = is_array($options['request'] ?? null) ? $options['request'] : $_GET;
-    $page_name = sanitize_key($to_string($options['page_name'] ?? 'paged')) ?: 'paged';
+    $pagination_slug = sanitize_key($to_string($options['pagination_slug'] ?? 'paged')) ?: 'paged';
     $pretty_urls = filter_var($options['pretty_urls'] ?? false, FILTER_VALIDATE_BOOL);
     $filters_base = 'filters';
     if ($pretty_urls) {
         $pretty_request = theme_parse_pretty_filters_path(
             get_query_var('theme_filters_path'),
-            $page_name
+            $pagination_slug
         );
         $request = array_replace($request, $pretty_request);
     }
@@ -380,8 +400,8 @@ function theme_build_filters_context(array $options = []): array
         $filter_groups['sort'][] = $sort_item;
     }
 
-    $requested_page = isset($request[$page_name]) && is_scalar($request[$page_name])
-        ? (int) $request[$page_name]
+    $requested_page = isset($request[$pagination_slug]) && is_scalar($request[$pagination_slug])
+        ? (int) $request[$pagination_slug]
         : 0;
     $paged = max(1, $requested_page, (int) get_query_var('paged'), (int) get_query_var('page'));
     $query_args = [
@@ -680,7 +700,7 @@ function theme_build_filters_context(array $options = []): array
             : str_replace(
                 '999999999',
                 '%#%',
-                add_query_arg($page_name, 999999999, $action_url)
+                add_query_arg($pagination_slug, 999999999, $action_url)
             ),
         'results_target' => $results_target,
         'form' => $form,
@@ -749,7 +769,7 @@ final class Theme_Listing
      *         options?: array<string, array{label?: string, orderby?: string, order?: 'ASC'|'DESC'}>
      *     },
      *     posts_per_page?: int,
-     *     page_name?: string,
+     *     pagination_slug?: string,
      *     card?: string,
      *     result_labels?: array{singular?: string, plural?: string},
      *     submit_label?: string,
@@ -869,6 +889,25 @@ final class Theme_Listing
         return is_string($this->context['post_type'] ?? null)
             ? $this->context['post_type']
             : '';
+    }
+
+    /**
+     * Attributs de la région contenant la liste et sa pagination.
+     * En AJAX, cette racine stable initialise le coordinateur même sans formulaire.
+     * Le coordinateur ne remplace que son contenu et conserve son lifecycle.
+     */
+    public function results_attributes(): string
+    {
+        $attributes = ['id' => $this->target()];
+        if ($this->context['form']['ajax'] ?? false) {
+            $attributes += [
+                'aria-live' => 'polite',
+                'data-module' => 'components/filters',
+                'data-filters-group' => $this->context['form']['ajax_group'],
+                'data-filters-target' => $this->target(),
+            ];
+        }
+        return html_attributes($attributes);
     }
 
     /** Retourne l'identifiant HTML de la région de résultats. */

@@ -18,7 +18,7 @@ $doing_it_wrong = [];
 $rendering_component_fixture = false;
 $get_posts_result = [];
 $get_posts_calls = [];
-$post_types_by_id = [];
+$post_types_by_id = array_fill_keys(range(101, 110), 'news');
 $registered_post_types = ['news'];
 $meta_cache_calls = [];
 $post_cache_calls = [];
@@ -170,6 +170,17 @@ function wp_unslash(mixed $value): mixed
     return is_string($value) ? stripslashes($value) : $value;
 }
 
+function get_post(int $post_id): ?object
+{
+    $type = get_post_type($post_id);
+    return $type ? (object) ['ID' => $post_id, 'post_type' => $type, 'post_status' => 'publish', 'post_password' => ''] : null;
+}
+
+function is_post_publicly_viewable(object $post): bool
+{
+    return $post->post_status === 'publish';
+}
+
 function get_post_type(int $post_id): string|false
 {
     global $post_types_by_id;
@@ -284,7 +295,7 @@ function get_fields(mixed $post_id = null, bool $format_value = true): array|fal
 
 function get_field(string $selector, mixed $post_id = null): mixed
 {
-    if ($selector !== 'hero-news' || !is_int($post_id) || $post_id <= 0) {
+    if ($selector !== 'hero-post' || !is_int($post_id) || $post_id <= 0) {
         return false;
     }
 
@@ -1191,14 +1202,14 @@ $custom_card = $render_card('news', [
 $assert_contains('Card accepte un contenu associatif personnalisé', 'Contenu personnalisé', $custom_card);
 $assert_contains('Card rend son image en cover', '<picture class="picture fit-cover card-image">', $custom_card);
 $post_card = $render_card('news', 101);
-$assert_contains('Card charge les champs ACF depuis un ID', 'Actualité 101', $post_card);
-$assert_contains('Card transmet le post_id normalisé au template', 'Contenu du post 101', $post_card);
+$assert_contains('Card charge les champs ACF depuis un ID', 'Titre WordPress 101', $post_card);
+$assert_contains('Card transmet le post_id normalisé au template', 'Extrait 101', $post_card);
 $overridden_post_card = $render_card('news', [
     'post_id' => 102,
     'title' => 'Titre surchargé',
 ]);
 $assert_contains('Le contenu explicite surcharge les champs du post', 'Titre surchargé', $overridden_post_card);
-$assert_contains('Les champs non surchargés restent issus du post', 'Contenu du post 102', $overridden_post_card);
+$assert_contains('Les champs non surchargés restent issus du post', 'Extrait 102', $overridden_post_card);
 $assert_same('Card refuse un ID nul', '', $render_card('news', 0));
 $assert_same('Card refuse un ID négatif', '', $render_card('news', -1));
 $assert_same('Card refuse un ID sous forme de chaîne', '', $render_card('news', '101'));
@@ -1307,7 +1318,7 @@ $post_list = $render('list', [
     'card' => 'news',
 ]);
 $assert_same('List accepte les IDs positifs et rejette les autres scalaires', 2, substr_count($post_list, '<article class="card-news">'));
-$assert_contains('List transmet les IDs aux cards', 'Actualité 104', $post_list);
+$assert_contains('List transmet les IDs aux cards', 'Titre WordPress 104', $post_list);
 
 $single_post_list = $render('list', [
     'items' => 107,
@@ -1531,7 +1542,10 @@ $simple_picture = $render('picture', [
 ]);
 $assert_contains('Picture simple rend le WebP existant dans une source', '<source srcset="/images/simple.webp" type="image/webp">', $simple_picture);
 $assert_contains('Picture simple conserve l’original comme fallback', '<img src="/images/simple.jpg"', $simple_picture);
-$assert_contains('Picture utilise fluid par défaut', '<picture class="picture fit-fluid">', $simple_picture);
+$assert_contains('Picture ne définit aucun fit par défaut', '<picture class="picture">', $simple_picture);
+$assert_contains('Picture accepte fluid explicitement', '<picture class="picture fit-fluid">', $render('picture', ['image' => 321, 'fit' => 'fluid']));
+$assert_contains('Picture ignore un fit invalide', '<picture class="picture">', $render('picture', ['image' => 321, 'fit' => 'invalid']));
+
 $assert_same(
     'Picture transmet la taille simple au resolver',
     ['/images/simple.jpg', 'large'],
@@ -1564,7 +1578,7 @@ $placeholder_picture = $render('picture', [
     'classes' => 'media-placeholder',
     'placeholder' => true,
 ]);
-$assert_same('Picture rend son placeholder explicite', '<picture class="picture fit-fluid placeholder media-placeholder"></picture>', $placeholder_picture);
+$assert_same('Picture rend son placeholder explicite', '<picture class="picture placeholder media-placeholder"></picture>', $placeholder_picture);
 $assert_same('Les variantes picture à la racine sont retirées', '', $render('picture', ['desktop' => '/images/legacy.jpg']));
 $assert_same('Une URL picture simple dangereuse ne produit aucun HTML', '', $render('picture', ['image' => 'javascript:alert(1)']));
 $assert_same('Une URL picture dangereuse ne produit aucun HTML', '', $render('picture', ['images' => 'javascript:alert(1)']));
@@ -2046,7 +2060,7 @@ $post_slider = $render('slider', [
     'hydrate' => false,
 ]);
 $assert_same('Le slider avec card accepte les IDs et les payloads associatifs', 2, substr_count($post_slider, '<article class="card-news">'));
-$assert_contains('Le slider transmet un ID à la card', 'Actualité 108', $post_slider);
+$assert_contains('Le slider transmet un ID à la card', 'Titre WordPress 108', $post_slider);
 $assert_contains('Le slider conserve les surcharges explicites', 'Titre slider surchargé', $post_slider);
 $assert_same('Le slider exige une liste d’items', '', $render('slider', [
     'items' => ['first' => '<p>Premier</p>'],
@@ -2078,7 +2092,7 @@ $picture_slider = $render('slider', [
     'hydrate' => false,
 ]);
 $assert_same('Le slider picture ignore les payloads invalides', 1, substr_count($picture_slider, '<li'));
-$assert_contains('Le slider conserve le picture responsive', '<picture class="picture fit-fluid slider-image">', $picture_slider);
+$assert_contains('Le slider conserve le picture responsive', '<picture class="picture slider-image">', $picture_slider);
 $assert_contains('Le slider rend la source mobile', 'srcset="202"', $picture_slider);
 $assert_contains('Le slider rend la source desktop', 'srcset="201"', $picture_slider);
 
@@ -2562,7 +2576,7 @@ $card_marquee = $render('marquee', [
     'hydrate' => false,
 ]);
 $assert_contains('Le marquee rend directement ses cards', '<article class="card-news">', $card_marquee);
-$assert_contains('Le marquee transmet les IDs aux cards', 'Actualité 108', $card_marquee);
+$assert_contains('Le marquee transmet les IDs aux cards', 'Titre WordPress 108', $card_marquee);
 
 $picture_marquee = $render('marquee', [
     'items' => [[
@@ -3097,6 +3111,10 @@ $assert_same('La variante Card prime sur le champ métier', '2027-10-01', $overr
 
 $get_posts_calls = [];
 $get_posts_result = [(object) ['ID' => 1201], (object) ['ID' => 1202]];
+$normalized_direct_card = $render_card('page', 203);
+$assert_contains('La card directe utilise le titre WordPress', 'Titre WordPress 203', $normalized_direct_card);
+
+
 $post_types_by_id[1201] = 'news';
 $post_types_by_id[1202] = 'news';
 $meta_cache_calls = [];
@@ -3138,7 +3156,7 @@ $assert_same('Voir plus récupère un contenu supplémentaire', 3, $get_posts_ca
 $assert_same('Voir plus commence au premier lot', 0, $get_posts_calls[0]['offset'] ?? null);
 $assert_same('Voir plus affiche seulement la taille du lot', 2, substr_count($more_pushes, 'class="card-news"'));
 $assert_contains('Voir plus expose un lien de secours', 'pushes_more_1=2', $more_pushes);
-$assert_contains('Voir plus hydrate son module', 'data-module="strates/strate-pushes-more/strate-pushes-more"', $more_pushes);
+$assert_contains('Voir plus hydrate son module', 'data-module="strates/strate-pushes-more"', $more_pushes);
 
 $_GET['pushes_more_2'] = '2';
 $get_posts_calls = [];
@@ -3220,6 +3238,31 @@ foreach (['suptitle', 'title', 'text'] as $homepage_name) {
 $assert_contains('Le texte Homepage est éditorial', '<p>', $homepage_defaults['text'] ?? '');
 $assert_same('Le catalogue Homepage conserve le placeholder desktop', 'assets/img/placeholders/hero-homepage-desktop.jpg', $homepage_defaults['images']['desktop']['__forgeStarterMediaPath'] ?? '');
 $assert_same('Le catalogue Homepage conserve le placeholder mobile', 'assets/img/placeholders/hero-homepage-mobile.jpg', $homepage_defaults['images']['mobile']['__forgeStarterMediaPath'] ?? '');
+
+$post_types_by_id[99001] = 'news';
+$card_field_map_by_type['news'] = ['images' => 'images'];
+$business_fields_by_id[99001] = ['images' => ['desktop' => 801, 'mobile' => 802]];
+$responsive_news = theme_post_card_item(99001);
+$assert_same('Le mapping métier conserve les deux images', ['desktop' => 801, 'mobile' => 802], $responsive_news['images'] ?? null);
+$assert_same('Les cards simples conservent le repli desktop', 801, $responsive_news['image'] ?? null);
+$overridden_news = resolve_card_data(['post_id' => 99001, 'image' => 803]);
+$assert_same('Une surcharge image remplace les variantes du post', 803, $overridden_news['images'] ?? null);
+
+set_error_handler(static function (int $level, string $message): never {
+    throw new ErrorException($message, 0, $level);
+});
+try {
+    foreach (['intro', 'text', 'text-image', 'accordion'] as $empty_strate) {
+        $assert_same('Une strate vide ne rend aucun HTML : ' . $empty_strate, '', trim($render_strate($empty_strate, [])));
+    }
+    foreach ([['bad'], new stdClass()] as $index => $bad_layout) {
+        $queried_object_id = 89001 + $index;
+        $business_fields_by_id[$queried_object_id] = ['strates' => [['acf_fc_layout' => $bad_layout]]];
+        include dirname(__DIR__) . '/template-parts/utils/dispatch-strates.php';
+    }
+} finally {
+    restore_error_handler();
+}
 
 if ($failures !== []) {
     fwrite(STDERR, implode("\n\n", $failures) . "\n");

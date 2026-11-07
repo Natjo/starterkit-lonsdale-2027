@@ -72,11 +72,10 @@ body {
 
 /* heros */
 .hero {
-    scroll-margin-top: var(--header-height);
+    scroll-margin-top: var(--header-height); 
+    padding-top: var(--header-height);
     display: grid;
     grid-template-columns: var(--layout);
-    // Keep the document height stable when the fixed header becomes compact.
-    padding-top: var(--header-height-expanded);
     --ctr: ctr;
 
     >* {

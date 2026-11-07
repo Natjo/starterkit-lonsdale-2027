@@ -5,7 +5,7 @@
   "slug": "marquee",
   "assets": {
     "css": { "loading": "normal" },
-    "js": { "loading": "eager" }
+    "js": { "loading": "visible" }
   },
   "defaults": {
     "content_type": "images",

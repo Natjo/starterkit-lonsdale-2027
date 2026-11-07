@@ -25,34 +25,9 @@ $items = array_values(array_filter($items, static fn (mixed $id): bool =>
 
 if ($items === []) return;
 
-update_meta_cache('post', $items);
-
-$items = array_map(static function (int $post_id): array {
-    $hero = function_exists('get_field') ? get_field('hero-news', $post_id) : [];
-    $hero = is_array($hero) && !array_is_list($hero) ? $hero : [];
-
-    $title = is_scalar($hero['title'] ?? null) || ($hero['title'] ?? null) instanceof Stringable
-        ? trim((string) $hero['title'])
-        : '';
-    if ($title === '') {
-        $title = trim((string) get_the_title($post_id));
-    }
-
-    $images = is_array($hero['images'] ?? null) && !array_is_list($hero['images'])
-        ? $hero['images']
-        : [];
-
-    return [
-        'post_id' => $post_id,
-        'date' => $hero['date'] ?? '',
-        'title' => $title,
-        'image' => $images['desktop'] ?? null,
-        'link' => [
-            'url' => get_permalink($post_id),
-            'title' => $title,
-        ],
-    ];
-}, $items);
+theme_prime_posts($items);
+$items = array_values(array_filter(array_map('theme_post_card_item', $items)));
+if ($items === []) return;
 ?>
 
 <section class="related" aria-labelledby="related-title">

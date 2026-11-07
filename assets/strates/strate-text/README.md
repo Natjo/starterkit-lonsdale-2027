@@ -20,8 +20,8 @@ strate('text', [
 
 Le contenu de démonstration défini dans ACF présente les formats disponibles :
 
-- niveaux visuels `h1`, `h2`, `h3` et `h4` ;
-- texte `sm`, `lg`, `xl` et `wd` ;
+- titres `h2`, `h3` et `h4` ;
+- format Intro (`.intro`) et Petit texte (`small`) ;
 - gras, italique, souligné et lien ;
 - citation ;
 - listes à puces et numérotées.
@@ -33,3 +33,6 @@ nouvelle strate.
 
 - `component('title', [...])` ;
 - `component('text', [...])`.
+
+La strate ne produit aucun HTML sans contenu exploitable. Les champs absents
+sont traités comme vides.

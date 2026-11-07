@@ -1,5 +1,7 @@
 <?php
-$args = get_template_args();
+$args = get_template_args(['title' => '', 'text' => '', 'items' => []]);
+$args['title'] = component_string($args['title']);
+$args['text'] = component_string($args['text']);
 
 $classes = [
     'strate',
@@ -7,6 +9,7 @@ $classes = [
     !empty($args['reverse']) ? 'reverse' : '',
     !empty($args['center']) ? 'center' : '',
 ];
+if ($args['title'] === '' && $args['text'] === '' && empty($args['image'])) return;
 ?>
 
 <section <?= options($classes, $args) ?>>

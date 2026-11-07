@@ -4,18 +4,34 @@
   "name": "Hub",
   "slug": "template-hub",
   "assets": {
-    "css": { "loading": "once" }
+    "css": {
+      "loading": "once"
+    }
   },
   "file": "template-hub.php",
   "activation": "selected",
-  "capabilities": ["content-archive", "flexible-strates"],
-  "catalog": { "name": "Page hub", "slug": "page-hub" },
+  "capabilities": [
+    "content-archive",
+    "flexible-strates"
+  ],
+  "catalog": {
+    "name": "Page hub",
+    "slug": "page-hub"
+  },
   "dependencies": {
-    "components": ["list", "pagination"],
+    "components": [
+      "list",
+      "pagination",
+      "filters"
+    ],
     "cards": [],
     "strates": [],
-    "heroes": ["page"],
-    "common": ["header-nav"],
+    "heroes": [
+      "page"
+    ],
+    "common": [
+      "header-nav"
+    ],
     "modules": []
   }
 }

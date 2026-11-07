@@ -62,7 +62,7 @@
         overflow-y: auto;
         color: var(--color-text);
         background: var(--color-bg);
-        border: var(--border, 1px solid currentColor);
+        border: 1px solid var(--color-border);
         list-style: none;
         -webkit-overflow-scrolling: touch;
 

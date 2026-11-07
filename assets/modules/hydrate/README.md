@@ -59,3 +59,13 @@ Les modules exposant `pause` et `resume` sont suspendus hors écran. Lorsqu’un
 - sans `IntersectionObserver`, le chargement visible devient immédiat ;
 - un élément supprimé pendant un import asynchrone n’est pas initialisé après coup ;
 - chaque module reste limité à sa racine et doit nettoyer ses propres listeners, timers et RAF.
+
+## Réutilisation d’une racine
+
+Après modification de `data-module`, appeler `hydrateElement(root)` : l’ancien
+module est détruit et ses imports en attente sont invalidés. `observe()` ne
+surveille que les ajouts et retraits du DOM, pas les mutations d’attributs.
+La condition média est revérifiée après l’import, avant toute initialisation.
+Si elle est devenue fausse, l’attente est réarmée. Elle constitue une condition
+d’initialisation : une instance déjà chargée reste active après redimensionnement.
+`destroy(root)` et `destroyAll(container)` permettent un nettoyage explicite.

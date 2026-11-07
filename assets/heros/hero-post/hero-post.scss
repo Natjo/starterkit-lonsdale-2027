@@ -1,0 +1,24 @@
+.hero-post {
+    align-content: start;
+    margin-bottom: var(--space-md);
+
+    .hero-content {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        align-items: center;
+        padding-top:3rem;
+        margin-top: -10rem;
+        background-color: #fff;
+    }
+
+    .hero-image {
+        grid-column: full;
+        order: -1;
+        aspect-ratio: 16/3;
+    }
+
+    @media #{$breakpoint-lg-down} {}
+
+    @media #{$breakpoint-lg-up} {}
+}

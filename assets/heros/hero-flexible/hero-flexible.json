@@ -3,9 +3,17 @@
   "type": "hero",
   "name": "Flexible",
   "slug": "flexible",
-  "assets": {},
+  "assets": {
+    "css": {
+      "loading": "critical"
+    }
+  },
   "dependencies": {
-    "components": ["title"],
+    "components": [
+      "title",
+      "text",
+      "picture"
+    ],
     "cards": [],
     "strates": [],
     "heroes": [],

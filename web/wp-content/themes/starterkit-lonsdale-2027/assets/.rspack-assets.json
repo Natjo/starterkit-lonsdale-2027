@@ -10,13 +10,13 @@
   "files": [
     {
       "name": "css/admin-rte.css",
-      "size": 7393,
-      "sha256": "9d3ef7a0a6442550dc5a0708026a9d009ae04dfb9950efb7c623221dedf911a1"
+      "size": 6574,
+      "sha256": "4c2184ae9c458499a7d425204db71c9a50257432c30476b25eb75b36e41f1f34"
     },
     {
       "name": "css/admin-rte.css.map",
-      "size": 13373,
-      "sha256": "6d9b92080c9f471c684d8234e3b80f757a168e4e3307cc65ed91fa110434bb5d"
+      "size": 11709,
+      "sha256": "de02680a58cdc1d479db7c948a3f8f2cf6f9c18a060d96a72e046e5d6b3650b5"
     },
     {
       "name": "css/admin.css",
@@ -30,13 +30,23 @@
     },
     {
       "name": "css/app.css",
-      "size": 39476,
-      "sha256": "df0c9a2fc803789b5ea43252454504b3b45678e049b53f30f0debb6bcfdee5e4"
+      "size": 40413,
+      "sha256": "2ebc21863313f8720fae1635a351d11bb5702a2b4a3120707bd3ca058ebaaabd"
     },
     {
       "name": "css/app.css.map",
-      "size": 61563,
-      "sha256": "31e93b68a463e60a124e940c51c810bbddd0be221f4cef8a71640e1d55f38fa1"
+      "size": 63950,
+      "sha256": "2c129c00243df2f5e24a37e07d6707a0ea63f4bcb6a33772f95450080059ffc8"
+    },
+    {
+      "name": "css/common/prefooter-newsletter/prefooter-newsletter.css",
+      "size": 791,
+      "sha256": "4d1a2ef57f08f328e59b3fbb2356e99e8318eff7fb4074b10f71478935ee678d"
+    },
+    {
+      "name": "css/common/prefooter-newsletter/prefooter-newsletter.css.map",
+      "size": 1200,
+      "sha256": "091bc124c6be82a26f323870d7b920e15a1c6c60dd1bd70997ea8eb539181247"
     },
     {
       "name": "css/components/anchor-nav/anchor-nav.css",
@@ -70,23 +80,33 @@
     },
     {
       "name": "css/critical.css",
-      "size": 30709,
-      "sha256": "2c38c20ddc8ab77223b86155f1b50ec9e4b46daf6e8e97721e0982ba89c7bf00"
+      "size": 29890,
+      "sha256": "49255c29aa6255abcaa3ffca83de4158dcd8744c7cfc4190b3a030333bb0de93"
     },
     {
       "name": "css/critical.css.map",
-      "size": 50535,
-      "sha256": "8f7d89d87a05967dc9a4d16841590f88d74ece805093f2eca996cb4be84e60af"
+      "size": 48871,
+      "sha256": "1f3cbf3cb38787d1dbe6b04c65239093777ab45e0293abc6457cfef551254e71"
+    },
+    {
+      "name": "css/heros/hero-flexible/hero-flexible.css",
+      "size": 384,
+      "sha256": "ce22c3be7ad79d836563e1e9b9f781eba0da43589c156f59cca35986af33edd4"
+    },
+    {
+      "name": "css/heros/hero-flexible/hero-flexible.css.map",
+      "size": 824,
+      "sha256": "e335cc20237055bc5ed16c8697cc9971a0953c64b38f4734f391d513394668c3"
     },
     {
       "name": "css/heros/hero-homepage/hero-homepage.css",
-      "size": 409,
-      "sha256": "0591139cb9cb2a07fae78ca5537b4884623a811b7e720ab24205026f7e29d5b9"
+      "size": 369,
+      "sha256": "3df774cb156f0a09946e7bdc7eaaf5249c777636dfe046576da8422922b2374b"
     },
     {
       "name": "css/heros/hero-homepage/hero-homepage.css.map",
-      "size": 974,
-      "sha256": "22511eef8098bb1a7114ca4a691b4f2fe7a3549a5f51b759338b24a63adf0f3c"
+      "size": 870,
+      "sha256": "8059faeba3b6891490a679b8e60b3ecce287e2f431f089558b2b74c55f099005"
     },
     {
       "name": "css/heros/hero-page/hero-page.css",
@@ -97,6 +117,16 @@
       "name": "css/heros/hero-page/hero-page.css.map",
       "size": 437,
       "sha256": "27021feb728c320e8b83850ab5a29bcd9acc5e703391135c06213c7f92666fe4"
+    },
+    {
+      "name": "css/heros/hero-post/hero-post.css",
+      "size": 314,
+      "sha256": "04e54bc372c568f7174f4eaa7ed8fbe2bbd3ebeef5fb7cf429a3f58bf42b3fc5"
+    },
+    {
+      "name": "css/heros/hero-post/hero-post.css.map",
+      "size": 726,
+      "sha256": "3dd7ce9e90f265d05d1084325fd84e0fc4f085ec0e94c21998166268541edf7f"
     },
     {
       "name": "css/once/components/filters/filters.css",
@@ -230,13 +260,13 @@
     },
     {
       "name": "css/strates/strate-snap/strate-snap.css",
-      "size": 1093,
-      "sha256": "292b3105c8be99d195e8fab613fb44a5fa442e78a35cca9389e7ecb0d6d1f1dc"
+      "size": 1104,
+      "sha256": "829401bcd6901d846031d5c5c9c0374f7cf8b3967e283dfebb59ef3a5ce2c447"
     },
     {
       "name": "css/strates/strate-snap/strate-snap.css.map",
-      "size": 1789,
-      "sha256": "13cf734b0b01c1cc1c4e3513dbbccef8cf182600204aa44e82fd32983387fe2c"
+      "size": 1815,
+      "sha256": "268451f0a7d3485bdc4ccfd3a46ac42e06d184fe59fb29d937c5f48816c97b3e"
     },
     {
       "name": "css/strates/strate-text-animated/strate-text-animated.css",
@@ -495,13 +525,13 @@
     },
     {
       "name": "js/app.js",
-      "size": 29842,
-      "sha256": "d39012faae7f721403d209efca775fa9c4358cc4f9b210fca9a93e4062a44124"
+      "size": 29996,
+      "sha256": "c1700cbcf8df99fd55745e781e90a97d640895a071a0998f03446b9bcd99fc36"
     },
     {
       "name": "js/app.js.map",
-      "size": 108308,
-      "sha256": "f7055950100baaab6f6bc8da7ddb55a740bd8c1b783f31d0a8a49a9db2358730"
+      "size": 108932,
+      "sha256": "aa8d714f579d5e98f054135ae8e1950bb4a5e8e5390de61dc12e557bd0f7c491"
     },
     {
       "name": "js/chunks/1ae55770.js",
@@ -724,6 +754,11 @@
       "sha256": "26475230d60913a0fa27d1a9d9eee8fc6dbe9a813a4ca36059a7a28cbd36b9db"
     },
     {
+      "name": "js/common/prefooter-newsletter/prefooter-newsletter.js",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
       "name": "js/components/anchor-nav/anchor-nav.js",
       "size": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -744,12 +779,22 @@
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
+      "name": "js/heros/hero-flexible/hero-flexible.js",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
       "name": "js/heros/hero-homepage/hero-homepage.js",
       "size": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
       "name": "js/heros/hero-page/hero-page.js",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "js/heros/hero-post/hero-post.js",
       "size": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },

@@ -3,11 +3,24 @@ $args = get_template_args();
 ?>
 
 <header class="hero hero-flexible">
-    <div class="hero-content">
-        <?php component('title', array_replace($args, [
-            'hx' => 1,
-            'classes' => 'title-1',
-        ])); ?>
-       
+    <div class="hero-inner">
+        <div class="hero-content">
+            <?php component('title', array_replace($args, [
+                'hx' => 1,
+                'classes' => 'title-1 hero-title',
+            ])); ?>
+
+            <?php component('text', [
+                'text' => $args['text'] ?? '',
+                'classes' => 'hero-text',
+            ]); ?>
+        </div>
+
+        <?php component('picture', [
+            'images' => $args['images'] ?? null,
+            'classes' => "hero-image",
+            'fit' => 'cover',
+            'preload' => true,
+        ]); ?>
     </div>
 </header>

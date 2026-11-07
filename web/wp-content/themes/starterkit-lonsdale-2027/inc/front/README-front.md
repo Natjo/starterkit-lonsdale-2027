@@ -142,7 +142,9 @@ function strate(string $name, array $args = []): void
 ```
 
 `card()` accepte soit un ID de post positif, soit un tableau associatif non
-vide. Un ID charge les champs ACF et ajoute `post_id`. Un tableau contenant
+vide. Un ID charge les champs ACF, les données normalisées de
+`theme_post_card_item()` et ajoute `post_id`. Les posts non publics ou protégés
+par mot de passe sont exclus, indépendamment des droits du visiteur. Un tableau contenant
 `post_id` charge également le post, puis ses autres valeurs surchargent les
 champs récupérés.
 
@@ -216,7 +218,9 @@ add_filter('theme_card_field_map', static function (array $map, string $post_typ
 }, 10, 2);
 ```
 
-Les clés possibles sont `title`, `text`, `date`, `image`. Les valeurs sont des
+Les clés possibles sont `title`, `text`, `date`, `image` et `images`.
+`images` désigne un groupe desktop/mobile d’IDs. Le payload conserve les deux
+variantes et fournit aussi `image` (desktop, sinon mobile) aux cards simples. Les valeurs sont des
 noms de champs ACF racine ; aucune convention n’est imposée aux CPT. Les dates
 ACF `Y-m-d` et `Ymd` sont acceptées. Un mapping absent, un champ vide ou une
 date invalide laisse jouer le repli suivant. Il n’est pas nécessaire de saisir
@@ -495,3 +499,10 @@ le formulaire POST classique reste disponible.
 ---
 
 *Dernière mise à jour : juin 2026 — WordPress 6.1+ / PHP 8.3*
+
+### Région AJAX sans formulaire
+
+`$listing->results_attributes()` génère l’ID de la région de résultats et,
+si `ajax` est actif, ses attributs d’hydratation `components/filters`. Placer
+ces attributs sur le conteneur stable de la liste et de sa pagination permet
+la navigation AJAX même sans recherche, facette ni tri.

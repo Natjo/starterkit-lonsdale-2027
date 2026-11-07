@@ -1,34 +1,32 @@
 .quote {
     box-sizing: border-box;
     color: var(--color-text);
-    max-width: 82rem;
-    padding: 2.4rem 0;
     position: relative;
     text-align: center;
 
-    &::before {
+    .quote-mark {
         color: var(--color-2);
-        content: "\201C";
         display: block;
-        font-family: var(--font-2);
-        font-size: 7rem;
-        font-weight: 700;
-        line-height: .7;
-        margin-bottom: 1.2rem;
+        width: 38px;
+        height: 32px;
+        margin-bottom: -1.8rem;
+        margin-left: -1rem;
     }
 
     .quote-image {
         display: block;
-        height: auto;
-        margin: 0 auto 2rem;
-        max-width: 100%;
+        width: 6rem;
+        height: 6rem;
     }
 
     .quote-content {
         font-family: var(--font-2);
-        font-size: 2.4rem;
-        font-weight: 700;
-        line-height: 1.25;
+        line-height: 1.26;
+        text-align: left;
+        color: var(--color-2);
+        font-size: 2.2rem;
+        font-weight: 400;
+        line-height: 1.26;
 
         p {
             margin: 0;
@@ -38,29 +36,38 @@
     .quote-caption {
         align-items: center;
         display: flex;
-        flex-wrap: wrap;
-        gap: .6rem 1rem;
-        justify-content: center;
+        gap: 1.5rem;
         margin-top: 2rem;
+        line-height: 1;
+        text-align: left;
+    }
+
+    .caption-content {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
     }
 
     .quote-author {
-        font-weight: 700;
+        font-weight: 600;
+        color: var(--color-2);
+        text-box-trim: trim-both;
+        text-box-edge: cap alphabetic;
+        font-size: 2.4rem;
+        line-height: 1.2;
     }
 
     .quote-source {
-        color: color-mix(in srgb, var(--color-text) 72%, #fff);
+        color: #000;
+        line-height: 1;
+        font-weight: 500;
+        text-box-trim: trim-both;
+        text-box-edge: cap alphabetic;
     }
 
     @media #{$breakpoint-md-up} {
-        padding: 3.2rem 0;
-
-        &::before {
-            font-size: 9rem;
-        }
-
         .quote-content {
-            font-size: 3.2rem;
+            font-size: 2.7rem;
         }
     }
 }
