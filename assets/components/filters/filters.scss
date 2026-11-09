@@ -7,6 +7,16 @@
         gap: 2.4rem;
     }
 
+   
+
+    &.filters-facets {
+        padding: 1rem;
+    }
+
+    &.filters-sort {
+        margin-bottom: 2rem;
+    }
+
     .filters-range {
         display: grid;
         gap: 1.2rem;

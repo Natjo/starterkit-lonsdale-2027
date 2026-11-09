@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "type": "page",
+  "name": "Hub Filters Sidebar",
+  "slug": "template-hub-filters-sidebar",
+  "assets": {
+    "css": {
+      "loading": "once"
+    }
+  },
+  "file": "template-hub-filters-sidebar.php",
+  "activation": "selected",
+  "capabilities": [
+    "content-archive",
+    "flexible-strates"
+  ],
+  "catalog": true,
+  "dependencies": {
+    "components": [
+      "filters",
+      "list",
+      "pagination",
+      "search"
+    ],
+    "cards": [],
+    "strates": [],
+    "heroes": [
+      "page"
+    ],
+    "common": [
+      "header-nav"
+    ],
+    "modules": [],
+    "vendors": []
+  }
+}

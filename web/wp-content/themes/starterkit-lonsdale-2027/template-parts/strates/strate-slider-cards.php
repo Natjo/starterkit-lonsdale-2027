@@ -4,6 +4,9 @@ $rows = is_array($args['items'] ?? null) ? $args['items'] : [];
 $items = [];
 foreach ($rows as $row) {
     if (!is_array($row) || array_is_list($row)) continue;
+    if (is_array($row['card'] ?? null) && !array_is_list($row['card'])) {
+        $row = array_replace($row['card'], $row);
+    }
     $title = is_scalar($row['title'] ?? null) || ($row['title'] ?? null) instanceof Stringable
         ? trim((string) $row['title'])
         : '';

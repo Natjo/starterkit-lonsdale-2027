@@ -288,3 +288,11 @@ Pour une pagination AJAX seule, placer `$listing->results_attributes()` sur
 la région contenant la liste et la pagination. Le coordinateur accepte cette
 racine sans formulaire et conserve les liens natifs en repli. Déclarer la
 dépendance `components: ["filters"]` dans le manifeste du template.
+
+## Rendu du groupe de recherche
+
+Le groupe `search` standard de `Theme_Listing` utilise `component('search')`
+(champ et bouton), avec la classe `filters-search`. Les facettes et le tri
+restent rendus par `component('filters')`. Si un groupe de recherche personnalisé
+combine plusieurs contrôles, un compteur ou un bouton de réinitialisation,
+le rendu générique `filters` est conservé.

@@ -38,7 +38,9 @@ strate('keynumbers', [
 | `items` | `list<array>` | `[]` | Payloads transmis à `card-keynumber` |
 | `options` | `array` | `[]` | Options communes traitées par `options()` |
 
-Les items sans `value` sont ignorés. La strate ne produit aucun balisage
+Les lignes plates et les lignes imbriquées sous `card` sont acceptées, ce qui
+permet de réutiliser le groupe ACF **Card - keynumber** par clonage. Les items
+sans `value` sont ignorés. La strate ne produit aucun balisage
 lorsqu’aucun chiffre valide n’est fourni.
 
 Le titre et l’introduction Lorem viennent des `default_value` ACF. Le manifeste

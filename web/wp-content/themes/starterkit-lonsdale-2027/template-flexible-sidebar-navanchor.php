@@ -15,14 +15,12 @@ common('header-nav');
 <main class="template-flexible-sidebar-navanchor">
     <?php hero('page'); ?>
 
-    <div class="layout-sidebar">
+    <div class="main-layout">
         <div class="main-sidebar">
-            <?php
-            component('anchor-nav', [
+            <?php component('anchor-nav', [
                 'items' => $anchor_items,
                 'aria_label' => 'Navigation des sections',
-            ]);
-            ?>
+            ]); ?>
         </div>
 
         <div class="main-content">

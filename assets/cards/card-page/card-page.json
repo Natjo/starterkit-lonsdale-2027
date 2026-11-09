@@ -4,14 +4,36 @@
   "name": "page",
   "slug": "page",
   "assets": {
-    "css": { "loading": "normal" }
+    "css": {
+      "loading": "normal"
+    }
   },
   "dependencies": {
-    "components": ["eyebrow","title","text"],
+    "components": [
+      "eyebrow",
+      "title",
+      "text"
+    ],
     "cards": [],
     "strates": [],
     "heroes": [],
     "common": [],
     "modules": []
-  }
+  },
+  "fields": [
+    {
+      "name": "title",
+      "label": "Titre",
+      "type": "text",
+      "required": false,
+      "default": "Lorem ipsum dolor sit amet"
+    },
+    {
+      "name": "text",
+      "label": "Description",
+      "type": "wysiwyg",
+      "required": false,
+      "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>"
+    }
+  ]
 }

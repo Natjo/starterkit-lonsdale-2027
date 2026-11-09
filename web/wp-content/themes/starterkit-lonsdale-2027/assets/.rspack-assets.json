@@ -30,13 +30,13 @@
     },
     {
       "name": "css/app.css",
-      "size": 40413,
-      "sha256": "2ebc21863313f8720fae1635a351d11bb5702a2b4a3120707bd3ca058ebaaabd"
+      "size": 40827,
+      "sha256": "ab31de32057bb33cfeb3b40ceae70a633d3cd4362173fb708697c1483e2276b4"
     },
     {
       "name": "css/app.css.map",
-      "size": 63950,
-      "sha256": "2c129c00243df2f5e24a37e07d6707a0ea63f4bcb6a33772f95450080059ffc8"
+      "size": 64748,
+      "sha256": "8ff2c864af0a88c4b9af4ab9aa90938361f5717bb6560f904a4b6e7ec3db59de"
     },
     {
       "name": "css/common/prefooter-newsletter/prefooter-newsletter.css",
@@ -80,13 +80,13 @@
     },
     {
       "name": "css/critical.css",
-      "size": 29890,
-      "sha256": "49255c29aa6255abcaa3ffca83de4158dcd8744c7cfc4190b3a030333bb0de93"
+      "size": 29797,
+      "sha256": "3813f62b87ac57940c725b7a288eb00e20b99119a0c69b661f63d06547c389a0"
     },
     {
       "name": "css/critical.css.map",
-      "size": 48871,
-      "sha256": "1f3cbf3cb38787d1dbe6b04c65239093777ab45e0293abc6457cfef551254e71"
+      "size": 48749,
+      "sha256": "6f5c2cffffd38416267268d7e92cdf134b1da1a0c485c03cbe2c51556cd673af"
     },
     {
       "name": "css/heros/hero-flexible/hero-flexible.css",
@@ -130,13 +130,13 @@
     },
     {
       "name": "css/once/components/filters/filters.css",
-      "size": 338,
-      "sha256": "33cb6d11ec807b168980dfe33ad77a3810f1cc861ae23017925331004dc57944"
+      "size": 416,
+      "sha256": "7b9534a8c6f3f0fa5d3adeaa363a402c6bb4dda69281a8cab43e8df2113aa2f7"
     },
     {
       "name": "css/once/components/filters/filters.css.map",
-      "size": 779,
-      "sha256": "8e71cf40698a4b011c61bcbe3d28967fcd0f1d028399e7e062ca2c94c44637f6"
+      "size": 914,
+      "sha256": "3d2cc5c5c91d78ab1b2418a93ab236a0b21d988bc06d3afcfc73ee9feccaf665"
     },
     {
       "name": "css/once/pages/404/404.css",
@@ -159,16 +159,6 @@
       "sha256": "34ed4304529ece2f2c39f7964be35730c4ca2dca0b4cc9f3a22fcae0eda6d61f"
     },
     {
-      "name": "css/once/pages/archive-team/archive-team.css",
-      "size": 618,
-      "sha256": "a2b0681e2811298f9310e98aa5c40481645de0781d223e0213bb9639ea5562bb"
-    },
-    {
-      "name": "css/once/pages/archive-team/archive-team.css.map",
-      "size": 1052,
-      "sha256": "fd2fa983538d489ff55ff73f86331351e6463d91baa6b4e01d85a4b6d4e1cfe6"
-    },
-    {
       "name": "css/once/pages/search/search.css",
       "size": 1343,
       "sha256": "f413a7cc71485431f92aee995c54753bd31f2dee88fc878f9bcff075fddcb198"
@@ -180,63 +170,63 @@
     },
     {
       "name": "css/once/pages/template-contact/template-contact.css",
-      "size": 710,
-      "sha256": "6d810aa0d1686c5ac430ee78fb0952a89c79afed351f20ddc72a27cd5fb51774"
+      "size": 626,
+      "sha256": "1013d30bb2fc9479ab73915b9cc5b5cd0ef7387516a8d89d66ee37f9a541b6d8"
     },
     {
       "name": "css/once/pages/template-contact/template-contact.css.map",
-      "size": 1047,
-      "sha256": "f6d770c89982e60c6a196740a4997fcbeebdfa6600564961bac37bf3e0290b6d"
-    },
-    {
-      "name": "css/once/pages/template-filters/template-filters.css",
-      "size": 608,
-      "sha256": "d15ec962f56d6e903229d7f2aa6fb0799f6c9c82e4b237062a7885eb5dde5651"
-    },
-    {
-      "name": "css/once/pages/template-filters/template-filters.css.map",
-      "size": 934,
-      "sha256": "2e6d06659bb00736e7a316b656d2df1348ea8735eb16b237156ea80325501a9b"
+      "size": 975,
+      "sha256": "7d7b4b8e418dbdb532bbeea0e102a84f3ada7b97c946c6ce5e9583674e4a8e07"
     },
     {
       "name": "css/once/pages/template-flexible-sidebar-navanchor/template-flexible-sidebar-navanchor.css",
-      "size": 789,
-      "sha256": "a36050520bde7adfa39ff2e2468be1d3a13afadde1d22ab871a1bc8699505986"
+      "size": 705,
+      "sha256": "c01d887c62096ec471ab09ecab5aaa16c44d2cae90bcf89a491375ecd9fd2d26"
     },
     {
       "name": "css/once/pages/template-flexible-sidebar-navanchor/template-flexible-sidebar-navanchor.css.map",
-      "size": 1225,
-      "sha256": "cd3c2c10ca48b3588559a9162c787420edad05911680c14878ea0a605648c33a"
+      "size": 1099,
+      "sha256": "0c3d75eb882c227c587a94c29d810d58304ee3883d643f70b2bb0c74f7511a13"
     },
     {
       "name": "css/once/pages/template-flexible-sidebar/template-flexible-sidebar.css",
-      "size": 561,
-      "sha256": "a569d3e2627e6193768ae73c7075ea0faa56564a7b148e1e76722ea8e0c11e7c"
+      "size": 558,
+      "sha256": "c4d55d4a4606e79331c87a5a8648e6989a4f17d6e76281a9ea051d7aea8b8059"
     },
     {
       "name": "css/once/pages/template-flexible-sidebar/template-flexible-sidebar.css.map",
-      "size": 955,
-      "sha256": "79dd31a83e7061a1e433c450d81064f2e88adbf1367a1919985f577e09c7c2f9"
+      "size": 947,
+      "sha256": "b21c31390e746e4558a2d7b1b4ab8ca1f347c96dfd50a142ec70d2382b90a36f"
+    },
+    {
+      "name": "css/once/pages/template-hub-filters-sidebar/template-hub-filters-sidebar.css",
+      "size": 705,
+      "sha256": "08e9b886bd99552453e39ece3a601fcd19d110b10714de658bd0784ad7a14ac1"
+    },
+    {
+      "name": "css/once/pages/template-hub-filters-sidebar/template-hub-filters-sidebar.css.map",
+      "size": 1135,
+      "sha256": "c119494be074a77bc303a61e095abe561a814c4ab04dafdf4bbbde34044a7172"
     },
     {
       "name": "css/once/pages/template-hub-filters/template-hub-filters.css",
-      "size": 1056,
-      "sha256": "fe43f17f6893b8c9d1e3a82518c8644e02ead5e82cd9a9a82246b15ce88cd7e6"
+      "size": 331,
+      "sha256": "dc12a9e165c743c9a5156cd1128bee4299b9d3a733ae4dcc09bba5e9b99f5c7d"
     },
     {
       "name": "css/once/pages/template-hub-filters/template-hub-filters.css.map",
-      "size": 1528,
-      "sha256": "41953c3e8c304db8193051f8274cdfe5b72e14c7b960149d445707371f954585"
+      "size": 671,
+      "sha256": "d3d2aaf7e502cc993c5fbc5f4a94b5b5929b7209faacccfeeb4e93e36b142ccd"
     },
     {
       "name": "css/once/pages/template-hub/template-hub.css",
-      "size": 265,
-      "sha256": "fac816a163d503c3c184bc3218c26db97b7941dbb3e36a6ee63f536219819bd0"
+      "size": 262,
+      "sha256": "69bf700b55f2d747829e7ae643ecd6f248ae7b823fb5ca43f3c011378b3fd65d"
     },
     {
       "name": "css/once/pages/template-hub/template-hub.css.map",
-      "size": 563,
-      "sha256": "90163196a46987eb8e11e25d4b3c36a97d401412e751f25ed6137824b2931f75"
+      "size": 560,
+      "sha256": "a8bf03777398617656d390c931bf8ba6c1df8531dfe2932013864cb2aa5793f3"
     },
     {
       "name": "css/strates/strate-intro/strate-intro.css",
@@ -814,11 +804,6 @@
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
-      "name": "js/once/pages/archive-team/archive-team.js",
-      "size": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
       "name": "js/once/pages/search/search.js",
       "size": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -829,17 +814,17 @@
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
-      "name": "js/once/pages/template-filters/template-filters.js",
-      "size": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
       "name": "js/once/pages/template-flexible-sidebar-navanchor/template-flexible-sidebar-navanchor.js",
       "size": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
       "name": "js/once/pages/template-flexible-sidebar/template-flexible-sidebar.js",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "js/once/pages/template-hub-filters-sidebar/template-hub-filters-sidebar.js",
       "size": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },

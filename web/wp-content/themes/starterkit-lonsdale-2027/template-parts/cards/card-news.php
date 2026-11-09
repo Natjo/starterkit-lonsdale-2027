@@ -33,7 +33,7 @@ $tag = $url !== '' ? 'a' : 'div';
             'hx' => 3,
             'classes' => 'title-3',
         ])); ?>
-        <?php component('text', $args); ?>
 
+        <?php component('text', $args); ?>
     </<?= $tag ?>>
 </article>

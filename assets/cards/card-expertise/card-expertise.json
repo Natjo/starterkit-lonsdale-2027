@@ -4,10 +4,15 @@
   "name": "Expertise",
   "slug": "expertise",
   "assets": {
-    "css": { "loading": "normal" }
+    "css": {
+      "loading": "normal"
+    }
   },
   "dependencies": {
-    "components": ["text", "title"],
+    "components": [
+      "text",
+      "title"
+    ],
     "cards": [],
     "strates": [],
     "heroes": [],
@@ -15,7 +20,19 @@
     "modules": []
   },
   "fields": [
-    { "name": "title", "label": "Titre", "type": "text", "required": true },
-    { "name": "text", "label": "Texte", "type": "wysiwyg", "required": false }
+    {
+      "name": "title",
+      "label": "Titre",
+      "type": "text",
+      "required": true,
+      "default": "Lorem ipsum dolor sit amet"
+    },
+    {
+      "name": "text",
+      "label": "Texte",
+      "type": "wysiwyg",
+      "required": false,
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    }
   ]
 }

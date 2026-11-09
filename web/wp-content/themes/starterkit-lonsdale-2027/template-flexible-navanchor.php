@@ -15,13 +15,11 @@ common("header-nav");
 <main class="template-flexible-navanchor">
     <?php hero('page'); ?>
 
-    <?php
-    component('anchor-nav', [
+    <?php component('anchor-nav', [
         'items' => $anchor_items,
         'aria_label' => 'Navigation des sections',
         'horizontal' => true,
-    ]);
-    ?>
+    ]); ?>
 
     <?php get_template_part('template-parts/utils/dispatch-strates'); ?>
 </main>

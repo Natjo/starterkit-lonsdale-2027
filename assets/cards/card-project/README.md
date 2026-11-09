@@ -48,3 +48,16 @@ ne lit aucun champ ACF implicitement.
 - `component('picture', [...])` ;
 - `component('title', [...])` ;
 - `component('text', [...])`.
+
+## Champs ACF
+
+Le groupe **Card - project** est affecté au CPT `project`.
+Ses champs sont regroupés sous `card` : `card.text` (Description) et
+`card.images.desktop` / `card.images.mobile` (IDs).
+Le préparateur commun les lit directement, sans mapping de clés racine.
+Le titre, l’extrait et l’image WordPress restent les replis. Les clés des
+champs ACF existants sont conservées ; seul leur chemin est imbriqué.
+Les payloads explicites du template restent plats (`title`, `text`, `image`).
+
+Les nouvelles contributions disposent de valeurs de démonstration ; voir le
+[contrat des valeurs par défaut](../README.md#contenu-de-démonstration).

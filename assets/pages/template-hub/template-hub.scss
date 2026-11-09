@@ -1,5 +1,5 @@
 .template-hub {
-    .hub-results {
+    .main-content {
         display: grid;
         grid-template-columns: var(--layout);
         align-content: start;
@@ -8,9 +8,9 @@
         >* {
             grid-column: ctr;
         }
+    }
 
-        .list {
-            --list-columns: 4;
-        }
+    .results-list {
+        --list-columns: 4;
     }
 }

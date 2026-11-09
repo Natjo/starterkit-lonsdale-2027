@@ -138,7 +138,7 @@ La lecture statique est configurée dans WordPress : `show_on_front = page` et
 | `single.php` | Titre et contenu du post |
 | `archive.php` | Titre d’archive, liste et pagination |
 | `archive-news.php` | Délègue au rendu partagé `template-hub.php` avec la requête native de l’archive News |
-| `archive-project.php` | Délègue au rendu partagé `template-filters.php` : recherche, facettes et tri séparés avec mise à jour AJAX progressive |
+| `template-hub-filters-sidebar.php` | Hub générique de CPT configurable via `hub_post_type`, avec recherche, filtres latéraux, tri et pagination AJAX |
 | `taxonomy.php` | Titre de taxonomie, liste et pagination |
 | `search.php` | Résultats regroupés par CPT, sidebar d’ancres et pagination |
 | `404.php` | Message générique et retour vers l’accueil |

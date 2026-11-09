@@ -1,6 +1,7 @@
 .card-project {
     height: 100%;
     border-top: 1px solid var(--color-border);
+    padding:2rem;
 
     .card-content {
         display: flex;
@@ -8,6 +9,7 @@
         gap: 1.2rem;
         height: 100%;
         padding-block: 2.4rem;
+        align-items: start;
     }
 
     .card-image {
@@ -20,13 +22,5 @@
         align-items: center;
         justify-content: space-between;
         gap: 1.2rem;
-    }
-
-    .card-type {
-        color: var(--color-muted);
-    }
-
-    .card-text {
-        color: var(--color-muted);
     }
 }

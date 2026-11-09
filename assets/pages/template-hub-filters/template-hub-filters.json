@@ -4,18 +4,32 @@
   "name": "Hub Filters",
   "slug": "template-hub-filters",
   "assets": {
-    "css": { "loading": "once" }
+    "css": {
+      "loading": "once"
+    }
   },
   "file": "template-hub-filters.php",
   "activation": "selected",
-  "capabilities": ["content-archive", "flexible-strates"],
+  "capabilities": [
+    "content-archive",
+    "flexible-strates"
+  ],
   "catalog": true,
   "dependencies": {
-    "components": ["filters", "list", "pagination"],
+    "components": [
+      "filters",
+      "list",
+      "pagination",
+      "search"
+    ],
     "cards": [],
     "strates": [],
-    "heroes": ["page"],
-    "common": ["header-nav"],
+    "heroes": [
+      "page"
+    ],
+    "common": [
+      "header-nav"
+    ],
     "modules": [],
     "vendors": []
   }

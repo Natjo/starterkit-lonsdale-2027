@@ -33,6 +33,8 @@ sont plus supportés.
 | `placeholder` | `scalar\|Stringable` | `'Rechercher…'` | Texte indicatif |
 | `submit_label` | `scalar\|Stringable` | `'Rechercher'` | Texte du bouton |
 | `classes` | `string\|array` | `''` | Classes supplémentaires |
+| `autocomplete` | `string` | `''` | Autocomplétion du champ, attribut absent par défaut |
+| `hidden_fields` | `list<array{name,value}>` | `[]` | Paramètres cachés conservés lors de la recherche |
 | `attributes` | `array` | `[]` | Attributs supplémentaires du formulaire |
 
 Le composant ne contient aucune clé de traduction. L’appelant doit transmettre
@@ -62,3 +64,13 @@ attributs sûrs peuvent être ajoutés avec `attributes`.
 - `home_url()` et `wp_unique_id()` ;
 - `component_classes()` et `component_attributes()` ;
 - `assets/components/search/search.scss`.
+
+## Recherche dans un listing
+
+`Theme_Listing::search()` réutilise ce composant pour le groupe de recherche
+simple : seul le champ et le bouton sont visibles. `hidden_fields` conserve
+les facettes et le tri sélectionnés en navigation GET. Les noms invalides,
+valeurs complexes et doublons du nom du champ de recherche sont ignorés.
+Les attributs `data-filters-*` et `data-module="components/filters"` permettent
+au coordinateur des filtres d’assurer les recherches AJAX. Le composant reste
+un formulaire GET autonome sans ces attributs.

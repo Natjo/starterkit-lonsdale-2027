@@ -9,7 +9,7 @@ $title = $to_string($args['title'] ?? '');
 if ($title === '') return;
 ?>
 
-<article class="card-expertise">
+<div class="card-expertise">
     <?php component('title', [
         'title' => $title,
         'hx' => 3,
@@ -20,4 +20,12 @@ if ($title === '') return;
         'text' => $args['text'] ?? '',
         'classes' => 'card-text',
     ]); ?>
-</article>
+
+    <?php component('btn', [
+        'link' => [
+            'url' => $args['link']['url'],
+            'title' => 'See more',
+        ],
+        'classes' => 'btn-1',
+    ]); ?>
+</div>

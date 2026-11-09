@@ -38,11 +38,11 @@ if ($post_id) {
             'classes' => 'post-date',
         ]); ?>
     </div>
+    
     <?php component('picture', [
         'images' => $args['images'] ?? [],
         'classes' => 'hero-image',
         'fit' => "cover",
         'preload' => true,
     ]); ?>
-
 </header>

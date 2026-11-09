@@ -4,14 +4,56 @@
   "name": "keynumber",
   "slug": "keynumber",
   "assets": {
-    "css": { "loading": "normal" }
+    "css": {
+      "loading": "normal"
+    }
   },
   "dependencies": {
-    "components": ["title","text"],
+    "components": [
+      "title",
+      "text"
+    ],
     "cards": [],
     "strates": [],
     "heroes": [],
     "common": [],
     "modules": []
-  }
+  },
+  "fields": [
+    {
+      "name": "value",
+      "label": "Valeur",
+      "type": "text",
+      "required": true,
+      "default": "98"
+    },
+    {
+      "name": "prefix",
+      "label": "Préfixe",
+      "type": "text",
+      "required": false,
+      "default": "+"
+    },
+    {
+      "name": "suffix",
+      "label": "Suffixe",
+      "type": "text",
+      "required": false,
+      "default": "%"
+    },
+    {
+      "name": "title",
+      "label": "Titre",
+      "type": "text",
+      "required": false,
+      "default": "de satisfaction"
+    },
+    {
+      "name": "text",
+      "label": "Texte",
+      "type": "wysiwyg",
+      "required": false,
+      "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>"
+    }
+  ]
 }

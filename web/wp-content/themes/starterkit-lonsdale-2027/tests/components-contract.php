@@ -176,6 +176,11 @@ function get_post(int $post_id): ?object
     return $type ? (object) ['ID' => $post_id, 'post_type' => $type, 'post_status' => 'publish', 'post_password' => ''] : null;
 }
 
+function is_post_status_viewable(string $status): bool
+{
+    return $status === 'publish';
+}
+
 function is_post_publicly_viewable(object $post): bool
 {
     return $post->post_status === 'publish';
@@ -2805,8 +2810,22 @@ ob_start();
 $filters_facets_facade->filters(['classes' => 'contract-facets']);
 $filters_facets = trim((string) ob_get_clean());
 $rendering_component_fixture = false;
-$assert_contains('Theme_Listing rend directement la recherche', 'class="filters filters-search ', $filters_search);
-$assert_contains('Theme_Listing ajoute les classes de la recherche', 'class="filters filters-search contract-search contract-search-wide"', $filters_search);
+$assert_contains('Theme_Listing rend directement la recherche', 'class="search-form filters filters-search ', $filters_search);
+$assert_contains('Theme_Listing ajoute les classes de la recherche', 'class="search-form filters filters-search contract-search contract-search-wide"', $filters_search);
+$assert_contains('La recherche utilise le composant search', 'class="search-submit"', $filters_search);
+$assert_not_contains('La recherche ne rend pas les actions génériques', 'filters-actions', $filters_search);
+$search_hidden = $render('search', ['name' => 'filter_search', 'hidden_fields' => [
+    ['name' => 'category[]', 'value' => 'design'],
+    ['name' => 'filter_sort', 'value' => 'date_desc'],
+    ['name' => 'filter_search', 'value' => 'duplicate'],
+    ['name' => 'bad name', 'value' => 'invalid'],
+    ['name' => 'bad_value', 'value' => ['nested']],
+]]);
+$assert_contains('Search conserve les facettes cachées', 'type="hidden" name="category[]" value="design"', $search_hidden);
+$assert_contains('Search conserve le tri caché', 'type="hidden" name="filter_sort" value="date_desc"', $search_hidden);
+$assert_not_contains('Search ignore le paramètre de recherche caché dupliqué', 'value="duplicate"', $search_hidden);
+$assert_not_contains('Search ignore les noms cachés invalides', 'name="bad name"', $search_hidden);
+$assert_not_contains('Search ignore les valeurs cachées complexes', 'name="bad_value"', $search_hidden);
 $assert_contains('Theme_Listing transmet le groupe AJAX', 'data-filters-group="contract-filters"', $filters_search);
 $assert_contains('Theme_Listing ajoute les classes des facettes', 'class="filters filters-facets contract-facets"', $filters_facets);
 $assert_contains('Theme_Listing rend directement le tri', 'class="filters filters-sort ', $filters_sort);
@@ -3238,6 +3257,15 @@ foreach (['suptitle', 'title', 'text'] as $homepage_name) {
 $assert_contains('Le texte Homepage est éditorial', '<p>', $homepage_defaults['text'] ?? '');
 $assert_same('Le catalogue Homepage conserve le placeholder desktop', 'assets/img/placeholders/hero-homepage-desktop.jpg', $homepage_defaults['images']['desktop']['__forgeStarterMediaPath'] ?? '');
 $assert_same('Le catalogue Homepage conserve le placeholder mobile', 'assets/img/placeholders/hero-homepage-mobile.jpg', $homepage_defaults['images']['mobile']['__forgeStarterMediaPath'] ?? '');
+
+$post_types_by_id[99002] = 'team';
+$card_fields_by_id[99002] = ['function' => 'Creative director', 'image' => 801];
+$card_field_map_by_type['team'] = ['text' => 'card.function'];
+$nested_team = theme_post_card_item(99002);
+$assert_same('Le mapping lit une valeur imbriquée dans card', 'Creative director', $nested_team['text'] ?? null);
+$assert_same('Le groupe card fournit directement son image', 801, $nested_team['image'] ?? null);
+$nested_payload = resolve_card_data(99002);
+$assert_same('Les champs propres de card restent disponibles au template', 'Creative director', $nested_payload['card']['function'] ?? null);
 
 $post_types_by_id[99001] = 'news';
 $card_field_map_by_type['news'] = ['images' => 'images'];

@@ -2,19 +2,16 @@
     font-size: 1.4rem;
     font-weight: 400;
     line-height: 2rem;
-    letter-spacing: .02em;
-
     background-color: var(--color-2);
     color: var(--color-text-invert);
     box-sizing: border-box;
-
     padding: 1.5rem 2.4rem;
     display: inline-flex;
     align-items: center;
     gap: .8rem;
     border-radius: var(--radius);
     text-align: center;
-    white-space: nowrap;
+
 
     &[aria-disabled=true] {
         opacity: .5;
@@ -26,10 +23,6 @@
         outline-offset: 3px;
     }
 
-    &:hover {
-        background: color-mix(in srgb, var(--color-2) 86%, #000);
-    }
-
     .icon {
         height: auto;
     }
@@ -39,15 +32,6 @@
         pointer-events: none;
     }
 
-    &.btn-1 {
-        background: var(--color-1);
-        color: var(--color-text-invert);
-
-        &:hover {
-            background: color-mix(in srgb, var(--color-1) 86%, #fff);
-        }
-    }
-
     @media #{$breakpoint-md-down} {
         font-size: 1.2rem;
         line-height: 1.8rem;
@@ -55,3 +39,15 @@
     }
 
 }
+
+.btn-1 {
+    background: var(--color-1);
+    color: var(--color-text-invert);
+
+    .card:hover &,
+    &:hover {
+        background: color-mix(in srgb, var(--color-1) 86%, #fff);
+    }
+}
+
+.btn-2 {}

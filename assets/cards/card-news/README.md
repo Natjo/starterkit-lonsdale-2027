@@ -85,11 +85,11 @@ Pour un appel par ID, les données sont normalisées par
 `theme_post_card_item()` : groupe ACF `card`, mapping métier du CPT, puis
 valeurs WordPress.
 
-Pour le CPT News, `inc/datatypes.php` déclare
-`'card_fields' => ['text' => 'field-news', 'images' => 'images']` : le champ **Description** du groupe
-**Card - news** alimente donc le texte de la card, dans le hub et les autres
-listings. Un `card.text` renseigné reste prioritaire ; une description vide
-laisse le repli sur l’extrait WordPress.
+Le groupe **Card - news** contient un groupe ACF `card`. Ses champs
+`card.text` et `card.images.desktop` / `card.images.mobile` sont lus directement
+par le préparateur commun, dans le hub et tous les autres listings. Aucun
+mapping de champs racine n’est nécessaire. Une description vide laisse le
+repli sur l’extrait WordPress.
 
 Les payloads explicites utilisent directement `text`. `post_id` est fourni
 automatiquement et ne nécessite aucun champ ACF.
@@ -131,8 +131,10 @@ component('slider', [
 
 ## Images responsive
 
-Le groupe ACF **Images** de **Card - news** fournit `images.desktop` et
-`images.mobile` (IDs). Les deux variantes sont transmises au composant `picture`.
-Le groupe `card.images` ou `card.image` reste prioritaire s’il est renseigné.
-Sans image métier, l’image mise en avant sert de repli. Le payload `image`
-reste accepté pour une image simple ; `images` explicite est prioritaire.
+Le groupe **Images** de **Card - news** fournit `card.images.desktop` et
+`card.images.mobile` (IDs). Les deux variantes sont transmises au composant
+`picture`. Sans image de card, l’image mise en avant sert de repli. Le payload
+explicite `image` reste accepté ; `images` explicite est prioritaire.
+
+Les nouvelles contributions disposent de valeurs de démonstration ; voir le
+[contrat des valeurs par défaut](../README.md#contenu-de-démonstration).

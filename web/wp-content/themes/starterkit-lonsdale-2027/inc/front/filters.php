@@ -15,7 +15,7 @@ add_filter('request', static function (array $vars): array {
     }
     $page = get_page_by_path($matches[1]);
     if (!$page || $page->post_status !== 'publish'
-        || get_page_template_slug($page->ID) !== 'template-hub.php') {
+        || !in_array(get_page_template_slug($page->ID), ['template-hub.php', 'template-hub-filters-sidebar.php'], true)) {
         return $vars;
     }
     foreach (array_merge(get_post_types([], 'names'), ['name', 'page', 'attachment', 'attachment_id', 'post_type', 'error']) as $key) {
@@ -1073,6 +1073,40 @@ final class Theme_Listing
             $options['classes'] ?? '',
         ];
 
+        $visible = array_values(array_filter($form['items'], static fn ($item): bool => $item['type'] !== 'hidden'));
+        if ($name === 'search' && count($visible) === 1 && $visible[0]['type'] === 'search'
+            && !$form['show_reset'] && $form['result_count'] === null) {
+            $search = $visible[0];
+            $attributes = ['aria-label' => $form['aria_label']];
+            if ($form['ajax']) {
+                $attributes += [
+                    'data-module' => 'components/filters',
+                    'data-filters-group' => $form['ajax_group'],
+                    'data-filters-target' => $form['ajax_target'],
+                    'data-filters-submit-on-change' => ($form['ajax_submit_on_change'] ?? false) ? 'true' : 'false',
+                ];
+                if ($form['pretty_urls'] && $form['pretty_params'] !== []) {
+                    $attributes += [
+                        'data-filters-pretty' => 'true',
+                        'data-filters-pretty-base' => $form['pretty_base_url'],
+                        'data-filters-pretty-params' => implode(',', $form['pretty_params']),
+                    ];
+                }
+            }
+            component('search', [
+                'action' => $form['action'],
+                'name' => $search['name'],
+                'value' => $search['value'],
+                'label' => $search['label'],
+                'placeholder' => $search['placeholder'],
+                'autocomplete' => $search['autocomplete'],
+                'submit_label' => $form['submit_label'],
+                'hidden_fields' => array_values(array_filter($form['items'], static fn ($item): bool => $item['type'] === 'hidden')),
+                'classes' => ['filters', $form['classes']],
+                'attributes' => $attributes,
+            ]);
+            return;
+        }
         component('filters', $form);
     }
 }

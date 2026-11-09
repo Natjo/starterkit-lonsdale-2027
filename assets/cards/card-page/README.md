@@ -41,3 +41,15 @@ aucun groupe ACF implicitement.
 - `component('eyebrow', [...])` ;
 - `component('title', [...])` ;
 - `component('text', [...])`.
+
+## Contribution ACF
+
+Le groupe **Card - page** s’affiche dans le BO des pages WordPress. Il contient
+`card.title` (titre facultatif) et `card.text` (description WYSIWYG Basic).
+Ces valeurs sont utilisées par le préparateur commun dans les recherches
+et les remontées de pages. Sans titre de card, le titre WordPress est conservé ;
+sans description, l’extrait sert de repli. Le lien reste le permalien de la page.
+Ce groupe est distinct des champs du hero et du contenu de la page.
+
+Les nouvelles contributions disposent de valeurs de démonstration ; voir le
+[contrat des valeurs par défaut](../README.md#contenu-de-démonstration).

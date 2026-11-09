@@ -24,3 +24,6 @@ de chaque card.
 Une ligne sans titre, texte ni image est ignorée. Sans card valide, aucun
 balisage n’est produit. Le composant `slider` gère sa propre hydratation JS ;
 la strate n’a pas de module dédié.
+
+Les lignes peuvent aussi être imbriquées sous `card`, pour réutiliser le groupe
+ACF **Card - slide** par clonage, sans préfixage de ses noms de champs.

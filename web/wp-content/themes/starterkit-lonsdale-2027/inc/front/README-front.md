@@ -143,7 +143,7 @@ function strate(string $name, array $args = []): void
 
 `card()` accepte soit un ID de post positif, soit un tableau associatif non
 vide. Un ID charge les champs ACF, les données normalisées de
-`theme_post_card_item()` et ajoute `post_id`. Les posts non publics ou protégés
+`theme_post_card_item()` et ajoute `post_id`. Les posts de statut non public ou protégés
 par mot de passe sont exclus, indépendamment des droits du visiteur. Un tableau contenant
 `post_id` charge également le post, puis ses autres valeurs surchargent les
 champs récupérés.
@@ -199,13 +199,16 @@ theme_prime_posts([123, ['post_id' => 456]]);
 `theme_post_card_item` permet à un CPT d'adapter ce payload pour tous les
 listings, y compris les strates `pushes` et `Theme_Listing`.
 
-Le groupe ACF facultatif `Field - Card` expose un champ racine `card` avec
-`title`, `text`, `date` et `images.desktop` / `images.mobile`. Il peut être
-affecté à une page, un article ou un CPT. Chaque valeur renseignée prime sur
-le champ métier correspondant, puis sur la valeur WordPress. L’image desktop
-a priorité sur la mobile. Le permalien reste celui du post et son libellé suit
-le titre retenu. Sans groupe `card`, la card fonctionne avec les champs métier
-configurés ou les valeurs WordPress.
+Le starter fournit des groupes spécifiques par Content Type, notamment
+**Card - news**, **Card - team**, **Card - project** et **Card - expertises**,
+avec leurs données regroupées sous `card`.
+Les clés canoniques sont lues directement ; Team mappe `card.function` vers `text`.
+Le groupe générique **Field - Card**, non affecté et sans données, a été retiré.
+Le titre, l’extrait et l’image WordPress restent les valeurs de repli ; le
+permalien reste celui du post et son libellé suit le titre retenu.
+
+Chaque groupe spécifique fournit son propre champ `card`, affecté à son CPT.
+Les valeurs canoniques de ce groupe ont priorité sur le mapping métier.
 
 Un CPT peut déclarer les noms de ses champs métier avec le filtre
 `theme_card_field_map` :
@@ -221,7 +224,8 @@ add_filter('theme_card_field_map', static function (array $map, string $post_typ
 Les clés possibles sont `title`, `text`, `date`, `image` et `images`.
 `images` désigne un groupe desktop/mobile d’IDs. Le payload conserve les deux
 variantes et fournit aussi `image` (desktop, sinon mobile) aux cards simples. Les valeurs sont des
-noms de champs ACF racine ; aucune convention n’est imposée aux CPT. Les dates
+chemins de champs ACF (racine ou imbriqués avec un point) ; aucune convention
+n’est imposée aux champs métier des CPT. Les dates
 ACF `Y-m-d` et `Ymd` sont acceptées. Un mapping absent, un champ vide ou une
 date invalide laisse jouer le repli suivant. Il n’est pas nécessaire de saisir
 la même date une deuxième fois dans `card.date`.
@@ -506,3 +510,12 @@ le formulaire POST classique reste disponible.
 si `ajax` est actif, ses attributs d’hydratation `components/filters`. Placer
 ces attributs sur le conteneur stable de la liste et de sa pagination permet
 la navigation AJAX même sans recherche, facette ni tri.
+
+### Recherche simple des listings
+
+`Theme_Listing::search()` rend le composant `search` pour le groupe standard,
+avec le champ et le bouton seuls. Les paramètres des facettes et du tri restent
+dans des champs cachés pour les soumissions GET et dans le groupe AJAX partagé.
+Les groupes personnalisés combinant plusieurs contrôles conservent le rendu
+`filters`. Les manifestes des pages qui affichent la recherche déclarent donc
+les composants `search` et `filters`.

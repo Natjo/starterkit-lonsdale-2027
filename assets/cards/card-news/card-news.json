@@ -26,51 +26,67 @@
       "name": "date",
       "label": "Date",
       "type": "text",
-      "required": false
+      "required": false,
+      "default": "1 janvier 2026"
     },
     {
       "name": "datetime",
       "label": "Date machine",
       "type": "text",
-      "required": false
+      "required": false,
+      "default": "2026-01-01"
     },
     {
       "name": "title",
       "label": "Titre",
       "type": "text",
-      "required": false
+      "required": false,
+      "default": "Lorem ipsum dolor sit amet"
     },
     {
       "name": "text",
       "label": "Texte",
       "type": "wysiwyg",
-      "required": false
+      "required": false,
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
     },
     {
       "name": "image",
       "label": "Image",
       "type": "image",
-      "required": false
+      "required": false,
+      "default": {
+        "__forgeStarterMediaPath": "assets/img/placeholders/content-column-1.jpg",
+        "name": "content-column-1.jpg"
+      }
     },
     {
       "name": "images",
       "label": "Images responsive",
       "type": "group",
       "required": false,
-      "sub_fields": [
+      "children": [
         {
           "name": "desktop",
           "label": "Desktop",
           "type": "image",
           "return_format": "id",
-          "required": false
+          "required": false,
+          "default": {
+            "__forgeStarterMediaPath": "assets/img/placeholders/content-column-1.jpg",
+            "name": "content-column-1.jpg"
+          }
         },
         {
           "name": "mobile",
           "label": "Mobile",
           "type": "image",
           "return_format": "id",
-          "required": false
+          "required": false,
+          "default": {
+            "__forgeStarterMediaPath": "assets/img/placeholders/hero-homepage-mobile.jpg",
+            "name": "hero-homepage-mobile.jpg"
+          }
         }
       ]
     },
@@ -85,7 +101,12 @@
       "name": "link",
       "label": "Lien",
       "type": "link",
-      "required": false
+      "required": false,
+      "default": {
+        "url": "/",
+        "title": "En savoir plus",
+        "target": ""
+      }
     }
   ]
 }

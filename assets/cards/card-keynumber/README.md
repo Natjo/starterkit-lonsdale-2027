@@ -30,3 +30,16 @@ composants correspondants.
 
 Cette card utilise normalement un payload personnalisé venant du répéteur ACF
 de `strate-keynumbers`. Elle n’attend aucun post WordPress.
+
+## Groupe ACF réutilisable
+
+**Card - keynumber** contient un groupe `card` avec `value` (obligatoire),
+`prefix`, `suffix`, `title` et `text` (WYSIWYG Basic). Il n’a pas de règle de
+localisation : aucun CPT Keynumber n’est créé. On peut cloner ce groupe dans
+un répéteur ACF ; la card et la strate Keynumbers acceptent alors les lignes
+imbriquées `['card' => ['value' => '98', ...]]`. Le clone doit conserver le
+nom `card` sans préfixer les noms de champs. Les anciens payloads plats restent
+acceptés et les champs existants de la strate ne sont pas modifiés.
+
+Les nouvelles contributions disposent de valeurs de démonstration ; voir le
+[contrat des valeurs par défaut](../README.md#contenu-de-démonstration).

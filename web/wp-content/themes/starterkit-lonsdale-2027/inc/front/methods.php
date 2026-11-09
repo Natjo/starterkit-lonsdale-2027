@@ -204,14 +204,15 @@ function theme_prime_posts(array $items): array
  * Prépare le payload commun aux cards à partir d'une publication.
  * Priorité par champ : groupe ACF `card`, champ métier déclaré pour le CPT,
  * puis donnée WordPress. Aucun groupe ni mapping n'est obligatoire.
- * Les posts absents, non publics ou protégés sont exclus, quels que soient les droits courants.
+ * Les posts absents, de statut non public ou protégés sont exclus, quels que soient les droits courants.
+ * Un CPT interne peut fournir des cards sans exposer de single ni d’archive.
  *
  * @return array<string, mixed>|null
  */
 function theme_post_card_item(int $post_id): ?array
 {
     $post = $post_id > 0 ? get_post($post_id) : null;
-    if (!$post || !is_post_publicly_viewable($post) || $post->post_password !== '') return null;
+    if (!$post || !is_post_status_viewable($post->post_status) || $post->post_password !== '') return null;
 
     $post_type = get_post_type($post_id);
     if (!is_string($post_type)) return null;
@@ -238,7 +239,13 @@ function theme_post_card_item(int $post_id): ?array
     $field_map = is_array($field_map) && !array_is_list($field_map) ? $field_map : [];
     $business_value = static function (string $name) use ($field_map, $fields): mixed {
         $field_name = $field_map[$name] ?? null;
-        return is_string($field_name) && $field_name !== '' ? ($fields[$field_name] ?? null) : null;
+        if (!is_string($field_name) || $field_name === '') return null;
+        $value = $fields;
+        foreach (explode('.', $field_name) as $segment) {
+            if (!is_array($value) || !array_key_exists($segment, $value)) return null;
+            $value = $value[$segment];
+        }
+        return $value;
     };
 
     foreach (['title', 'text'] as $name) {

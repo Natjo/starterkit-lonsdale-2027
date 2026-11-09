@@ -4,16 +4,31 @@
   "name": "Recherche",
   "slug": "search",
   "assets": {
-    "css": { "loading": "once" }
+    "css": {
+      "loading": "once"
+    }
   },
   "file": "search.php",
-  "activation": { "option": "enableSearch" },
+  "activation": {
+    "option": "enableSearch"
+  },
   "dependencies": {
-    "components": ["filters", "list", "pagination", "text", "title"],
-    "cards": ["news"],
+    "components": [
+      "filters",
+      "list",
+      "pagination",
+      "text",
+      "title",
+      "search"
+    ],
+    "cards": [
+      "news"
+    ],
     "strates": [],
     "heroes": [],
-    "common": ["header-nav"],
+    "common": [
+      "header-nav"
+    ],
     "modules": []
   }
 }

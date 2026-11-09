@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Template Name: Hub filters
  * Template Post Type: page
@@ -44,41 +45,31 @@ common('header-nav');
         <?php get_template_part('template-parts/utils/dispatch-strates'); ?>
     <?php endif; ?>
 
-    <div class="layout-sidebar">
-        <div class="main-header filters-search-bar">
+    <div class="main-content">
+        <div class="filters">
             <?php $listing->search(); ?>
+            <?php $listing->filters(); ?>
+            <?php $listing->sort(); ?>
         </div>
 
-        <aside class="main-sidebar" aria-label="Filtrer les résultats">
-            <?php $listing->filters(); ?>
-        </aside>
+        <div class="results" id="<?= esc_attr($listing->target()) ?>" aria-live="polite">
+            <?php $listing->results_message(); ?>
+            <?php if ($listing->has_results()) : ?>
+                <?php component('list', [
+                    'items' => $listing->items(),
+                    'card' => $listing->card(),
+                    'classes' => 'results-list',
+                ]); ?>
 
-        <div class="main-content">
-            <div class="filters-toolbar">
-                <?php $listing->sort(); ?>
-            </div>
-
-            <div
-                id="<?= esc_attr($listing->target()) ?>"
-                class="filters-results-region"
-                aria-live="polite">
-                <?php $listing->results_message(); ?>
-                <?php if ($listing->has_results()) : ?>
-                    <?php component('list', [
-                        'items' => $listing->items(),
-                        'card' => $listing->card(),
-                        'classes' => 'hub-filter-list',
-                    ]); ?>
-                    <?php component('pagination', [
-                        'total' => $listing->total_pages(),
-                        'current' => $listing->current_page(),
-                        'base' => $listing->pagination_base(),
-                        'prev_text' => 'Précédent',
-                        'next_text' => 'Suivant',
-                        'aria_label' => 'Pagination des ' . $listing->post_type_label(),
-                    ]); ?>
-                <?php endif; ?>
-            </div>
+                <?php component('pagination', [
+                    'total' => $listing->total_pages(),
+                    'current' => $listing->current_page(),
+                    'base' => $listing->pagination_base(),
+                    'prev_text' => 'Précédent',
+                    'next_text' => 'Suivant',
+                    'aria_label' => 'Pagination des ' . $listing->post_type_label(),
+                ]); ?>
+            <?php endif; ?>
         </div>
     </div>
 </main>

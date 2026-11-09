@@ -9,7 +9,6 @@ add_action('init', function () {
             'menu_icon' => 'dashicons-rss',
             'supports' => ['title', 'author'],
             'card' => 'news',
-            'card_fields' => ['text' => 'field-news', 'images' => 'images'],
             'has_archive' => false,
         ],
         'project' => [
@@ -27,6 +26,8 @@ add_action('init', function () {
             'rewrite' => 'expertises',
             'menu_icon' => 'dashicons-admin-tools',
             'supports' => ['title'],
+            'card' => 'expertise',
+            'has_archive' => false,
         ],
         'team' => [
             'singular' => 'Member',
@@ -35,6 +36,8 @@ add_action('init', function () {
             'menu_icon' => 'dashicons-groups',
             'supports' => ['title'],
             'card' => 'team',
+            'card_fields' => ['text' => 'card.function'],
+            'has_archive' => false,
         ],
         'testimonial' => [
             'singular' => 'Testimonial',

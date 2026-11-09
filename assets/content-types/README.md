@@ -22,7 +22,7 @@ une card ou une strate, sans exposer de page individuelle ni d’archive.
 ## Champs métier des cards
 
 Dans `inc/datatypes.php`, la définition d’un CPT peut déclarer `card_fields`,
-un mapping des clés `title`, `text`, `date`, `image`, `images` vers des noms ACF racine.
-Le filtre `theme_card_field_map` transmet ce mapping au préparateur commun.
-News utilise `['text' => 'field-news', 'images' => 'images']` pour sa description
-et ses images responsive.
+un mapping des clés `title`, `text`, `date`, `image`, `images` vers des chemins
+ACF. Les chemins imbriqués utilisent un point, par exemple `card.function`.
+Les clés canoniques du groupe `card` sont prises en charge directement :
+News n’a pas besoin de mapping ; Team utilise `['text' => 'card.function']`.

@@ -4,10 +4,18 @@
   "name": "Project",
   "slug": "project",
   "assets": {
-    "css": { "loading": "normal" }
+    "css": {
+      "loading": "normal"
+    }
   },
   "dependencies": {
-    "components": ["date", "eyebrow", "picture", "text", "title"],
+    "components": [
+      "date",
+      "eyebrow",
+      "picture",
+      "text",
+      "title"
+    ],
     "cards": [],
     "strates": [],
     "heroes": [],
@@ -15,13 +23,68 @@
     "modules": []
   },
   "fields": [
-    { "name": "type", "label": "Type", "type": "text", "required": false },
-    { "name": "date", "label": "Date", "type": "text", "required": false },
-    { "name": "datetime", "label": "Date machine", "type": "text", "required": false },
-    { "name": "title", "label": "Titre", "type": "text", "required": true },
-    { "name": "text", "label": "Résumé", "type": "wysiwyg", "required": false },
-    { "name": "image", "label": "Image", "type": "image", "required": false },
-    { "name": "image_size", "label": "Taille de l’image", "type": "text", "required": false, "default": "large" },
-    { "name": "link", "label": "Lien", "type": "link", "required": false }
+    {
+      "name": "type",
+      "label": "Type",
+      "type": "text",
+      "required": false,
+      "default": "Lorem ipsum"
+    },
+    {
+      "name": "date",
+      "label": "Date",
+      "type": "text",
+      "required": false,
+      "default": "1 janvier 2026"
+    },
+    {
+      "name": "datetime",
+      "label": "Date machine",
+      "type": "text",
+      "required": false,
+      "default": "2026-01-01"
+    },
+    {
+      "name": "title",
+      "label": "Titre",
+      "type": "text",
+      "required": true,
+      "default": "Lorem ipsum dolor sit amet"
+    },
+    {
+      "name": "text",
+      "label": "Résumé",
+      "type": "wysiwyg",
+      "required": false,
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    },
+    {
+      "name": "image",
+      "label": "Image",
+      "type": "image",
+      "required": false,
+      "default": {
+        "__forgeStarterMediaPath": "assets/img/placeholders/content-column-2.jpg",
+        "name": "content-column-2.jpg"
+      }
+    },
+    {
+      "name": "image_size",
+      "label": "Taille de l’image",
+      "type": "text",
+      "required": false,
+      "default": "large"
+    },
+    {
+      "name": "link",
+      "label": "Lien",
+      "type": "link",
+      "required": false,
+      "default": {
+        "url": "/",
+        "title": "En savoir plus",
+        "target": ""
+      }
+    }
   ]
 }

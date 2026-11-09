@@ -19,7 +19,6 @@ common('header-nav');
     <?php hero('page'); ?>
 
     <div class="main-content">
-
         <?php if ($contact_form->is_sent()) : ?>
             <?php component('text', [
                 'text' => '<p>' . esc_html($contact_form->success_message()) . '</p>',
@@ -110,7 +109,6 @@ common('header-nav');
             ]); ?>
         </form>
     </div>
-
 </main>
 
 <?php get_footer(); ?>

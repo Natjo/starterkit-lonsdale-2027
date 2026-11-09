@@ -4,10 +4,16 @@
   "name": "Slide",
   "slug": "slide",
   "assets": {
-    "css": { "loading": "normal" }
+    "css": {
+      "loading": "normal"
+    }
   },
   "dependencies": {
-    "components": ["picture", "title", "text"],
+    "components": [
+      "picture",
+      "title",
+      "text"
+    ],
     "cards": [],
     "strates": [],
     "heroes": [],
@@ -15,9 +21,40 @@
     "modules": []
   },
   "fields": [
-    { "name": "title", "label": "Titre", "type": "text", "required": false },
-    { "name": "text", "label": "Texte", "type": "wysiwyg", "required": false },
-    { "name": "image", "label": "Image", "type": "image", "required": false },
-    { "name": "link", "label": "Lien", "type": "link", "required": false }
+    {
+      "name": "title",
+      "label": "Titre",
+      "type": "text",
+      "required": false,
+      "default": "Lorem ipsum dolor sit amet"
+    },
+    {
+      "name": "text",
+      "label": "Texte",
+      "type": "wysiwyg",
+      "required": false,
+      "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>"
+    },
+    {
+      "name": "image",
+      "label": "Image",
+      "type": "image",
+      "required": false,
+      "default": {
+        "__forgeStarterMediaPath": "assets/img/placeholders/slider-image-1.jpg",
+        "name": "slider-image-1.jpg"
+      }
+    },
+    {
+      "name": "link",
+      "label": "Lien",
+      "type": "link",
+      "required": false,
+      "default": {
+        "url": "/",
+        "title": "En savoir plus",
+        "target": ""
+      }
+    }
   ]
 }

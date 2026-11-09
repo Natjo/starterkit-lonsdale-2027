@@ -5,7 +5,6 @@
  * Template Post Type: page
  */
 
-
 get_header();
 common('header-nav');
 ?>
@@ -13,7 +12,7 @@ common('header-nav');
 <main class="template-flexible-sidebar">
     <?php hero('page'); ?>
 
-    <div class="layout-sidebar">
+    <div class="main-layout">
         <aside class="main-sidebar"></aside>
 
         <div class="main-content">

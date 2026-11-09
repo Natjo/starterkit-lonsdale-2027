@@ -1,5 +1,8 @@
 # Flexible
 
-Page éditoriale composée librement avec des strates ACF.
+Modèle sélectionnable `template-flexible.php` pour une page éditoriale composée
+librement avec les strates ACF du champ `strates`.
 
-À utiliser pour les pages dont le contenu et l’ordre des sections doivent être entièrement administrables dans WordPress.
+Le template affiche le hero `flexible`, puis les strates dans leur ordre de
+contribution. Il ne fournit ni sidebar ni navigation par ancres et ne possède
+pas de CSS ou de JavaScript de page propre.

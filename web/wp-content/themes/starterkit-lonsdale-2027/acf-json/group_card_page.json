@@ -1,0 +1,54 @@
+{
+    "key": "group_card_page",
+    "title": "Card - page",
+    "fields": [
+        {
+            "key": "field_card_page_group",
+            "label": "",
+            "name": "card",
+            "type": "group",
+            "layout": "block",
+            "required": 0,
+            "sub_fields": [
+                {
+                    "key": "field_card_page_title",
+                    "label": "Titre",
+                    "name": "title",
+                    "type": "text",
+                    "required": 0,
+                    "default_value": "Lorem ipsum dolor sit amet",
+                    "instructions": "Facultatif : utilise le titre de la page si vide."
+                },
+                {
+                    "key": "field_card_page_text",
+                    "label": "Description",
+                    "name": "text",
+                    "type": "wysiwyg",
+                    "required": 0,
+                    "default_value": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+                    "tabs": "all",
+                    "toolbar": "basic",
+                    "media_upload": 0,
+                    "delay": 0
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "page"
+            }
+        ]
+    ],
+    "menu_order": 10,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true,
+    "show_in_rest": 0,
+    "modified": 1794064359
+}

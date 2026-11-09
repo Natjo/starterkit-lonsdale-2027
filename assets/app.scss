@@ -72,17 +72,22 @@
 @import "cards/card-keynumber/card-keynumber";
 @import "cards/card-project/card-project";
 @import "cards/card-slide/card-slide";
+@import "cards/card-team/card-team";
+@import "cards/card-expertise/card-expertise";
+@import "cards/card-testimonial/card-testimonial";
+
+// layouts
+
 
 // pages — once : bundle dédié, contenu inline uniquement sur le template correspondant
 @import "pages/404/404" once;
 @import "pages/archive-news/archive-news" once;
-@import "pages/archive-team/archive-team" once;
 @import "pages/template-hub/template-hub" once;
 @import "pages/template-hub-filters/template-hub-filters" once;
+@import "pages/template-hub-filters-sidebar/template-hub-filters-sidebar" once;
 @import "pages/template-contact/template-contact" once;
 @import "pages/template-flexible-sidebar/template-flexible-sidebar" once;
 @import "pages/template-flexible-sidebar-navanchor/template-flexible-sidebar-navanchor" once;
-@import "pages/template-filters/template-filters" once;
 @import "pages/search/search" once;
 
 // strates — split : bundle dédié, <link> injecté au premier rendu

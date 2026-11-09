@@ -4,7 +4,9 @@
   "name": "Testimonial",
   "slug": "testimonial",
   "assets": {
-    "css": { "loading": "normal" }
+    "css": {
+      "loading": "normal"
+    }
   },
   "dependencies": {
     "components": [
@@ -21,13 +23,18 @@
       "name": "quote",
       "label": "Citation",
       "type": "wysiwyg",
-      "required": true
+      "required": true,
+      "default": "<p>Une collaboration remarquable, portée par une équipe attentive et engagée.</p>"
     },
     {
       "name": "image",
       "label": "Portrait",
       "type": "image",
-      "required": false
+      "required": false,
+      "default": {
+        "__forgeStarterMediaPath": "assets/img/placeholders/strate-quote-author.jpg",
+        "name": "strate-quote-author.jpg"
+      }
     },
     {
       "name": "image_size",
@@ -40,13 +47,15 @@
       "name": "author",
       "label": "Auteur",
       "type": "text",
-      "required": false
+      "required": false,
+      "default": "Camille Martin"
     },
     {
       "name": "source",
       "label": "Source",
       "type": "text",
-      "required": false
+      "required": false,
+      "default": "Entreprise exemple"
     }
   ]
 }
