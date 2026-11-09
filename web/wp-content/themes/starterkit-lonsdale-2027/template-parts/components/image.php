@@ -13,7 +13,7 @@ if ($input === null || $input === '') {
 $responsive_sizes = [];
 if (is_array($params['sizes'] ?? null)) {
     foreach ($params['sizes'] as $responsive_size) {
-        $responsive_size = component_string($responsive_size);
+        $responsive_size = theme_string($responsive_size);
         if (
             $responsive_size !== ''
             && preg_match('/^[A-Za-z0-9_-]+$/', $responsive_size)
@@ -26,7 +26,7 @@ if (is_array($params['sizes'] ?? null)) {
 
 $default_size = $params['size'] ?? 'full';
 $resolved_input = $input;
-$input_url = !is_numeric($input) ? component_string($input) : '';
+$input_url = !is_numeric($input) ? theme_string($input) : '';
 if ($input_url !== '') {
     $attachment_id = theme_attachment_url_to_post_id($input_url);
     if ($attachment_id > 0) {
@@ -98,7 +98,7 @@ $width = (int) $primary['width'];
 $height = (int) $primary['height'];
 $primary_width = $width;
 $primary_size = $primary['size'];
-$alt = array_key_exists('alt', $params) ? component_string($params['alt']) : (string) $primary['alt'];
+$alt = array_key_exists('alt', $params) ? theme_string($params['alt']) : (string) $primary['alt'];
 $srcset = '';
 $html_sizes = '';
 
@@ -133,10 +133,10 @@ if ($preload && function_exists('theme_enqueue_image_preload')) {
     ]);
 }
 
-$fetchpriority = strtolower(component_string($params['fetchpriority'] ?? ''));
+$fetchpriority = strtolower(theme_string($params['fetchpriority'] ?? ''));
 $fetchpriority = in_array($fetchpriority, ['low', 'auto', 'high'], true) ? $fetchpriority : '';
 $fetchpriority = $critical ? 'high' : ($fetchpriority === 'high' ? '' : $fetchpriority);
-$decoding = strtolower(component_string($params['decoding'] ?? 'async'));
+$decoding = strtolower(theme_string($params['decoding'] ?? 'async'));
 $decoding = in_array($decoding, ['async', 'sync', 'auto'], true) ? $decoding : 'async';
 $classes = component_classes($params['classes'] ?? '');
 $attributes = component_attributes($params['attributes'] ?? [], [

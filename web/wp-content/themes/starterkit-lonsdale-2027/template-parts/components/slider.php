@@ -26,17 +26,17 @@ $args = normalize_args($params, [
 ]);
 
 $with_fallback = static function (mixed $value, string $fallback): string {
-    $value = component_string($value);
+    $value = theme_string($value);
 
     return $value !== '' ? $value : $fallback;
 };
 
 $items = component_list($args['items']);
 
-$item_component = component_string($args['item_component']);
+$item_component = theme_string($args['item_component']);
 $item_component = $item_component === 'picture' ? 'picture' : null;
 $card_value = $args['card'];
-$card = $card_value === null ? null : component_string($card_value);
+$card = $card_value === null ? null : theme_string($card_value);
 $card = $card === '' && $card_value !== null ? 'card-news' : $card;
 
 if ($item_component !== null) {
@@ -74,7 +74,7 @@ $has_multiple_items = count($items) > 1;
 $navigation = $has_multiple_items && component_bool($args['navigation'], true);
 $pagination = $has_multiple_items && component_bool($args['pagination'], true);
 $timeline = $has_multiple_items && component_bool($args['timeline']);
-$media = component_string($args['media']);
+$media = theme_string($args['media']);
 $classes = component_classes('slider', $args['classes']);
 
 $aria_label = $with_fallback($args['aria_label'], 'Carrousel');

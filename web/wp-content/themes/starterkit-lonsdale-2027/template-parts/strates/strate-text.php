@@ -1,7 +1,7 @@
 <?php
 $args = get_template_args(['title' => '', 'text' => '', 'items' => []]);
-$args['title'] = component_string($args['title']);
-$args['text'] = component_string($args['text']);
+$args['title'] = theme_string($args['title']);
+$args['text'] = theme_string($args['text']);
 if ($args['title'] === '' && $args['text'] === '') return;
 ?>
 

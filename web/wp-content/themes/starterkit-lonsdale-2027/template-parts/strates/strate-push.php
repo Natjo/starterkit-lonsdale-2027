@@ -1,11 +1,11 @@
 <?php
 $args = get_template_args();
-$title = component_string($args['title'] ?? '');
-$text = component_string($args['text'] ?? '');
+$title = theme_string($args['title'] ?? '');
+$text = theme_string($args['text'] ?? '');
 $link = is_array($args['link'] ?? null) && !array_is_list($args['link']) ? $args['link'] : [];
 $image = $args['image'] ?? null;
-$link_url = component_string($link['url'] ?? '');
-$link_title = component_string($link['title'] ?? '');
+$link_url = theme_string($link['url'] ?? '');
+$link_title = theme_string($link['title'] ?? '');
 
 if ($title === '' && $text === '' && ($link_url === '' || $link_title === '') && empty($image)) return;
 ?>

@@ -21,7 +21,7 @@ $args = normalize_args($params, [
 ]);
 $first_string = static function (mixed ...$values): string {
     foreach ($values as $value) {
-        $value = component_string($value);
+        $value = theme_string($value);
         if ($value !== '') return $value;
     }
     return '';
@@ -37,8 +37,8 @@ $source_position = 0;
 foreach ($raw_headers as $source_key => $header) {
     $config = is_array($header) ? $header : [];
     $label = $first_string($config['label'] ?? null, $header);
-    $key = component_string($config['key'] ?? (is_string($source_key) ? $source_key : ''));
-    $scope = strtolower(component_string($config['scope'] ?? 'col'));
+    $key = theme_string($config['key'] ?? (is_string($source_key) ? $source_key : ''));
+    $scope = strtolower(theme_string($config['scope'] ?? 'col'));
     $scope = in_array($scope, ['col', 'colgroup'], true) ? $scope : 'col';
 
     if ($label !== '') {
@@ -84,7 +84,7 @@ foreach ($raw_rows as $raw_row) {
         $config = is_array($cell) ? $cell : [];
         $content = $first_string($config['content'] ?? null, $cell);
         $is_header = component_bool($config['header'] ?? ($row_headers && $column_index === 0));
-        $scope = strtolower(component_string($config['scope'] ?? 'row'));
+        $scope = strtolower(theme_string($config['scope'] ?? 'row'));
         $scope = in_array($scope, ['row', 'rowgroup'], true) ? $scope : 'row';
         if ($content !== '') $has_content = true;
 
@@ -108,8 +108,8 @@ if ($rows === []) return;
 $base_id = component_id($args['id'], 'table-');
 $caption_id = $base_id . '-caption';
 $table_id = $base_id . '-table';
-$caption = component_string($args['caption']);
-$accessible_caption = $caption !== '' ? $caption : (component_string($args['aria_label']) ?: 'Tableau de données');
+$caption = theme_string($args['caption']);
+$accessible_caption = $caption !== '' ? $caption : (theme_string($args['aria_label']) ?: 'Tableau de données');
 $scrollable = component_bool($args['scrollable'], true);
 $classes = component_classes('table', $args['classes']);
 $table_classes = component_classes('table__table', $args['table_classes']);

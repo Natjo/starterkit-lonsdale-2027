@@ -74,11 +74,8 @@ function theme_parse_pretty_filters_path(mixed $path, string $pagination_slug = 
  */
 function theme_build_filters_context(array $options = []): array
 {
-    $to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-        ? trim((string) $value)
-        : '';
     $request = is_array($options['request'] ?? null) ? $options['request'] : $_GET;
-    $pagination_slug = sanitize_key($to_string($options['pagination_slug'] ?? 'paged')) ?: 'paged';
+    $pagination_slug = sanitize_key(theme_string($options['pagination_slug'] ?? 'paged')) ?: 'paged';
     $pretty_urls = filter_var($options['pretty_urls'] ?? false, FILTER_VALIDATE_BOOL);
     $filters_base = 'filters';
     if ($pretty_urls) {
@@ -90,7 +87,7 @@ function theme_build_filters_context(array $options = []): array
     }
     $provided_query = $options['query'] ?? null;
     $uses_provided_query = $provided_query instanceof WP_Query;
-    $requested_post_type = sanitize_key($to_string($options['post_type'] ?? ''));
+    $requested_post_type = sanitize_key(theme_string($options['post_type'] ?? ''));
     $is_post_type_archive = is_post_type_archive();
 
     if ($requested_post_type === '' && $is_post_type_archive) {
@@ -101,7 +98,7 @@ function theme_build_filters_context(array $options = []): array
     }
 
     if ($requested_post_type === '' && !$is_post_type_archive) {
-        $post_type_meta = sanitize_key($to_string($options['post_type_meta'] ?? ''));
+        $post_type_meta = sanitize_key(theme_string($options['post_type_meta'] ?? ''));
         if ($post_type_meta !== '') {
             $meta_post_type = get_post_meta(get_queried_object_id(), $post_type_meta, true);
             $requested_post_type = is_string($meta_post_type) ? sanitize_key($meta_post_type) : '';
@@ -118,7 +115,7 @@ function theme_build_filters_context(array $options = []): array
     $post_type = $post_type_object instanceof WP_Post_Type ? $requested_post_type : '';
     $archive_url = $post_type !== '' ? get_post_type_archive_link($post_type) : '';
     $archive_url = is_string($archive_url) ? $archive_url : '';
-    $explicit_action = $to_string($options['action'] ?? '');
+    $explicit_action = theme_string($options['action'] ?? '');
     $queried_object_id = max(0, (int) get_queried_object_id());
     $queried_permalink = $queried_object_id > 0 ? get_permalink($queried_object_id) : '';
     $queried_permalink = is_string($queried_permalink) ? $queried_permalink : '';
@@ -126,7 +123,7 @@ function theme_build_filters_context(array $options = []): array
         ? $explicit_action
         : ($archive_url !== '' ? $archive_url : $queried_permalink);
     $action_url = $action_url !== '' ? $action_url : home_url('/');
-    $reset_url = $to_string($options['reset_url'] ?? '') ?: $action_url;
+    $reset_url = theme_string($options['reset_url'] ?? '') ?: $action_url;
     $post_type_label = trim((string) ($post_type_object?->labels->name ?? 'contenus'));
     $singular_label = trim((string) ($post_type_object?->labels->singular_name ?? 'contenu'));
 
@@ -134,7 +131,7 @@ function theme_build_filters_context(array $options = []): array
         ? $options['search']
         : [];
     $search_enabled = ($options['search'] ?? true) !== false;
-    $search_name = sanitize_key($to_string($search_options['name'] ?? 'filter_search')) ?: 'filter_search';
+    $search_name = sanitize_key(theme_string($search_options['name'] ?? 'filter_search')) ?: 'filter_search';
     $search_acf_option = $search_options['acf_fields'] ?? [];
     $search_acf_option = is_array($search_acf_option) ? $search_acf_option : [$search_acf_option];
     $search_acf_fields = array_values(array_unique(array_filter(array_map(
@@ -158,10 +155,10 @@ function theme_build_filters_context(array $options = []): array
         $search_item = [
             'type' => 'search',
             'name' => $search_name,
-            'label' => $to_string($search_options['label'] ?? '') ?: 'Rechercher',
+            'label' => theme_string($search_options['label'] ?? '') ?: 'Rechercher',
             'value' => $search_value,
-            'placeholder' => $to_string($search_options['placeholder'] ?? ''),
-            'autocomplete' => $to_string($search_options['autocomplete'] ?? 'off'),
+            'placeholder' => theme_string($search_options['placeholder'] ?? ''),
+            'autocomplete' => theme_string($search_options['autocomplete'] ?? 'off'),
         ];
         $filter_items[] = $search_item;
         $filter_groups['search'][] = $search_item;
@@ -228,9 +225,9 @@ function theme_build_filters_context(array $options = []): array
     foreach ($acf_filters as $acf_filter) {
         if (!is_array($acf_filter) || array_is_list($acf_filter)) continue;
 
-        $name = sanitize_key($to_string($acf_filter['name'] ?? ''));
-        $field = $to_string($acf_filter['field'] ?? '');
-        $control = strtolower($to_string($acf_filter['control'] ?? 'search'));
+        $name = sanitize_key(theme_string($acf_filter['name'] ?? ''));
+        $field = theme_string($acf_filter['field'] ?? '');
+        $control = strtolower(theme_string($acf_filter['control'] ?? 'search'));
         $allowed_controls = [
             'text', 'search', 'select', 'checkbox', 'checkboxes', 'radios',
             'number', 'date', 'date_range', 'number_range',
@@ -265,7 +262,7 @@ function theme_build_filters_context(array $options = []): array
             ];
             $is_active = $value[$from_key] !== '' || $value[$to_key] !== '';
         } elseif ($control === 'checkbox') {
-            $input_value = $to_string($acf_filter['input_value'] ?? '1') ?: '1';
+            $input_value = theme_string($acf_filter['input_value'] ?? '1') ?: '1';
             $submitted_value = is_scalar($raw_value)
                 ? sanitize_text_field(wp_unslash((string) $raw_value))
                 : '';
@@ -282,13 +279,13 @@ function theme_build_filters_context(array $options = []): array
             'type' => 'acf',
             'control' => $control,
             'name' => $name,
-            'label' => $to_string($acf_filter['label'] ?? ''),
+            'label' => theme_string($acf_filter['label'] ?? ''),
             'value' => $value,
             'options' => is_array($acf_filter['options'] ?? null) ? $acf_filter['options'] : [],
-            'placeholder' => $to_string($acf_filter['placeholder'] ?? ''),
-            'autocomplete' => $to_string($acf_filter['autocomplete'] ?? 'off'),
-            'from_label' => $to_string($acf_filter['from_label'] ?? ''),
-            'to_label' => $to_string($acf_filter['to_label'] ?? ''),
+            'placeholder' => theme_string($acf_filter['placeholder'] ?? ''),
+            'autocomplete' => theme_string($acf_filter['autocomplete'] ?? 'off'),
+            'from_label' => theme_string($acf_filter['from_label'] ?? ''),
+            'to_label' => theme_string($acf_filter['to_label'] ?? ''),
             'min' => $acf_filter['min'] ?? null,
             'max' => $acf_filter['max'] ?? null,
         ];
@@ -321,7 +318,7 @@ function theme_build_filters_context(array $options = []): array
         }
 
         if ($control === 'checkboxes') {
-            $value_relation = strtoupper($to_string($acf_filter['value_relation'] ?? 'OR'));
+            $value_relation = strtoupper(theme_string($acf_filter['value_relation'] ?? 'OR'));
             $value_clauses = ['relation' => $value_relation === 'AND' ? 'AND' : 'OR'];
             foreach ($value as $selected_value) {
                 $value_clauses[] = [
@@ -336,10 +333,10 @@ function theme_build_filters_context(array $options = []): array
 
         $allowed_compares = ['=', '!=', 'LIKE', 'NOT LIKE', '>', '>=', '<', '<='];
         $default_compare = in_array($control, ['text', 'search'], true) ? 'LIKE' : '=';
-        $compare = strtoupper($to_string($acf_filter['compare'] ?? $default_compare));
+        $compare = strtoupper(theme_string($acf_filter['compare'] ?? $default_compare));
         $compare = in_array($compare, $allowed_compares, true) ? $compare : $default_compare;
         $stored_value = $control === 'checkbox'
-            ? $to_string($acf_filter['stored_value'] ?? $value)
+            ? theme_string($acf_filter['stored_value'] ?? $value)
             : $value;
         $meta_query[] = [
             'key' => $field,
@@ -352,8 +349,8 @@ function theme_build_filters_context(array $options = []): array
     $sort_config = is_array($options['sort'] ?? null) && !array_is_list($options['sort'])
         ? $options['sort']
         : [];
-    $sort_name = sanitize_key($to_string($sort_config['name'] ?? 'filter_sort')) ?: 'filter_sort';
-    $sort_default = sanitize_key($to_string($sort_config['default'] ?? 'date_desc')) ?: 'date_desc';
+    $sort_name = sanitize_key(theme_string($sort_config['name'] ?? 'filter_sort')) ?: 'filter_sort';
+    $sort_default = sanitize_key(theme_string($sort_config['default'] ?? 'date_desc')) ?: 'date_desc';
     $sort_options = is_array($sort_config['options'] ?? null) ? $sort_config['options'] : [];
     $normalized_sort_options = [];
 
@@ -361,9 +358,9 @@ function theme_build_filters_context(array $options = []): array
         if (!is_array($sort_option) || array_is_list($sort_option)) continue;
 
         $value = sanitize_key((string) $value);
-        $label = $to_string($sort_option['label'] ?? '');
-        $orderby = $to_string($sort_option['orderby'] ?? '');
-        $order = strtoupper($to_string($sort_option['order'] ?? 'DESC'));
+        $label = theme_string($sort_option['label'] ?? '');
+        $orderby = theme_string($sort_option['orderby'] ?? '');
+        $order = strtoupper(theme_string($sort_option['order'] ?? 'DESC'));
         if ($value === '' || $label === '' || $orderby === '') continue;
 
         $normalized_sort_options[$value] = [
@@ -389,7 +386,7 @@ function theme_build_filters_context(array $options = []): array
         $sort_item = [
             'type' => 'sort',
             'name' => $sort_name,
-            'label' => $to_string($sort_config['label'] ?? '') ?: 'Trier par',
+            'label' => theme_string($sort_config['label'] ?? '') ?: 'Trier par',
             'value' => $sort_value,
             'options' => array_map(static fn(string $value, array $sort_option): array => [
                 'value' => $value,
@@ -432,14 +429,14 @@ function theme_build_filters_context(array $options = []): array
         }
     }
     if ($tax_query !== []) {
-        $relation = strtoupper($to_string($options['taxonomy_relation'] ?? 'AND'));
+        $relation = strtoupper(theme_string($options['taxonomy_relation'] ?? 'AND'));
         $query_args['tax_query'] = array_merge(
             ['relation' => $relation === 'OR' ? 'OR' : 'AND'],
             $tax_query
         );
     }
     if ($meta_query !== []) {
-        $relation = strtoupper($to_string($options['meta_relation'] ?? 'AND'));
+        $relation = strtoupper(theme_string($options['meta_relation'] ?? 'AND'));
         $query_args['meta_query'] = array_merge(
             ['relation' => $relation === 'OR' ? 'OR' : 'AND'],
             $meta_query
@@ -451,8 +448,8 @@ function theme_build_filters_context(array $options = []): array
         : ($post_type !== '' ? new WP_Query($query_args) : null);
     $items = [];
     $grouped_items = [];
-    $group_by = sanitize_key($to_string($options['group_by'] ?? ''));
-    $result_filter = sanitize_key($to_string($options['result_filter'] ?? 'theme_filters_result_item'));
+    $group_by = sanitize_key(theme_string($options['group_by'] ?? ''));
+    $result_filter = sanitize_key(theme_string($options['result_filter'] ?? 'theme_filters_result_item'));
     $result_filter = $result_filter !== '' ? $result_filter : 'theme_filters_result_item';
 
     $append_item = static function (int $post_id) use (
@@ -528,7 +525,7 @@ function theme_build_filters_context(array $options = []): array
         );
     }
 
-    $configured_card = $to_string($options['card'] ?? '');
+    $configured_card = theme_string($options['card'] ?? '');
     if ($configured_card === '' && $post_type !== '') {
         $configured_card = apply_filters('theme_content_type_card', $post_type, $post_type);
     }
@@ -537,14 +534,14 @@ function theme_build_filters_context(array $options = []): array
     $result_count = $query instanceof WP_Query ? (int) $query->found_posts : 0;
     $result_labels = is_array($options['result_labels'] ?? null) ? $options['result_labels'] : [];
     $result_count_label = $result_count === 1
-        ? $to_string($result_labels['singular'] ?? $singular_label)
-        : $to_string($result_labels['plural'] ?? $post_type_label);
+        ? theme_string($result_labels['singular'] ?? $singular_label)
+        : theme_string($result_labels['plural'] ?? $post_type_label);
     $has_active_filters = $search_value !== '' || $tax_query !== [] || $meta_query !== [] || $sort_value !== $sort_default;
     $ajax = filter_var($options['ajax'] ?? false, FILTER_VALIDATE_BOOL);
-    $ajax_group = sanitize_html_class($to_string($options['ajax_group'] ?? '') ?: $post_type . '-filters');
+    $ajax_group = sanitize_html_class(theme_string($options['ajax_group'] ?? '') ?: $post_type . '-filters');
     $results_target_option = $options['results_target'] ?? $options['ajax_target'] ?? '';
     $results_target = sanitize_html_class(
-        $to_string($results_target_option) ?: $ajax_group . '-results'
+        theme_string($results_target_option) ?: $ajax_group . '-results'
     );
     $pretty_param_names = array_values(array_unique(array_filter(array_merge(
         array_map(static fn(array $item): string => (string) ($item['name'] ?? ''), $taxonomy_filters),
@@ -589,13 +586,13 @@ function theme_build_filters_context(array $options = []): array
     $form = [
         'action' => $action_url,
         'items' => $filter_items,
-        'submit_label' => $to_string($options['submit_label'] ?? '') ?: 'Filtrer',
-        'reset_label' => $to_string($options['reset_label'] ?? '') ?: 'Réinitialiser',
+        'submit_label' => theme_string($options['submit_label'] ?? '') ?: 'Filtrer',
+        'reset_label' => theme_string($options['reset_label'] ?? '') ?: 'Réinitialiser',
         'reset_url' => $reset_url,
         'show_reset' => $has_active_filters,
         'result_count' => $result_count,
         'result_count_label' => $result_count_label,
-        'aria_label' => $to_string($options['aria_label'] ?? '') ?: 'Filtrer les résultats',
+        'aria_label' => theme_string($options['aria_label'] ?? '') ?: 'Filtrer les résultats',
         'ajax' => $ajax,
         'ajax_group' => $ajax_group,
         'ajax_target' => $results_target,
@@ -662,8 +659,8 @@ function theme_build_filters_context(array $options = []): array
         $group_form = $form;
         $group_form['items'] = array_merge($visible_items, $hidden_items($other_items));
         $group_form['classes'] = ['filters-' . $group_name, $group_options['classes'] ?? ''];
-        $group_form['submit_label'] = $to_string($group_options['submit_label'] ?? '') ?: $form['submit_label'];
-        $group_form['aria_label'] = $to_string($group_options['aria_label'] ?? '') ?: $form['aria_label'];
+        $group_form['submit_label'] = theme_string($group_options['submit_label'] ?? '') ?: $form['submit_label'];
+        $group_form['aria_label'] = theme_string($group_options['aria_label'] ?? '') ?: $form['aria_label'];
         $group_form['ajax_submit_on_change'] = filter_var(
             $group_options['ajax_submit_on_change'] ?? false,
             FILTER_VALIDATE_BOOL

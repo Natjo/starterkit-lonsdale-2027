@@ -1,4 +1,20 @@
 <?php
+/**
+ * Template Name: Styleguide
+ * Template Post Type: page
+ */
+
+
+$styleguide_css_path = __DIR__ . '/styleguide.css';
+wp_enqueue_style(
+    'theme-styleguide',
+    get_template_directory_uri() . '/inc/front/styleguide/styleguide.css',
+    [],
+    is_file($styleguide_css_path) ? (string) filemtime($styleguide_css_path) : null
+);
+
+get_header();
+
 $styleguide_sections = [
     'accordion' => 'Accordion',
     'autocomplete' => 'Autocomplete',
@@ -37,7 +53,7 @@ $styleguide_sections = [
 ];
 
 $image_desktop = rtrim(THEME_URL, '/') . '/inc/front/styleguide/429-1240x800.jpg';
-$image_mobile = rtrim(THEME_ASSETS, '/') . '/inc/front/styleguide/429-1240x800.jpg';
+$image_mobile = rtrim(THEME_URL, '/') . '/inc/front/styleguide/429-1240x800.jpg';
 $styleguide_options = [
     ['value' => 'paris', 'label' => 'Paris', 'alt' => 'Île-de-France'],
     ['value' => 'lyon', 'label' => 'Lyon', 'alt' => 'Rhône'],
@@ -233,16 +249,27 @@ $styleguide_news = [
 
         <section class="styleguide-section" id="component-btn">
             <h2 class="styleguide-section-title"><code>btn</code></h2>
-            <div class="styleguide-preview">
-                <?php component('btn', ['name' => 'Bouton simple']); ?>
-                <?php component('btn', [
-                    'name' => 'Bouton avec icône',
-                    'classes' => 'btn-1',
-                    'icon' => ['name' => 'blank', 'width' => 18, 'height' => 18],
-                ]); ?>
-                <?php component('btn', [
-                    'link' => ['url' => '#component-link', 'title' => 'Bouton lien'],
-                ]); ?>
+            <?php
+            $button_examples = [
+                ['name' => 'Bouton simple'],
+                ['name' => 'Bouton avec icône', 'icon' => ['name' => 'blank', 'width' => 16, 'height' => 16]],
+                ['name' => 'Bouton avec SVG', 'svg' => true],
+                ['name' => 'Bouton désactivé', 'attributes' => ['disabled' => true]],
+            ];
+            ?>
+            <div class="styleguide-variants">
+                <?php foreach (['btn-1', 'btn-2'] as $variant) : ?>
+                    <div class="styleguide-variant">
+                        <h3><code><?= esc_html($variant) ?></code></h3>
+                        <ul class="styleguide-preview" role="list">
+                            <?php foreach ($button_examples as $example) : ?>
+                                <li>
+                                    <?php component('btn', array_replace($example, ['classes' => $variant])); ?>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </section>
 
@@ -358,15 +385,27 @@ $styleguide_news = [
 
         <section class="styleguide-section" id="component-link">
             <h2 class="styleguide-section-title"><code>link</code></h2>
-            <div class="styleguide-preview">
-                <?php component('link', [
-                    'link' => ['url' => '#component-link', 'title' => 'Lien simple'],
-                ]); ?>
-                <?php component('link', [
-                    'link' => ['url' => '#component-link', 'title' => 'Lien avec icône'],
-                    'classes' => 'link-2',
-                    'icon' => ['name' => 'blank', 'width' => 16, 'height' => 16],
-                ]); ?>
+            <?php
+            $link_examples = [
+                ['link' => ['url' => '#component-link', 'title' => 'Lien simple']],
+                ['link' => ['url' => '#component-link', 'title' => 'Lien avec icône'], 'icon' => ['name' => 'blank', 'width' => 16, 'height' => 16]],
+                ['link' => ['url' => '#component-link', 'title' => 'Lien avec SVG'], 'svg' => true],
+                ['link' => ['url' => '#component-link', 'title' => 'Lien désactivé'], 'attributes' => ['aria-disabled' => true]],
+            ];
+            ?>
+            <div class="styleguide-variants">
+                <?php foreach (['link-1', 'link-2'] as $variant) : ?>
+                    <div class="styleguide-variant">
+                        <h3><code><?= esc_html($variant) ?></code></h3>
+                        <ul class="styleguide-preview" role="list">
+                            <?php foreach ($link_examples as $example) : ?>
+                                <li>
+                                    <?php component('link', array_replace($example, ['classes' => $variant])); ?>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </section>
 
@@ -641,3 +680,5 @@ $styleguide_news = [
         </section>
     </div>
 </main>
+
+<?php get_footer(); ?>

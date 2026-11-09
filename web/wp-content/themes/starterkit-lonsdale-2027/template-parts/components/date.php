@@ -5,7 +5,7 @@ $params = component_args($params ?? null);
 if ($params === null) return;
 
 
-$value = component_string($params['date'] ?? '');
+$value = theme_string($params['date'] ?? '');
 if ($value === '') {
     return;
 }
@@ -21,7 +21,7 @@ $normalize_datetime = static function (mixed $input) use ($timezone): string {
             ->format('Y-m-d');
     }
 
-    $input = component_string($input);
+    $input = theme_string($input);
     if ($input === '') return '';
 
     foreach ([

@@ -21,7 +21,7 @@ $args = normalize_args($params, [
     'select_attributes' => [],
 ]);
 
-$name = component_string($args['name']);
+$name = theme_string($args['name']);
 if ($name === '') return;
 
 $multiple = component_bool($args['multiple']);
@@ -34,7 +34,7 @@ $requested_values = [];
 if ($has_value) {
     $values = $multiple && is_array($args['value']) ? $args['value'] : [$args['value']];
     foreach ($values as $value) {
-        $value = component_string($value);
+        $value = theme_string($value);
         if ($value !== '') $requested_values[] = $value;
     }
     $requested_values = array_values(array_unique($requested_values));
@@ -68,7 +68,7 @@ if ($multiple) {
         }
     }
 
-    $placeholder = component_string($args['placeholder']);
+    $placeholder = theme_string($args['placeholder']);
     if ($selected_index === null && $placeholder === '') {
         foreach ($normalized_options as $index => $option) {
             if (!$option['disabled']) {
@@ -84,7 +84,7 @@ if ($multiple) {
     unset($option);
 }
 
-$placeholder = component_string($args['placeholder']) ?: 'Sélectionner';
+$placeholder = theme_string($args['placeholder']) ?: 'Sélectionner';
 $selected_labels = array_map(
     static fn(array $option): string => $option['label'],
     array_filter($normalized_options, static fn(array $option): bool => $option['selected'])
@@ -94,8 +94,8 @@ $base_id = component_id($args['id'], 'select-custom-');
 $label_id = $base_id . '-label';
 $button_id = $base_id . '-button';
 $list_id = $base_id . '-list';
-$label = component_string($args['label']);
-$accessible_label = $label !== '' ? $label : (component_string($args['aria_label']) ?: $name);
+$label = theme_string($args['label']);
+$accessible_label = $label !== '' ? $label : (theme_string($args['aria_label']) ?: $name);
 $submitted_name = $multiple && !str_ends_with($name, '[]') ? $name . '[]' : $name;
 $classes = component_classes('select-custom', $args['classes']);
 $attributes = component_attributes($args['attributes'], ['class', 'data-module', 'data-context', 'data-placeholder']);

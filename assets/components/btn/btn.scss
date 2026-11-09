@@ -2,8 +2,6 @@
     font-size: 1.4rem;
     font-weight: 400;
     line-height: 2rem;
-    background-color: var(--color-2);
-    color: var(--color-text-invert);
     box-sizing: border-box;
     padding: 1.5rem 2.4rem;
     display: inline-flex;
@@ -11,12 +9,6 @@
     gap: .8rem;
     border-radius: var(--radius);
     text-align: center;
-
-
-    &[aria-disabled=true] {
-        opacity: .5;
-        pointer-events: none;
-    }
 
     &:focus-visible {
         outline: 2px solid currentColor;
@@ -27,7 +19,8 @@
         height: auto;
     }
 
-    &:disabled {
+    &:disabled,
+    &[aria-disabled=true] {
         opacity: .5;
         pointer-events: none;
     }
@@ -37,11 +30,10 @@
         line-height: 1.8rem;
         padding: 1rem 1.6rem;
     }
-
 }
 
 .btn-1 {
-    background: var(--color-1);
+    background: var(--color-2);
     color: var(--color-text-invert);
 
     .card:hover &,
@@ -50,4 +42,6 @@
     }
 }
 
-.btn-2 {}
+.btn-2 {
+    border: 1px solid var(--color-2);
+}

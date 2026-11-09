@@ -20,13 +20,13 @@ $items = array_values(array_filter(
 ));
 if ($items === []) return;
 
-$card = resolve_card_name(component_string($args['card']) ?: 'card-news');
+$card = resolve_card_name(theme_string($args['card']) ?: 'card-news');
 if ($card === '') return;
 
 theme_prime_posts($items);
 theme_prime_attachments(array_values(array_filter($items, 'is_array')));
 
-$type = strtolower(component_string($args['type']));
+$type = strtolower(theme_string($args['type']));
 $type = in_array($type, ['grid', 'flex'], true) ? $type : 'grid';
 $classes = component_classes($type === 'flex' ? 'list-flex' : 'list', $args['classes']);
 $attributes = component_attributes($args['attributes'], ['class', 'role']);

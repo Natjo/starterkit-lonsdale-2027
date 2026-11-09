@@ -16,12 +16,12 @@ $args = normalize_args($params, [
     'text_attributes' => [],
 ]);
 
-$title = component_string($args['title']);
-$text = component_string($args['text']);
+$title = theme_string($args['title']);
+$text = theme_string($args['text']);
 $link = is_array($args['link']) ? $args['link'] : [];
 $link_attributes = is_array($link['attributes'] ?? null) ? $link['attributes'] : [];
 
-$link_data = normalize_action_link($link, $link_attributes);
+$link_data = theme_link($link, $link_attributes);
 $link_is_valid = $link_data['url'] !== '' && $link_data['title'] !== '';
 
 if ($title === '' && $text === '' && !$link_is_valid) {

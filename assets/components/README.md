@@ -65,14 +65,14 @@ Son second argument facultatif permet aussi d'appliquer des valeurs par défaut.
 Les normalisations courantes sont centralisées :
 
 ```php
-$label = component_string($args['label'] ?? '');
+$label = theme_string($args['label'] ?? '');
 $disabled = component_bool($args['disabled'] ?? false);
 $items = component_list($args['items'] ?? null);
 $options = component_options($args['options'] ?? null);
 $id = component_id($args['id'] ?? '', 'example-');
 ```
 
-- `component_string()` accepte une valeur scalaire ou `Stringable`, la convertit
+- `theme_string()` accepte une valeur scalaire ou `Stringable`, la convertit
   et retire les espaces aux extrémités ;
 - `component_bool()` reconnaît les représentations booléennes usuelles et permet
   de fournir une valeur de repli ;
@@ -140,7 +140,7 @@ $args = normalize_args($params, [
     'attributes' => [],
 ]);
 
-$title = component_string($args['title']);
+$title = theme_string($args['title']);
 
 if ($title === '') return;
 

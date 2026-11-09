@@ -4,10 +4,14 @@
   "name": "link",
   "slug": "link",
   "assets": {
-    "css": { "loading": "critical" }
+    "css": {
+      "loading": "critical"
+    }
   },
   "dependencies": {
-    "components": [],
+    "components": [
+      "icon"
+    ],
     "cards": [],
     "strates": [],
     "heroes": [],

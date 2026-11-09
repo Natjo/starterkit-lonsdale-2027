@@ -6,10 +6,10 @@ $slides = [];
 foreach ($rows as $row) {
     if (!is_array($row) || array_is_list($row)) continue;
 
-    $title = component_string($row['title'] ?? '');
+    $title = theme_string($row['title'] ?? '');
     if ($title === '') continue;
 
-    $background = component_string($row['background_color'] ?? '');
+    $background = theme_string($row['background_color'] ?? '');
     $slides[] = [
         'title' => $title,
         'text' => $row['text'] ?? '',

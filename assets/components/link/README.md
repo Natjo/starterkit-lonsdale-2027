@@ -1,113 +1,97 @@
 # Composant `link`
 
-Génère un lien textuel sécurisé avec une icône décorative optionnelle. Le
-composant fonctionne uniquement avec `component('link', [...])` et un payload
-associatif.
+Utilise le même contrat et le même rendu que `btn`, avec la classe racine
+`link` et ses styles propres. Le rendu PHP est partagé dans
+`template-parts/utils/action.php` ; aucun style `btn` n’est ajouté.
 
-## Utilisation
+## Lien
 
 ```php
 component('link', [
     'link' => [
         'url' => '/projet/',
-        'title' => 'En savoir plus',
-        'target' => '',
+        'title' => 'Découvrir le projet',
+        'target' => '_blank',
     ],
-    'classes' => 'link-2',
-    'icon' => [
-        'name' => 'blank',
-        'width' => 16,
-        'height' => 16,
-    ],
-    'attributes' => ['aria-label' => 'Découvrir le projet'],
+    'element' => 'a',
+    'classes' => 'link-1',
+    'svg' => true,
 ]);
 ```
 
-Avec un champ ACF de type `link` :
+## Bouton avec l’apparence d’un lien
 
 ```php
 component('link', [
-    'link' => $args['link'] ?? [],
+    'name' => 'Ouvrir les détails',
+    'element' => 'button',
+    'classes' => 'link-1',
+    'attributes' => ['type' => 'button'],
 ]);
 ```
 
-Les arguments positionnels, les listes directes et la
-forme plate `url`/`title` ne sont plus supportés.
+## Élément visuel dans une card déjà cliquable
+
+```php
+component('link', [
+    'name' => 'Découvrir',
+    'element' => 'span',
+    'classes' => 'link-1',
+    'svg' => true,
+]);
+```
 
 ## Payload
 
 | Clé | Type | Défaut | Rôle |
 | --- | --- | --- | --- |
-| `link` | `array` | `[]` | Données `url`, `title` et `target` du lien |
+| `name` | `scalar\|Stringable` | `''` | Libellé sans `link` |
+| `link` | `array` | absent | Lien associatif `url`, `title`, `target` |
+| `element` | `'button'\|'a'\|'span'` | selon le mode | `span` pour un élément neutre ; sinon `a` avec `link`, `button` sans `link` |
 | `classes` | `string\|array` | `''` | Classes supplémentaires |
-| `icon` | `array associatif` | absent | Payload de `component('icon', [...])` |
+| `svg` | `bool\|string` | `false` | SVG inline prioritaire sur `icon` |
+| `icon` | `array associatif` | absent | Payload du composant `icon` |
 | `attributes` | `array` | `[]` | Attributs HTML supplémentaires |
-
-Une URL vide ou interdite, un titre vide ou un payload `link` invalide ne
-produit aucun HTML.
-
-## Target et rel
-
-Les cibles `_self`, `_blank`, `_parent` et `_top` sont acceptées. Toute autre
-valeur est ignorée. Avec `_blank`, `noopener noreferrer` est toujours ajouté.
-Les tokens fournis dans `attributes['rel']` sont conservés et fusionnés.
-
-```php
-component('link', [
-    'link' => [
-        'url' => 'https://example.com',
-        'title' => 'Site externe',
-        'target' => '_blank',
-    ],
-    'attributes' => ['rel' => 'nofollow'],
-]);
-```
-
-Le résultat contient `rel="nofollow noopener noreferrer"`.
-
-## État désactivé
-
-```php
-component('link', [
-    'link' => [
-        'url' => '/destination/',
-        'title' => 'Indisponible',
-    ],
-    'attributes' => ['aria-disabled' => true],
-]);
-```
-
-Le texte et `aria-disabled` sont conservés, mais `href` et `target` sont
-retirés.
-
-## Icône
-
-L’icône utilise exclusivement un payload associatif :
-
-```php
-'icon' => [
-    'name' => 'blank',
-    'width' => 16,
-    'height' => 16,
-    'classes' => 'link-icon',
-]
-```
-
-Une liste positionnelle comme `['blank', 16, 16]` est ignorée. Comme l’icône
-accompagne un texte visible, elle reste décorative par défaut.
 
 ## Règles de rendu
 
-- La classe `link` est toujours présente.
-- Le titre est échappé avec `esc_html()`.
-- L’URL est sécurisée avec `esc_url()`.
-- Les classes sont nettoyées et dédupliquées.
-- `class`, `href`, `target` et `rel` sont protégés.
-- Aucun JavaScript n’est nécessaire.
+La présence de `link` sélectionne le mode lien : une URL sûre et un titre non
+vide sont obligatoires, même pour un `span`. Un lien invalide ne retombe pas
+sur `name`. Sans `link`, `name` fournit le libellé obligatoire.
+
+`element => 'span'` fonctionne dans les deux modes. Les autres valeurs
+conservent la racine par défaut : `a` avec `link`, `button` sans `link`.
+Le `span` ne reçoit ni `href`, `target`, `rel`, `type`, `disabled`, ni attributs
+de formulaire. Aucun rôle ARIA n’est ajouté implicitement.
+
+Le bouton natif accepte `button`, `submit` ou `reset` dans `attributes.type`,
+avec `button` par défaut. Il prend en charge `disabled`.
+
+Les cibles `_self`, `_blank`, `_parent` et `_top` sont acceptées.
+Avec `_blank`, `noopener noreferrer` est fusionné avec `attributes.rel`.
+Pour un lien avec `aria-disabled="true"`, `href` et `target` sont retirés.
+
+`svg => true` affiche une flèche inline de 24 × 24 avec la classe `.link-svg`,
+`currentColor`, `aria-hidden="true"` et `focusable="false"`. `icon` est alors
+ignoré. Sinon, l’icône associative est rendue via `component('icon', ...)`.
+
+Sans `icon` associatif ni `svg` actif, le libellé est rendu directement dans
+l’élément racine, sans `span` intérieur. Avec une icône ou un SVG, le libellé
+est enveloppé dans un `span`. Cette règle s’applique aux racines `a`, `button`
+et `span`, pour `link` comme pour `btn`.
+
+Les libellés et attributs sont échappés à la sortie. `class`, `href`, `target`,
+`rel` et `type` sont protégés. Les payloads positionnels et la forme plate
+`url`/`title` sont refusés. Aucun JavaScript n’est requis.
 
 ## Dépendances
 
-- `normalize_action_link()` pour normaliser et sécuriser le lien ;
+- `theme_link()` pour normaliser les liens ;
 - `component('icon', [...])` pour l’icône optionnelle ;
 - `component_classes()` et `component_attributes()` ;
 - `assets/components/link/link.scss` pour les styles.
+
+Voir aussi le [contrat de btn](../btn/README.md).
+
+Les icônes de ce composant utilisent `16 × 16` par défaut. Les dimensions
+`icon.width` et `icon.height` explicitement fournies restent prioritaires.

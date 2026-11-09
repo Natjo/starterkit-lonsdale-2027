@@ -1,9 +1,7 @@
 <?php
 $args = get_template_args();
-$link = is_array($args['link'] ?? null) && !array_is_list($args['link']) ? $args['link'] : [];
-$url = is_scalar($link['url'] ?? null) || ($link['url'] ?? null) instanceof Stringable
-    ? trim((string) $link['url'])
-    : '';
+$link = theme_link($args['link'] ?? []);
+$url = $link['url'];
 $tag = $url !== '' ? 'a' : 'div';
 ?>
 

@@ -21,7 +21,7 @@ $args = normalize_args($params, [
 ]);
 
 $to_source = static function (mixed $value): string {
-    $source = component_string($value);
+    $source = theme_string($value);
     $path = parse_url($source, PHP_URL_PATH);
     if (
         $source === ''
@@ -63,7 +63,7 @@ $respect_reduced_motion = component_bool($args['respect_reduced_motion'], true);
 $autonomous = component_bool($args['autonomous'], true);
 $width = $to_dimension($args['width']);
 $height = $to_dimension($args['height']);
-$label = component_string($args['label']);
+$label = theme_string($args['label']);
 $classes = component_classes('lottie', $args['classes']);
 $attributes = component_attributes($args['attributes'], [
     'class',

@@ -19,7 +19,7 @@ $list = is_array($args['list']) ? $args['list'] : [];
 if ($list === []) return;
 
 $normalize_email_href = static function (mixed $value): string {
-    $value = component_string($value);
+    $value = theme_string($value);
     if ($value === '') return '';
 
     if (str_starts_with(strtolower($value), 'mailto:')) {
@@ -49,7 +49,7 @@ $url = theme_http_url($args['url']) ?: $current_url();
 if ($url === '') return;
 
 $encoded_url = rawurlencode($url);
-$subject = component_string($args['subject']);
+$subject = theme_string($args['subject']);
 $email_query = [];
 if ($subject !== '') $email_query[] = 'subject=' . rawurlencode($subject);
 $email_query[] = 'body=' . $encoded_url;
@@ -106,7 +106,7 @@ foreach ($list as $key => $value) {
         $name = strtolower(trim($value));
     } elseif (is_array($value)) {
         $definition = $value;
-        $name = strtolower(component_string($value['name'] ?? ''));
+        $name = strtolower(theme_string($value['name'] ?? ''));
     } else {
         continue;
     }
@@ -123,8 +123,8 @@ foreach ($list as $key => $value) {
         if ($item['href'] === '') continue;
     }
 
-    $custom_label = component_string($definition['label'] ?? '');
-    $custom_icon = component_string($definition['icon'] ?? '');
+    $custom_label = theme_string($definition['label'] ?? '');
+    $custom_icon = theme_string($definition['icon'] ?? '');
     if ($custom_label !== '') $item['label'] = $custom_label;
     if ($custom_icon !== '') $item['icon'] = $custom_icon;
 
@@ -134,9 +134,9 @@ foreach ($list as $key => $value) {
 
 if ($items === []) return;
 
-$title = component_string($args['title']);
+$title = theme_string($args['title']);
 $title_id = component_id('', 'shares-title-');
-$aria_label = component_string($args['aria_label']) ?: 'Partager';
+$aria_label = theme_string($args['aria_label']) ?: 'Partager';
 $classes = component_classes('shares', $args['classes']);
 $attributes = component_attributes($args['attributes'], [
     'class',
@@ -145,8 +145,8 @@ $attributes = component_attributes($args['attributes'], [
     'data-context',
     'data-module',
 ]);
-$copied_label = component_string($args['copied_label']) ?: 'Lien copié';
-$copy_error_label = component_string($args['copy_error_label']) ?: 'Impossible de copier le lien';
+$copied_label = theme_string($args['copied_label']) ?: 'Lien copié';
+$copy_error_label = theme_string($args['copy_error_label']) ?: 'Impossible de copier le lien';
 ?>
 <nav class="<?= $classes ?>"<?= $title !== '' ? ' aria-labelledby="' . esc_attr($title_id) . '"' : ' aria-label="' . esc_attr($aria_label) . '"' ?> data-context="@visible true" data-module="components/shares"<?= $attributes ?>>
     <?php if ($title !== '') : ?>

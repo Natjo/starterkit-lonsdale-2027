@@ -1,7 +1,7 @@
 <?php
 $args = get_template_args(['title' => '', 'text' => '', 'items' => []]);
-$args['title'] = component_string($args['title']);
-$args['text'] = component_string($args['text']);
+$args['title'] = theme_string($args['title']);
+$args['text'] = theme_string($args['text']);
 
 $classes = [
     'strate',
@@ -9,6 +9,7 @@ $classes = [
     !empty($args['reverse']) ? 'reverse' : '',
     !empty($args['center']) ? 'center' : '',
 ];
+
 if ($args['title'] === '' && $args['text'] === '' && empty($args['image'])) return;
 ?>
 

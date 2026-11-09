@@ -443,8 +443,8 @@ $assert_not_contains = static function (string $label, string $needle, string $a
 
 $assert_same('component_args fusionne un payload associatif', ['name' => 'Test'], component_args(['name' => 'Test'], ['name' => '']));
 $assert_same('component_args refuse un payload positionnel', null, component_args(['Test']));
-$assert_same('component_string normalise une valeur scalaire', 'Test', component_string(' Test '));
-$assert_same('component_string refuse une structure', 'fallback', component_string(['Test'], 'fallback'));
+$assert_same('theme_string normalise une valeur scalaire', 'Test', theme_string(' Test '));
+$assert_same('theme_string refuse une structure', 'fallback', theme_string(['Test'], 'fallback'));
 $assert_same('component_bool comprend les chaînes booléennes', false, component_bool('false', true));
 $assert_same('component_bool conserve le défaut pour une valeur invalide', true, component_bool('invalid', true));
 $assert_same('component_list conserve une liste', ['first', 'second'], component_list(['first', 'second']));
@@ -466,6 +466,12 @@ $assert_same('component_id conserve un identifiant valide', 'section-test', comp
 $assert_contains('component_id génère un identifiant préfixé', 'component-', component_id('', 'component-'));
 $assert_same('theme_http_url conserve HTTPS', 'https://example.test/path', theme_http_url(' https://example.test/path '));
 $assert_same('theme_http_url refuse les protocoles dangereux', '', theme_http_url('javascript:alert(1)'));
+
+$assert_same('theme_link refuse les tableaux positionnels', '', theme_link(['https://example.test'])['url']);
+$assert_same('theme_link refuse les protocoles dangereux', '', theme_link(['url' => 'javascript:alert(1)'])['url']);
+$assert_same('theme_link conserve les paramètres sans échappement HTML', 'https://example.test/?a=1&b=2', theme_link(['url' => 'https://example.test/?a=1&b=2'])['url']);
+$assert_same('theme_link normalise une cible et sécurise blank', 'noopener noreferrer', theme_link(['target' => ' _BLANK '])['rel']);
+$assert_same('theme_link refuse une cible invalide', '', theme_link(['target' => 'unknown'])['target']);
 
 $previous_contact_status = $_GET['contact'] ?? null;
 $_GET['contact'] = 'sent';
@@ -1093,6 +1099,22 @@ $assert_not_contains('Picto protège son attribut class', 'class="duplicate"', $
 $assert_same('Picto retire l’ancien alias icon', '', $render('picto', ['icon' => 'star']));
 $assert_same('Picto refuse une liste directe', '', $render('picto', ['star']));
 
+// Vérifie la structure HTML sans dépendre des espaces ou de l’ordre des attributs.
+$assert_html = static function (string $label, string $expression, string $html) use (&$failures): void {
+    $document = new DOMDocument();
+    $previous_errors = libxml_use_internal_errors(true);
+    try {
+        $document->loadHTML('<?xml encoding="utf-8" ?>' . $html, LIBXML_NONET);
+        $xpath = new DOMXPath($document);
+        if (!$xpath->evaluate('boolean(' . $expression . ')')) {
+            $failures[] = $label . ': structure HTML inattendue : ' . $html;
+        }
+    } finally {
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous_errors);
+    }
+};
+
 $button = $render('btn', [
     'name' => 'Envoyer <maintenant>',
     'classes' => ['primary', 'primary'],
@@ -1104,7 +1126,7 @@ $button = $render('btn', [
         'data-tracking' => 'submit',
     ],
 ]);
-$assert_contains('Btn utilise son payload procédural strict', '<button type="submit" class="btn primary" data-tracking="submit">', $button);
+$assert_html('Btn utilise son payload procédural strict', '//button[@type="submit" and @class="btn primary" and @data-tracking="submit"]', $button);
 $assert_contains('Btn échappe son libellé', 'Envoyer &lt;maintenant&gt;', $button);
 $assert_contains('Btn délègue son icône au composant icon', 'class="icon icon-blank" width="16" height="12"', $button);
 $assert_not_contains('Btn protège ses attributs structurels', 'class="duplicate"', $button);
@@ -1119,7 +1141,7 @@ $button_link = $render('btn', [
     'classes' => 'secondary',
     'attributes' => ['rel' => 'nofollow', 'data-tracking' => 'project'],
 ]);
-$assert_contains('Btn rend un link explicite comme un lien', '<a href="https://example.test/project/" class="btn secondary" data-tracking="project" target="_blank"', $button_link);
+$assert_html('Btn rend un link explicite comme un lien', '//a[@href="https://example.test/project/" and @class="btn secondary" and @data-tracking="project" and @target="_blank"]', $button_link);
 $assert_contains('Btn sécurise et fusionne rel', 'rel="nofollow noopener noreferrer"', $button_link);
 
 $span_button = $render('btn', [
@@ -1137,26 +1159,57 @@ $span_button = $render('btn', [
         'data-tracking' => 'card',
     ],
 ]);
-$assert_contains('Btn peut devenir un span non interactif', '<span class="btn secondary" data-tracking="card"><span>Voir la card</span></span>', $span_button);
+$assert_html('Btn peut devenir un span non interactif', '//span[@class="btn secondary" and @data-tracking="card" and not(span) and normalize-space(text())="Voir la card"]', $span_button);
 $assert_not_contains('Btn span ne rend aucun href', ' href=', $span_button);
 $assert_not_contains('Btn span ne rend aucun type', ' type=', $span_button);
 $assert_not_contains('Btn span ne rend aucun état disabled natif', ' disabled', $span_button);
 
-$button_ignores_element = $render('btn', [
+$span_without_link = $render('btn', [
     'name' => 'Découvrir',
     'element' => 'span',
 ]);
-$assert_contains('Btn sans link reste un bouton et ignore element', '<button type="button" class="btn"><span>Découvrir</span></button>', $button_ignores_element);
+$assert_html('Btn sans link respecte element span', '//span[@class="btn" and not(span) and normalize-space(text())="Découvrir"]', $span_without_link);
 
 $invalid_element_link = $render('btn', [
     'link' => ['url' => '/fallback/', 'title' => 'Fallback'],
     'element' => 'script',
 ]);
-$assert_contains('Btn refuse une balise arbitraire et conserve le lien par défaut', '<a href="/fallback/" class="btn">', $invalid_element_link);
-$assert_contains('Btn sans link ignore aussi element a', '<button type="button" class="btn"><span>Lien incomplet</span></button>', $render('btn', [
+$assert_html('Btn refuse une balise arbitraire et conserve le lien par défaut', '//a[@href="/fallback/" and @class="btn"]', $invalid_element_link);
+$assert_html('Btn sans link ignore aussi element a', '//button[@type="button" and @class="btn" and not(span) and normalize-space(text())="Lien incomplet"]', $render('btn', [
     'name' => 'Lien incomplet',
     'element' => 'a',
 ]));
+
+foreach ([
+    'button' => ['name' => 'Découvrir'],
+    'a' => ['link' => ['url' => '/project/', 'title' => 'Découvrir']],
+    'span sans lien' => ['name' => 'Découvrir', 'element' => 'span'],
+    'span avec lien' => ['link' => ['url' => '/project/', 'title' => 'Découvrir'], 'element' => 'span'],
+] as $mode => $payload) {
+    foreach ([true, 'true', false, 'false'] as $svg_option) {
+        $html = $render('btn', array_replace($payload, [
+            'svg' => $svg_option,
+            'icon' => ['name' => 'blank'],
+        ]));
+        $svg_enabled = $svg_option === true || $svg_option === 'true';
+        $assert_same('Btn SVG selon option : ' . $mode . ' / ' . var_export($svg_option, true), $svg_enabled ? 1 : 0, substr_count($html, 'class="btn-svg"'));
+        $assert_same('Btn SVG prioritaire sur icon : ' . $mode . ' / ' . var_export($svg_option, true), !$svg_enabled, str_contains($html, 'icon-blank'));
+        if ($svg_enabled) {
+            $assert_html('Btn SVG décoratif et non focusable : ' . $mode, '//svg[@class="btn-svg" and @aria-hidden="true" and @focusable="false"]', $html);
+        }
+    }
+    if (str_starts_with($mode, 'span')) {
+        $html = $render('btn', array_replace($payload, [
+            'attributes' => [
+                'disabled' => true, 'form' => 'contact', 'formaction' => '/submit/',
+                'formenctype' => 'multipart/form-data', 'formmethod' => 'post',
+                'formnovalidate' => true, 'formtarget' => '_blank',
+                'name' => 'submit', 'value' => 'send', 'data-tracking' => 'card',
+            ],
+        ]));
+        $assert_html('Btn span filtre les attributs de formulaire : ' . $mode, '//span[@class="btn" and @data-tracking="card" and not(@disabled or @form or @formaction or @formenctype or @formmethod or @formnovalidate or @formtarget or @name or @value)]', $html);
+    }
+}
 
 $disabled_button_link = $render('btn', [
     'link' => ['url' => '/project/', 'title' => 'Indisponible', 'target' => '_blank'],
@@ -1198,6 +1251,58 @@ $assert_not_contains('Un link désactivé ne possède pas de href', ' href=', $d
 $assert_not_contains('Un link désactivé ne possède pas de target', ' target=', $disabled_link);
 $assert_same('Link refuse une liste directe', '', $render('link', [['link' => ['url' => '/', 'title' => 'Ancien']]]));
 $assert_same('Link retire la forme plate', '', $render('link', ['url' => '/legacy/', 'title' => 'Ancien lien']));
+
+foreach ([
+    'button' => ['name' => 'Ouvrir', 'attributes' => ['type' => 'submit']],
+    'a' => ['link' => ['url' => '/project/', 'title' => 'Ouvrir']],
+    'span sans lien' => ['name' => 'Ouvrir', 'element' => 'span'],
+    'span avec lien' => ['link' => ['url' => '/project/', 'title' => 'Ouvrir'], 'element' => 'span'],
+] as $mode => $payload) {
+    $tag = str_starts_with($mode, 'span') ? 'span' : $mode;
+    foreach ([true, 'true', false, 'false'] as $svg_option) {
+        $html = $render('link', array_replace($payload, ['svg' => $svg_option, 'icon' => ['name' => 'blank']]));
+        $enabled = $svg_option === true || $svg_option === 'true';
+        $assert_html('Link utilise la racine attendue : ' . $mode, '//' . $tag . '[@class="link"]/span[text()="Ouvrir"]', $html);
+        $assert_same('Link SVG selon option : ' . $mode, $enabled ? 1 : 0, substr_count($html, 'class="link-svg"'));
+        $assert_same('Link SVG prioritaire sur icon : ' . $mode, !$enabled, str_contains($html, 'icon-blank'));
+        $assert_not_contains('Link ne charge pas les classes btn : ' . $mode, 'class="btn', $html);
+        if ($enabled) $assert_html('Link SVG décoratif : ' . $mode, '//svg[@aria-hidden="true" and @focusable="false"]', $html);
+        if ($mode === 'button') $assert_html('Link respecte le type submit', '//button[@type="submit"]', $html);
+    }
+    if ($tag === 'span') {
+        $html = $render('link', array_replace($payload, ['attributes' => [
+            'type' => 'submit', 'disabled' => true, 'form' => 'contact',
+            'formaction' => '/send/', 'formenctype' => 'multipart/form-data',
+            'formmethod' => 'post', 'formnovalidate' => true, 'formtarget' => '_blank',
+            'name' => 'submit', 'value' => 'send', 'data-tracking' => 'card',
+        ]]));
+        $assert_html('Link span filtre les attributs de formulaire : ' . $mode, '//span[@class="link" and @data-tracking="card" and not(@type or @href or @target or @rel or @disabled or @form or @formaction or @formenctype or @formmethod or @formnovalidate or @formtarget or @name or @value)]', $html);
+    }
+}
+foreach (['btn', 'link'] as $action_component) {
+    $html = $render($action_component, ['name' => 'Voir', 'icon' => ['name' => 'blank']]);
+    $assert_html($action_component . ' utilise une icône 16x16 par défaut', '//svg[@width="16" and @height="16" and contains(@class,"icon-blank")]', $html);
+}
+
+foreach (['btn', 'link'] as $action_component) {
+foreach ([
+    'a' => ['link' => ['url' => '/project/', 'title' => 'Voir <projet>']],
+    'button' => ['name' => 'Voir <projet>'],
+    'span' => ['name' => 'Voir <projet>', 'element' => 'span'],
+] as $tag => $payload) {
+    foreach ([[], ['svg' => false], ['svg' => 'false', 'icon' => []], ['icon' => ['blank']]] as $decoration) {
+        $html = $render($action_component, array_replace($payload, $decoration));
+        $assert_html($action_component . ' sans décoration rend le texte directement : ' . $tag, '//' . $tag . '[@class="' . $action_component . '" and not(span) and normalize-space(text())="Voir <projet>"]', $html);
+        $assert_contains($action_component . ' sans décoration échappe le libellé : ' . $tag, 'Voir &lt;projet&gt;', $html);
+    }
+}
+
+}
+
+$assert_same('Link invalide ne retombe pas sur name', '', $render('link', ['name' => 'Fallback', 'link' => []]));
+$assert_same('Link sans libellé ne rend rien', '', $render('link', ['element' => 'span', 'svg' => true]));
+$assert_html('Link sans element utilise un bouton natif', '//button[@class="link" and @type="button"]', $render('link', ['name' => 'Ouvrir']));
+$assert_html('Link type invalide revient à button', '//button[@type="button"]', $render('link', ['name' => 'Ouvrir', 'attributes' => ['type' => 'invalid']]));
 
 $custom_card = $render_card('news', [
     'title' => 'Contenu personnalisé',
@@ -2899,7 +3004,7 @@ $assert_contains('Newsletter conserve son texte éditorial', '<p>Recevez nos act
 $assert_contains('Newsletter transmet son action sûre', 'action="https://newsletter.example.test/subscribe"', $newsletter);
 $assert_contains('Newsletter hydrate la validation du champ', 'data-module="components/field"', $newsletter);
 $assert_contains('Newsletter transmet le nom du champ', 'name="subscriber_email"', $newsletter);
-$assert_contains('Newsletter rend son bouton submit', '<button type="submit" class="btn"><span>S’inscrire</span></button>', $newsletter);
+$assert_html('Newsletter rend son bouton submit', '//button[@type="submit" and @class="btn" and not(span) and normalize-space(text())="S’inscrire"]', $newsletter);
 $assert_not_contains('Newsletter protège sa classe structurelle', 'class="duplicate"', $newsletter);
 
 $unsafe_newsletter = $render('newsletter', [

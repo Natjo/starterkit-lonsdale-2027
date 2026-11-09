@@ -7,7 +7,7 @@ foreach ($rows as $row) {
     if (!is_array($row) || array_is_list($row) || empty($row['image'])) continue;
     $logos[] = [
         'image' => $row['image'],
-        'name' => component_string($row['name'] ?? ''),
+        'name' => theme_string($row['name'] ?? ''),
         'link' => is_array($row['link'] ?? null) && !array_is_list($row['link']) ? $row['link'] : null,
     ];
 }
@@ -25,11 +25,11 @@ if ($logos === []) return;
             <?php foreach ($logos as $logo) : ?>
                 <li class="logos-item">
                     <?php
-                    $link = $logo['link'] !== null ? normalize_action_link($logo['link']) : null;
+                    $link = $logo['link'] !== null ? theme_link($logo['link']) : null;
                     $has_link = $link !== null && !$link['disabled'] && $link['url'] !== '';
                     ?>
                     <?php if ($has_link) : ?>
-                        <a class="logos-link" href="<?= $link['url'] ?>"<?= $link['target'] !== '' ? ' target="' . esc_attr($link['target']) . '"' : '' ?><?= $link['rel'] !== '' ? ' rel="' . esc_attr($link['rel']) . '"' : '' ?>>
+                        <a class="logos-link" href="<?= esc_url($link['url']) ?>"<?= $link['target'] !== '' ? ' target="' . esc_attr($link['target']) . '"' : '' ?><?= $link['rel'] !== '' ? ' rel="' . esc_attr($link['rel']) . '"' : '' ?>>
                     <?php endif; ?>
                     <?php
                     $picture = [

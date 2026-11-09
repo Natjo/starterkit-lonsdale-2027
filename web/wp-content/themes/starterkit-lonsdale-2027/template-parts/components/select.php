@@ -19,13 +19,13 @@ $args = normalize_args($params, [
     'select_attributes' => [],
 ]);
 
-$name = component_string($args['name']);
+$name = theme_string($args['name']);
 $normalized_options = component_options($args['options']);
 if ($name === '') return;
 if ($normalized_options === []) return;
 
 $requested_value = is_scalar($args['value']) || $args['value'] instanceof Stringable
-    ? component_string($args['value'])
+    ? theme_string($args['value'])
     : '';
 $selected_index = null;
 
@@ -47,7 +47,7 @@ if ($selected_index === null) {
     }
 }
 
-$placeholder = component_string($args['placeholder']);
+$placeholder = theme_string($args['placeholder']);
 if ($selected_index === null && $placeholder === '') {
     foreach ($normalized_options as $index => $option) {
         if (!$option['disabled']) {
@@ -58,8 +58,8 @@ if ($selected_index === null && $placeholder === '') {
 }
 
 $id = component_id($args['id'], 'select-field-');
-$label = component_string($args['label']);
-$aria_label = component_string($args['aria_label']) ?: $name;
+$label = theme_string($args['label']);
+$aria_label = theme_string($args['aria_label']) ?: $name;
 $required = component_bool($args['required']);
 $disabled = component_bool($args['disabled']);
 $classes = component_classes('select', $args['classes']);

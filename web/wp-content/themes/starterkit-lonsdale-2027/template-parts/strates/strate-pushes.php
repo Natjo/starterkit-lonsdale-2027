@@ -1,9 +1,6 @@
 <?php
 $args = get_template_args();
 
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
 
 $selected = is_array($args['items'] ?? null) ? $args['items'] : [];
 theme_prime_posts($selected);
@@ -24,9 +21,9 @@ foreach (theme_collect_post_ids($selected) as $post_id) {
 $title = $args['title'] ?? '';
 $text = $args['text'] ?? '';
 $link = is_array($args['link'] ?? null) ? $args['link'] : [];
-$has_header = $to_string($title) !== ''
-    || $to_string($text) !== ''
-    || ($to_string($link['url'] ?? '') !== '' && $to_string($link['title'] ?? '') !== '');
+$has_header = theme_string($title) !== ''
+    || theme_string($text) !== ''
+    || (theme_string($link['url'] ?? '') !== '' && theme_string($link['title'] ?? '') !== '');
 
 if (!$has_header && $items === []) return;
 ?>

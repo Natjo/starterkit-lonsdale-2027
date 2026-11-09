@@ -19,7 +19,7 @@ foreach ($rows as $row) {
 if ($items === []) return;
 
 $slider_options = is_array($args['slider_options'] ?? null) && !array_is_list($args['slider_options'])
-    ? $args['slider_options']
+? $args['slider_options']
     : [];
 $aria_label = is_scalar($args['aria_label'] ?? null) || ($args['aria_label'] ?? null) instanceof Stringable
     ? trim((string) $args['aria_label'])

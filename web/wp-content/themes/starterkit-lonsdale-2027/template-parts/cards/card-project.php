@@ -1,14 +1,12 @@
 <?php
 $args = get_template_args();
 
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable ? trim((string) $value) : '';
-
-$title = $to_string($args['title'] ?? '');
+$title = theme_string($args['title'] ?? '');
 if ($title === '') return;
 
-$link = is_array($args['link'] ?? null) && !array_is_list($args['link']) ? $args['link'] : [];
-$url = $to_string($link['url'] ?? '');
-$target = $to_string($link['target'] ?? '');
+$link = theme_link($args['link'] ?? []);
+$url = $link['url'];
+$target = $link['target'];
 $tag = $url !== '' ? 'a' : 'div';
 ?>
 

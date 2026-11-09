@@ -14,7 +14,7 @@ $args = normalize_args($params, [
     'classes' => '',
     'attributes' => [],
 ]);
-$name = component_string($args['name']);
+$name = theme_string($args['name']);
 $normalized_options = component_options($args['options']);
 
 if ($normalized_options === [] || $name === '') return;
@@ -25,7 +25,7 @@ $select_id = $base_id . '-select';
 $input_id = $base_id . '-input';
 $menu_id = $base_id . '-menu';
 $status_id = $base_id . '-status';
-$requested_value = component_string($args['value']);
+$requested_value = theme_string($args['value']);
 $value = '';
 $selected_label = '';
 foreach ($normalized_options as $option) {
@@ -44,7 +44,7 @@ foreach ($normalized_options as $option) {
 
 }
 
-$label = component_string($args['label']) ?: $name;
+$label = theme_string($args['label']) ?: $name;
 $required = component_bool($args['required'] ?? false);
 $classes = component_classes('autocomplete-field', $args['classes']);
 $attributes = component_attributes($args['attributes'], ['class', 'data-module', 'data-context']);
@@ -71,7 +71,7 @@ $attributes = component_attributes($args['attributes'], ['class', 'data-module',
             aria-labelledby="<?= esc_attr($label_id) ?>"
             aria-describedby="<?= esc_attr($status_id) ?>"
             aria-expanded="false"
-            <?= component_string($args['placeholder']) !== '' ? 'placeholder="' . esc_attr(component_string($args['placeholder'])) . '"' : '' ?>
+            <?= theme_string($args['placeholder']) !== '' ? 'placeholder="' . esc_attr(theme_string($args['placeholder'])) . '"' : '' ?>
         >
         <ul id="<?= esc_attr($menu_id) ?>" class="hidden" role="listbox"></ul>
     </div>

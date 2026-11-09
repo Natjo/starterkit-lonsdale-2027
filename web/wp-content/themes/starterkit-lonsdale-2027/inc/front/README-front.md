@@ -19,6 +19,34 @@ Ils consomment un payload associatif via la variable **`$params`**.
 
 ---
 
+## Normalisation des chaînes
+
+`theme_string(mixed $value, string $default = '')` convertit les scalaires
+et les objets `Stringable` en chaînes, puis retire les espaces aux extrémités.
+Les autres valeurs retournent `$default`. Ce helper est partagé par les
+composants, cards, strates, éléments common et helpers front : le réutiliser
+plutôt que déclarer une fonction anonyme `$to_string` dans chaque fichier.
+Il ne remplace pas l’échappement à la sortie.
+
+## Normalisation des liens
+
+`theme_link(mixed $link, mixed $attributes = [])` normalise un lien associatif
+pour les composants, cards et templates. Il retourne toujours `url`, `title`,
+`target`, `rel`, `disabled` et `attributes`. Les entrées invalides ou
+positionnelles sont traitées comme un lien vide.
+
+L’URL est nettoyée avec `esc_url_raw()` ; appliquer `esc_url()` à sa sortie
+HTML. Le titre et les attributs demandent également leur échappement de sortie.
+`target` accepte `_self`, `_blank`, `_parent` et `_top`. Pour `_blank`, `rel`
+contient automatiquement `noopener noreferrer`. Le second argument permet de
+normaliser `rel`, `aria-disabled` et les attributs libres du lien.
+
+```php
+$link = theme_link($args['link'] ?? []);
+$url = $link['url'];
+$target = $link['target'];
+```
+
 ## 1. API des composants
 
 Le projet conserve uniquement ces trois fonctions :

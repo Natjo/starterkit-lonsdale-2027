@@ -11,7 +11,7 @@ foreach ($strates as $strate) {
         continue;
     }
 
-    $layout = component_string($strate['acf_fc_layout'] ?? '');
+    $layout = theme_string($strate['acf_fc_layout'] ?? '');
 
     if ($layout === '') {
         continue;

@@ -28,10 +28,10 @@ $args = normalize_args($params, [
     'classes' => '',
     'attributes' => [],
 ]);
-$type = strtolower(component_string($args['type']));
+$type = strtolower(theme_string($args['type']));
 $type = $type === 'radio' ? 'radios' : $type;
 $allowed_types = ['text', 'search', 'textarea', 'select', 'checkbox', 'checkboxes', 'radios', 'number', 'email', 'url', 'tel', 'date', 'password'];
-$name = component_string($args['name']);
+$name = theme_string($args['name']);
 
 if (!in_array($type, $allowed_types, true) || !preg_match('/^[A-Za-z][A-Za-z0-9_.\-\[\]]*$/', $name)) return;
 
@@ -39,18 +39,18 @@ $options = is_array($args['options']) ? $args['options'] : [];
 $is_group = in_array($type, ['checkboxes', 'radios'], true);
 if (($is_group || $type === 'select') && $options === []) return;
 
-$id = component_id(component_string($args['id']) ?: str_replace(['[', ']'], '-', $name), 'field-');
-$label = component_string($args['label']);
+$id = component_id(theme_string($args['id']) ?: str_replace(['[', ']'], '-', $name), 'field-');
+$label = theme_string($args['label']);
 $required = component_bool($args['required']);
 $disabled = component_bool($args['disabled']);
 $error_id = $id . '-error';
 $label_id = $id . '-label';
-$hint = component_string($args['hint']);
+$hint = theme_string($args['hint']);
 $hint_id = $id . '-hint';
 $describedby = trim($error_id . ($hint !== '' ? ' ' . $hint_id : ''));
-$mandatory = component_string($args['mandatory_msg']);
-$type_mismatch = component_string($args['type_mismatch_msg']);
-$pattern_mismatch = component_string($args['pattern_mismatch_msg']);
+$mandatory = theme_string($args['mandatory_msg']);
+$type_mismatch = theme_string($args['type_mismatch_msg']);
+$pattern_mismatch = theme_string($args['pattern_mismatch_msg']);
 $field_classes = ['field'];
 if ($type === 'checkbox' || $type === 'checkboxes') $field_classes[] = 'checkbox';
 if ($type === 'radios') $field_classes[] = 'radio';
@@ -61,7 +61,7 @@ $mandatory_attribute = $mandatory !== '' ? ' data-mandatory="' . esc_attr($manda
 $type_mismatch_attribute = $type_mismatch !== '' ? ' data-typemismatch="' . esc_attr($type_mismatch) . '"' : '';
 $pattern_mismatch_attribute = $pattern_mismatch !== '' ? ' data-patternmismatch="' . esc_attr($pattern_mismatch) . '"' : '';
 $validation_attributes = $mandatory_attribute . $type_mismatch_attribute . $pattern_mismatch_attribute . $field_aria;
-$value = component_string($args['value']);
+$value = theme_string($args['value']);
 ?>
 
 <div
@@ -74,14 +74,14 @@ $value = component_string($args['value']);
     <?php endif; ?>
 
     <?php if ($type === 'textarea') : ?>
-        <textarea id="<?= esc_attr($id) ?>" name="<?= esc_attr($name) ?>" rows="<?= max(2, (int) $args['rows']) ?>"<?= $required ? ' required' : '' ?><?= $disabled ? ' disabled' : '' ?><?= $validation_attributes ?><?= component_string($args['placeholder']) !== '' ? ' placeholder="' . esc_attr(component_string($args['placeholder'])) . '"' : '' ?>><?= esc_html($value) ?></textarea>
+        <textarea id="<?= esc_attr($id) ?>" name="<?= esc_attr($name) ?>" rows="<?= max(2, (int) $args['rows']) ?>"<?= $required ? ' required' : '' ?><?= $disabled ? ' disabled' : '' ?><?= $validation_attributes ?><?= theme_string($args['placeholder']) !== '' ? ' placeholder="' . esc_attr(theme_string($args['placeholder'])) . '"' : '' ?>><?= esc_html($value) ?></textarea>
 
     <?php elseif ($type === 'select') : ?>
         <select id="<?= esc_attr($id) ?>" name="<?= esc_attr($name) ?>"<?= $required ? ' required' : '' ?><?= $disabled ? ' disabled' : '' ?><?= $validation_attributes ?>>
             <?php foreach ($options as $option_key => $option) :
                 $option = is_array($option) ? $option : ['value' => $option_key, 'label' => $option];
-                $option_value = component_string($option['value'] ?? $option_key);
-                $option_label = component_string($option['label'] ?? $option['name'] ?? $option_value);
+                $option_value = theme_string($option['value'] ?? $option_key);
+                $option_label = theme_string($option['label'] ?? $option['name'] ?? $option_value);
                 if ($option_label === '') continue;
                 $selected = component_bool($option['selected'] ?? false) || $option_value === $value;
                 $option_disabled = component_bool($option['disabled'] ?? false);
@@ -96,10 +96,10 @@ $value = component_string($args['value']);
             <?php $native_required_pending = $type === 'radios' && $required; ?>
             <?php foreach ($options as $index => $option) :
                 $option = is_array($option) ? $option : ['value' => $index, 'label' => $option];
-                $option_label = component_string($option['label'] ?? $option['name'] ?? '');
+                $option_label = theme_string($option['label'] ?? $option['name'] ?? '');
                 if ($option_label === '') continue;
-                $option_value = component_string($option['value'] ?? $index);
-                $option_id = sanitize_html_class(component_string($option['id'] ?? '') ?: $id . '-' . component_string($index));
+                $option_value = theme_string($option['value'] ?? $index);
+                $option_id = sanitize_html_class(theme_string($option['id'] ?? '') ?: $id . '-' . theme_string($index));
                 $option_name = $type === 'checkboxes' ? $name . '[]' : $name;
                 $option_checked = component_bool($option['checked'] ?? false) || component_bool($option['selected'] ?? false);
                 $option_disabled = component_bool($option['disabled'] ?? false);
@@ -125,12 +125,12 @@ $value = component_string($args['value']);
             value="<?= esc_attr($value) ?>"
             <?= $required ? 'required' : '' ?>
             <?= $disabled ? 'disabled' : '' ?>
-            <?= component_string($args['placeholder']) !== '' ? 'placeholder="' . esc_attr(component_string($args['placeholder'])) . '"' : '' ?>
-            <?= $args['min'] !== null && $type === 'number' ? 'min="' . esc_attr(component_string($args['min'])) . '"' : '' ?>
-            <?= $args['max'] !== null && $type === 'number' ? 'max="' . esc_attr(component_string($args['max'])) . '"' : '' ?>
+            <?= theme_string($args['placeholder']) !== '' ? 'placeholder="' . esc_attr(theme_string($args['placeholder'])) . '"' : '' ?>
+            <?= $args['min'] !== null && $type === 'number' ? 'min="' . esc_attr(theme_string($args['min'])) . '"' : '' ?>
+            <?= $args['max'] !== null && $type === 'number' ? 'max="' . esc_attr(theme_string($args['max'])) . '"' : '' ?>
             <?= $args['minlength'] !== null && $type === 'text' ? 'minlength="' . max(0, (int) $args['minlength']) . '"' : '' ?>
-            <?= component_string($args['pattern']) !== '' ? 'pattern="' . esc_attr(component_string($args['pattern'])) . '"' : '' ?>
-            <?= component_string($args['autocomplete']) !== '' ? 'autocomplete="' . esc_attr(component_string($args['autocomplete'])) . '"' : '' ?>
+            <?= theme_string($args['pattern']) !== '' ? 'pattern="' . esc_attr(theme_string($args['pattern'])) . '"' : '' ?>
+            <?= theme_string($args['autocomplete']) !== '' ? 'autocomplete="' . esc_attr(theme_string($args['autocomplete'])) . '"' : '' ?>
             <?= $validation_attributes ?>>
     <?php endif; ?>
 

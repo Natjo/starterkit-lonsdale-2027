@@ -6,7 +6,7 @@ $params = component_args($params ?? null);
 if ($params === null) return;
 
 $is_safe_url = static function (mixed $value): bool {
-    $url = component_string($value);
+    $url = theme_string($value);
     if ($url === '' || preg_match('/[\x00-\x1F\x7F\\\\]/', $url)) {
         return false;
     }
@@ -20,7 +20,7 @@ $is_safe_url = static function (mixed $value): bool {
     return $scheme === '' || in_array($scheme, ['http', 'https'], true);
 };
 $resolve_url = static function (mixed $value) use ($is_safe_url): string {
-    $url = component_string($value);
+    $url = theme_string($value);
     if ($url !== '' && ctype_digit($url) && function_exists('wp_get_attachment_url')) {
         $resolved = wp_get_attachment_url((int) $url);
         $url = is_string($resolved) ? trim($resolved) : '';
@@ -47,7 +47,7 @@ $sources = [];
 foreach ($raw_sources as $source) {
     $declared_type = '';
     if (is_array($source)) {
-        $declared_type = strtolower(component_string($source['type'] ?? ''));
+        $declared_type = strtolower(theme_string($source['type'] ?? ''));
         $source = $source['src'] ?? '';
     }
 
@@ -73,9 +73,9 @@ $is_youtube = $host === 'youtu.be' || $is_host($host, 'youtube.com') || $is_host
 $is_vimeo = $is_host($host, 'vimeo.com');
 $type = $is_youtube ? 'youtube' : ($is_vimeo ? 'vimeo' : 'video');
 
-$title = component_string($params['title'] ?? '');
+$title = theme_string($params['title'] ?? '');
 $title = $title !== '' ? $title : 'Lecteur vidéo';
-$play_label = component_string($params['play_label'] ?? '');
+$play_label = theme_string($params['play_label'] ?? '');
 $play_label = $play_label !== '' ? $play_label : 'Lire la vidéo';
 $play_label .= ' : ' . $title;
 $autoplay = component_bool($params['autoplay'] ?? false);
@@ -120,7 +120,7 @@ $lazy_autoplay = array_key_exists('lazy_autoplay', $params)
 $controls = array_key_exists('controls', $params)
     ? component_bool($params['controls'], true)
     : !$lazy_autoplay;
-$preload = strtolower(component_string($params['preload'] ?? 'metadata'));
+$preload = strtolower(theme_string($params['preload'] ?? 'metadata'));
 $preload = in_array($preload, ['none', 'metadata', 'auto'], true) ? $preload : 'metadata';
 if ($has_facade || $lazy_autoplay) {
     $preload = 'none';
@@ -152,7 +152,7 @@ foreach ($tracks_input as $track) {
     }
 
     $src = $resolve_url($track['src'] ?? '');
-    $kind = strtolower(component_string($track['kind'] ?? 'subtitles'));
+    $kind = strtolower(theme_string($track['kind'] ?? 'subtitles'));
     if ($src === '' || !in_array($kind, ['subtitles', 'captions', 'descriptions', 'chapters', 'metadata'], true)) {
         continue;
     }
@@ -160,8 +160,8 @@ foreach ($tracks_input as $track) {
     $tracks[] = [
         'src' => $src,
         'kind' => $kind,
-        'srclang' => preg_replace('/[^A-Za-z0-9-]/', '', component_string($track['srclang'] ?? '')) ?? '',
-        'label' => component_string($track['label'] ?? ''),
+        'srclang' => preg_replace('/[^A-Za-z0-9-]/', '', theme_string($track['srclang'] ?? '')) ?? '',
+        'label' => theme_string($track['label'] ?? ''),
         'default' => component_bool($track['default'] ?? false),
     ];
 }

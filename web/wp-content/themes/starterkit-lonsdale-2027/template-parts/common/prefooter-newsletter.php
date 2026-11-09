@@ -2,15 +2,13 @@
 $args = function_exists('get_field') ? get_field('prefooter', 'option') : [];
 $args = is_array($args) ? $args : [];
 
-$to_string = static fn (mixed $value): string =>
-    is_scalar($value) || $value instanceof Stringable ? trim((string) $value) : '';
-$title = $to_string($args['title'] ?? '');
-$text = $to_string($args['text'] ?? '');
+$title = theme_string($args['title'] ?? '');
+$text = theme_string($args['text'] ?? '');
 $socials = is_array($args['socials'] ?? null) ? $args['socials'] : [];
-$newsletter_title = $to_string($args['newsletter_title'] ?? '');
-$newsletter_text = $to_string($args['newsletter_text'] ?? '');
+$newsletter_title = theme_string($args['newsletter_title'] ?? '');
+$newsletter_text = theme_string($args['newsletter_text'] ?? '');
 $newsletter_action = theme_http_url($args['newsletter_action'] ?? '');
-$newsletter_button = $to_string($args['newsletter_button'] ?? '');
+$newsletter_button = theme_string($args['newsletter_button'] ?? '');
 
 if (
     $title === ''

@@ -5,8 +5,8 @@ $params = component_args($params ?? null);
 if ($params === null) return;
 
 
-$label = component_string($params['label'] ?? '');
-$content = component_string($params['content'] ?? '');
+$label = theme_string($params['label'] ?? '');
+$content = theme_string($params['content'] ?? '');
 
 if ($label === '' || $content === '') {
     return;

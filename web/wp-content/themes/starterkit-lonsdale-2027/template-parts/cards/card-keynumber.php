@@ -4,15 +4,12 @@ $card_fields = $args['card'] ?? null;
 if (is_array($card_fields) && !array_is_list($card_fields)) {
     $args = array_replace($card_fields, $args);
 }
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
 
-$value = $to_string($args['value'] ?? '');
+$value = theme_string($args['value'] ?? '');
 if ($value === '') return;
 
-$prefix = $to_string($args['prefix'] ?? '');
-$suffix = $to_string($args['suffix'] ?? '');
+$prefix = theme_string($args['prefix'] ?? '');
+$suffix = theme_string($args['suffix'] ?? '');
 ?>
 
 <article class="card-keynumber">

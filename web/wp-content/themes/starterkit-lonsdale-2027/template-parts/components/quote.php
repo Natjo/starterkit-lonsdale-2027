@@ -15,10 +15,10 @@ $args = normalize_args($params, [
     'classes' => '',
     'attributes' => [],
 ]);
-$quote = component_string($args['quote']);
-$author = component_string($args['author']);
-$source = component_string($args['source']);
-$url = esc_url(component_string($args['url']));
+$quote = theme_string($args['quote']);
+$author = theme_string($args['author']);
+$source = theme_string($args['source']);
+$url = esc_url(theme_string($args['url']));
 $image = $args['image'];
 $has_image = is_scalar($image) || $image instanceof Stringable
     ? trim((string) $image) !== ''

@@ -4,6 +4,9 @@ Génère un `<button>`, un lien `<a>` ou un élément neutre `<span>` avec la
 classe `btn`. Le composant fonctionne uniquement avec `component('btn', [...])`
 et un payload associatif.
 
+Le rendu PHP est partagé avec `link` dans `template-parts/utils/action.php`.
+Chaque composant conserve sa classe racine, sa classe SVG et ses styles.
+
 ## Bouton
 
 ```php
@@ -45,8 +48,9 @@ supportés.
 | --- | --- | --- | --- |
 | `name` | `scalar\|Stringable` | `''` | Libellé du bouton natif |
 | `link` | `array` | absent | Données du lien `url`, `title`, `target` |
-| `element` | `'a'\|'span'` | `'a'` | Élément HTML racine en présence de `link` |
+| `element` | `'button'\|'a'\|'span'` | selon le mode | `span` pour un élément neutre ; sinon `a` avec `link`, `button` sans `link` |
 | `classes` | `string\|array` | `''` | Classes supplémentaires |
+| `svg` | `bool\|string` | `false` | Affiche la flèche SVG inline du bouton à la place de `icon` |
 | `icon` | `array associatif` | absent | Payload de `component('icon', [...])` |
 | `attributes` | `array` | `[]` | Attributs HTML supplémentaires |
 
@@ -56,7 +60,40 @@ ou invalide ne produit aucun HTML et ne retombe pas sur `name`.
 ## Élément racine
 
 La présence de `link` génère un `<a>` par défaut. Sans `link`, le composant
-génère toujours un `<button>` et ignore l'option `element`.
+génère un `<button>` par défaut, ou un `<span>` avec `element => 'span'`.
+
+Exemples avec `element` explicite :
+
+```php
+// Bouton natif : <button type="button" class="btn btn-1">…</button>
+component('btn', [
+    'name' => 'Ouvrir',
+    'element' => 'button',
+    'classes' => 'btn-1',
+]);
+
+// Lien : <a href="/projet/" class="btn btn-1">…</a>
+component('btn', [
+    'link' => [
+        'url' => '/projet/',
+        'title' => 'Découvrir le projet',
+    ],
+    'element' => 'a',
+    'classes' => 'btn-1',
+]);
+
+// Élément visuel : <span class="btn btn-1">…</span>
+component('btn', [
+    'name' => 'Découvrir',
+    'element' => 'span',
+    'svg' => true,
+    'classes' => 'btn-1',
+]);
+```
+
+`element` ne change pas le mode choisi par la présence de `link` : `a` exige
+un lien valide et `button` s’utilise sans `link`. Seul `span` remplace la balise
+dans les deux modes.
 
 Une card dont le lien enveloppe déjà tout le contenu peut demander un élément
 visuel non interactif afin d'éviter d'imbriquer deux liens :
@@ -72,12 +109,22 @@ component('btn', [
 ]);
 ```
 
-Le `span` utilise `link.title`. Il ne rend jamais `href`, `target`, `rel`,
+Avec `link`, le `span` utilise `link.title`. Sans `link`, il utilise `name`. Il ne rend jamais `href`, `target`, `rel`,
 `type`, `disabled` ni les attributs de formulaire. Il reste volontairement non
 interactif et ne reçoit aucun rôle ARIA implicite.
 
-Toute valeur autre que `span` conserve le `<a>` par défaut. Dans les deux cas,
-un `link` valide est obligatoire.
+Toute valeur autre que `span` conserve la balise par défaut du mode.
+Un `link` fourni doit rester valide, même avec `element => 'span'`.
+
+Sans lien, pour un CTA visuel dans une card déjà cliquable :
+
+```php
+component('btn', [
+    'name' => 'See',
+    'element' => 'span',
+    'classes' => 'btn-1',
+]);
+```
 
 ## Bouton natif
 
@@ -111,6 +158,24 @@ component('btn', [
 
 Un lien avec `aria-disabled="true"` est rendu sans `href` ni `target`.
 
+## SVG intégré
+
+```php
+component('btn', [
+    'name' => 'Découvrir',
+    'svg' => true,
+    'classes' => 'btn-1',
+]);
+```
+
+`svg` affiche une flèche décorative de 24 × 24, définie directement dans le
+template `btn.php`, avec la classe `.btn-svg` et la couleur `currentColor`.
+Elle porte `aria-hidden="true"` et `focusable="false"`.
+Cette option fonctionne pour les racines `button`, `a` et `span`.
+Si `svg` est vrai, `icon` est ignoré. Par défaut (`false`), le rendu de `icon`
+est conservé. Les booléens et leurs représentations usuelles en chaîne sont
+normalisés avec `component_bool()`.
+
 ## Icône
 
 L’icône utilise exclusivement un payload associatif :
@@ -126,11 +191,18 @@ L’icône utilise exclusivement un payload associatif :
 Une liste positionnelle comme `['blank', 16, 16]` est ignorée. L’icône
 accompagne déjà le texte visible et reste donc décorative par défaut.
 
+## Libellé
+
+Sans `icon` associatif ni `svg` actif, le libellé est rendu directement dans
+l’élément racine, sans `span` intérieur. Avec une icône ou un SVG, le libellé
+est enveloppé dans un `span`. Cette règle s’applique aux racines `button`,
+`a` et `span`, comme pour le composant `link`.
+
 ## Règles de rendu
 
 - Un bouton sans `name` valide ne produit aucun HTML.
 - Un lien exige une URL sûre et un titre non vide.
-- Un `span` exige un `link` valide et utilise son `title`.
+- Un `span` utilise `name` sans lien, ou `link.title` avec un lien valide.
 - Le libellé visible est échappé avec `esc_html()`.
 - Les classes sont nettoyées et dédupliquées.
 - `class`, `href`, `target`, `rel` et `type` sont protégés.
@@ -138,7 +210,10 @@ accompagne déjà le texte visible et reste donc décorative par défaut.
 
 ## Dépendances
 
-- `normalize_action_link()` pour normaliser et sécuriser les liens ;
+- `theme_link()` pour normaliser et sécuriser les liens ;
 - `component('icon', [...])` pour l’icône optionnelle ;
 - `component_classes()` et `component_attributes()` ;
 - `assets/components/btn/btn.scss` pour les styles.
+
+Les icônes de ce composant utilisent `16 × 16` par défaut. Les dimensions
+`icon.width` et `icon.height` explicitement fournies restent prioritaires.

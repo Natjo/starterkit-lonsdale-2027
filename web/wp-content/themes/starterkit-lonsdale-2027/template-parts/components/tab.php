@@ -19,7 +19,7 @@ $items = [];
 foreach ($raw_items as $item) {
     if (!is_array($item)) continue;
 
-    $item_title = component_string($item['title'] ?? '');
+    $item_title = theme_string($item['title'] ?? '');
     if ($item_title === '') continue;
 
     $content = $item['content'] ?? '';
@@ -53,9 +53,9 @@ if ($active_index === null) return;
 
 $base_id = component_id($args['id'], 'tabs-');
 $title_id = $base_id . '-title';
-$title = component_string($args['title']);
-$aria_label = component_string($args['aria_label']) ?: 'Onglets';
-$orientation = strtolower(component_string($args['orientation']));
+$title = theme_string($args['title']);
+$aria_label = theme_string($args['aria_label']) ?: 'Onglets';
+$orientation = strtolower(theme_string($args['orientation']));
 $orientation = in_array($orientation, ['horizontal', 'vertical'], true) ? $orientation : 'horizontal';
 $classes = component_classes('tabs', $args['classes']);
 $attributes = component_attributes($args['attributes'], ['id', 'class', 'data-module', 'data-context']);

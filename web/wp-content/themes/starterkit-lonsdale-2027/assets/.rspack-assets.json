@@ -10,13 +10,13 @@
   "files": [
     {
       "name": "css/admin-rte.css",
-      "size": 6574,
-      "sha256": "4c2184ae9c458499a7d425204db71c9a50257432c30476b25eb75b36e41f1f34"
+      "size": 8103,
+      "sha256": "b878febfadd6d0ac1d12e18bdfaaabd98946a1a4f0f89e714e5a795a69fc438e"
     },
     {
       "name": "css/admin-rte.css.map",
-      "size": 11709,
-      "sha256": "de02680a58cdc1d479db7c948a3f8f2cf6f9c18a060d96a72e046e5d6b3650b5"
+      "size": 12738,
+      "sha256": "a747eef559aa6f4797109b17063e0dcf2fdea656ad7edcc84e05eba490ec7abd"
     },
     {
       "name": "css/admin.css",
@@ -80,13 +80,13 @@
     },
     {
       "name": "css/critical.css",
-      "size": 29797,
-      "sha256": "3813f62b87ac57940c725b7a288eb00e20b99119a0c69b661f63d06547c389a0"
+      "size": 31286,
+      "sha256": "c560c89366c690ba70cd7caa297ee424213cd22888cba6d4276b62d544045707"
     },
     {
       "name": "css/critical.css.map",
-      "size": 48749,
-      "sha256": "6f5c2cffffd38416267268d7e92cdf134b1da1a0c485c03cbe2c51556cd673af"
+      "size": 49688,
+      "sha256": "5fce90887d8e42eceb95816b6815cd224f80df4d7c31320645d0fb6bd3fc3368"
     },
     {
       "name": "css/heros/hero-flexible/hero-flexible.css",
@@ -147,16 +147,6 @@
       "name": "css/once/pages/404/404.css.map",
       "size": 872,
       "sha256": "70fd676cc425ec7193e6fe34aafab52c094a6e8aa5a82b284b296fbdc7718095"
-    },
-    {
-      "name": "css/once/pages/archive-news/archive-news.css",
-      "size": 246,
-      "sha256": "2d40e46a2a5a529bb92b0acc0db52399f7df4827c36dcffec10ba21d04ff577f"
-    },
-    {
-      "name": "css/once/pages/archive-news/archive-news.css.map",
-      "size": 529,
-      "sha256": "34ed4304529ece2f2c39f7964be35730c4ca2dca0b4cc9f3a22fcae0eda6d61f"
     },
     {
       "name": "css/once/pages/search/search.css",
@@ -345,8 +335,8 @@
     },
     {
       "name": "img/icons.svg",
-      "size": 5957,
-      "sha256": "2f2f8f26356560aaf29387762ba3d18de6b71e9783044e5eb19741886ed9dd38"
+      "size": 6500,
+      "sha256": "9d1d3e6bb665490c0b2c382e3601d265969152d18cf80522006f20b2694e920f"
     },
     {
       "name": "img/icons/ai.svg",
@@ -795,11 +785,6 @@
     },
     {
       "name": "js/once/pages/404/404.js",
-      "size": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "name": "js/once/pages/archive-news/archive-news.js",
       "size": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },

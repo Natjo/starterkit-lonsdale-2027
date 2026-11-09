@@ -26,10 +26,10 @@ $pagination_args = [
     'total' => $total,
     'current' => $current,
     'type' => 'array',
-    'prev_text' => esc_html(component_string($args['prev_text']) ?: '‹'),
-    'next_text' => esc_html(component_string($args['next_text']) ?: '›'),
+    'prev_text' => esc_html(theme_string($args['prev_text']) ?: '‹'),
+    'next_text' => esc_html(theme_string($args['next_text']) ?: '›'),
 ];
-$base = component_string($args['base']);
+$base = theme_string($args['base']);
 if ($base !== '' && str_contains($base, '%#%')) {
     $pagination_args['base'] = $base;
     $pagination_args['format'] = '';
@@ -38,7 +38,7 @@ $links = paginate_links($pagination_args);
 $links = is_array($links) ? array_values(array_filter($links, 'is_string')) : [];
 if ($links === []) return;
 
-$aria_label = component_string($args['aria_label']) ?: 'Pagination';
+$aria_label = theme_string($args['aria_label']) ?: 'Pagination';
 $classes = component_classes('pagination', $args['classes']);
 $attributes = component_attributes($args['attributes'], ['class', 'aria-label']);
 $allowed_html = [

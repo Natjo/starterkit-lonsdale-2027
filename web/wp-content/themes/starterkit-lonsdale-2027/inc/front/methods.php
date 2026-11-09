@@ -895,7 +895,7 @@ function html_attributes(mixed $attributes, array $reserved = []): string
 }
 
 /**
- * Normalise les données communes aux composants link et btn en mode lien.
+ * Normalise un lien partagé entre composants, cards et templates.
  *
  * @return array{
  *     url: string,
@@ -906,17 +906,14 @@ function html_attributes(mixed $attributes, array $reserved = []): string
  *     attributes: array<string, mixed>
  * }
  */
-function normalize_action_link(mixed $link, mixed $attributes = []): array
+function theme_link(mixed $link, mixed $attributes = []): array
 {
-    $link = is_array($link) ? $link : [];
+    $link = is_array($link) && !array_is_list($link) ? $link : [];
     $attributes = is_array($attributes) ? $attributes : [];
-    $to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-        ? trim((string) $value)
-        : '';
 
-    $url = esc_url($to_string($link['url'] ?? ''));
-    $title = $to_string($link['title'] ?? '');
-    $target = strtolower($to_string($link['target'] ?? ''));
+    $url = esc_url_raw(theme_string($link['url'] ?? ''));
+    $title = theme_string($link['title'] ?? '');
+    $target = strtolower(theme_string($link['target'] ?? ''));
     $target = in_array($target, ['_self', '_blank', '_parent', '_top'], true) ? $target : '';
     $rel = '';
     $disabled = false;
@@ -925,7 +922,7 @@ function normalize_action_link(mixed $link, mixed $attributes = []): array
         $normalized_name = strtolower((string) $name);
 
         if ($normalized_name === 'rel') {
-            $rel = $to_string($attributes[$name]);
+            $rel = theme_string($attributes[$name]);
             unset($attributes[$name]);
             continue;
         }

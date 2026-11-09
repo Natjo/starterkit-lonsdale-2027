@@ -6,10 +6,10 @@ if ($params === null) return;
 
 $items_input = component_list($params['items'] ?? null);
 
-$item_component = component_string($params['item_component'] ?? null);
+$item_component = theme_string($params['item_component'] ?? null);
 $item_component = $item_component === 'picture' ? 'picture' : null;
 $card_value = $params['card'] ?? null;
-$card = $card_value === null ? null : resolve_card_name(component_string($card_value));
+$card = $card_value === null ? null : resolve_card_name(theme_string($card_value));
 
 if ($item_component !== null) {
     $items = array_values(array_filter(

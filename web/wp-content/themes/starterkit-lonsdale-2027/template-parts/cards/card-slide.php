@@ -4,13 +4,9 @@ $card_fields = $args['card'] ?? null;
 if (is_array($card_fields) && !array_is_list($card_fields)) {
     $args = array_replace($card_fields, $args);
 }
-$link = is_array($args['link'] ?? null) && !array_is_list($args['link']) ? $args['link'] : [];
-$url = is_scalar($link['url'] ?? null) || ($link['url'] ?? null) instanceof Stringable
-    ? trim((string) $link['url'])
-    : '';
-$target = is_scalar($link['target'] ?? null) || ($link['target'] ?? null) instanceof Stringable
-    ? trim((string) $link['target'])
-    : '';
+$link = theme_link($args['link'] ?? []);
+$url = $link['url'];
+$target = $link['target'];
 $tag = $url !== '' ? 'a' : 'div';
 ?>
 

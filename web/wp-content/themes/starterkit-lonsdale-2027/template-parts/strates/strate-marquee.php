@@ -7,13 +7,10 @@ $to_bool = static fn(mixed $value, bool $default = false): bool => filter_var(
     FILTER_VALIDATE_BOOL,
     FILTER_NULL_ON_FAILURE
 ) ?? $default;
-$to_string = static fn(mixed $value): string => is_scalar($value) || $value instanceof Stringable
-    ? trim((string) $value)
-    : '';
 $hydrate = $to_bool($marquee_options['hydrate'] ?? true, true);
-$media = $to_string($marquee_options['media'] ?? null);
+$media = theme_string($marquee_options['media'] ?? null);
 $content_type = array_key_exists('content_type', $args)
-    ? $to_string($args['content_type'])
+    ? theme_string($args['content_type'])
     : 'images';
 $content_type = in_array($content_type, ['html', 'cards', 'images'], true) ? $content_type : 'images';
 $items = [];
@@ -36,8 +33,8 @@ if ($content_type === 'images') {
 
     $item_component = 'picture';
 } elseif ($content_type === 'cards') {
-    $post_type = sanitize_key($to_string($args['post_type'] ?? ''));
-    $card = sanitize_key($to_string($args['card'] ?? $post_type));
+    $post_type = sanitize_key(theme_string($args['post_type'] ?? ''));
+    $card = sanitize_key(theme_string($args['card'] ?? $post_type));
     $card_exists = resolve_card_name($card) !== '';
     $post_type_exists = $post_type !== '' && post_type_exists($post_type);
     $selected = is_array($args['items'] ?? null) ? $args['items'] : [];

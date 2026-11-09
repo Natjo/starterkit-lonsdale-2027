@@ -5,7 +5,7 @@ $steps = [];
 
 foreach ($rows as $row) {
     if (!is_array($row) || array_is_list($row)) continue;
-    $title = component_string($row['title'] ?? '');
+    $title = theme_string($row['title'] ?? '');
     if ($title === '') continue;
 
     $steps[] = [

@@ -18,7 +18,7 @@ function component_args(mixed $params, array $defaults = []): ?array
     return array_replace($defaults, $params);
 }
 
-function component_string(mixed $value, string $default = ''): string
+function theme_string(mixed $value, string $default = ''): string
 {
     return is_scalar($value) || $value instanceof Stringable
         ? trim((string) $value)
@@ -59,11 +59,11 @@ function component_options(mixed $options): array
 
     foreach ($options as $option_key => $option) {
         if (is_array($option)) {
-            $value = component_string($option['value'] ?? '');
-            $label = component_string($option['label'] ?? '');
+            $value = theme_string($option['value'] ?? '');
+            $label = theme_string($option['label'] ?? '');
         } else {
-            $value = component_string($option_key);
-            $label = component_string($option);
+            $value = theme_string($option_key);
+            $label = theme_string($option);
             $option = [];
         }
 
@@ -74,7 +74,7 @@ function component_options(mixed $options): array
         $normalized[] = [
             'value' => $value,
             'label' => $label,
-            'alt' => component_string($option['alt'] ?? ''),
+            'alt' => theme_string($option['alt'] ?? ''),
             'selected' => component_bool($option['selected'] ?? false),
             'disabled' => component_bool($option['disabled'] ?? false),
         ];
@@ -85,7 +85,7 @@ function component_options(mixed $options): array
 
 function component_id(mixed $requested, string $prefix): string
 {
-    $id = sanitize_html_class(component_string($requested));
+    $id = sanitize_html_class(theme_string($requested));
     if ($id !== '') {
         return $id;
     }

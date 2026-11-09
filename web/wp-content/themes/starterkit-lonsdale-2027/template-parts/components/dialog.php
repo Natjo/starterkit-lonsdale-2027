@@ -15,7 +15,6 @@ $args = normalize_args($params, [
     'attributes' => [],
 ]);
 
-
 $content_value = $args['content'] ?? null;
 $content = is_scalar($content_value) || $content_value instanceof Stringable
     ? (string) $content_value
@@ -26,14 +25,14 @@ if (trim($content) === '') {
 }
 
 $trigger = is_array($args['trigger']) ? $args['trigger'] : [];
-$trigger_type = component_string($trigger['type'] ?? 'btn');
+$trigger_type = theme_string($trigger['type'] ?? 'btn');
 $trigger_type = strtolower($trigger_type) === 'link' ? 'link' : 'btn';
-$trigger_label = component_string($trigger['label'] ?? '');
+$trigger_label = theme_string($trigger['label'] ?? '');
 $trigger_classes = $trigger['classes'] ?? '';
 
-$title = component_string($args['title'] ?? '');
-$close_label = component_string($args['close_label']);
-$requested_aria_label = component_string($args['aria_label']);
+$title = theme_string($args['title'] ?? '');
+$close_label = theme_string($args['close_label']);
+$requested_aria_label = theme_string($args['aria_label']);
 $aria_label = $has_explicit_aria_label && $requested_aria_label !== ''
     ? $requested_aria_label
     : ($trigger_label !== '' ? $trigger_label : ($requested_aria_label ?: 'Dialog'));

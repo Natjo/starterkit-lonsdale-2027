@@ -21,17 +21,17 @@ $args = normalize_args($params, [
     'attributes' => [],
 ]);
 
-$email_label = component_string($args['email_label']);
-$button_label = component_string($args['button_label']);
+$email_label = theme_string($args['email_label']);
+$button_label = theme_string($args['button_label']);
 if ($email_label === '' || $button_label === '') return;
 
-$email_name = component_string($args['email_name']);
+$email_name = theme_string($args['email_name']);
 if (!preg_match('/^[A-Za-z][A-Za-z0-9_.\-\[\]]*$/', $email_name)) return;
 
 $email_id = component_id($args['email_id'], 'newsletter-email-');
 
-$title = component_string($args['title']);
-$text = component_string($args['text']);
+$title = theme_string($args['title']);
+$text = theme_string($args['text']);
 $action = theme_http_url($args['action']);
 $classes = component_classes('newsletter', $args['classes']);
 $attributes = component_attributes($args['attributes'], ['class']);
@@ -61,11 +61,11 @@ $attributes = component_attributes($args['attributes'], ['class']);
             'id' => $email_id,
             'name' => $email_name,
             'label' => $email_label,
-            'placeholder' => component_string($args['email_placeholder']),
+            'placeholder' => theme_string($args['email_placeholder']),
             'autocomplete' => 'email',
             'required' => true,
-            'mandatory_msg' => component_string($args['mandatory_msg']),
-            'type_mismatch_msg' => component_string($args['type_mismatch_msg']),
+            'mandatory_msg' => theme_string($args['mandatory_msg']),
+            'type_mismatch_msg' => theme_string($args['type_mismatch_msg']),
         ]); ?>
 
         <?php component('btn', [

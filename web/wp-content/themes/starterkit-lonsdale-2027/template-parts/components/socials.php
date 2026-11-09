@@ -29,7 +29,7 @@ $seen = [];
 foreach ($items as $item) {
     if (!is_array($item) || array_is_list($item)) continue;
 
-    $network = strtolower(component_string($item['network'] ?? ''));
+    $network = strtolower(theme_string($item['network'] ?? ''));
     $url = theme_http_url($item['url'] ?? '');
     if (!isset($catalog[$network]) || $url === '' || isset($seen[$network])) continue;
 
@@ -43,7 +43,7 @@ foreach ($items as $item) {
 
 if ($normalized_items === []) return;
 
-$aria_label = component_string($args['aria_label']) ?: 'Réseaux sociaux';
+$aria_label = theme_string($args['aria_label']) ?: 'Réseaux sociaux';
 $classes = component_classes('socials', $args['classes']);
 $attributes = component_attributes($args['attributes'], ['class', 'aria-label']);
 ?>

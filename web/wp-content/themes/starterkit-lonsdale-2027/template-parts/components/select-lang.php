@@ -14,7 +14,7 @@ $args = normalize_args($params, [
 $languages = component_list($args['languages']);
 if ($languages === []) return;
 
-$label = component_string($args['label']) ?: 'Choisir la langue';
+$label = theme_string($args['label']) ?: 'Choisir la langue';
 $classes = component_classes('select-lang', $args['classes']);
 $attributes = component_attributes($args['attributes'], [
     'class',
@@ -26,10 +26,10 @@ $items = [];
 foreach ($languages as $language) {
     if (!is_array($language)) continue;
 
-    $code = strtolower(component_string($language['code'] ?? ''));
+    $code = strtolower(theme_string($language['code'] ?? ''));
     $code = preg_match('/^[a-z]{2,3}(?:-[a-z0-9]{2,8})*$/', $code) ? $code : '';
-    $item_label = component_string($language['label'] ?? '') ?: strtoupper($code);
-    $url = component_string($language['url'] ?? '');
+    $item_label = theme_string($language['label'] ?? '') ?: strtoupper($code);
+    $url = theme_string($language['url'] ?? '');
 
     $url = esc_url($url);
     if ($item_label === '' || $url === '') continue;
