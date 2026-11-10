@@ -93,15 +93,15 @@ try {
     document.body.append(breakpointsRoot);
     const destroyBreakpoints = initStyleguide(breakpointsRoot);
     assert(breakpointsRoot.querySelector('.is-active').textContent === 'sm', 'current breakpoint is highlighted');
-    assert(!indicator.hidden && indicator.querySelector('[data-breakpoint-name]').textContent === 'sm' && indicator.querySelector('[data-breakpoint-range]').textContent === '576–767 px', 'floating indicator shows current breakpoint and range');
+    assert(!indicator.hidden && indicator.querySelector('[data-breakpoint-name]').textContent === 'breakpoint-sm' && indicator.querySelector('[data-breakpoint-range]').textContent === '576–767 px', 'floating indicator shows current breakpoint and range');
     Object.defineProperty(window, 'innerWidth', { configurable: true, value: 900 });
     window.dispatchEvent(new Event('resize'));
     assert(breakpointsRoot.querySelector('.is-active').textContent === 'md', 'breakpoint follows resize');
     assert(breakpointsRoot.querySelector('[data-styleguide-viewport]').textContent === '900 px', 'viewport width is displayed');
-    assert(indicator.querySelector('[data-breakpoint-name]').textContent === 'md', 'floating indicator follows resize');
+    assert(indicator.querySelector('[data-breakpoint-name]').textContent === 'breakpoint-md', 'floating indicator follows resize');
     Object.defineProperty(window, 'innerWidth', { configurable: true, value: 400 });
     window.dispatchEvent(new Event('resize'));
-    assert(indicator.querySelector('[data-breakpoint-name]').textContent === 'Sous sm' && indicator.querySelector('[data-breakpoint-range]').textContent === '< 576 px', 'floating indicator handles widths below first breakpoint');
+    assert(indicator.querySelector('[data-breakpoint-name]').textContent === 'Sous breakpoint-sm' && indicator.querySelector('[data-breakpoint-range]').textContent === '< 576 px', 'floating indicator handles widths below first breakpoint');
     destroyBreakpoints(); breakpointsRoot.remove();
     Object.defineProperty(window, 'innerWidth', widthDescriptor);
     const anchorRoot = document.createElement('div');

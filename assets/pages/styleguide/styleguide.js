@@ -20,7 +20,7 @@ export default function initStyleguide(root) {
             const index = points.findLastIndex(point => window.innerWidth >= point.width);
             const current = points[index];
             const next = points[index + 1];
-            node.querySelector('[data-breakpoint-name]').textContent = current ? current.name : `Sous ${points[0].name}`;
+            node.querySelector('[data-breakpoint-name]').textContent = current ? `breakpoint-${current.name}` : `Sous breakpoint-${points[0].name}`;
             node.querySelector('[data-breakpoint-range]').textContent = !current
                 ? `< ${points[0].width} px`
                 : next ? `${current.width}–${next.width - 1} px` : `≥ ${current.width} px`;

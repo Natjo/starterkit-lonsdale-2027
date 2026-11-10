@@ -135,7 +135,6 @@ get_header();
     <?php if ($styleguide_breakpoints !== []) : ?>
         <aside class="styleguide-breakpoint-indicator" aria-label="Breakpoint actuel"
                data-styleguide-breakpoint data-breakpoints="<?= esc_attr(wp_json_encode($styleguide_breakpoints)) ?>" hidden>
-            <span class="styleguide-breakpoint-label">Breakpoint actuel</span>
             <strong data-breakpoint-name></strong>
             <span data-breakpoint-range></span>
             <span data-styleguide-viewport></span>
