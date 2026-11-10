@@ -150,6 +150,41 @@
     width: calc(100% - 4rem);
 }
 
+.styleguide-nav--search {
+    grid-template-columns: 10rem minmax(0, 1fr);
+}
+
+.styleguide-search {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: 3.6rem;
+    padding: .6rem 1rem;
+    border: 1px solid var(--sg-border);
+    border-radius: .6rem;
+    background: var(--sg-surface);
+    color: var(--sg-text);
+    font: inherit;
+    font-size: 1.2rem;
+}
+
+.styleguide-search:focus-visible {
+    outline: 2px solid var(--sg-accent);
+    outline-offset: 2px;
+}
+
+.styleguide-section[hidden],
+.styleguide-nav li[hidden],
+.styleguide-empty[hidden] {
+    display: none;
+}
+
+.styleguide-empty {
+    margin-inline: auto;
+    width: min(calc(100% - 4rem), var(--sg-width));
+    color: var(--sg-muted);
+}
+
 .styleguide-nav-label {
     color: var(--sg-muted);
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -165,8 +200,34 @@
     padding: 0 0 .2rem;
     overflow-x: auto;
     list-style: none;
-    scrollbar-color: var(--sg-border-strong) transparent;
-    scrollbar-width: thin;
+    scrollbar-width: none;
+    cursor: grab;
+    overscroll-behavior-x: contain;
+    --fade-start: 0px;
+    --fade-end: 0px;
+    mask-image: linear-gradient(to right, transparent, #000 var(--fade-start), #000 calc(100% - var(--fade-end)), transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--fade-start), #000 calc(100% - var(--fade-end)), transparent);
+}
+
+.styleguide-nav ul.has-overflow-start {
+    --fade-start: 2.4rem;
+}
+
+.styleguide-nav ul.has-overflow-end {
+    --fade-end: 2.4rem;
+}
+
+.styleguide-nav ul::-webkit-scrollbar {
+    display: none;
+}
+
+.styleguide-nav ul.is-dragging {
+    cursor: grabbing;
+    user-select: none;
+}
+
+.styleguide-nav ul.is-dragging a {
+    cursor: grabbing;
 }
 
 .styleguide-nav li {
@@ -247,6 +308,196 @@
     display: grid;
     gap: 2rem;
     min-width: 0;
+}
+
+.styleguide--heros .st-components,
+.styleguide--strates .st-components {
+    width: 100%;
+    gap: 10rem;
+}
+
+.styleguide--heros .styleguide-section,
+.styleguide--strates .styleguide-section {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+}
+
+.styleguide--heros .styleguide-section-title,
+.styleguide--strates .styleguide-section-title,
+.styleguide--strates .styleguide-note {
+    padding-inline: var(--ctr-offset, 1.6rem);
+}
+
+.styleguide-hero-preview,
+.styleguide-strate-preview {
+    background-color: #fff;
+    min-width: 0;
+    border-top: 1px solid var(--sg-border);
+      border-bottom: 1px solid var(--sg-border);
+}
+
+.styleguide-strate-preview {
+    padding-top: 4rem;
+}
+
+.styleguide-strate-toolbar {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    padding-inline: var(--ctr-offset, 1.6rem);
+}
+
+.styleguide-strate-toolbar .styleguide-section-title {
+    display: flex;
+    align-self: center;
+    align-items: center;
+    padding: 0;
+}
+
+.styleguide-strate-menu {
+    display: flex;
+    align-self: stretch;
+}
+
+.styleguide-strate-menu button {
+    padding: .6rem 1rem;
+    border: 1px solid var(--sg-border);
+    border-radius: .4rem;
+    background: var(--sg-surface);
+    color: var(--sg-text);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.styleguide-strate-menu button {
+    position: relative;
+    border-radius: .4rem .4rem 0 0;
+    background: var(--sg-surface-soft);
+}
+
+.styleguide-strate-menu button + button {
+    margin-left: -1px;
+}
+
+.styleguide-strate-menu button[aria-expanded="true"] {
+    z-index: 31;
+    border-bottom-color: var(--sg-surface);
+    color: var(--sg-accent);
+    background: var(--sg-surface);
+}
+
+.styleguide-strate-toolbar button:focus-visible {
+    outline: 2px solid var(--sg-accent);
+    outline-offset: 2px;
+}
+
+.styleguide-strate-panel {
+    position: absolute;
+    top: calc(100% - 1px);
+    left: var(--ctr-offset, 1.6rem);
+    z-index: 30;
+    width: min(80rem, calc(100% - 2 * var(--ctr-offset, 1.6rem)));
+    max-height: min(65vh, 60rem);
+    overflow: auto;
+    overscroll-behavior: contain;
+    padding: 2rem;
+    border: 1px solid var(--sg-border);
+    border-radius: .6rem;
+    background: var(--sg-surface);
+    box-shadow: 0 1rem 4rem rgb(0 0 0 / .15);
+}
+
+.styleguide--strates:has(.styleguide-strate-panel:not([hidden])) {
+    overflow-y: visible;
+}
+
+.styleguide-strate-panel[data-styleguide-panel="readme"] {
+    max-height: var(--styleguide-panel-height, calc(100dvh - 2rem));
+}
+
+.styleguide-strate-panel[hidden] {
+    display: none;
+}
+
+.styleguide-strate-options {
+    min-width: 0;
+}
+
+.styleguide-strate-options-group + .styleguide-strate-options-group {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--sg-border);
+}
+
+.styleguide-strate-options-group h3 {
+    margin: 0 0 1.2rem;
+    color: var(--sg-text);
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.styleguide-strate-options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    gap: 1.6rem;
+}
+
+.styleguide-strate-control {
+    display: grid;
+    align-content: start;
+    gap: .6rem;
+    min-width: 0;
+    color: var(--sg-text);
+    font-size: 1.2rem;
+}
+
+.styleguide-strate-control select {
+    width: 100%;
+    min-width: 0;
+    min-height: 3.6rem;
+    padding: .6rem .8rem;
+    border: 1px solid var(--sg-border);
+    border-radius: .4rem;
+    background: var(--sg-surface);
+    color: inherit;
+    font: inherit;
+}
+
+.styleguide-strate-control input[type="checkbox"] {
+    width: 2rem;
+    height: 2rem;
+    accent-color: var(--sg-accent);
+}
+
+.styleguide-strate-control.is-disabled {
+    opacity: .45;
+}
+
+.styleguide-strate-options-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.6rem;
+    font-size: 1.2rem;
+}
+
+.styleguide-strate-options-actions button {
+    padding: .6rem 1rem;
+    border: 1px solid var(--sg-border);
+    border-radius: .4rem;
+    background: var(--sg-surface);
+    color: var(--sg-text);
+    cursor: pointer;
+}
+
+.styleguide-strate-options :is(input, select, button):focus-visible {
+    outline: 2px solid var(--sg-accent);
+    outline-offset: 2px;
 }
 
 .styleguide-readme {
@@ -883,6 +1134,47 @@
     }
 }
 
+/* Shared palette for the breakpoint rows and fixed indicator. */
+.styleguide [data-breakpoint="xs"] {
+    --breakpoint-bg: #fce4ec;
+    --breakpoint-ink: #881337;
+}
+
+.styleguide [data-breakpoint="sm"] {
+    --breakpoint-bg: #ffb38a;
+    --breakpoint-ink: #9a3412;
+}
+
+.styleguide [data-breakpoint="md"] {
+    --breakpoint-bg: #fff176;
+    --breakpoint-ink: #854d0e;
+}
+
+.styleguide [data-breakpoint="lg"] {
+    --breakpoint-bg: #dcfce7;
+    --breakpoint-ink: #166534;
+}
+
+.styleguide [data-breakpoint="xlg"] {
+    --breakpoint-bg: #ccfbf1;
+    --breakpoint-ink: #115e59;
+}
+
+.styleguide [data-breakpoint="wd"] {
+    --breakpoint-bg: #dbeafe;
+    --breakpoint-ink: #1e40af;
+}
+
+.styleguide [data-breakpoint="xwd"] {
+    --breakpoint-bg: #ede9fe;
+    --breakpoint-ink: #5b21b6;
+}
+
+.styleguide [data-breakpoint="xlgwd"] {
+    --breakpoint-bg: #fae8ff;
+    --breakpoint-ink: #86198f;
+}
+
 .styleguide-breakpoints-scroll {
     max-width: 100%;
     min-width: 0;
@@ -919,8 +1211,8 @@
 }
 
 .styleguide-breakpoints .is-active {
-    color: var(--sg-accent);
-    background: color-mix(in srgb, var(--sg-accent) 8%, white);
+    color: var(--breakpoint-ink, var(--sg-text));
+    background: color-mix(in srgb, var(--breakpoint-bg, var(--sg-surface)) 40%, transparent);
 }
 
 .styleguide-breakpoint-indicator {
@@ -935,11 +1227,11 @@
     padding: 1.2rem 1.6rem;
     border: 1px solid var(--sg-border);
     border-radius: .8rem;
-    background: color-mix(in srgb, var(--sg-surface) 76%, transparent);
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
+    background: color-mix(in srgb, var(--breakpoint-bg, #f1f5f9) 40%, transparent);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
     box-shadow: 0 .4rem 2rem rgb(0 0 0 / .1);
-    color: var(--sg-text);
+    color: var(--breakpoint-ink, #334155);
     font-size: 1.2rem;
     line-height: 1.5;
 }
@@ -950,19 +1242,19 @@
 
 .styleguide-breakpoint-label {
     align-self: baseline;
-    color: var(--sg-muted);
+    color: inherit;
 }
 
 .styleguide-breakpoint-indicator strong {
     align-self: baseline;
-    color: var(--sg-accent);
+    color: inherit;
     font-size: 1.6rem;
     font-weight: 600;
 }
 
 .styleguide-breakpoint-indicator [data-styleguide-viewport] {
     grid-column: 1 / -1;
-    color: var(--sg-muted);
+    color: #000;
 }
 
 .styleguide-breakpoint-indicator [data-breakpoint-range] {

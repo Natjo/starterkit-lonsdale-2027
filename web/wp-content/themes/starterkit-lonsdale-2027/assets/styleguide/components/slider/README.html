@@ -213,7 +213,13 @@ ou à sa destruction.</p>
 <p>Le drag suit le pointeur. Au relâchement, l’animation rejoint la page suivante
 ou précédente sans déplacement brutal. Un changement rapide de direction
 conserve la position, et les liens restent cliquables tant qu’aucun swipe réel
-n’a eu lieu.</p>
+n’a eu lieu. Les positions restent cohérentes dans un conteneur positionné
+(<code>position: relative</code>, par exemple). Le tactile et le trackpad conservent leur
+scroll natif ; leur relâchement ne déclenche pas l’animation du drag souris.
+Les clics successifs sur les flèches partent de la destination demandée, même
+pendant l’animation. Un relâchement hors de la piste, une annulation ou une perte
+de focus libère le geste ; les liens restent activables au clavier. Le scroll
+au tactile ou à la molette interrompt une animation en cours.</p>
 <pre><code class="language-js hljs"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Slider</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./slider&quot;</span>;
 
 <span class="hljs-keyword">const</span> slider = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Slider</span>(element);
@@ -225,7 +231,16 @@ slider.<span class="hljs-title function_">slideTo</span>(<span class="hljs-numbe
 slider.<span class="hljs-title function_">remove</span>();</code></pre>
 <p>Les index correspondent aux pages de scroll, pas nécessairement aux items.
 <code>remove()</code> débranche les listeners, observers, frames et contenus générés.
+<code>slideTo()</code> est sans effet avant <code>add()</code> ou après <code>remove()</code>. Un nouvel <code>add()</code>
+réactive l’instance. Les contrôles ne sont réécrits que lorsque la page active ou
+la géométrie change.
 <code>prefers-reduced-motion</code> désactive le scroll animé.</p>
+<p>Les dimensions et les positions sont mémorisées à la mesure, puis recalculées
+lorsqu’un conteneur ou une slide change de taille. Les positions sont triées et
+dédupliquées en un passage ; la page la plus proche est trouvée par recherche
+binaire. La timeline suit une seule boucle pendant l’animation et n’est réécrite
+que si sa progression change. Les écouteurs globaux du pointeur existent
+uniquement pendant un geste et sont retirés au relâchement ou à la destruction.</p>
 <h5>Accessibilité</h5>
 <ul>
 <li>La racine est une région avec <code>aria-roledescription=&quot;carousel&quot;</code>.</li>
@@ -243,3 +258,9 @@ slider.<span class="hljs-title function_">remove</span>();</code></pre>
 <li><code>card()</code> en mode card ;</li>
 <li><code>component_classes()</code>, <code>component_attributes()</code> et <code>wp_kses_post()</code>.</li>
 </ul>
+<h5>Vérification navigateur</h5>
+<pre><code class="language-bash hljs">node web/wp-content/themes/starterkit-lonsdale-2027/tests/slider-browser-contract.mjs</code></pre>
+<p>Le contrat couvre le drag, les relâchements hors piste, les gestes annulés,
+les clics rapides, le clavier, le remontage et les changements de largeur. Il
+vérifie aussi les écouteurs temporaires, l’absence de lectures des dimensions
+pendant l’animation et les écritures de progression limitées aux changements.</p>

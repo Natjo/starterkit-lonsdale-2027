@@ -124,7 +124,7 @@
                                 $width = (int) $breakpoint['width'];
                                 $next = isset($breakpoints[$index + 1]) ? (int) $breakpoints[$index + 1]['width'] : null;
                             ?>
-                                <tr data-breakpoint-min="<?= $width ?>"<?= $next !== null ? ' data-breakpoint-max="' . ($next - 1) . '"' : '' ?>>
+                                <tr data-breakpoint="<?= esc_attr($breakpoint['name']) ?>" data-breakpoint-min="<?= $width ?>"<?= $next !== null ? ' data-breakpoint-max="' . ($next - 1) . '"' : '' ?>>
                                     <th scope="row"><code>$breakpoint-<?= esc_html($breakpoint['name']) ?></code></th>
                                     <td><?= $width ?> px</td>
                                     <td><code>min-width: <?= $width ?>px</code></td>

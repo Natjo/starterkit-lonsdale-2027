@@ -15,6 +15,7 @@ $styleguide_families = [
 $styleguide_family = isset($styleguide_family) && isset($styleguide_families[$styleguide_family]) ? $styleguide_family : 'components';
 $family = $styleguide_families[$styleguide_family];
 $show_readme = in_array($styleguide_family, ['components', 'cards'], true);
+if ($styleguide_family === 'strates') require_once __DIR__ . '/strate-options.php';
 $styleguide_css_path = __DIR__ . '/styleguide.css';
 wp_enqueue_style('theme-styleguide', get_template_directory_uri() . '/inc/front/styleguide/styleguide.css', [], (string) filemtime($styleguide_css_path));
 
@@ -74,7 +75,7 @@ $styleguide_breakpoints = is_readable($breakpoints_path) ? json_decode(file_get_
 $styleguide_breakpoints = is_array($styleguide_breakpoints) ? $styleguide_breakpoints : [];
 get_header();
 ?>
-<main class="styleguide" id="main-content" data-module="pages/styleguide">
+<main class="styleguide<?= match ($styleguide_family) { 'heros' => ' styleguide--heros', 'strates' => ' styleguide--strates', default => '' } ?>" id="main-content" data-module="pages/styleguide">
     <header class="styleguide-intro">
         <p class="styleguide-kicker"><span>Design system</span><span><?= count($styleguide_sections) ?> exemples</span></p>
         <h1>Styleguide — <?= esc_html($family['label']) ?></h1>
@@ -88,7 +89,8 @@ get_header();
             <?php endforeach; ?>
         </nav>
     </header>
-    <nav class="styleguide-nav" aria-label="Sommaire des exemples">
+    <nav class="styleguide-nav styleguide-nav--search" aria-label="Sommaire des exemples">
+        <input class="styleguide-search" type="search" data-styleguide-search aria-label="Rechercher un exemple" placeholder="Rechercher" autocomplete="off">
         <ul role="list">
             <?php foreach ($styleguide_sections as $slug => $label) :
                 $prefix = match ($styleguide_family) { 'components' => 'component-', 'cards' => 'card-', 'strates' => 'strate-', 'heros' => 'hero-', 'styles' => 'style-' };
@@ -97,6 +99,7 @@ get_header();
             <?php endforeach; ?>
         </ul>
     </nav>
+    <p class="styleguide-empty" data-styleguide-empty role="status" hidden>Aucun exemple trouvé.</p>
     <?php if ($styleguide_family === 'styles') : ?>
         <?php require __DIR__ . '/demos-styles.php'; ?>
     <?php elseif ($styleguide_family === 'components') : ?>
@@ -108,8 +111,28 @@ get_header();
             ?>
                 <section class="styleguide-section <?= $show_readme ? 'styleguide-section--component' : 'styleguide-section--full' ?>" id="<?= esc_attr($module) ?>">
                     <div class="styleguide-demo">
+                        <?php if ($styleguide_family === 'strates') : ?>
+                        <div class="styleguide-strate-toolbar" data-styleguide-strate-tools>
+                        <?php endif; ?>
                         <h2 class="styleguide-section-title"><code><?= esc_html($module) ?></code></h2>
-                        <div class="styleguide-preview styleguide-preview--layout">
+                        <?php if ($styleguide_family === 'strates') : ?>
+                            <div class="styleguide-strate-menu" role="group" aria-label="Options et documentation de <?= esc_attr($module) ?>">
+                                <?php foreach (['options' => 'Options', 'readme' => 'README'] as $panel => $label) : ?>
+                                    <button type="button" id="toggle-panel-<?= esc_attr($panel . '-' . $module) ?>" data-styleguide-panel-toggle aria-expanded="false" aria-controls="panel-<?= esc_attr($panel . '-' . $module) ?>"><?= esc_html($label) ?></button>
+                                <?php endforeach; ?>
+                            </div>
+                            <?php foreach (['options', 'readme'] as $panel) : ?>
+                                <div class="styleguide-strate-panel" id="panel-<?= esc_attr($panel . '-' . $module) ?>" data-styleguide-panel="<?= esc_attr($panel) ?>" data-lenis-prevent role="region" aria-labelledby="toggle-panel-<?= esc_attr($panel . '-' . $module) ?>" tabindex="-1" hidden>
+                                    <?php if ($panel === 'options') : ?>
+                                        <?php theme_styleguide_strate_options($module, $payload); ?>
+                                    <?php else : ?>
+                                        <div class="styleguide-readme"><?= theme_styleguide_readme($module, $styleguide_family) ?></div>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <?php endif; ?>
+                        <div class="<?= match ($styleguide_family) { 'heros' => 'styleguide-hero-preview', 'strates' => 'styleguide-strate-preview', default => 'styleguide-preview styleguide-preview--layout' } ?>">
                             <?php
                             switch ($styleguide_family) {
                                 case 'cards': card($name, $payload); break;

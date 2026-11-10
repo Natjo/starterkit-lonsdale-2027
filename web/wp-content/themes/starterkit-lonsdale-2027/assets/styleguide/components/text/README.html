@@ -76,3 +76,11 @@ alignées en haut à gauche, et des en-têtes en gras.</p>
 <li><code>component_attributes()</code> ;</li>
 <li><code>wp_kses_post()</code>.</li>
 </ul>
+<h5>Dépendance de l’éditeur WordPress</h5>
+<p><code>.rte</code> et le format <code>.intro</code> sont définis dans <code>assets/components/text/text.scss</code>.
+Le CSS du WYSIWYG importe ce fichier et est compilé pour chaque site : le
+manifeste active donc <code>text</code> en permanence. Il n’existe pas de SCSS distinct
+pour Intro. Forge conserve le composant <code>text</code> lors du nettoyage.</p>
+<p>Le composant <code>intro</code> a été retiré. Pour une introduction éditoriale, utiliser
+<code>component(&#39;text&#39;, [&#39;text&#39; =&gt; $text, &#39;classes&#39; =&gt; &#39;intro&#39;])</code>. La strate <code>intro</code>
+et le format Intro du WYSIWYG restent disponibles.</p>

@@ -158,7 +158,13 @@ ou à sa destruction.
 Le drag suit le pointeur. Au relâchement, l’animation rejoint la page suivante
 ou précédente sans déplacement brutal. Un changement rapide de direction
 conserve la position, et les liens restent cliquables tant qu’aucun swipe réel
-n’a eu lieu.
+n’a eu lieu. Les positions restent cohérentes dans un conteneur positionné
+(`position: relative`, par exemple). Le tactile et le trackpad conservent leur
+scroll natif ; leur relâchement ne déclenche pas l’animation du drag souris.
+Les clics successifs sur les flèches partent de la destination demandée, même
+pendant l’animation. Un relâchement hors de la piste, une annulation ou une perte
+de focus libère le geste ; les liens restent activables au clavier. Le scroll
+au tactile ou à la molette interrompt une animation en cours.
 
 ```js
 import { Slider } from "./slider";
@@ -174,7 +180,17 @@ slider.remove();
 
 Les index correspondent aux pages de scroll, pas nécessairement aux items.
 `remove()` débranche les listeners, observers, frames et contenus générés.
+`slideTo()` est sans effet avant `add()` ou après `remove()`. Un nouvel `add()`
+réactive l’instance. Les contrôles ne sont réécrits que lorsque la page active ou
+la géométrie change.
 `prefers-reduced-motion` désactive le scroll animé.
+
+Les dimensions et les positions sont mémorisées à la mesure, puis recalculées
+lorsqu’un conteneur ou une slide change de taille. Les positions sont triées et
+dédupliquées en un passage ; la page la plus proche est trouvée par recherche
+binaire. La timeline suit une seule boucle pendant l’animation et n’est réécrite
+que si sa progression change. Les écouteurs globaux du pointeur existent
+uniquement pendant un geste et sont retirés au relâchement ou à la destruction.
 
 ## Accessibilité
 
@@ -192,3 +208,14 @@ Les index correspondent aux pages de scroll, pas nécessairement aux items.
 - `assets/components/slider/slider.scss` ;
 - `card()` en mode card ;
 - `component_classes()`, `component_attributes()` et `wp_kses_post()`.
+
+## Vérification navigateur
+
+```bash
+node web/wp-content/themes/starterkit-lonsdale-2027/tests/slider-browser-contract.mjs
+```
+
+Le contrat couvre le drag, les relâchements hors piste, les gestes annulés,
+les clics rapides, le clavier, le remontage et les changements de largeur. Il
+vérifie aussi les écouteurs temporaires, l’absence de lectures des dimensions
+pendant l’animation et les écritures de progression limitées aux changements.

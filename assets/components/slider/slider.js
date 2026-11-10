@@ -29,9 +29,12 @@ function Slider(root) {
     const state = {
         active: false,
         controller: null,
+        gestureController: null,
         resizeObserver: null,
         index: 0,
         targets: [0],
+        maximum: 0,
+        timelineProgress: null,
         itemPages: items.map(() => 0),
         dots: [],
         paginationSize: 0,
@@ -57,25 +60,30 @@ function Slider(root) {
     const maxIndex = () => Math.max(0, state.targets.length - 1);
 
     const nearestPage = (position) => {
-        let nearest = 0;
-        let distance = Infinity;
-
-        state.targets.forEach((target, index) => {
-            const nextDistance = Math.abs(target - position);
-            if (nextDistance < distance) {
-                nearest = index;
-                distance = nextDistance;
-            }
-        });
-
-        return nearest;
+        let low = 0;
+        let high = state.targets.length - 1;
+        while (low < high) {
+            const middle = Math.floor((low + high) / 2);
+            if (state.targets[middle] < position) low = middle + 1;
+            else high = middle;
+        }
+        return low > 0 && position - state.targets[low - 1] <= state.targets[low] - position
+            ? low - 1
+            : low;
     };
 
-    const updateTimeline = () => {
+    const updateTimeline = (position) => {
         if (!timeline) return;
-        const maximum = Math.max(0, content.scrollWidth - content.clientWidth);
-        const progress = maximum === 0 ? 1 : clamp(content.scrollLeft / maximum, 0, 1);
+        const progress = state.maximum === 0 ? 1 : clamp(position / state.maximum, 0, 1);
+        if (progress === state.timelineProgress) return;
+        state.timelineProgress = progress;
         timeline.style.setProperty("--slider-progress", String(progress));
+    };
+
+    const setSnapLocked = (locked) => {
+        content.classList.toggle("is-snapping", locked);
+        if (locked) content.style.setProperty("scroll-snap-type", "none");
+        else content.style.removeProperty("scroll-snap-type");
     };
 
     const updateControls = () => {
@@ -106,15 +114,14 @@ function Slider(root) {
         }, 120);
     };
 
-    const setIndex = (index, { notify = true, announceChange = true } = {}) => {
+    const setIndex = (index, { notify = true, announceChange = true, forceControls = false } = {}) => {
         const nextIndex = clamp(index, 0, maxIndex());
         const changed = nextIndex !== state.index;
         state.index = nextIndex;
-        updateControls();
+        if (changed || forceControls) updateControls();
 
         if (changed && notify) {
-            const maximum = Math.max(1, content.scrollWidth - content.clientWidth);
-            api.onchange(state.index, maxIndex(), clamp(content.scrollLeft * 100 / maximum, 0, 100));
+            api.onchange(state.index, maxIndex(), clamp(content.scrollLeft * 100 / Math.max(1, state.maximum), 0, 100));
         }
         if (changed && announceChange) announce();
     };
@@ -150,21 +157,28 @@ function Slider(root) {
         root.style.setProperty("--right", `${right}px`);
 
         const maximum = Math.max(0, content.scrollWidth - content.clientWidth);
-        const rawTargets = items.map((item) => clamp(item.offsetLeft - left, 0, maximum));
+        state.maximum = maximum;
+        const position = content.scrollLeft;
+        // Compare viewport coordinates: offsetLeft depends on the nearest positioned
+        // ancestor, which may differ between a page and the component catalogue.
+        const contentLeft = content.getBoundingClientRect().left + content.clientLeft;
+        const rawTargets = items.map((item) => clamp(
+            item.getBoundingClientRect().left - contentLeft + position - left,
+            0,
+            maximum,
+        ));
         const targets = [];
-        rawTargets.forEach((target) => {
-            if (targets.every((existing) => Math.abs(existing - target) > 1)) targets.push(target);
-        });
-        if (targets.length === 0) targets.push(0);
-        if (maximum > 1 && targets.every((target) => Math.abs(target - maximum) > 1)) targets.push(maximum);
+        for (const target of [...rawTargets, maximum].sort((a, b) => a - b)) {
+            if (targets.length === 0 || target - targets[targets.length - 1] > 1) targets.push(target);
+        }
 
-        state.targets = targets.sort((a, b) => a - b);
+        state.targets = targets;
         state.itemPages = rawTargets.map((target) => nearestPage(target));
         state.disabled = maximum <= 1 || state.targets.length <= 1;
         root.classList.toggle("disable", state.disabled);
         buildPagination();
-        setIndex(nearestPage(content.scrollLeft), { notify: false, announceChange: false });
-        updateTimeline();
+        setIndex(nearestPage(position), { notify: false, announceChange: false, forceControls: true });
+        updateTimeline(position);
     };
 
     const requestMeasure = () => {
@@ -180,20 +194,16 @@ function Slider(root) {
         state.animationFrame = 0;
         state.animating = false;
         if (!keepSnapLock) {
-            content.classList.remove("is-snapping");
-            content.style.removeProperty("scroll-snap-type");
+            setSnapLocked(false);
         }
     };
 
-    const scrollToPage = (index, behavior = reducedMotion.matches ? "auto" : "smooth") => {
-        stopReleaseAnimation();
-        setIndex(index, { notify: true, announceChange: true });
-        content.scrollTo({ left: state.targets[state.index] || 0, behavior });
-    };
-
-    const animateToPage = (index) => {
+    const scrollToPage = (index) => {
+        if (!state.active) return;
         stopReleaseAnimation({ keepSnapLock: true });
         setIndex(index, { notify: true, announceChange: true });
+        // An onchange callback may remove the slider.
+        if (!state.active) return;
 
         const start = content.scrollLeft;
         const end = state.targets[state.index] || 0;
@@ -201,17 +211,15 @@ function Slider(root) {
 
         if (reducedMotion.matches || Math.abs(distance) < 1) {
             content.scrollLeft = end;
-            content.classList.remove("is-snapping");
-            content.style.removeProperty("scroll-snap-type");
-            updateTimeline();
+            setSnapLocked(false);
+            updateTimeline(end);
             return;
         }
 
         const duration = 800;
         let startedAt = null;
         state.animating = true;
-        content.classList.add("is-snapping");
-        content.style.setProperty("scroll-snap-type", "none");
+        setSnapLocked(true);
 
         const step = (timestamp) => {
             if (!state.animating) return;
@@ -219,8 +227,9 @@ function Slider(root) {
 
             const progress = clamp((timestamp - startedAt) / duration, 0, 1);
             const eased = 1 - Math.pow(1 - progress, 5);
-            content.scrollLeft = start + distance * eased;
-            updateTimeline();
+            const position = start + distance * eased;
+            content.scrollLeft = position;
+            updateTimeline(position);
 
             if (progress < 1) {
                 state.animationFrame = window.requestAnimationFrame(step);
@@ -230,19 +239,20 @@ function Slider(root) {
             content.scrollLeft = end;
             state.animationFrame = 0;
             state.animating = false;
-            content.classList.remove("is-snapping");
-            content.style.removeProperty("scroll-snap-type");
+            setSnapLocked(false);
         };
 
         state.animationFrame = window.requestAnimationFrame(step);
     };
 
     const onScroll = () => {
-        if (state.scrollFrame) return;
+        if (state.animating || state.scrollFrame) return;
         state.scrollFrame = window.requestAnimationFrame(() => {
             state.scrollFrame = 0;
-            if (!state.animating) setIndex(nearestPage(content.scrollLeft));
-            updateTimeline();
+            if (!state.active || state.animating) return;
+            const position = content.scrollLeft;
+            setIndex(nearestPage(position));
+            updateTimeline(position);
         });
     };
 
@@ -277,18 +287,22 @@ function Slider(root) {
     };
 
     const endDrag = (event) => {
-        if (event && state.pointerId !== null && event.pointerId !== state.pointerId) return;
+        // Touch/trackpad scrolling is native. Ignore releases without an active
+        // mouse gesture, including a second pointerup after an early release.
+        if (state.pointerId === null || (event && event.pointerId !== state.pointerId)) return;
 
+        state.gestureController?.abort();
+        state.gestureController = null;
         const pointerId = state.pointerId;
         const wasDragging = state.dragging;
+        const cancelled = !event || event.type === "pointercancel" || event.type === "lostpointercapture";
         state.pointerId = null;
         state.dragging = false;
 
         // Conserver le snap désactivé sans aucune frame intermédiaire : sinon
         // le navigateur rejoint brutalement une position avant l'animation RAF.
         if (wasDragging) {
-            content.classList.add("is-snapping");
-            content.style.setProperty("scroll-snap-type", "none");
+            setSnapLocked(true);
         }
         content.classList.remove("is-dragging");
 
@@ -297,17 +311,17 @@ function Slider(root) {
         }
 
         if (wasDragging) {
-            state.suppressClick = true;
+            state.suppressClick = !cancelled;
             const movement = content.scrollLeft - state.dragStartScroll;
             const direction = movement > 0 ? 1 : movement < 0 ? -1 : 0;
-            const destination = direction === 0
+            const destination = cancelled || direction === 0
                 ? nearestPage(content.scrollLeft)
                 : state.dragStartPage + direction;
-            animateToPage(destination);
+            scrollToPage(destination);
         } else {
             // Un clic peut interrompre une animation : reprendre sa destination
             // évite de laisser le slider entre deux pages.
-            animateToPage(state.dragStartPage);
+            scrollToPage(state.dragStartPage);
         }
     };
 
@@ -320,7 +334,6 @@ function Slider(root) {
         if (!state.dragging) {
             state.dragging = true;
             content.classList.add("is-dragging");
-            content.style.setProperty("scroll-snap-type", "none");
             content.setPointerCapture?.(event.pointerId);
         }
         if (event.cancelable) event.preventDefault();
@@ -328,28 +341,42 @@ function Slider(root) {
     };
 
     const onPointerDown = (event) => {
-        if (event.pointerType !== "mouse" || event.button !== 0 || state.disabled) return;
+        state.suppressClick = false;
+        if (event.pointerType !== "mouse") {
+            if (state.animating) stopReleaseAnimation();
+            return;
+        }
+        if (event.button !== 0 || state.disabled || state.pointerId !== null) return;
         const startPage = state.animating ? state.index : nearestPage(content.scrollLeft);
 
         // Ne jamais réactiver le snap entre une animation interrompue et le
         // nouveau geste, sous peine de perdre la position intermédiaire.
-        content.classList.add("is-snapping");
-        content.style.setProperty("scroll-snap-type", "none");
+        setSnapLocked(true);
         stopReleaseAnimation({ keepSnapLock: true });
         state.pointerId = event.pointerId;
         state.dragStartX = event.clientX;
         state.dragStartScroll = content.scrollLeft;
         state.dragStartPage = startPage;
         state.dragging = false;
+
+        // Listen globally only for this gesture, including a release outside the track.
+        state.gestureController = new AbortController();
+        const { signal } = state.gestureController;
+        window.addEventListener("pointermove", onPointerMove, { signal, passive: false });
+        window.addEventListener("pointerup", endDrag, { signal });
+        window.addEventListener("pointercancel", endDrag, { signal });
+        window.addEventListener("blur", () => endDrag(), { signal });
+        content.addEventListener("lostpointercapture", endDrag, { signal });
     };
 
     const onDragStart = (event) => event.preventDefault();
 
     const onClickCapture = (event) => {
         if (!state.suppressClick) return;
+        state.suppressClick = false;
+        if (event.detail === 0) return;
         event.preventDefault();
         event.stopPropagation();
-        state.suppressClick = false;
     };
 
     const onPaginationClick = (event) => {
@@ -373,9 +400,9 @@ function Slider(root) {
         content.addEventListener("keydown", onKeyDown, { signal });
         content.addEventListener("focusin", onFocusIn, { signal });
         content.addEventListener("pointerdown", onPointerDown, { signal });
-        content.addEventListener("pointermove", onPointerMove, { signal });
-        content.addEventListener("pointerup", endDrag, { signal });
-        content.addEventListener("pointercancel", endDrag, { signal });
+        content.addEventListener("wheel", () => {
+            if (state.animating) stopReleaseAnimation();
+        }, { signal, passive: true });
         content.addEventListener("dragstart", onDragStart, { signal });
         content.addEventListener("click", onClickCapture, { capture: true, signal });
 
@@ -383,6 +410,8 @@ function Slider(root) {
             state.resizeObserver = new ResizeObserver(requestMeasure);
             state.resizeObserver.observe(wrapper || root);
             state.resizeObserver.observe(content);
+            // Item widths may change without resizing the track (for example --nb).
+            items.forEach((item) => state.resizeObserver.observe(item));
         } else {
             window.addEventListener("resize", requestMeasure, { passive: true, signal });
         }
@@ -395,6 +424,8 @@ function Slider(root) {
         if (!state.active) return;
         state.active = false;
         state.controller?.abort();
+        state.gestureController?.abort();
+        state.gestureController = null;
         state.resizeObserver?.disconnect();
         if (state.pointerId !== null && content.hasPointerCapture?.(state.pointerId)) {
             content.releasePointerCapture(state.pointerId);
@@ -402,8 +433,8 @@ function Slider(root) {
         state.pointerId = null;
         state.dragging = false;
         state.suppressClick = false;
-        content.classList.remove("is-dragging", "is-snapping");
-        content.style.removeProperty("scroll-snap-type");
+        content.classList.remove("is-dragging");
+        setSnapLocked(false);
         window.cancelAnimationFrame(state.scrollFrame);
         window.cancelAnimationFrame(state.resizeFrame);
         window.cancelAnimationFrame(state.animationFrame);
@@ -411,6 +442,7 @@ function Slider(root) {
         pagination?.replaceChildren();
         if (status) status.textContent = "";
         timeline?.style.removeProperty("--slider-progress");
+        state.timelineProgress = null;
         root.style.removeProperty("--left");
         root.style.removeProperty("--right");
         root.classList.remove("disable");
