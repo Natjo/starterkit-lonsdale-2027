@@ -1,0 +1,39 @@
+<h4>Card <code>card-team</code></h4>
+<p>Affiche un membre de l’équipe depuis un post WordPress ou un payload.</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">card</span>(<span class="hljs-string">&#x27;team&#x27;</span>, [
+    <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Jane Doe&#x27;</span>,
+    <span class="hljs-string">&#x27;text&#x27;</span> =&gt; <span class="hljs-string">&#x27;&lt;p&gt;Creative director&lt;/p&gt;&#x27;</span>,
+    <span class="hljs-string">&#x27;image&#x27;</span> =&gt; <span class="hljs-number">123</span>,
+    <span class="hljs-string">&#x27;image_size&#x27;</span> =&gt; <span class="hljs-string">&#x27;large&#x27;</span>,
+    <span class="hljs-string">&#x27;link&#x27;</span> =&gt; [<span class="hljs-string">&#x27;url&#x27;</span> =&gt; <span class="hljs-string">&#x27;/team/jane-doe/&#x27;</span>, <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Jane Doe&#x27;</span>],
+]);</code></pre>
+<p><code>link.url</code> transforme le contenu de la card en lien. <code>title</code>, <code>text</code>, <code>image</code>
+et <code>image_size</code> sont transmis aux composants correspondants.</p>
+<h5>Contribution WordPress</h5>
+<p>Le groupe ACF <strong>Card - team</strong> s’affiche sur les fiches du CPT Team dans le BO.</p>
+<p>Tous les champs sont imbriqués dans le groupe ACF <code>card</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Chemin ACF</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Picture</td>
+<td><code>card.image</code></td>
+<td>Image, retour ID</td>
+</tr>
+<tr>
+<td>Function</td>
+<td><code>card.function</code></td>
+<td>Texte</td>
+</tr>
+</tbody></table>
+<p>Le préparateur commun lit l’image directement et le mapping
+<code>[&#39;text&#39; =&gt; &#39;card.function&#39;]</code> fournit la fonction au composant texte.
+Le titre de la publication reste le titre de la card. Les payloads directs
+continuent d’utiliser <code>title</code>, <code>text</code> et <code>image</code>, sans imbrication imposée.</p>
+<p>Les nouvelles contributions disposent de valeurs de démonstration ; voir le
+<a href="#family-documentation">contrat des valeurs par défaut</a>.</p>

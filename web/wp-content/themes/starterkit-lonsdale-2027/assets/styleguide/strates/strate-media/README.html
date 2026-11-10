@@ -1,0 +1,115 @@
+<h4>Strate <code>media</code></h4>
+<p>Affiche une image ou une vidéo sur le rail défini par les options communes de
+strate. Elle convient aux projets qui préfèrent une seule strate avec un choix
+image/vidéo ; <code>image</code> et <code>video</code> restent disponibles comme variantes séparées.</p>
+<p>Lire d’abord le <a href="#family-documentation">README général des strates</a>.</p>
+<h5>Appel</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">strate</span>(<span class="hljs-string">&#x27;media&#x27;</span>, [
+    <span class="hljs-string">&#x27;media_type&#x27;</span> =&gt; <span class="hljs-string">&#x27;image&#x27;</span>,
+    <span class="hljs-string">&#x27;image&#x27;</span> =&gt; <span class="hljs-number">123</span>,
+]);</code></pre>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">strate</span>(<span class="hljs-string">&#x27;media&#x27;</span>, [
+    <span class="hljs-string">&#x27;media_type&#x27;</span> =&gt; <span class="hljs-string">&#x27;video&#x27;</span>,
+    <span class="hljs-string">&#x27;video&#x27;</span> =&gt; <span class="hljs-string">&#x27;https://vimeo.com/123456789&#x27;</span>,
+    <span class="hljs-string">&#x27;video_title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Présentation du projet&#x27;</span>,
+]);</code></pre>
+<p>La strate ne produit aucun balisage lorsque la source correspondant au type
+sélectionné est vide.</p>
+<h5>Contrat</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>media_type</code></td>
+<td><code>&#39;image&#39;|&#39;video&#39;</code></td>
+<td><code>&#39;image&#39;</code></td>
+<td>Sélectionne le composant rendu</td>
+</tr>
+<tr>
+<td><code>image</code></td>
+<td><code>ID|URL|null</code></td>
+<td>Placeholder du manifeste</td>
+<td>Transmise à <code>component(&#39;picture&#39;)</code></td>
+</tr>
+<tr>
+<td><code>video</code></td>
+<td><code>ID|URL|null</code></td>
+<td><code>null</code></td>
+<td>Transmise à <code>component(&#39;video&#39;)</code></td>
+</tr>
+<tr>
+<td><code>video_title</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Nom accessible du lecteur vidéo</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Options communes traitées par <code>options()</code></td>
+</tr>
+</tbody></table>
+<p>Les anciennes clés <code>is_image</code> et <code>video-title</code> restent interprétées par le
+template pour assurer la compatibilité des payloads existants.</p>
+<h5>Champs ACF</h5>
+<pre><code class="language-text hljs">acf_fc_layout = media</code></pre>
+<table>
+<thead>
+<tr>
+<th>Libellé</th>
+<th>Identifiant</th>
+<th>Type ACF</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Type de média</td>
+<td><code>media_type</code></td>
+<td>Groupe de boutons</td>
+<td><code>image</code> ou <code>video</code></td>
+</tr>
+<tr>
+<td>Image</td>
+<td><code>image</code></td>
+<td>Image conditionnelle requise</td>
+<td>ID de média</td>
+</tr>
+<tr>
+<td>Vidéo</td>
+<td><code>video</code></td>
+<td>URL conditionnelle requise</td>
+<td>URL complète</td>
+</tr>
+<tr>
+<td>Titre de la vidéo</td>
+<td><code>video_title</code></td>
+<td>Texte conditionnel</td>
+<td>Texte simple</td>
+</tr>
+<tr>
+<td>Options</td>
+<td><code>options</code></td>
+<td>Groupe cloné</td>
+<td>Options communes des strates</td>
+</tr>
+</tbody></table>
+<p>Le champ URL convient aux vidéos externes ou aux fichiers accessibles par une
+URL. Pour sélectionner une vidéo dans la médiathèque sur un site client,
+remplacer ce champ par un champ Fichier retournant un ID.</p>
+<p>Le mode par défaut est <code>image</code>. Son placeholder dédié mesure <code>1672 × 941 px</code>,
+soit un ratio proche de <code>16:9</code> adapté à l’affichage pleine largeur. Forge
+l’importe dans la médiathèque lors de la création du site.</p>
+<h5>Assets et dépendances</h5>
+<p>La strate n’a pas d’asset propre. Elle utilise :</p>
+<ul>
+<li><code>options()</code> ;</li>
+<li><code>component(&#39;picture&#39;, [...])</code> ;</li>
+<li><code>component(&#39;video&#39;, [...])</code>.</li>
+</ul>

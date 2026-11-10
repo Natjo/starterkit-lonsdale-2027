@@ -1,0 +1,106 @@
+<h4>Composant <code>section-snap</code></h4>
+<p>Produit la navigation <code>.snap-nav</code> d’un groupe de sections et transforme les
+sections sœurs en étapes verticales pilotées par le Lenis global.</p>
+<h5>Appel</h5>
+<p>Le composant doit être placé directement dans le conteneur qui possède les
+slides :</p>
+<pre><code class="language-php hljs"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-variable">$root_id</span> = <span class="hljs-title function_ invoke__">wp_unique_id</span>(<span class="hljs-string">&#x27;snap-&#x27;</span>);
+<span class="hljs-variable">$slides</span> = [
+    [<span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Introduction&#x27;</span>],
+    [<span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Expertises&#x27;</span>],
+];
+<span class="hljs-meta">?&gt;</span>
+
+&lt;section <span class="hljs-class"><span class="hljs-keyword">class</span>=&quot;<span class="hljs-title">strate</span> <span class="hljs-title">strate</span>-<span class="hljs-title">snap</span>&quot;&gt;
+    &lt;?<span class="hljs-title">php</span> <span class="hljs-title">component</span>(&#x27;<span class="hljs-title">section</span>-<span class="hljs-title">snap</span>&#x27;, [
+        &#x27;<span class="hljs-title">slides</span>&#x27; =&gt; $<span class="hljs-title">slides</span>,
+        &#x27;<span class="hljs-title">root_id</span>&#x27; =&gt; $<span class="hljs-title">root_id</span>,
+    ]); ?&gt;
+
+    &lt;?<span class="hljs-title">php</span> <span class="hljs-title">foreach</span> ($<span class="hljs-title">slides</span> <span class="hljs-title">as</span> $<span class="hljs-title">index</span> =&gt; $<span class="hljs-title">slide</span>) : ?&gt;
+        &lt;<span class="hljs-title">section</span>
+            <span class="hljs-title">id</span>=&quot;&lt;?= <span class="hljs-title">esc_attr</span>($<span class="hljs-title">root_id</span> . &#x27;-&#x27; . ($<span class="hljs-title">index</span> + 1)) ?&gt;&quot;
+            <span class="hljs-title">class</span>=&quot;<span class="hljs-title">strate</span>&quot;&gt;
+        &lt;/<span class="hljs-title">section</span>&gt;
+    &lt;?<span class="hljs-title">php</span> <span class="hljs-title">endforeach</span>; ?&gt;
+&lt;/<span class="hljs-title">section</span>&gt;</span></code></pre>
+<p>Les slides contrôlées doivent être des enfants directs du même parent, porter
+la classe <code>.strate</code> et posséder les IDs générés à partir de <code>root_id</code>.</p>
+<h5>Payload</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>slides</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Liste de slides associatives</td>
+</tr>
+<tr>
+<td><code>slides[].title</code></td>
+<td><code>scalar|Stringable</code></td>
+<td>—</td>
+<td>Libellé obligatoire de l’ancre</td>
+</tr>
+<tr>
+<td><code>root_id</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Préfixe commun des IDs, obligatoire et sécurisé</td>
+</tr>
+<tr>
+<td><code>aria_label</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>Navigation des sections</code></td>
+<td>Nom accessible du <code>&lt;nav&gt;</code></td>
+</tr>
+<tr>
+<td><code>classes</code></td>
+<td><code>string|array</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Classes supplémentaires de la navigation</td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs supplémentaires de la navigation</td>
+</tr>
+</tbody></table>
+<p>Le composant ne produit aucun HTML sans <code>root_id</code> valide ou sans titre valide.
+Les titres sont échappés avec <code>esc_html()</code> et les fragments avec <code>esc_attr()</code>.
+<code>class</code>, <code>aria-label</code>, <code>data-module</code> et <code>data-context</code> sont réservés.</p>
+<h5>Hydratation</h5>
+<p>La navigation porte <code>data-module=&quot;components/section-snap&quot;</code>. Le module prend
+son parent direct comme racine et utilise :</p>
+<pre><code class="language-js hljs"><span class="hljs-title function_">sectionSnap</span>(root, {
+    <span class="hljs-attr">slideSelector</span>: <span class="hljs-string">&quot;:scope &gt; .strate&quot;</span>,
+    <span class="hljs-attr">navSelector</span>: <span class="hljs-string">&quot;:scope &gt; .snap-nav&quot;</span>,
+    <span class="hljs-attr">activationOffset</span>: <span class="hljs-string">&quot;var(--header-height)&quot;</span>,
+    <span class="hljs-attr">deactivationOffset</span>: <span class="hljs-string">&quot;var(--header-height)&quot;</span>,
+    <span class="hljs-attr">breakpoint</span>: <span class="hljs-number">1025</span>,
+});</code></pre>
+<p>Sous <code>1025px</code>, le snap et ses variables de progression sont désactivés. Le
+composant respecte <code>prefers-reduced-motion</code> et fonctionne sans Lenis en laissant
+le scroll natif disponible.</p>
+<h5>Comportement</h5>
+<ul>
+<li>molette et clavier pour atteindre la section précédente ou suivante ;</li>
+<li>snap vers la cible la plus proche après un scroll manuel ;</li>
+<li>clic des ancres avec Lenis ou <code>scrollIntoView()</code> ;</li>
+<li>lien actif synchronisé avec <code>active</code> et <code>aria-current=&quot;location&quot;</code> ;</li>
+<li>publication de <code>--cursor-top</code> et <code>--cursor-height</code> sur <code>.snap-nav</code> ;</li>
+<li>publication de <code>--i</code> et <code>--p</code> sur les slides ;</li>
+<li>émission de <code>snap:change</code> sur le conteneur avec <code>{ index, slide }</code> ;</li>
+<li>respect des contenus scrollables et des attributs <code>data-snap-ignore</code>,
+<code>data-lenis-prevent</code> et <code>data-lenis-prevent-wheel</code>.</li>
+</ul>
+<p>Le lifecycle <code>{ pause, resume, destroy }</code> nettoie listeners, observers, timers,
+transitions Lenis, états actifs et variables CSS inline.</p>

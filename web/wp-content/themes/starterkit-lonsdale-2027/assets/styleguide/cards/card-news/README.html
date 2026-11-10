@@ -1,0 +1,148 @@
+<h4>Card <code>card-news</code></h4>
+<p>Affiche une actualité. Cette card est rendue avec <code>card()</code> et non avec
+<code>component()</code>.</p>
+<p>Le manifeste <code>card-news.json</code> décrit les champs de contribution consommés par
+WP Forge. Il doit rester synchronisé avec le payload documenté ci-dessous.</p>
+<h5>Utilisation recommandée</h5>
+<h6>Depuis un post WordPress</h6>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">card</span>(<span class="hljs-string">&#x27;news&#x27;</span>, <span class="hljs-number">123</span>);</code></pre>
+<p><code>123</code> doit être un entier strictement positif. Le dispatcher charge les champs
+ACF du post, ajoute <code>post_id</code>, puis les transmet à la card.</p>
+<h6>Depuis un contenu personnalisé</h6>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">card</span>(<span class="hljs-string">&#x27;news&#x27;</span>, [
+    <span class="hljs-string">&#x27;date&#x27;</span> =&gt; <span class="hljs-string">&#x27;22 juillet 2026&#x27;</span>,
+    <span class="hljs-string">&#x27;datetime&#x27;</span> =&gt; <span class="hljs-string">&#x27;2026-07-22&#x27;</span>,
+    <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Titre de l’actualité&#x27;</span>,
+    <span class="hljs-string">&#x27;text&#x27;</span> =&gt; <span class="hljs-string">&#x27;&lt;p&gt;Résumé de l’actualité.&lt;/p&gt;&#x27;</span>,
+    <span class="hljs-string">&#x27;image&#x27;</span> =&gt; <span class="hljs-number">123</span>,
+    <span class="hljs-string">&#x27;image_size&#x27;</span> =&gt; <span class="hljs-string">&#x27;large&#x27;</span>,
+    <span class="hljs-string">&#x27;link&#x27;</span> =&gt; [
+        <span class="hljs-string">&#x27;url&#x27;</span> =&gt; <span class="hljs-string">&#x27;/actualites/titre/&#x27;</span>,
+        <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Lire l’actualité&#x27;</span>,
+        <span class="hljs-string">&#x27;target&#x27;</span> =&gt; <span class="hljs-string">&#x27;_blank&#x27;</span>,
+    ],
+]);</code></pre>
+<p>Le payload doit être un tableau associatif non vide.</p>
+<h6>Depuis un post avec des surcharges</h6>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">card</span>(<span class="hljs-string">&#x27;news&#x27;</span>, [
+    <span class="hljs-string">&#x27;post_id&#x27;</span> =&gt; <span class="hljs-number">123</span>,
+    <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Titre remplacé pour ce rendu&#x27;</span>,
+]);</code></pre>
+<p>Les champs ACF sont chargés en premier. Les valeurs fournies dans le tableau
+les remplacent.</p>
+<h5>Payload</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>post_id</code></td>
+<td><code>int</code></td>
+<td>aucun</td>
+<td>ID du post source, ajouté par <code>card()</code></td>
+</tr>
+<tr>
+<td><code>date</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Date visible</td>
+</tr>
+<tr>
+<td><code>datetime</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Date machine au format HTML <code>datetime</code></td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Titre rendu en <code>h3</code> avec la classe <code>title-3</code></td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Résumé acceptant du HTML éditorial filtré</td>
+</tr>
+<tr>
+<td><code>image</code></td>
+<td><code>ID|URL</code></td>
+<td>aucun</td>
+<td>Image principale rendue en mode <code>cover</code></td>
+</tr>
+<tr>
+<td><code>image_size</code></td>
+<td><code>string|array{int,int}</code></td>
+<td><code>large</code></td>
+<td>Taille transmise à <code>picture</code></td>
+</tr>
+<tr>
+<td><code>link</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Lien de la card</td>
+</tr>
+</tbody></table>
+<h6>Structure de <code>link</code></h6>
+<pre><code class="language-php hljs"><span class="hljs-string">&#x27;link&#x27;</span> =&gt; [
+    <span class="hljs-string">&#x27;url&#x27;</span> =&gt; <span class="hljs-string">&#x27;/destination/&#x27;</span>,
+    <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Libellé descriptif&#x27;</span>,
+    <span class="hljs-string">&#x27;target&#x27;</span> =&gt; <span class="hljs-string">&#x27;_blank&#x27;</span>,
+],</code></pre>
+<p>Comportement actuel du template :</p>
+<ul>
+<li><code>link.url</code> décide si <code>.card-content</code> est un lien <code>&lt;a&gt;</code> ou un <code>&lt;div&gt;</code> ;</li>
+<li><code>link.title</code> n’est pas affiché ;</li>
+<li><code>link.target</code> est appliqué lorsqu’il est fourni ;</li>
+<li><code>_blank</code> ajoute <code>rel=&quot;noopener noreferrer&quot;</code>.</li>
+</ul>
+<h5>Champs ACF attendus</h5>
+<p>Pour un appel par ID, les données sont normalisées par
+<code>theme_post_card_item()</code> : groupe ACF <code>card</code>, mapping métier du CPT, puis
+valeurs WordPress.</p>
+<p>Le groupe <strong>Card - news</strong> contient un groupe ACF <code>card</code>. Ses champs
+<code>card.text</code> et <code>card.images.desktop</code> / <code>card.images.mobile</code> sont lus directement
+par le préparateur commun, dans le hub et tous les autres listings. Aucun
+mapping de champs racine n’est nécessaire. Une description vide laisse le
+repli sur l’extrait WordPress.</p>
+<p>Les payloads explicites utilisent directement <code>text</code>. <code>post_id</code> est fourni
+automatiquement et ne nécessite aucun champ ACF.</p>
+<h5>Dans une liste</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;list&#x27;</span>, [
+    <span class="hljs-string">&#x27;items&#x27;</span> =&gt; [<span class="hljs-number">123</span>, <span class="hljs-number">456</span>],
+    <span class="hljs-string">&#x27;card&#x27;</span> =&gt; <span class="hljs-string">&#x27;news&#x27;</span>,
+]);</code></pre>
+<p>Les items peuvent aussi être des payloads personnalisés ou mélanger les deux
+formes.</p>
+<h5>Dans un slider</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;slider&#x27;</span>, [
+    <span class="hljs-string">&#x27;items&#x27;</span> =&gt; [
+        <span class="hljs-number">123</span>,
+        [<span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Actualité personnalisée&#x27;</span>, <span class="hljs-string">&#x27;text&#x27;</span> =&gt; <span class="hljs-string">&#x27;&lt;p&gt;Résumé.&lt;/p&gt;&#x27;</span>],
+    ],
+    <span class="hljs-string">&#x27;card&#x27;</span> =&gt; <span class="hljs-string">&#x27;news&#x27;</span>,
+]);</code></pre>
+<h5>Règles importantes</h5>
+<ul>
+<li>Utiliser <code>card(&#39;news&#39;, ...)</code> ou <code>card(&#39;card-news&#39;, ...)</code>.</li>
+<li>Ne pas utiliser <code>component(&#39;card-news&#39;, ...)</code>.</li>
+<li>Un ID nul, négatif ou fourni sous forme de chaîne est refusé.</li>
+<li>Un tableau vide ou positionnel est refusé par le dispatcher.</li>
+<li>Le template produit actuellement son <code>&lt;article&gt;</code> même si toutes les valeurs
+du payload sont vides.</li>
+<li>Les classes et attributs personnalisés de l’élément <code>&lt;article&gt;</code> ne font pas
+partie du contrat actuel.</li>
+</ul>
+<h5>Images responsive</h5>
+<p>Le groupe <strong>Images</strong> de <strong>Card - news</strong> fournit <code>card.images.desktop</code> et
+<code>card.images.mobile</code> (IDs). Les deux variantes sont transmises au composant
+<code>picture</code>. Sans image de card, l’image mise en avant sert de repli. Le payload
+explicite <code>image</code> reste accepté ; <code>images</code> explicite est prioritaire.</p>
+<p>Les nouvelles contributions disposent de valeurs de démonstration ; voir le
+<a href="#family-documentation">contrat des valeurs par défaut</a>.</p>

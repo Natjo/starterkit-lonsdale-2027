@@ -1,0 +1,22 @@
+<h4>Strate <code>slider-cards</code></h4>
+<p>Affiche des cards éditoriales rédigées directement dans le BO, sans relation
+avec une page, un post ou un CPT. Lire le <a href="#family-documentation">README général</a>, le
+<a href="../../components/slider/README.md">README du slider</a> et celui de
+<a href="../../cards/card-slide/README.md"><code>card-slide</code></a>.</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">strate</span>(<span class="hljs-string">&#x27;slider-cards&#x27;</span>, [
+    <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;À découvrir&#x27;</span>,
+    <span class="hljs-string">&#x27;items&#x27;</span> =&gt; [
+        [<span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Premier sujet&#x27;</span>, <span class="hljs-string">&#x27;text&#x27;</span> =&gt; <span class="hljs-string">&#x27;&lt;p&gt;Présentation.&lt;/p&gt;&#x27;</span>, <span class="hljs-string">&#x27;image&#x27;</span> =&gt; <span class="hljs-number">123</span>],
+        [<span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Second sujet&#x27;</span>, <span class="hljs-string">&#x27;link&#x27;</span> =&gt; [<span class="hljs-string">&#x27;url&#x27;</span> =&gt; <span class="hljs-string">&#x27;/sujet/&#x27;</span>, <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Lire&#x27;</span>]],
+    ],
+]);</code></pre>
+<p>Le layout ACF <code>slider-cards</code> propose un répéteur <code>items</code> limité à 12 lignes.
+Chaque ligne contient <code>title</code>, <code>text</code>, <code>image</code> (ID) et <code>link</code>, correspondant
+au manifeste de <code>card-slide</code>. Titre, texte, lien de la strate, réglages du
+slider, libellé accessible et options communes restent distincts des champs
+de chaque card.</p>
+<p>Une ligne sans titre, texte ni image est ignorée. Sans card valide, aucun
+balisage n’est produit. Le composant <code>slider</code> gère sa propre hydratation JS ;
+la strate n’a pas de module dédié.</p>
+<p>Les lignes peuvent aussi être imbriquées sous <code>card</code>, pour réutiliser le groupe
+ACF <strong>Card - slide</strong> par clonage, sans préfixage de ses noms de champs.</p>

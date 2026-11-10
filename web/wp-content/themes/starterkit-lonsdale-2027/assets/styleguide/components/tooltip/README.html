@@ -1,0 +1,84 @@
+<h4>Composant <code>tooltip</code></h4>
+<p>Affiche une courte information complémentaire au survol, au focus clavier ou
+au toucher. Le composant fonctionne uniquement avec
+<code>component(&#39;tooltip&#39;, [...])</code> et un payload associatif.</p>
+<h5>Utilisation</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;tooltip&#x27;</span>, [
+    <span class="hljs-string">&#x27;label&#x27;</span> =&gt; <span class="hljs-string">&#x27;Délai estimé&#x27;</span>,
+    <span class="hljs-string">&#x27;content&#x27;</span> =&gt; <span class="hljs-string">&#x27;Entre &lt;strong&gt;3 et 5 jours&lt;/strong&gt;.&#x27;</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;tooltip-right&#x27;</span>,
+    <span class="hljs-string">&#x27;attributes&#x27;</span> =&gt; [<span class="hljs-string">&#x27;data-tracking&#x27;</span> =&gt; <span class="hljs-string">&#x27;delivery-delay&#x27;</span>],
+]);</code></pre>
+<p>Les arguments positionnels et les listes directes ne
+sont plus supportés.</p>
+<h5>Payload</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>label</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Texte visible du bouton</td>
+</tr>
+<tr>
+<td><code>content</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Explication courte non interactive</td>
+</tr>
+<tr>
+<td><code>classes</code></td>
+<td><code>string|array</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Classes supplémentaires</td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs supplémentaires du conteneur</td>
+</tr>
+</tbody></table>
+<p><code>label</code> et <code>content</code> sont obligatoires. Une valeur vide ou complexe ne produit
+aucun HTML. La chaîne <code>&quot;0&quot;</code> reste valide.</p>
+<h5>Contenu autorisé</h5>
+<p>Le contenu est filtré avec <code>wp_kses()</code> et accepte uniquement :</p>
+<pre><code class="language-text hljs">br, strong, em, b, i, small, sup, sub, span[class]</code></pre>
+<p>Les liens, boutons, médias et formulaires sont supprimés. Un contenu riche ou
+interactif doit utiliser un composant <code>popover</code> ou <code>dialog</code>.</p>
+<p>Le <code>label</code> est toujours échappé avec <code>esc_html()</code>.</p>
+<h5>Accessibilité et interactions</h5>
+<ul>
+<li>Le déclencheur est un véritable <code>&lt;button type=&quot;button&quot;&gt;</code>.</li>
+<li><code>aria-describedby</code> relie le bouton au contenu <code>role=&quot;tooltip&quot;</code>.</li>
+<li>Le tooltip apparaît au survol et au focus clavier.</li>
+<li>Sur écran tactile, un premier toucher ouvre et un second ferme.</li>
+<li><code>Escape</code> et un clic extérieur ferment le tooltip.</li>
+<li>Le contenu reste survolable avec le pointeur.</li>
+<li>Le positionnement horizontal est corrigé près des bords de l’écran.</li>
+<li>Les animations respectent <code>prefers-reduced-motion</code>.</li>
+</ul>
+<p><code>aria-expanded</code> n’est volontairement pas utilisé : il n’appartient pas au
+pattern ARIA du tooltip.</p>
+<h5>Attributs protégés</h5>
+<p>Le composant contrôle <code>class</code>, <code>data-tooltip</code>, <code>data-module</code>,
+<code>data-tooltip-open</code> et <code>data-tooltip-dismissed</code>. Les autres attributs sûrs sont
+conservés.</p>
+<h5>Cycle de vie</h5>
+<p>Le module <code>components/tooltip</code> gère ses événements et son nettoyage à la
+destruction du composant. Le comportement JavaScript ne dépend d’aucune option
+de traduction ou de contenu PHP.</p>
+<h5>Dépendances</h5>
+<ul>
+<li><code>assets/components/tooltip/tooltip.scss</code> ;</li>
+<li><code>assets/components/tooltip/tooltip.js</code> ;</li>
+<li><code>component_classes()</code> et <code>component_attributes()</code> ;</li>
+<li><code>wp_kses()</code> et <code>esc_html()</code>.</li>
+</ul>

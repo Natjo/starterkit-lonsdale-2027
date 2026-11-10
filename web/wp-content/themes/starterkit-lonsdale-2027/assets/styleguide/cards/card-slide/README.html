@@ -1,0 +1,22 @@
+<h4>Card <code>card-slide</code></h4>
+<p>Card éditoriale utilisée par <code>slider-cards</code>, sans publication WordPress.</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">card</span>(<span class="hljs-string">&#x27;slide&#x27;</span>, [
+    <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Notre engagement&#x27;</span>,
+    <span class="hljs-string">&#x27;text&#x27;</span> =&gt; <span class="hljs-string">&#x27;&lt;p&gt;Une description courte.&lt;/p&gt;&#x27;</span>,
+    <span class="hljs-string">&#x27;image&#x27;</span> =&gt; <span class="hljs-number">123</span>,
+    <span class="hljs-string">&#x27;link&#x27;</span> =&gt; [<span class="hljs-string">&#x27;url&#x27;</span> =&gt; <span class="hljs-string">&#x27;/engagement/&#x27;</span>, <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Découvrir&#x27;</span>],
+]);</code></pre>
+<p><code>title</code>, <code>text</code>, <code>image</code> et <code>link</code> sont facultatifs, mais la strate ignore une
+ligne où les trois contenus visibles sont vides. Un lien valide transforme la
+card en lien ; sans URL, elle conserve un conteneur non interactif. L’image
+ACF est attendue sous forme d’identifiant WordPress.</p>
+<h5>Groupe ACF réutilisable</h5>
+<p><strong>Card - slide</strong> regroupe <code>card.title</code> (texte), <code>card.text</code> (WYSIWYG Basic),
+<code>card.image</code> (ID) et <code>card.link</code> (tableau ACF). Tous les champs sont facultatifs.
+Le groupe n’a pas de règle de localisation et ne crée aucun CPT : il peut être
+cloné dans un répéteur, en conservant le nom <code>card</code> sans préfixage des champs.
+La card et la strate Slider Cards acceptent les lignes imbriquées sous <code>card</code>,
+ainsi que les anciens payloads plats. Les champs actuels de la strate restent
+inchangés ; une ligne sans titre, texte ni image est toujours ignorée.</p>
+<p>Les nouvelles contributions disposent de valeurs de démonstration ; voir le
+<a href="#family-documentation">contrat des valeurs par défaut</a>.</p>

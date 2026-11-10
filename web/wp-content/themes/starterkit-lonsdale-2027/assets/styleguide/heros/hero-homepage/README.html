@@ -1,0 +1,78 @@
+<h4>Hero Homepage</h4>
+<h5>Utilisation</h5>
+<p>Le premier appel charge automatiquement le champ ACF <code>hero-homepage</code>. Le second
+utilise directement les données fournies.</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">hero</span>(<span class="hljs-string">&#x27;homepage&#x27;</span>);
+<span class="hljs-title function_ invoke__">hero</span>(<span class="hljs-string">&#x27;homepage&#x27;</span>, [<span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Test&#x27;</span>]);</code></pre>
+<h5>Data Contract</h5>
+<pre><code class="language-php hljs">[
+    <span class="hljs-string">&#x27;suptitle&#x27;</span> =&gt; <span class="hljs-string">&#x27;Surtitre&#x27;</span>,
+    <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Titre de la page&#x27;</span>,
+    <span class="hljs-string">&#x27;text&#x27;</span> =&gt; <span class="hljs-string">&#x27;&lt;p&gt;Introduction éditoriale.&lt;/p&gt;&#x27;</span>,
+    <span class="hljs-string">&#x27;images&#x27;</span> =&gt; [
+        <span class="hljs-string">&#x27;desktop&#x27;</span> =&gt; <span class="hljs-number">123</span>,
+        <span class="hljs-string">&#x27;mobile&#x27;</span> =&gt; <span class="hljs-number">124</span>,
+    ],
+]</code></pre>
+<p>Le manifeste fournit un surtitre, un titre et un texte Lorem ipsum, ainsi que
+deux images de démonstration depuis
+<code>assets/img/placeholders/</code>. Forge les affiche comme valeurs initiales puis les
+importe dans la médiathèque lors de la création du site. Les identifiants ACF
+enregistrés sont donc propres à chaque installation WordPress.
+Ces valeurs servent au préremplissage dans Forge, pas de fallback PHP : un champ
+volontairement vidé reste vide. Pour un site déjà créé, la synchronisation du
+catalogue ne remplace pas les contributions existantes.</p>
+<h5>Acf</h5>
+<table>
+<thead>
+<tr>
+<th>Nom</th>
+<th>id</th>
+<th>Type de champ</th>
+<th align="right">Obligatoire</th>
+<th align="right">administrable</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Sur titre</td>
+<td><code>suptitle</code></td>
+<td><code>wysiwyg light</code></td>
+<td align="right">Non</td>
+<td align="right">Oui</td>
+</tr>
+<tr>
+<td>Titre</td>
+<td><code>title</code></td>
+<td><code>textarea</code></td>
+<td align="right">Non</td>
+<td align="right">Oui</td>
+</tr>
+<tr>
+<td>Texte</td>
+<td><code>text</code></td>
+<td><code>wysiwyg</code></td>
+<td align="right">Non</td>
+<td align="right">Oui</td>
+</tr>
+<tr>
+<td>Desktop</td>
+<td><code>images.desktop</code></td>
+<td><code>image</code></td>
+<td align="right">Non</td>
+<td align="right">Oui</td>
+</tr>
+<tr>
+<td>Mobile</td>
+<td><code>images.mobile</code></td>
+<td><code>image</code></td>
+<td align="right">Non</td>
+<td align="right">Oui</td>
+</tr>
+</tbody></table>
+<h5>Rules</h5>
+<h5>Dependencies</h5>
+<ul>
+<li><code>component(&#39;eyebrow&#39;, [...])</code></li>
+<li><code>component(&#39;title&#39;, [...])</code></li>
+<li><code>component(&#39;text&#39;, [...])</code></li>
+</ul>

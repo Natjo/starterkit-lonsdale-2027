@@ -1,0 +1,92 @@
+<h4>Composant <code>list</code></h4>
+<p>Génère une liste <code>&lt;ul&gt;</code> dont chaque élément est rendu avec la même card.</p>
+<h5>Utilisation</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;list&#x27;</span>, [
+    <span class="hljs-string">&#x27;items&#x27;</span> =&gt; <span class="hljs-variable">$articles</span>,
+    <span class="hljs-string">&#x27;card&#x27;</span> =&gt; <span class="hljs-string">&#x27;news&#x27;</span>,
+    <span class="hljs-string">&#x27;type&#x27;</span> =&gt; <span class="hljs-string">&#x27;grid&#x27;</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;news-list&#x27;</span>,
+]);</code></pre>
+<p>Seule cette API est supportée. Les arguments positionnels
+ne sont pas acceptés.</p>
+<h5>Payload</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>items</code></td>
+<td><code>list&lt;int|array&gt;|int|array</code></td>
+<td><code>[]</code></td>
+<td>IDs de posts ou contenus transmis aux cards</td>
+</tr>
+<tr>
+<td><code>card</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;card-news&#39;</code></td>
+<td>Nom de la card utilisée</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td><code>&#39;grid&#39;|&#39;flex&#39;</code></td>
+<td><code>&#39;grid&#39;</code></td>
+<td>Mode de mise en page et classe racine (<code>list</code> ou <code>list-flex</code>)</td>
+</tr>
+<tr>
+<td><code>classes</code></td>
+<td><code>string|array</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Classes supplémentaires du <code>&lt;ul&gt;</code></td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs supplémentaires du <code>&lt;ul&gt;</code></td>
+</tr>
+</tbody></table>
+<p>Le préfixe <code>card-</code> est facultatif : <code>news</code> et <code>card-news</code> chargent tous les deux
+la card <code>card-news</code>. Un nom invalide ou une card inexistante ne produit aucun
+HTML.</p>
+<p>Chaque item doit être un ID de post positif ou un tableau associatif non vide.
+Les autres valeurs sont ignorées :</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;list&#x27;</span>, [
+    <span class="hljs-string">&#x27;items&#x27;</span> =&gt; [
+        <span class="hljs-number">123</span>,
+        [<span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Premier article&#x27;</span>],
+        [<span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Deuxième article&#x27;</span>],
+    ],
+    <span class="hljs-string">&#x27;card&#x27;</span> =&gt; <span class="hljs-string">&#x27;news&#x27;</span>,
+]);</code></pre>
+<p>Un tableau associatif peut être transmis comme item unique :</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;list&#x27;</span>, [
+    <span class="hljs-string">&#x27;items&#x27;</span> =&gt; [<span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Article unique&#x27;</span>],
+    <span class="hljs-string">&#x27;card&#x27;</span> =&gt; <span class="hljs-string">&#x27;news&#x27;</span>,
+]);</code></pre>
+<p>Un ID unique est également accepté avec <code>&#39;items&#39; =&gt; 123</code>.</p>
+<p>Une liste sans item valide ne produit aucun HTML. Utiliser ce composant
+seulement lorsque tous les éléments partagent la même card.</p>
+<h5>Mise en page</h5>
+<p>Le type <code>grid</code>, utilisé par défaut, génère la classe <code>list</code>. Le type <code>flex</code>
+génère <code>list-flex</code> à sa place :</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;list&#x27;</span>, [
+    <span class="hljs-string">&#x27;items&#x27;</span> =&gt; <span class="hljs-variable">$articles</span>,
+    <span class="hljs-string">&#x27;card&#x27;</span> =&gt; <span class="hljs-string">&#x27;news&#x27;</span>,
+    <span class="hljs-string">&#x27;type&#x27;</span> =&gt; <span class="hljs-string">&#x27;flex&#x27;</span>,
+]);</code></pre>
+<p>Dans les deux modes, <code>--list-columns</code> définit le nombre maximal d&#39;éléments par
+ligne et vaut <code>1</code> par défaut. En mode flex, les éléments d&#39;une ligne incomplète
+s&#39;étendent pour occuper l&#39;espace disponible. <code>--list-gap</code> contrôle
+l&#39;espacement et utilise <code>--gap</code> par défaut.</p>
+<p>Avant le rendu, le composant précharge en lots les posts référencés par un ID
+ou une clé <code>post_id</code>, ainsi que les images explicitement présentes dans les
+clés <code>image</code> et <code>images</code>. La déduplication est partagée avec les autres
+collections pendant toute la requête PHP.</p>
+<p><code>class</code> et <code>role</code> sont réservés dans <code>attributes</code>, car ils sont gérés par le
+composant. Les autres attributs sûrs (<code>id</code>, <code>aria-*</code>, <code>data-*</code>, etc.) sont
+acceptés.</p>

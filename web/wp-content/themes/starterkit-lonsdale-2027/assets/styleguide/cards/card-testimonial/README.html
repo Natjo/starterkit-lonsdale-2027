@@ -1,0 +1,50 @@
+<h4>Card <code>card-testimonial</code></h4>
+<p>Affiche un témoignage en s’appuyant sur le composant <code>quote</code>.</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">card</span>(<span class="hljs-string">&#x27;testimonial&#x27;</span>, [
+    <span class="hljs-string">&#x27;quote&#x27;</span> =&gt; <span class="hljs-string">&#x27;&lt;p&gt;Une collaboration remarquable.&lt;/p&gt;&#x27;</span>,
+    <span class="hljs-string">&#x27;image&#x27;</span> =&gt; <span class="hljs-number">123</span>,
+    <span class="hljs-string">&#x27;image_size&#x27;</span> =&gt; <span class="hljs-string">&#x27;full&#x27;</span>,
+    <span class="hljs-string">&#x27;author&#x27;</span> =&gt; <span class="hljs-string">&#x27;Jane Doe&#x27;</span>,
+    <span class="hljs-string">&#x27;source&#x27;</span> =&gt; <span class="hljs-string">&#x27;Example Company&#x27;</span>,
+]);</code></pre>
+<p><code>quote</code> est obligatoire. La card transmet l’image, l’auteur et la source au
+composant <code>quote</code>. La source est toujours rendue comme du texte, sans lien. Le
+composant filtre le HTML de la citation et échappe les libellés.</p>
+<h5>Contribution ACF</h5>
+<p>Le groupe <strong>Card - testimonial</strong> apparaît sur les fiches du CPT Testimonial.
+Ses champs sont imbriqués dans <code>card</code> :</p>
+<table>
+<thead>
+<tr>
+<th>Champ</th>
+<th>Chemin</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Citation</td>
+<td><code>card.quote</code></td>
+<td>WYSIWYG Basic, obligatoire</td>
+</tr>
+<tr>
+<td>Portrait</td>
+<td><code>card.image</code></td>
+<td>Image, retour ID</td>
+</tr>
+<tr>
+<td>Auteur</td>
+<td><code>card.author</code></td>
+<td>Texte</td>
+</tr>
+<tr>
+<td>Source</td>
+<td><code>card.source</code></td>
+<td>Texte</td>
+</tr>
+</tbody></table>
+<p>La card accepte le groupe imbriqué et les payloads plats existants. Un
+témoignage publié peut être rendu par ID même si son CPT n’expose pas de single
+ou d’archive. Les statuts privés, brouillons et les contenus protégés restent
+exclus. Aucun contenu de démonstration n’est enregistré automatiquement.</p>
+<p>Les nouvelles contributions disposent de valeurs de démonstration ; voir le
+<a href="#family-documentation">contrat des valeurs par défaut</a>.</p>

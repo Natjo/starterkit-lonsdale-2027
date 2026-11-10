@@ -1,0 +1,174 @@
+<h4>Composant <code>table</code></h4>
+<p>Génère une table de données accessible et responsive, sans JavaScript. Le
+composant fonctionne uniquement avec <code>component(&#39;table&#39;, [...])</code> et un payload
+associatif.</p>
+<h5>Utilisation</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;table&#x27;</span>, [
+    <span class="hljs-string">&#x27;caption&#x27;</span> =&gt; <span class="hljs-string">&#x27;Résultats&#x27;</span>,
+    <span class="hljs-string">&#x27;headers&#x27;</span> =&gt; [<span class="hljs-string">&#x27;Nom&#x27;</span>, <span class="hljs-string">&#x27;Valeur&#x27;</span>],
+    <span class="hljs-string">&#x27;rows&#x27;</span> =&gt; [
+        [<span class="hljs-string">&#x27;Alpha&#x27;</span>, <span class="hljs-string">&#x27;10&#x27;</span>],
+        [<span class="hljs-string">&#x27;Beta&#x27;</span>, <span class="hljs-string">&#x27;20&#x27;</span>],
+    ],
+]);</code></pre>
+<p>Les arguments positionnels et les listes directes ne sont
+plus supportés.</p>
+<h5>Payload</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>headers</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Colonnes obligatoires</td>
+</tr>
+<tr>
+<td><code>rows</code></td>
+<td><code>list&lt;array&gt;</code></td>
+<td><code>[]</code></td>
+<td>Lignes obligatoires</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>scalar|Stringable</code></td>
+<td>auto</td>
+<td>Base des identifiants</td>
+</tr>
+<tr>
+<td><code>caption</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Caption visible</td>
+</tr>
+<tr>
+<td><code>aria_label</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;Tableau de données&#39;</code></td>
+<td>Caption masquée par défaut</td>
+</tr>
+<tr>
+<td><code>row_headers</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td>Transforme la première cellule en en-tête de ligne</td>
+</tr>
+<tr>
+<td><code>scrollable</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+<td>Rend la zone de défilement focalisable</td>
+</tr>
+<tr>
+<td><code>classes</code></td>
+<td><code>string|array</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Classes du conteneur</td>
+</tr>
+<tr>
+<td><code>table_classes</code></td>
+<td><code>string|array</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Classes du <code>&lt;table&gt;</code></td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs du conteneur</td>
+</tr>
+<tr>
+<td><code>scroll_attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs de la zone de défilement</td>
+</tr>
+<tr>
+<td><code>table_attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs du <code>&lt;table&gt;</code></td>
+</tr>
+<tr>
+<td><code>caption_attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs du <code>&lt;caption&gt;</code></td>
+</tr>
+</tbody></table>
+<p>Les chaînes <code>&quot;true&quot;</code>, <code>&quot;false&quot;</code>, <code>&quot;1&quot;</code> et <code>&quot;0&quot;</code> sont normalisées pour les
+options booléennes. Aucun appel de traduction n’est effectué dans le composant.</p>
+<h5>Colonnes structurées</h5>
+<p>Une colonne simple est une chaîne. Une colonne structurée utilise strictement
+la clé <code>label</code> :</p>
+<pre><code class="language-php hljs"><span class="hljs-string">&#x27;headers&#x27;</span> =&gt; [
+    <span class="hljs-string">&#x27;name&#x27;</span> =&gt; [
+        <span class="hljs-string">&#x27;label&#x27;</span> =&gt; <span class="hljs-string">&#x27;Nom&#x27;</span>,
+        <span class="hljs-string">&#x27;scope&#x27;</span> =&gt; <span class="hljs-string">&#x27;col&#x27;</span>,
+        <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;column-name&#x27;</span>,
+        <span class="hljs-string">&#x27;attributes&#x27;</span> =&gt; [<span class="hljs-string">&#x27;data-column&#x27;</span> =&gt; <span class="hljs-string">&#x27;name&#x27;</span>],
+    ],
+    <span class="hljs-string">&#x27;value&#x27;</span> =&gt; [
+        <span class="hljs-string">&#x27;label&#x27;</span> =&gt; <span class="hljs-string">&#x27;Valeur&#x27;</span>,
+        <span class="hljs-string">&#x27;colspan&#x27;</span> =&gt; <span class="hljs-number">2</span>,
+    ],
+],</code></pre>
+<p>La clé associative (<code>name</code>, <code>value</code>) permet de lire les lignes indépendamment
+de l’ordre de leurs données. Les anciens alias <code>title</code> et <code>name</code> du libellé ne
+sont plus interprétés. <code>scope</code> accepte <code>col</code> ou <code>colgroup</code>; <code>colspan</code> et
+<code>rowspan</code> sont limités de <code>1</code> à <code>100</code>.</p>
+<h5>Lignes et cellules structurées</h5>
+<p>Une ligne peut être séquentielle ou suivre les clés des colonnes :</p>
+<pre><code class="language-php hljs"><span class="hljs-string">&#x27;rows&#x27;</span> =&gt; [
+    [<span class="hljs-string">&#x27;Alpha&#x27;</span>, <span class="hljs-string">&#x27;10&#x27;</span>],
+    [<span class="hljs-string">&#x27;value&#x27;</span> =&gt; <span class="hljs-string">&#x27;20&#x27;</span>, <span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;Beta&#x27;</span>],
+],</code></pre>
+<p>Une cellule structurée utilise strictement <code>content</code> :</p>
+<pre><code class="language-php hljs">[
+    <span class="hljs-string">&#x27;content&#x27;</span> =&gt; <span class="hljs-string">&#x27;&lt;strong&gt;Alpha&lt;/strong&gt;&#x27;</span>,
+    <span class="hljs-string">&#x27;header&#x27;</span> =&gt; <span class="hljs-literal">true</span>,
+    <span class="hljs-string">&#x27;scope&#x27;</span> =&gt; <span class="hljs-string">&#x27;row&#x27;</span>,
+    <span class="hljs-string">&#x27;colspan&#x27;</span> =&gt; <span class="hljs-number">1</span>,
+    <span class="hljs-string">&#x27;rowspan&#x27;</span> =&gt; <span class="hljs-number">1</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;is-highlighted&#x27;</span>,
+    <span class="hljs-string">&#x27;attributes&#x27;</span> =&gt; [<span class="hljs-string">&#x27;data-value&#x27;</span> =&gt; <span class="hljs-string">&#x27;alpha&#x27;</span>],
+]</code></pre>
+<p>Les anciens alias <code>value</code> et <code>text</code> ne sont plus interprétés. <code>scope</code> accepte
+<code>row</code> ou <code>rowgroup</code>.</p>
+<p>Une ligne peut séparer ses cellules de ses attributs :</p>
+<pre><code class="language-php hljs">[
+    <span class="hljs-string">&#x27;cells&#x27;</span> =&gt; [<span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;Alpha&#x27;</span>, <span class="hljs-string">&#x27;value&#x27;</span> =&gt; <span class="hljs-string">&#x27;10&#x27;</span>],
+    <span class="hljs-string">&#x27;attributes&#x27;</span> =&gt; [<span class="hljs-string">&#x27;data-row&#x27;</span> =&gt; <span class="hljs-string">&#x27;alpha&#x27;</span>],
+]</code></pre>
+<h5>Caption et défilement</h5>
+<p>Une balise <code>&lt;caption&gt;</code> est toujours présente. Lorsque <code>caption</code> est vide,
+<code>aria_label</code> est rendu dans une caption visuellement masquée.</p>
+<p>Avec <code>scrollable =&gt; true</code>, la zone reçoit <code>tabindex=&quot;0&quot;</code>, <code>role=&quot;region&quot;</code> et
+<code>aria-labelledby</code>. Utiliser <code>false</code> seulement lorsqu’aucun débordement
+horizontal n’est possible.</p>
+<p>La largeur minimale peut être ajustée localement :</p>
+<pre><code class="language-php hljs"><span class="hljs-string">&#x27;attributes&#x27;</span> =&gt; [<span class="hljs-string">&#x27;style&#x27;</span> =&gt; <span class="hljs-string">&#x27;--table-min-width: 48rem&#x27;</span>],</code></pre>
+<h5>Normalisation et sécurité</h5>
+<ul>
+<li>Une colonne sans libellé est ignorée.</li>
+<li>Une ligne non-tableau ou entièrement vide est ignorée.</li>
+<li>Une cellule manquante produit une cellule vide pour préserver la grille.</li>
+<li>Une cellule excédentaire sans colonne correspondante est ignorée.</li>
+<li>Le HTML des en-têtes et cellules est filtré avec <code>wp_kses_post()</code>.</li>
+<li>Les identifiants et attributs structurels sont protégés.</li>
+<li>Les classes sont nettoyées et dédupliquées.</li>
+</ul>
+<p>Pour des en-têtes sur plusieurs lignes ou des associations très complexes,
+préférer un template métier dédié.</p>
+<h5>Dépendances</h5>
+<ul>
+<li><code>component_classes()</code> et <code>component_attributes()</code> ;</li>
+<li><code>wp_kses_post()</code> pour les contenus éditoriaux ;</li>
+<li><code>assets/components/table/table.scss</code> pour le rendu responsive.</li>
+</ul>

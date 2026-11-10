@@ -1,0 +1,172 @@
+<h4>Composant <code>field</code></h4>
+<p>Rend un champ de formulaire. Il ne génère pas la balise <code>&lt;form&gt;</code> parente.</p>
+<pre><code class="language-php hljs">&lt;form <span class="hljs-class"><span class="hljs-keyword">class</span>=&quot;<span class="hljs-title">form</span>&quot; <span class="hljs-title">data</span>-<span class="hljs-title">module</span>=&quot;<span class="hljs-title">components</span>/<span class="hljs-title">field</span>&quot;&gt;
+    &lt;?<span class="hljs-title">php</span> <span class="hljs-title">component</span>(&#x27;<span class="hljs-title">field</span>&#x27;, [
+        &#x27;<span class="hljs-title">type</span>&#x27; =&gt; &#x27;<span class="hljs-title">email</span>&#x27;,
+        &#x27;<span class="hljs-title">name</span>&#x27; =&gt; &#x27;<span class="hljs-title">email</span>&#x27;,
+        &#x27;<span class="hljs-title">label</span>&#x27; =&gt; &#x27;<span class="hljs-title">Adresse</span> <span class="hljs-title">e</span>-<span class="hljs-title">mail</span>&#x27;,
+        &#x27;<span class="hljs-title">required</span>&#x27; =&gt; <span class="hljs-title">true</span>,
+        &#x27;<span class="hljs-title">mandatory_msg</span>&#x27; =&gt; &#x27;<span class="hljs-title">Saisissez</span> <span class="hljs-title">une</span> <span class="hljs-title">adresse</span> <span class="hljs-title">e</span>-<span class="hljs-title">mail</span>.&#x27;,
+    ]); ?&gt;
+&lt;/<span class="hljs-title">form</span>&gt;</span></code></pre>
+<p>Seule cette API est supportée. <code>component(&#39;form&#39;, ...)</code>,
+la fonction globale <code>form()</code> et les arguments positionnels ont été retirés.</p>
+<h5>Types supportés</h5>
+<ul>
+<li><code>text</code></li>
+<li><code>search</code></li>
+<li><code>textarea</code></li>
+<li><code>select</code></li>
+<li><code>checkbox</code></li>
+<li><code>checkboxes</code></li>
+<li><code>radios</code></li>
+<li><code>number</code></li>
+<li><code>email</code></li>
+<li><code>url</code></li>
+<li><code>tel</code></li>
+<li><code>date</code></li>
+<li><code>password</code></li>
+</ul>
+<p><code>radio</code> est normalisé en <code>radios</code>.</p>
+<h5>Payload</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>type</code></td>
+<td><code>string</code></td>
+<td><code>&#39;text&#39;</code></td>
+<td>Type du champ</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Nom du champ, obligatoire</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>scalar|Stringable</code></td>
+<td>dérivé de <code>name</code></td>
+<td>Identifiant du champ</td>
+</tr>
+<tr>
+<td><code>label</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Libellé visible</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Valeur initiale</td>
+</tr>
+<tr>
+<td><code>required</code></td>
+<td><code>bool|string</code></td>
+<td><code>false</code></td>
+<td>Champ obligatoire</td>
+</tr>
+<tr>
+<td><code>mandatory_msg</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Message de valeur manquante</td>
+</tr>
+<tr>
+<td><code>type_mismatch_msg</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Message de type, longueur ou valeur numérique invalide</td>
+</tr>
+<tr>
+<td><code>pattern_mismatch_msg</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Message lorsque <code>pattern</code> ne correspond pas</td>
+</tr>
+<tr>
+<td><code>placeholder</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Placeholder</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Options de select, radios ou checkboxes</td>
+</tr>
+<tr>
+<td><code>hint</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Aide affichée sous le champ</td>
+</tr>
+<tr>
+<td><code>rows</code></td>
+<td><code>int</code></td>
+<td><code>4</code></td>
+<td>Nombre de lignes du textarea</td>
+</tr>
+<tr>
+<td><code>min</code> / <code>max</code></td>
+<td><code>scalar|null</code></td>
+<td><code>null</code></td>
+<td>Bornes du champ number</td>
+</tr>
+<tr>
+<td><code>minlength</code></td>
+<td><code>int|null</code></td>
+<td><code>null</code></td>
+<td>Longueur minimale du texte</td>
+</tr>
+<tr>
+<td><code>pattern</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Expression de validation HTML</td>
+</tr>
+<tr>
+<td><code>autocomplete</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Valeur autocomplete</td>
+</tr>
+<tr>
+<td><code>disabled</code></td>
+<td><code>bool|string</code></td>
+<td><code>false</code></td>
+<td>Désactive le champ</td>
+</tr>
+<tr>
+<td><code>checked</code></td>
+<td><code>bool|string</code></td>
+<td><code>false</code></td>
+<td>État de la checkbox simple</td>
+</tr>
+<tr>
+<td><code>classes</code></td>
+<td><code>string|array</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Classes du conteneur <code>.field</code></td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs du conteneur</td>
+</tr>
+</tbody></table>
+<p>Les champs <code>select</code>, <code>radios</code> et <code>checkboxes</code> nécessitent des options. Le module
+JavaScript est placé sur le <code>&lt;form&gt;</code> parent. Il active <code>novalidate</code> seulement
+après son initialisation afin que la validation HTML native reste disponible
+avant l’hydratation. Il assure ensuite les messages, le focus du premier champ
+invalide, le reset et le nettoyage de ses écouteurs.</p>

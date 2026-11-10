@@ -1,0 +1,94 @@
+<h4>Composant <code>quote</code></h4>
+<p>Génère une citation éditoriale avec une image, un auteur et une source
+facultatifs.</p>
+<h5>Utilisation</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;quote&#x27;</span>, [
+    <span class="hljs-string">&#x27;quote&#x27;</span> =&gt; <span class="hljs-string">&#x27;&lt;p&gt;Une citation éditoriale.&lt;/p&gt;&#x27;</span>,
+    <span class="hljs-string">&#x27;image&#x27;</span> =&gt; <span class="hljs-variable">$image_id</span>,
+    <span class="hljs-string">&#x27;author&#x27;</span> =&gt; <span class="hljs-string">&#x27;Prénom Nom&#x27;</span>,
+    <span class="hljs-string">&#x27;source&#x27;</span> =&gt; <span class="hljs-string">&#x27;Publication&#x27;</span>,
+    <span class="hljs-string">&#x27;url&#x27;</span> =&gt; <span class="hljs-string">&#x27;/publication/&#x27;</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;featured&#x27;</span>,
+]);</code></pre>
+<p>Seule cette API est supportée. Les arguments
+positionnels ne sont pas acceptés.</p>
+<h5>Payload</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>quote</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Citation obligatoire</td>
+</tr>
+<tr>
+<td><code>image</code></td>
+<td><code>ID|URL|Stringable</code></td>
+<td><code>null</code></td>
+<td>Image facultative</td>
+</tr>
+<tr>
+<td><code>image_size</code></td>
+<td><code>string|array{int,int}</code></td>
+<td><code>&#39;full&#39;</code></td>
+<td>Taille WordPress de l’image</td>
+</tr>
+<tr>
+<td><code>author</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Nom de l’auteur</td>
+</tr>
+<tr>
+<td><code>source</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Titre de la publication ou de l’œuvre</td>
+</tr>
+<tr>
+<td><code>url</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>URL facultative de la source</td>
+</tr>
+<tr>
+<td><code>classes</code></td>
+<td><code>string|array</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Classes supplémentaires du <code>&lt;figure&gt;</code></td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs supplémentaires du <code>&lt;figure&gt;</code></td>
+</tr>
+</tbody></table>
+<p><code>quote</code> est obligatoire. Une valeur vide ou complexe ne produit aucun HTML.
+Son HTML passe par <code>wp_kses_post()</code> afin de conserver le balisage éditorial
+autorisé.</p>
+<p><code>author</code> et <code>source</code> sont toujours échappés. L’URL est filtrée avec <code>esc_url()</code>
+et n’est utilisée que si une source est présente. Une URL invalide laisse la
+source en texte simple.</p>
+<h5>Structure HTML</h5>
+<pre><code class="language-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">figure</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;quote&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;quote-image&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;...&quot;</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">&quot;...&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">blockquote</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;quote-content&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Une citation.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">blockquote</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">figcaption</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;quote-caption&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;quote-author&quot;</span>&gt;</span>Prénom Nom<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">cite</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;quote-source&quot;</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/publication/&quot;</span>&gt;</span>Publication<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">cite</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">figcaption</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">figure</span>&gt;</span></code></pre>
+<p>L’image est rendue avec <code>component(&#39;image&#39;)</code> et conserve son texte alternatif
+WordPress. Le <code>&lt;figcaption&gt;</code> est omis si l’auteur et la source sont absents. Le
+lien est omis si l’URL est absente ou invalide. <code>class</code> est réservé dans
+<code>attributes</code>, car la classe du conteneur est construite par le composant.</p>

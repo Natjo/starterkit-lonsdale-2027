@@ -1,0 +1,133 @@
+<h4>Strate <code>snap</code></h4>
+<p>Strate composée de sections éditoriales configurées dans le repeater ACF
+<code>slides</code>. Elle les parcourt comme un slider vertical sur ordinateur, sans
+Swiper ni <code>lenis-snap</code>.
+La navigation et le comportement sont délégués au composant <code>section-snap</code>.</p>
+<h5>Appel</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">strate</span>(<span class="hljs-string">&#x27;snap&#x27;</span>, [
+    <span class="hljs-string">&#x27;slides&#x27;</span> =&gt; [
+        [
+            <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Expertises&#x27;</span>,
+            <span class="hljs-string">&#x27;text&#x27;</span> =&gt; <span class="hljs-string">&#x27;&lt;p&gt;Notre savoir-faire.&lt;/p&gt;&#x27;</span>,
+            <span class="hljs-string">&#x27;image&#x27;</span> =&gt; <span class="hljs-number">123</span>,
+            <span class="hljs-string">&#x27;link&#x27;</span> =&gt; [<span class="hljs-string">&#x27;url&#x27;</span> =&gt; <span class="hljs-string">&#x27;/expertises/&#x27;</span>, <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Découvrir&#x27;</span>],
+            <span class="hljs-string">&#x27;background_color&#x27;</span> =&gt; <span class="hljs-string">&#x27;color-2&#x27;</span>,
+        ],
+    ],
+]);</code></pre>
+<p>Chaque ligne contient un titre obligatoire, un texte WYSIWYG, une image ID,
+un lien ACF et une couleur de fond facultatifs. Les couleurs autorisées sont
+<code>color-1</code>, <code>color-2</code> et <code>color-3</code> ; <code>none</code> laisse le fond par défaut. Une ligne
+sans titre est ignorée. Si aucune ligne valide ne reste, la strate ne produit
+aucun HTML. Le titre sert aussi de libellé dans la navigation.</p>
+<p>Le manifeste fournit trois sections de démonstration préremplies dans Forge.
+L&#39;onglet Options ACF reprend les options communes des strates.</p>
+<p>Le composant configure la ligne d’activation :</p>
+<pre><code class="language-js hljs"><span class="hljs-title function_">sectionSnap</span>(root, {
+    <span class="hljs-attr">slideSelector</span>: <span class="hljs-string">&quot;:scope &gt; .strate&quot;</span>,
+    <span class="hljs-attr">navSelector</span>: <span class="hljs-string">&quot;:scope &gt; .snap-nav&quot;</span>,
+    <span class="hljs-attr">activationOffset</span>: <span class="hljs-string">&quot;var(--header-height)&quot;</span>,
+    <span class="hljs-attr">deactivationOffset</span>: <span class="hljs-string">&quot;var(--header-height)&quot;</span>,
+    <span class="hljs-attr">breakpoint</span>: <span class="hljs-number">1025</span>,
+});</code></pre>
+<p><code>activationOffset</code> et <code>deactivationOffset</code> peuvent être remplacés indépendamment
+par une autre longueur CSS, un pourcentage, un <code>calc()</code> ou un nombre de pixels.
+Les pourcentages sont relatifs à la hauteur du viewport : <code>&quot;50%&quot;</code> correspond à
+<code>50vh</code>. Le premier contrôle l&#39;entrée par le haut du conteneur ; le second
+contrôle sa sortie par le bas.</p>
+<p><code>breakpoint</code> est une largeur minimale exprimée en pixels. En dessous de <code>1025px</code>
+dans cette strate, le snap et ses variables de progression sont désactivés. Si
+l&#39;option est omise, <code>sectionSnap</code> reste actif quelle que soit la largeur.</p>
+<p>Les panneaux sont produits à partir du repeater. Leur navigation est
+produite avec <code>component(&#39;section-snap&#39;, ...)</code>. Leurs IDs restent uniques si la
+démonstration est rendue plusieurs fois sur une même page. Chaque panneau mesure au minimum
+<code>calc(100vh - var(--header-height))</code>, sans marge entre les panneaux, et son
+ancre l’aligne immédiatement sous le header fixe. Un contenu long agrandit le
+panneau ; les images portrait sont contenues dans la hauteur disponible.</p>
+<h5>Navigation verticale</h5>
+<p>Sur un appareil où le Lenis global est disponible :</p>
+<ul>
+<li>le snap reste inactif tant que le haut de <code>.strate-snap</code> n&#39;a pas atteint la
+ligne définie par <code>var(--header-height)</code> ;</li>
+<li>au franchissement descendant de cette ligne, le scroll s&#39;arrête
+immédiatement sur la première slide, alignée sous le header, sans transition
+corrective de quelques pixels ;</li>
+<li>une impulsion verticale de molette sélectionne la strate suivante ou
+précédente ;</li>
+<li>les faibles deltas d&#39;un trackpad sont cumulés jusqu&#39;au seuil de <code>40px</code> ;</li>
+<li>la transition dure <code>0.9s</code> avec une décélération en fin de course ;</li>
+<li><code>lock: true</code> empêche plusieurs changements de slide pendant la transition ;</li>
+<li><code>ArrowUp</code>, <code>ArrowDown</code>, <code>PageUp</code> et <code>PageDown</code> utilisent les mêmes cibles ;</li>
+<li>un déplacement effectué avec la scrollbar rejoint la strate la plus proche
+lorsque la scrollbar est relâchée ;</li>
+<li>le scroll redevient normal avant la première strate et après la dernière ;</li>
+<li>un conteneur interne scrollable conserve la priorité tant qu&#39;il peut encore
+défiler dans la direction demandée ;</li>
+<li>une strate plus haute que le viewport défile naturellement avant que la
+cible suivante soit aimantée.</li>
+</ul>
+<p>Le relâchement de la scrollbar utilise l&#39;événement <code>scrollend</code>, avec un debounce
+de repli pour les navigateurs qui ne le prennent pas en charge. Les positions
+sont recalculées avec <code>ResizeObserver</code>. Lenis tient compte du
+<code>scroll-margin-top</code> défini sur chaque strate.</p>
+<h5>Progression visuelle <code>--i</code></h5>
+<p>Chaque <code>.strate</code> reçoit une variable CSS <code>--i</code> actualisée pendant le scroll :</p>
+<ul>
+<li><code>1</code> lorsque la strate est exactement placée sur sa cible ;</li>
+<li>une valeur intermédiaire pendant son arrivée ou sa sortie ;</li>
+<li><code>0</code> lorsqu&#39;elle atteint la position de la strate voisine.</li>
+</ul>
+<p>La première slide constitue une exception : elle reste à <code>1</code> pendant l&#39;arrivée
+dans la strate snap, puis diminue de <code>1</code> à <code>0</code> en direction de la deuxième
+slide. Elle est ainsi déjà complètement visible lorsque le conteneur entre dans
+le viewport.</p>
+<p>La dernière slide suit le comportement miroir : elle augmente de <code>0</code> à <code>1</code>
+pendant son arrivée, puis reste à <code>1</code> lorsque le viewport quitte la strate snap.</p>
+<p>La progression fonctionne dans les deux directions et peut piloter directement
+un fondu :</p>
+<pre><code class="language-scss hljs"><span class="hljs-selector-class">.strate-snap</span> &gt; <span class="hljs-selector-class">.strate</span> {
+    <span class="hljs-attribute">opacity</span>: <span class="hljs-built_in">var</span>(--i, <span class="hljs-number">1</span>);
+}</code></pre>
+<p>La variable inline est retirée lors de la destruction du module.</p>
+<h5>Parallaxe <code>--p</code></h5>
+<p>Chaque slide reçoit aussi une progression signée indépendante de l&#39;opacité :</p>
+<ul>
+<li><code>1</code> avant que la slide atteigne sa cible ;</li>
+<li><code>0</code> lorsqu&#39;elle est placée ;</li>
+<li><code>-1</code> après son passage.</li>
+</ul>
+<p>La <code>.paralax</code> l&#39;utilise sur ordinateur pour arriver depuis le bas et sortir
+vers le haut :</p>
+<pre><code class="language-scss hljs"><span class="hljs-selector-class">.paralax</span> {
+    <span class="hljs-attribute">translate</span>: <span class="hljs-number">0</span> <span class="hljs-built_in">calc</span>(<span class="hljs-built_in">var</span>(--p, <span class="hljs-number">0</span>) * <span class="hljs-number">8rem</span>);
+}</code></pre>
+<p>Le déplacement est désactivé avec <code>prefers-reduced-motion: reduce</code>. La variable
+inline est retirée avec <code>--i</code> lors de la destruction du module.</p>
+<p>Le changement de slide émet aussi l&#39;événement <code>snap:change</code> sur la racine :</p>
+<pre><code class="language-js hljs">root.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;snap:change&quot;</span>, <span class="hljs-function">(<span class="hljs-params">{ detail }</span>) =&gt;</span> {
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(detail.<span class="hljs-property">index</span>, detail.<span class="hljs-property">slide</span>);
+});</code></pre>
+<h5>Navigation d&#39;ancres</h5>
+<p>Le composant <code>section-snap</code> contrôle directement le menu <code>.snap-nav</code> qu’il
+produit. Le menu suit la strate active pendant les transitions, ses
+liens utilisent le même Lenis global et son curseur est recalculé avec le
+layout. Le lien cible devient actif dès le lancement du snap, sans attendre la
+fin de la transition, et reste verrouillé jusqu&#39;à son terme. Il ne faut pas
+initialiser un autre module de navigation sur ce menu.</p>
+<h5>Replis et accessibilité</h5>
+<p>Le contrôleur ne capture aucun geste lorsque Lenis est absent. C&#39;est notamment
+le cas sur les pointeurs tactiles avec la configuration actuelle du projet.
+Le document conserve alors son scroll vertical natif.</p>
+<p>Avec <code>prefers-reduced-motion: reduce</code>, aucun geste n&#39;est intercepté. Les
+champs de formulaire, les zones <code>contenteditable</code>, les éléments portant
+<code>data-snap-ignore</code>, <code>data-lenis-prevent</code> ou <code>data-lenis-prevent-wheel</code> gardent
+également leur comportement normal.</p>
+<p>Le composant retourne le lifecycle complet à l’hydrateur, qui peut suspendre ou
+détruire ensemble le snap et sa navigation.</p>
+<h5>Dépendances</h5>
+<ul>
+<li>le Lenis global exposé dans <code>window.lenis</code> ;</li>
+<li><code>assets/components/section-snap/section-snap.js</code> ;</li>
+<li><code>assets/components/section-snap/section-snap.scss</code> ;</li>
+<li><code>assets/strates/strate-snap/strate-snap.scss</code>.</li>
+</ul>

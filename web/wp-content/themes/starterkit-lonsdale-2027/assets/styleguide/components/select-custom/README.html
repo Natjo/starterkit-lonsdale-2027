@@ -1,0 +1,162 @@
+<h4>Composant <code>select-custom</code></h4>
+<p>Améliore progressivement un <code>&lt;select&gt;</code> natif avec une interface personnalisée.
+Le contrôle natif reste la source de vérité pour la soumission, la validation
+et le reset du formulaire. Il reste utilisable tant que le JavaScript n’est pas
+chargé.</p>
+<p>Utiliser le composant <code>select</code> lorsque l’apparence native suffit.</p>
+<h5>Utilisation</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;select-custom&#x27;</span>, [
+    <span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;city&#x27;</span>,
+    <span class="hljs-string">&#x27;label&#x27;</span> =&gt; <span class="hljs-string">&#x27;Ville&#x27;</span>,
+    <span class="hljs-string">&#x27;placeholder&#x27;</span> =&gt; <span class="hljs-string">&#x27;Choisir une ville&#x27;</span>,
+    <span class="hljs-string">&#x27;value&#x27;</span> =&gt; <span class="hljs-string">&#x27;lyon&#x27;</span>,
+    <span class="hljs-string">&#x27;required&#x27;</span> =&gt; <span class="hljs-literal">true</span>,
+    <span class="hljs-string">&#x27;options&#x27;</span> =&gt; [
+        [<span class="hljs-string">&#x27;value&#x27;</span> =&gt; <span class="hljs-string">&#x27;paris&#x27;</span>, <span class="hljs-string">&#x27;label&#x27;</span> =&gt; <span class="hljs-string">&#x27;Paris&#x27;</span>],
+        [<span class="hljs-string">&#x27;value&#x27;</span> =&gt; <span class="hljs-string">&#x27;lyon&#x27;</span>, <span class="hljs-string">&#x27;label&#x27;</span> =&gt; <span class="hljs-string">&#x27;Lyon&#x27;</span>],
+        [<span class="hljs-string">&#x27;value&#x27;</span> =&gt; <span class="hljs-string">&#x27;nantes&#x27;</span>, <span class="hljs-string">&#x27;label&#x27;</span> =&gt; <span class="hljs-string">&#x27;Nantes&#x27;</span>, <span class="hljs-string">&#x27;disabled&#x27;</span> =&gt; <span class="hljs-literal">true</span>],
+    ],
+]);</code></pre>
+<p>Seule cette API est supportée. Les arguments
+positionnels ne sont pas acceptés.</p>
+<h5>Payload</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>options</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Options disponibles, obligatoire</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Nom soumis, obligatoire</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>scalar|Stringable</code></td>
+<td>auto</td>
+<td>Identifiant explicite facultatif</td>
+</tr>
+<tr>
+<td><code>label</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Libellé visible</td>
+</tr>
+<tr>
+<td><code>aria_label</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>name</code></td>
+<td>Libellé accessible si <code>label</code> est vide</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td><code>scalar|array|Stringable|null</code></td>
+<td><code>null</code></td>
+<td>Valeur ou valeurs initiales</td>
+</tr>
+<tr>
+<td><code>placeholder</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>Sélectionner</code></td>
+<td>Texte affiché sans sélection</td>
+</tr>
+<tr>
+<td><code>multiple</code></td>
+<td><code>bool|string</code></td>
+<td><code>false</code></td>
+<td>Active la sélection multiple</td>
+</tr>
+<tr>
+<td><code>required</code></td>
+<td><code>bool|string</code></td>
+<td><code>false</code></td>
+<td>Rend la sélection obligatoire</td>
+</tr>
+<tr>
+<td><code>disabled</code></td>
+<td><code>bool|string</code></td>
+<td><code>false</code></td>
+<td>Désactive le contrôle</td>
+</tr>
+<tr>
+<td><code>classes</code></td>
+<td><code>string|array</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Classes du conteneur</td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs supplémentaires du conteneur</td>
+</tr>
+<tr>
+<td><code>select_attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs supplémentaires du <code>&lt;select&gt;</code></td>
+</tr>
+</tbody></table>
+<p>Les chaînes <code>&quot;true&quot;</code> et <code>&quot;false&quot;</code> sont normalisées pour les booléens.</p>
+<p>Le composant n’appelle aucune fonction de traduction. Si le placeholder doit
+être traduit, transmettre directement la chaîne déjà traduite depuis l’appel.</p>
+<h5>Options</h5>
+<p>La forme structurée demande obligatoirement <code>value</code> et <code>label</code> :</p>
+<pre><code class="language-php hljs"><span class="hljs-string">&#x27;options&#x27;</span> =&gt; [
+    [
+        <span class="hljs-string">&#x27;value&#x27;</span> =&gt; <span class="hljs-string">&#x27;design&#x27;</span>,
+        <span class="hljs-string">&#x27;label&#x27;</span> =&gt; <span class="hljs-string">&#x27;Design&#x27;</span>,
+        <span class="hljs-string">&#x27;selected&#x27;</span> =&gt; <span class="hljs-literal">true</span>,
+        <span class="hljs-string">&#x27;disabled&#x27;</span> =&gt; <span class="hljs-literal">false</span>,
+    ],
+],</code></pre>
+<p>L’ancien alias <code>name</code> de <code>label</code> n’est pas accepté. La forme courte associative
+reste disponible :</p>
+<pre><code class="language-php hljs"><span class="hljs-string">&#x27;options&#x27;</span> =&gt; [
+    <span class="hljs-string">&#x27;design&#x27;</span> =&gt; <span class="hljs-string">&#x27;Design&#x27;</span>,
+    <span class="hljs-string">&#x27;code&#x27;</span> =&gt; <span class="hljs-string">&#x27;Code&#x27;</span>,
+],</code></pre>
+<p>Une option dont la valeur ou le libellé est vide est ignorée. Une option
+désactivée ne peut pas être sélectionnée initialement.</p>
+<p>En mode simple, <code>value</code> gagne sur le premier <code>selected =&gt; true</code>. Sans sélection,
+le placeholder est utilisé, ou la première option active si le placeholder est
+vide. Une seule option peut être sélectionnée.</p>
+<p>En mode multiple, un tableau <code>value</code> définit la sélection exacte. Sans clé
+<code>value</code>, les options portant <code>selected =&gt; true</code> sont conservées.</p>
+<h5>Sélection multiple</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;select-custom&#x27;</span>, [
+    <span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;topics&#x27;</span>,
+    <span class="hljs-string">&#x27;multiple&#x27;</span> =&gt; <span class="hljs-literal">true</span>,
+    <span class="hljs-string">&#x27;value&#x27;</span> =&gt; [<span class="hljs-string">&#x27;design&#x27;</span>, <span class="hljs-string">&#x27;code&#x27;</span>],
+    <span class="hljs-string">&#x27;options&#x27;</span> =&gt; [
+        <span class="hljs-string">&#x27;design&#x27;</span> =&gt; <span class="hljs-string">&#x27;Design&#x27;</span>,
+        <span class="hljs-string">&#x27;code&#x27;</span> =&gt; <span class="hljs-string">&#x27;Code&#x27;</span>,
+    ],
+]);</code></pre>
+<p>Le suffixe <code>[]</code> est ajouté automatiquement à <code>name</code> s’il est absent. Le
+formulaire produit donc <code>$_POST[&#39;topics&#39;] === [&#39;design&#39;, &#39;code&#39;]</code>. Les valeurs
+contenant une virgule restent intactes.</p>
+<h5>Clavier et cycle de vie</h5>
+<ul>
+<li><code>Entrée</code> ou <code>Espace</code> ouvre la liste et valide ou bascule l’option active.</li>
+<li><code>Flèche haut/bas</code>, <code>Début</code> et <code>Fin</code> déplacent l’option active.</li>
+<li>La saisie de caractères recherche une option par son libellé.</li>
+<li><code>Échap</code> ferme la liste.</li>
+<li><code>Tab</code> ferme la liste sans bloquer la navigation native.</li>
+</ul>
+<p>En mode multiple, la liste reste ouverte après chaque sélection.</p>
+<p>Le module est hydraté à proximité du viewport. Il synchronise les événements
+<code>input</code> et <code>change</code>, le reset du formulaire et la validation native. Son
+nettoyage retire les écouteurs, annule les tâches différées et restaure le
+<code>&lt;select&gt;</code> natif.</p>

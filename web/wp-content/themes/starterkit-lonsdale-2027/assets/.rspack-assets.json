@@ -10,13 +10,13 @@
   "files": [
     {
       "name": "css/admin-rte.css",
-      "size": 8103,
-      "sha256": "b878febfadd6d0ac1d12e18bdfaaabd98946a1a4f0f89e714e5a795a69fc438e"
+      "size": 8094,
+      "sha256": "b8682b52c0b41097a520b43d782c5bb16d2416405e31705b1ab5bdc488bcb9ed"
     },
     {
       "name": "css/admin-rte.css.map",
-      "size": 12738,
-      "sha256": "a747eef559aa6f4797109b17063e0dcf2fdea656ad7edcc84e05eba490ec7abd"
+      "size": 12726,
+      "sha256": "ab0e63a6aaa41e407339cc2f33a11884e77890ee56f91609034d4051bc3b976a"
     },
     {
       "name": "css/admin.css",
@@ -30,13 +30,13 @@
     },
     {
       "name": "css/app.css",
-      "size": 40827,
-      "sha256": "ab31de32057bb33cfeb3b40ceae70a633d3cd4362173fb708697c1483e2276b4"
+      "size": 40334,
+      "sha256": "60c575595d870982bb4ac8cf64e4a374c2cd93fb1f4053edb5d9b6ac6b130ba2"
     },
     {
       "name": "css/app.css.map",
-      "size": 64748,
-      "sha256": "8ff2c864af0a88c4b9af4ab9aa90938361f5717bb6560f904a4b6e7ec3db59de"
+      "size": 64060,
+      "sha256": "9e5a38376c0659b8c1db36ec50245fbc87221b2d95637c22661c1f32dfcaaa16"
     },
     {
       "name": "css/common/prefooter-newsletter/prefooter-newsletter.css",
@@ -80,13 +80,13 @@
     },
     {
       "name": "css/critical.css",
-      "size": 31286,
-      "sha256": "c560c89366c690ba70cd7caa297ee424213cd22888cba6d4276b62d544045707"
+      "size": 31277,
+      "sha256": "e2bdb4332cedcd9c2d027bb5387848d77d714b05aa7ebbf9b24189c0842e79bd"
     },
     {
       "name": "css/critical.css.map",
-      "size": 49688,
-      "sha256": "5fce90887d8e42eceb95816b6815cd224f80df4d7c31320645d0fb6bd3fc3368"
+      "size": 49676,
+      "sha256": "d6990508002d59385296357ca949d3a4b67ac6651971eea1b86bda862dd82aa0"
     },
     {
       "name": "css/heros/hero-flexible/hero-flexible.css",
@@ -505,13 +505,13 @@
     },
     {
       "name": "js/app.js",
-      "size": 29996,
-      "sha256": "c1700cbcf8df99fd55745e781e90a97d640895a071a0998f03446b9bcd99fc36"
+      "size": 30060,
+      "sha256": "b4b82225f83a88c3ff3eb96724845cda3e9ae77a3c5ebcb3180bb71ad318c49c"
     },
     {
       "name": "js/app.js.map",
-      "size": 108932,
-      "sha256": "aa8d714f579d5e98f054135ae8e1950bb4a5e8e5390de61dc12e557bd0f7c491"
+      "size": 109086,
+      "sha256": "b6b33d596405084d05504409abceb0f34c058b1d44f222cec70dc16552588d78"
     },
     {
       "name": "js/chunks/1ae55770.js",
@@ -602,6 +602,16 @@
       "name": "js/chunks/8d8309cb.js.map",
       "size": 31689,
       "sha256": "df2e4e6388348eb64614e24cc0fb03628c162aec29d8f82719058ec515d90c85"
+    },
+    {
+      "name": "js/chunks/8fc0499b.js",
+      "size": 6799,
+      "sha256": "34133647ebde352d516a7a4332dd71a2448eb2e0b8463d1af5f0e4063b1569e8"
+    },
+    {
+      "name": "js/chunks/8fc0499b.js.map",
+      "size": 21376,
+      "sha256": "8f99c05b0a049435234ff757a81cee3019437b04825abaf3fd3b393eabda6c08"
     },
     {
       "name": "js/chunks/98ccbdbe.js",
@@ -852,6 +862,396 @@
       "name": "lottie/lottie.json",
       "size": 341,
       "sha256": "69543a70f0f3384121abb3a2a90e4899a2218c91c2219642ab75a08186d04429"
+    },
+    {
+      "name": "styleguide/breakpoints.json",
+      "size": 509,
+      "sha256": "51c99e07ec81995d61c45b016f3e6d8c4dc12642b804c72e0be775799480e3f7"
+    },
+    {
+      "name": "styleguide/cards/README.html",
+      "size": 6114,
+      "sha256": "720575440ef33e4d3154122ef67a804c1050363c4007f7b443fe971cbd561249"
+    },
+    {
+      "name": "styleguide/cards/card-expertise/README.html",
+      "size": 2082,
+      "sha256": "33310fd4bb44220804481ac561e4d34c0e4e8eb53a05bd93f12d6d51ea35b4c1"
+    },
+    {
+      "name": "styleguide/cards/card-keynumber/README.html",
+      "size": 3087,
+      "sha256": "51765094a1acfc19465e8c68a6392aee6635a68b754c3c897237ee5c21535715"
+    },
+    {
+      "name": "styleguide/cards/card-news/README.html",
+      "size": 8227,
+      "sha256": "ddb229367d3fc6e8278b0adbb5c909d33d6eed9563307015f8c5c69318a9bf59"
+    },
+    {
+      "name": "styleguide/cards/card-page/README.html",
+      "size": 3374,
+      "sha256": "fb16031ede80e03222b733c8d219ce39317c078828c2a1eeffb08833af1ef6c2"
+    },
+    {
+      "name": "styleguide/cards/card-project/README.html",
+      "size": 4474,
+      "sha256": "45f6609f527a17c290c26db373f0c62d3e8d7c0f4ddfc25be8554288896d6eb4"
+    },
+    {
+      "name": "styleguide/cards/card-slide/README.html",
+      "size": 2129,
+      "sha256": "201b4ce458665dc024fd45e6c8e7e8b28a8c6e44addb4633a4091c3de08d9eb7"
+    },
+    {
+      "name": "styleguide/cards/card-team/README.html",
+      "size": 2244,
+      "sha256": "5cf3d9778d6ed4303ea024e9a530e94a929c56dba424e43d2bf985c845693a5a"
+    },
+    {
+      "name": "styleguide/cards/card-testimonial/README.html",
+      "size": 2263,
+      "sha256": "806b4ef811c03b3932682c6dafd4077cac6ff349220d79fbacff6f58a9e3940a"
+    },
+    {
+      "name": "styleguide/components/README.html",
+      "size": 15963,
+      "sha256": "46de321a4b62e26318d62b483cfe0df288f46a272053a0157b58d03acee6f4c7"
+    },
+    {
+      "name": "styleguide/components/accordion/README.html",
+      "size": 5936,
+      "sha256": "7d74a65769e395185f7497edcded6ec0036a6ce14c4c2e8daccea11a609fefec"
+    },
+    {
+      "name": "styleguide/components/anchor-nav/README.html",
+      "size": 4762,
+      "sha256": "010a6bb80b501158c42c613f4fe1639bb17aa12e06daab6a6c252234f5cd42de"
+    },
+    {
+      "name": "styleguide/components/autocomplete/README.html",
+      "size": 7918,
+      "sha256": "6dfbc75ea8db47b93357bb112fcd11331779a4f4150b297a30cdeee0e785ecdc"
+    },
+    {
+      "name": "styleguide/components/badge/README.html",
+      "size": 3722,
+      "sha256": "06c13dfc2aa9fdbe2cb583a64d1421db8f8ad2595e0b927af81483ca3c20c430"
+    },
+    {
+      "name": "styleguide/components/breadcrumb/README.html",
+      "size": 5712,
+      "sha256": "282b6b481acfdde7fb58cae322bd826e8403a86f1264a6fd2e86bd3ae058cada"
+    },
+    {
+      "name": "styleguide/components/btn/README.html",
+      "size": 14125,
+      "sha256": "f12b5787cf1462f5120f9f613c751f95fc5b7b4dfc12d7538364bde9da5f0743"
+    },
+    {
+      "name": "styleguide/components/date/README.html",
+      "size": 4829,
+      "sha256": "5571e472aa80a2f1374f34585f5970098e7ec8bc7fc0ce632287134d781e87fe"
+    },
+    {
+      "name": "styleguide/components/dialog/README.html",
+      "size": 6031,
+      "sha256": "145d8a3605d786d2ebe36a71abe3bba632239a1868e09b668315fe971131e5ad"
+    },
+    {
+      "name": "styleguide/components/eyebrow/README.html",
+      "size": 5035,
+      "sha256": "1b844cc00c0382e78cf3538c0fb955637deb73792e61beebc8e8f5c417cd4423"
+    },
+    {
+      "name": "styleguide/components/field/README.html",
+      "size": 5784,
+      "sha256": "9e982a7258e6a7f813f05239590a7415d0cbc36fdbb84d5cfe51a2c12e011a3e"
+    },
+    {
+      "name": "styleguide/components/filters/README.html",
+      "size": 24837,
+      "sha256": "656f399f6b4adb32d6110bdb7472043d1b7cb14fa221b85b4ec1ffa6c2772c82"
+    },
+    {
+      "name": "styleguide/components/header/README.html",
+      "size": 5913,
+      "sha256": "a7fdb894b0c4164fc77ecf4d60f847293506a1e68514e5461c8d442e61dc7f08"
+    },
+    {
+      "name": "styleguide/components/icon/README.html",
+      "size": 4580,
+      "sha256": "4b921ea9f95a3ee79f6038ed6b887061043d88c944a668dccc51145cda1e4426"
+    },
+    {
+      "name": "styleguide/components/image/README.html",
+      "size": 8893,
+      "sha256": "c9b87f394915544c88630f7a2c46bfb71bb635c04d64fb883f74e74a001e5b23"
+    },
+    {
+      "name": "styleguide/components/intro/README.html",
+      "size": 1561,
+      "sha256": "b6c95acd50e0f696f69c000da99c54e909dee4dab5c2c0876badd227f7d1a432"
+    },
+    {
+      "name": "styleguide/components/link/README.html",
+      "size": 6906,
+      "sha256": "39b5b1af54b5ea768cd80d9cb7b91786f8c9376391bd824c35af7efb6958f24e"
+    },
+    {
+      "name": "styleguide/components/list/README.html",
+      "size": 5227,
+      "sha256": "189ee9eeb69b6ea19723fd10d71d50dc5b067e3da000abc0a926b39f049b026c"
+    },
+    {
+      "name": "styleguide/components/lottie/README.html",
+      "size": 9226,
+      "sha256": "fcaf9740ae00c8fae6fd58c76886f7def750d461b473ea0cc34418a97b777059"
+    },
+    {
+      "name": "styleguide/components/marquee/README.html",
+      "size": 9209,
+      "sha256": "a3a917f2d5dbcbfba5a13ff1360098438a334af10f7789346d60b0b4fc7775e7"
+    },
+    {
+      "name": "styleguide/components/newsletter/README.html",
+      "size": 4339,
+      "sha256": "314ccb881affa099901d0cbdbf1c4a582b440faece764cab9a92c3bffe32cde8"
+    },
+    {
+      "name": "styleguide/components/pagination/README.html",
+      "size": 3520,
+      "sha256": "cd91ca282dcdb36ccfb961350ee62156d76f15152480d9a2a6e48afc7d96af38"
+    },
+    {
+      "name": "styleguide/components/picto/README.html",
+      "size": 2484,
+      "sha256": "677ba5a7ca939d5a7dd4c294cd3d5ef5dc99edc77d7983405ff7a595f9382ff6"
+    },
+    {
+      "name": "styleguide/components/picture/README.html",
+      "size": 9778,
+      "sha256": "3608ef14ca743b902f6075e7af159f190e5a81c1b1a80063f986020a50027dbc"
+    },
+    {
+      "name": "styleguide/components/quote/README.html",
+      "size": 5429,
+      "sha256": "31001d91412240e0706b7612387bd58e60ec2fa472a62bcd4dbcfd72a6f3cd15"
+    },
+    {
+      "name": "styleguide/components/search/README.html",
+      "size": 5367,
+      "sha256": "5a58ca4428269da92aeae9522a1597b61c48d3e1f0ad148d5cd29de4c19313b3"
+    },
+    {
+      "name": "styleguide/components/section-snap/README.html",
+      "size": 5970,
+      "sha256": "7bbe535d68d3a5c06df5a771eb8d1c4551654f6f674ea8ffc85af2a07cca1958"
+    },
+    {
+      "name": "styleguide/components/select-custom/README.html",
+      "size": 8190,
+      "sha256": "8e7d8a6bc954666300e1149a038e91bf0fe8ecf1700bfea227a47721161db1f6"
+    },
+    {
+      "name": "styleguide/components/select-lang/README.html",
+      "size": 4019,
+      "sha256": "de26e2c48dd0354b9e6872e4e485abce463d1b84df3cbe71db1a3d051aa82f3d"
+    },
+    {
+      "name": "styleguide/components/select/README.html",
+      "size": 7451,
+      "sha256": "be6ad9ea2839cd9c7a36f8fbf642ac53e1257354571f2e1f4a7d79b447b6bcdc"
+    },
+    {
+      "name": "styleguide/components/shares/README.html",
+      "size": 6807,
+      "sha256": "5325d07b99ac8e23de4fae25f2415cbbc29fa051f6e6cfb652c5b08c6ef491ea"
+    },
+    {
+      "name": "styleguide/components/slider/README.html",
+      "size": 13335,
+      "sha256": "0b4a396110c2aaa219ddc76eae8472d35b3aff978b3116d67c905df439ef99a4"
+    },
+    {
+      "name": "styleguide/components/socials/README.html",
+      "size": 3067,
+      "sha256": "8b5b23dc71c8ce3abe1f994694ad63ac72d9aa43cf57c13891bda0ab2d1b066c"
+    },
+    {
+      "name": "styleguide/components/tab/README.html",
+      "size": 6007,
+      "sha256": "1a8d2b0f29fb52e3ce0fdfdad3b219b4ae518fcd0272a8173abc77a37f0d723b"
+    },
+    {
+      "name": "styleguide/components/table/README.html",
+      "size": 8919,
+      "sha256": "503ce148cfba0e41c573a4d345e5e8c7f2b5d21d81017d1049e3d2d7d6e14b81"
+    },
+    {
+      "name": "styleguide/components/tag/README.html",
+      "size": 3509,
+      "sha256": "bfd75fec9f5de84277959401d50f30619e9efb2d50f4442398b7e9dcec76769d"
+    },
+    {
+      "name": "styleguide/components/text/README.html",
+      "size": 4457,
+      "sha256": "b4ab364bc4ef415201b8e8836b68afc4b0880e2d8ed2a1daae49c99ad31370c2"
+    },
+    {
+      "name": "styleguide/components/title/README.html",
+      "size": 4302,
+      "sha256": "bc7960375ac496df9e0a757b2b6bdf38b8cda064156d0833f0de96ef09806b00"
+    },
+    {
+      "name": "styleguide/components/tooltip/README.html",
+      "size": 4056,
+      "sha256": "5262cb7eba493a11773cb7c17349b8724b80f486f17a5f682aecb0de9bdc652c"
+    },
+    {
+      "name": "styleguide/components/video/README.html",
+      "size": 8300,
+      "sha256": "fc78f67757caff2b28baed40404cc003b1d205f7756aa49d86ce49e0c002d27a"
+    },
+    {
+      "name": "styleguide/heros/README.html",
+      "size": 13698,
+      "sha256": "4d79176678fc46d4f0bdeaf3773ddf559309a26df754aaa733a7c20a3aec01ba"
+    },
+    {
+      "name": "styleguide/heros/hero-flexible/README.html",
+      "size": 2264,
+      "sha256": "ea3a977c79a356243589e643bb474777c8c99776b57be289445518a874c72c35"
+    },
+    {
+      "name": "styleguide/heros/hero-homepage/README.html",
+      "size": 3028,
+      "sha256": "f6720648bb8fc926f144eba81e2de49c511fd9e5b2a021f70c8d2f0a63abe831"
+    },
+    {
+      "name": "styleguide/heros/hero-page/README.html",
+      "size": 2002,
+      "sha256": "59640c7ee43bf1e937e1ad4bc0e7e311e47636334109cbc28c032342f74d465c"
+    },
+    {
+      "name": "styleguide/heros/hero-post/README.html",
+      "size": 2216,
+      "sha256": "5596b1f5ba9268608b5ad50946dd47346b2214feda033bb5813c5c57f28612a9"
+    },
+    {
+      "name": "styleguide/strates/README.html",
+      "size": 24138,
+      "sha256": "942f0caaae3ce3c68887fa4e5969c3ee54176d8e048a2c1683f3b07fb3fff8e1"
+    },
+    {
+      "name": "styleguide/strates/strate-accordion/README.html",
+      "size": 2070,
+      "sha256": "a0f52e91b515555e02674459f6378d5f0b32594e118587a3d321063892e146f8"
+    },
+    {
+      "name": "styleguide/strates/strate-columns-content/README.html",
+      "size": 2452,
+      "sha256": "9ad24a2a715f83ba4474bf784c91c64fbffb250a7717a05efd83fb49879f0c16"
+    },
+    {
+      "name": "styleguide/strates/strate-image/README.html",
+      "size": 865,
+      "sha256": "580a27f821843a0c8b31d42eef5552f9cc325b0883b6317926fcf7f875cc4715"
+    },
+    {
+      "name": "styleguide/strates/strate-intro/README.html",
+      "size": 1139,
+      "sha256": "f45e9bf22e612a2871944837dc9c58c312bd2e7bbd8cae7b68525cd25a0f1dd0"
+    },
+    {
+      "name": "styleguide/strates/strate-keynumbers/README.html",
+      "size": 4541,
+      "sha256": "1f71dcb5f1c13210dfaca3407a50258d9d3be67044e6d815162cac5fe0b27813"
+    },
+    {
+      "name": "styleguide/strates/strate-logos/README.html",
+      "size": 1840,
+      "sha256": "d53b098e1da1a3d5a1dca9b576ed8db916f4d55877b40521f5ec27a4292a8bf6"
+    },
+    {
+      "name": "styleguide/strates/strate-marquee/README.html",
+      "size": 7170,
+      "sha256": "be2da31afcc6ea6e59e30d12b67e0d4a378de0b44c71b91a21c087da910e24fe"
+    },
+    {
+      "name": "styleguide/strates/strate-media/README.html",
+      "size": 4174,
+      "sha256": "83f313b1d8b369af8373455e8b9267ef3a922a2be82828c3e6b796e7b7e82efa"
+    },
+    {
+      "name": "styleguide/strates/strate-push/README.html",
+      "size": 2687,
+      "sha256": "1dad0b44ed89ae7dc6017a74bd789da6204e7715a263b71e351b94c07ee78b9f"
+    },
+    {
+      "name": "styleguide/strates/strate-pushes-auto/README.html",
+      "size": 2635,
+      "sha256": "3f888de9f3060618ede7993e20448c292c3df2a88b2e6348f7caadd0dd21d8f0"
+    },
+    {
+      "name": "styleguide/strates/strate-pushes-more/README.html",
+      "size": 3038,
+      "sha256": "63c324956a514cac0817dfd31efbd83dda77cff4491e02dcaf28f02b66db0f89"
+    },
+    {
+      "name": "styleguide/strates/strate-pushes-slider/README.html",
+      "size": 3245,
+      "sha256": "8f6ee69ff40d6adde00296ff20aa466c4d064cf8d56e48ce3625b58cf020cf74"
+    },
+    {
+      "name": "styleguide/strates/strate-pushes/README.html",
+      "size": 2519,
+      "sha256": "ee56d35c7cdf30df6ef165dca0f3afd372a7eb76a77ee9f98d2c60164d4844ae"
+    },
+    {
+      "name": "styleguide/strates/strate-quote/README.html",
+      "size": 3634,
+      "sha256": "c02abe820e31f7ad3a3788a5f88ca50a7325adb74e483d54bf59158838d62c10"
+    },
+    {
+      "name": "styleguide/strates/strate-slider-cards/README.html",
+      "size": 2311,
+      "sha256": "93c143accb55d5b1ab0b4fd9653df3cdd65b37cdee6ddea623d17a94835210a9"
+    },
+    {
+      "name": "styleguide/strates/strate-slider-images/README.html",
+      "size": 1772,
+      "sha256": "fe4c6b3221fdadf5ce3e6e769c9f813b1e939bfe101b2856b56ec1f901ff69bb"
+    },
+    {
+      "name": "styleguide/strates/strate-snap/README.html",
+      "size": 10083,
+      "sha256": "dc0c5436da93dee3ce333359a7229b4f2b1501e45574377aa4a442c76bcac34a"
+    },
+    {
+      "name": "styleguide/strates/strate-steps/README.html",
+      "size": 1770,
+      "sha256": "c8af3479eb2d164d25dab7353b15692c0386de387ac410ae349f48c2d1f589c6"
+    },
+    {
+      "name": "styleguide/strates/strate-text-animated/README.html",
+      "size": 2311,
+      "sha256": "4402864798e1bbdf4dc21b4de33f6461460ea714fd0169ebab24775aee7fa510"
+    },
+    {
+      "name": "styleguide/strates/strate-text-image/README.html",
+      "size": 5221,
+      "sha256": "8d57f980b3327b42db221e4f5f188dd882056215ca4e3221f448aa4b1a5a43b8"
+    },
+    {
+      "name": "styleguide/strates/strate-text/README.html",
+      "size": 1627,
+      "sha256": "5a4c21f7a8390c1a54fc93e30bf7e8aad1d4d5f980321ca8ebea38b8d06582d2"
+    },
+    {
+      "name": "styleguide/strates/strate-video/README.html",
+      "size": 1460,
+      "sha256": "d8cd4b9851fa46e9a49939cd0f1a269cc5c268ea3e19d7b0d739ca0a43cd4180"
     }
   ],
   "pending": []

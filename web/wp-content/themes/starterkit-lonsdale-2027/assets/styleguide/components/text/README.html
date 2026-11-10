@@ -1,0 +1,78 @@
+<h4>Composant <code>text</code></h4>
+<p>Génère un bloc de contenu dans une balise <code>&lt;div&gt;</code>. Le HTML autorisé par
+WordPress est conservé et la classe CSS <code>text</code> est toujours ajoutée.</p>
+<p>Le composant fonctionne uniquement avec <code>component(&#39;text&#39;, [...])</code> et un
+payload associatif.</p>
+<h5>Utilisation</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;text&#x27;</span>, [
+    <span class="hljs-string">&#x27;text&#x27;</span> =&gt; <span class="hljs-string">&#x27;&lt;p&gt;Texte de présentation.&lt;/p&gt;&#x27;</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;intro&#x27;</span>,
+    <span class="hljs-string">&#x27;attributes&#x27;</span> =&gt; [
+        <span class="hljs-string">&#x27;id&#x27;</span> =&gt; <span class="hljs-string">&#x27;introduction&#x27;</span>,
+        <span class="hljs-string">&#x27;aria-label&#x27;</span> =&gt; <span class="hljs-string">&#x27;Introduction&#x27;</span>,
+    ],
+]);</code></pre>
+<h5>Payload</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>text</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Contenu éditorial</td>
+</tr>
+<tr>
+<td><code>classes</code></td>
+<td><code>string|array</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Classes ajoutées à <code>text</code></td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs HTML supplémentaires</td>
+</tr>
+</tbody></table>
+<p>Une valeur <code>text</code> vide, complexe ou composée uniquement d&#39;espaces ne produit
+aucun HTML. Les anciennes clés <code>intro</code>, <code>legend</code>, <code>content</code> et <code>description</code>
+ne sont plus interprétées : elles doivent être mappées explicitement à l&#39;appel.</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;text&#x27;</span>, [
+    <span class="hljs-string">&#x27;text&#x27;</span> =&gt; <span class="hljs-variable">$args</span>[<span class="hljs-string">&#x27;intro&#x27;</span>] ?? <span class="hljs-string">&#x27;&#x27;</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;intro&#x27;</span>,
+]);</code></pre>
+<h5>Règles de rendu</h5>
+<ul>
+<li>la balise générée est toujours un <code>&lt;div&gt;</code> ;</li>
+<li>la classe structurelle <code>text</code> est toujours présente ;</li>
+<li>le contenu passe par <code>wp_kses_post()</code> ;</li>
+<li>les classes sont nettoyées et dédupliquées ;</li>
+<li>les attributs sont validés et échappés ;</li>
+<li><code>class</code> ne peut pas être remplacé via <code>attributes</code>.</li>
+</ul>
+<h5>Exemple de sortie</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;text&#x27;</span>, [
+    <span class="hljs-string">&#x27;text&#x27;</span> =&gt; <span class="hljs-string">&#x27;&lt;p&gt;Une information &lt;strong&gt;importante&lt;/strong&gt;.&lt;/p&gt;&#x27;</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;intro&#x27;</span>,
+]);</code></pre>
+<p>Produit :</p>
+<pre><code class="language-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;text intro&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Une information <span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>importante<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+<h5>Tableaux RTE</h5>
+<p>Avec la classe <code>rte</code>, les tableaux occupent toute la largeur disponible, avec
+des bordures fusionnées de la couleur du texte, des cellules espacées et
+alignées en haut à gauche, et des en-têtes en gras.</p>
+<h5>Dépendances</h5>
+<ul>
+<li><code>component_classes()</code> ;</li>
+<li><code>component_attributes()</code> ;</li>
+<li><code>wp_kses_post()</code>.</li>
+</ul>

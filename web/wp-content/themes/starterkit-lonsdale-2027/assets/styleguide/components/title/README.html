@@ -1,0 +1,81 @@
+<h4>Composant <code>title</code></h4>
+<p>Génère un titre <code>h1</code> à <code>h6</code>. Le HTML autorisé par WordPress est conservé et la
+classe CSS <code>title</code> est toujours ajoutée.</p>
+<p>Le composant utilise uniquement un payload associatif.</p>
+<h5>API recommandée</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;title&#x27;</span>, [
+    <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Titre de la section&#x27;</span>,
+    <span class="hljs-string">&#x27;hx&#x27;</span> =&gt; <span class="hljs-number">2</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;title-2&#x27;</span>,
+    <span class="hljs-string">&#x27;attributes&#x27;</span> =&gt; [
+        <span class="hljs-string">&#x27;id&#x27;</span> =&gt; <span class="hljs-string">&#x27;section-title&#x27;</span>,
+        <span class="hljs-string">&#x27;aria-label&#x27;</span> =&gt; <span class="hljs-string">&#x27;Titre de la section&#x27;</span>,
+    ],
+]);</code></pre>
+<p>Le composant <code>title</code> fonctionne uniquement avec cette API. ## Payload</p>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>title</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Contenu principal</td>
+</tr>
+<tr>
+<td><code>hx</code></td>
+<td><code>int|numeric-string</code></td>
+<td><code>2</code></td>
+<td>Niveau sémantique</td>
+</tr>
+<tr>
+<td><code>classes</code></td>
+<td><code>string|array</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Classes ajoutées à <code>title</code></td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs HTML supplémentaires</td>
+</tr>
+</tbody></table>
+<p>Une valeur <code>title</code> vide ou invalide ne produit aucun titre.</p>
+<h5>Appel depuis une strate</h5>
+<p>Lorsque la strate contient déjà son titre, compléter ou remplacer ses options
+avant l&#39;appel :</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;title&#x27;</span>, <span class="hljs-title function_ invoke__">array_replace</span>(<span class="hljs-variable">$args</span>, [
+    <span class="hljs-string">&#x27;hx&#x27;</span> =&gt; <span class="hljs-number">2</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;title-2&#x27;</span>,
+]));</code></pre>
+<h5>Règles de rendu</h5>
+<ul>
+<li>les niveaux sont limités entre <code>1</code> et <code>6</code> ;</li>
+<li>un niveau invalide produit un <code>h2</code> ;</li>
+<li>le contenu passe par <code>wp_kses_post()</code> ;</li>
+<li>les classes sont nettoyées et dédupliquées ;</li>
+<li>les attributs sont validés et échappés ;</li>
+<li><code>class</code> ne peut pas être remplacé via <code>attributes</code> ;</li>
+<li>un payload ou un contenu invalide ne produit aucun HTML.</li>
+</ul>
+<h5>Exemple de HTML filtré</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;title&#x27;</span>, [
+    <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Une &lt;strong&gt;actualité&lt;/strong&gt;&#x27;</span>,
+    <span class="hljs-string">&#x27;hx&#x27;</span> =&gt; <span class="hljs-number">2</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;title-2&#x27;</span>,
+]);</code></pre>
+<p>Produit :</p>
+<pre><code class="language-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">h2</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;title title-2&quot;</span>&gt;</span>Une <span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>actualité<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></code></pre>
+<h5>Dépendances</h5>
+<ul>
+<li><code>component_classes()</code> ;</li>
+<li><code>component_attributes()</code> ;</li>
+<li><code>wp_kses_post()</code>.</li>
+</ul>

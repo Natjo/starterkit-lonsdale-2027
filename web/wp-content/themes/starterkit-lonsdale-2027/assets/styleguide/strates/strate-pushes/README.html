@@ -1,0 +1,62 @@
+<h4>Strate <code>pushes</code></h4>
+<p>Affiche, dans l’ordre choisi, des contenus existants sous forme de cards.
+Lire d’abord le <a href="#family-documentation">README général des strates</a>.</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">strate</span>(<span class="hljs-string">&#x27;pushes&#x27;</span>, [
+    <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;À la une&#x27;</span>,
+    <span class="hljs-string">&#x27;items&#x27;</span> =&gt; [<span class="hljs-number">123</span>, <span class="hljs-number">456</span>],
+]);</code></pre>
+<h5>Contrat</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>title</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Titre facultatif</td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Texte facultatif</td>
+</tr>
+<tr>
+<td><code>link</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Lien ACF interne ou externe</td>
+</tr>
+<tr>
+<td><code>items</code></td>
+<td><code>list&lt;int&gt;</code></td>
+<td><code>[]</code></td>
+<td>IDs des contenus sélectionnés, dans l’ordre voulu</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Options communes traitées par <code>options()</code></td>
+</tr>
+</tbody></table>
+<p>Dans le BO, le layout flexible <code>pushes</code> propose uniquement les champs de
+présentation, la liste « Contenus » (relation ACF) et les options communes.
+La liste est limitée aux types ayant une card de même nom dans le starter.
+Chaque contenu utilise la card associée à son type via
+<code>theme_content_type_card</code>. Les IDs sont dédupliqués, les contenus sans card
+ignorés. Il n’y a ni choix de mode, ni création de push manuel dans la strate.</p>
+<p>Le payload provient de <code>theme_post_card_item</code> : groupe ACF <code>card</code> facultatif,
+champs métier configurés, puis données WordPress. Sans introduction ni contenu
+valide, la strate ne produit aucun balisage.</p>
+<h5>Dépendances</h5>
+<p>La strate utilise <code>component(&#39;header&#39;)</code> et les cards associées aux types
+sélectionnés. Son SCSS est co-localisé avec ce README.
+Le manifeste préremplit l&#39;introduction, mais laisse <code>items</code> vide : les IDs des
+publications doivent provenir du site créé.</p>

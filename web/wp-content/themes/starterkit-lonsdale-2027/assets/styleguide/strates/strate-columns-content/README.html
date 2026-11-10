@@ -1,0 +1,63 @@
+<h4>Strate <code>columns-content</code></h4>
+<p>Affiche de une à trois colonnes éditoriales. Chaque colonne peut contenir un
+titre, un texte riche et une image.</p>
+<h5>Appel</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">strate</span>(<span class="hljs-string">&#x27;columns-content&#x27;</span>, [
+    <span class="hljs-string">&#x27;columns&#x27;</span> =&gt; [
+        [
+            <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Première colonne&#x27;</span>,
+            <span class="hljs-string">&#x27;text&#x27;</span> =&gt; <span class="hljs-string">&#x27;&lt;p&gt;Contenu éditorial.&lt;/p&gt;&#x27;</span>,
+            <span class="hljs-string">&#x27;image&#x27;</span> =&gt; <span class="hljs-number">123</span>,
+        ],
+    ],
+]);</code></pre>
+<h5>Contrat</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>columns</code></td>
+<td><code>array</code></td>
+<td>De 1 à 3 colonnes ; les entrées supplémentaires sont ignorées</td>
+</tr>
+<tr>
+<td><code>columns[].title</code></td>
+<td><code>mixed</code></td>
+<td>Transmis à <code>component(&#39;title&#39;)</code></td>
+</tr>
+<tr>
+<td><code>columns[].text</code></td>
+<td><code>mixed</code></td>
+<td>Transmis à <code>component(&#39;text&#39;)</code></td>
+</tr>
+<tr>
+<td><code>columns[].image</code></td>
+<td><code>ID|URL|null</code></td>
+<td>Transmis à <code>component(&#39;picture&#39;)</code></td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td><code>array</code></td>
+<td>Options communes traitées par <code>options()</code></td>
+</tr>
+</tbody></table>
+<p>Les colonnes entièrement vides ne sont pas rendues. Si aucune colonne ne
+contient de donnée exploitable, la strate ne produit aucun HTML.</p>
+<h5>Champs ACF</h5>
+<p>Le layout <code>columns-content</code> contient un repeater <code>columns</code>, obligatoire, avec
+un minimum de 1 et un maximum de 3 lignes. Chaque ligne contient <code>title</code>,
+<code>text</code> et <code>image</code>.</p>
+<p>Le manifeste préremplit trois colonnes de démonstration. Leurs images dédiées
+mesurent <code>960 × 640 px</code> et sont importées dans la médiathèque par Forge lors de
+la création du site.</p>
+<h5>Dépendances</h5>
+<ul>
+<li><code>component(&#39;picture&#39;)</code> ;</li>
+<li><code>component(&#39;title&#39;)</code> ;</li>
+<li><code>component(&#39;text&#39;)</code>.</li>
+</ul>

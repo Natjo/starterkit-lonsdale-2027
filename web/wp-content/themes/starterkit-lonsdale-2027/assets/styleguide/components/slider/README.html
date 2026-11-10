@@ -1,0 +1,245 @@
+<h4>Composant <code>slider</code></h4>
+<p>Génère un carrousel horizontal fondé sur le scroll natif et <code>scroll-snap</code>. Le
+composant fonctionne uniquement avec <code>component(&#39;slider&#39;, [...])</code> et un payload
+associatif.</p>
+<h5>Mode card</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;slider&#x27;</span>, [
+    <span class="hljs-string">&#x27;items&#x27;</span> =&gt; <span class="hljs-variable">$items</span>,
+    <span class="hljs-string">&#x27;card&#x27;</span> =&gt; <span class="hljs-string">&#x27;news&#x27;</span>,
+    <span class="hljs-string">&#x27;navigation&#x27;</span> =&gt; <span class="hljs-literal">true</span>,
+    <span class="hljs-string">&#x27;pagination&#x27;</span> =&gt; <span class="hljs-literal">true</span>,
+    <span class="hljs-string">&#x27;timeline&#x27;</span> =&gt; <span class="hljs-literal">false</span>,
+    <span class="hljs-string">&#x27;aria_label&#x27;</span> =&gt; <span class="hljs-string">&#x27;Actualités à découvrir&#x27;</span>,
+]);</code></pre>
+<p>Chaque item doit être un ID de post positif ou un tableau associatif non vide
+transmis à <code>card(&#39;news&#39;, $item)</code>. Le préfixe <code>card-</code> reste facultatif.</p>
+<h5>Mode HTML direct</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;slider&#x27;</span>, [
+    <span class="hljs-string">&#x27;items&#x27;</span> =&gt; [
+        <span class="hljs-string">&#x27;&lt;article&gt;Premier contenu&lt;/article&gt;&#x27;</span>,
+        <span class="hljs-string">&#x27;&lt;article&gt;Deuxième contenu&lt;/article&gt;&#x27;</span>,
+    ],
+    <span class="hljs-string">&#x27;card&#x27;</span> =&gt; <span class="hljs-literal">null</span>,
+    <span class="hljs-string">&#x27;aria_label&#x27;</span> =&gt; <span class="hljs-string">&#x27;Exemples&#x27;</span>,
+]);</code></pre>
+<p>Les items directs doivent être des scalaires ou objets <code>Stringable</code>; leur HTML
+est filtré avec <code>wp_kses_post()</code>.</p>
+<p>Les arguments positionnels et les listes directes ne
+sont plus supportés. <code>items</code> doit toujours être une véritable liste.</p>
+<h5>Mode images responsive</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;slider&#x27;</span>, [
+    <span class="hljs-string">&#x27;items&#x27;</span> =&gt; [
+        [
+            <span class="hljs-string">&#x27;images&#x27;</span> =&gt; [
+                <span class="hljs-string">&#x27;desktop&#x27;</span> =&gt; <span class="hljs-number">123</span>,
+                <span class="hljs-string">&#x27;mobile&#x27;</span> =&gt; <span class="hljs-number">456</span>,
+            ],
+            <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;slider-image&#x27;</span>,
+        ],
+    ],
+    <span class="hljs-string">&#x27;item_component&#x27;</span> =&gt; <span class="hljs-string">&#x27;picture&#x27;</span>,
+    <span class="hljs-string">&#x27;card&#x27;</span> =&gt; <span class="hljs-literal">null</span>,
+]);</code></pre>
+<p>Le mode composant est volontairement limité à <code>picture</code>. Il permet de conserver
+les balises <code>&lt;picture&gt;</code> et <code>&lt;source&gt;</code> générées par le composant, contrairement
+au mode HTML filtré qui n’est pas destiné aux sources responsive.</p>
+<h5>Payload</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>items</code></td>
+<td><code>list&lt;int|array&gt;</code> ou <code>list&lt;scalar|Stringable&gt;</code></td>
+<td><code>[]</code></td>
+<td>Cards en mode card, HTML filtré en mode direct</td>
+</tr>
+<tr>
+<td><code>card</code></td>
+<td><code>scalar|Stringable|null</code></td>
+<td><code>&#39;card-news&#39;</code></td>
+<td>Card utilisée ; <code>null</code> active le HTML direct</td>
+</tr>
+<tr>
+<td><code>item_component</code></td>
+<td><code>&#39;picture&#39;|null</code></td>
+<td><code>null</code></td>
+<td>Rend chaque item avec le composant <code>picture</code></td>
+</tr>
+<tr>
+<td><code>classes</code></td>
+<td><code>string|array</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Classes supplémentaires</td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs supplémentaires</td>
+</tr>
+<tr>
+<td><code>navigation</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+<td>Boutons précédent/suivant</td>
+</tr>
+<tr>
+<td><code>pagination</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+<td>Pagination générée par le module</td>
+</tr>
+<tr>
+<td><code>timeline</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td>Barre de progression</td>
+</tr>
+<tr>
+<td><code>hydrate</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+<td>Hydratation autonome</td>
+</tr>
+<tr>
+<td><code>media</code></td>
+<td><code>scalar|Stringable|null</code></td>
+<td><code>null</code></td>
+<td>Media query du chargeur</td>
+</tr>
+<tr>
+<td><code>aria_label</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;Carrousel&#39;</code></td>
+<td>Nom de la région et de la liste</td>
+</tr>
+<tr>
+<td><code>prev_label</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;Diapositive précédente&#39;</code></td>
+<td>Bouton précédent</td>
+</tr>
+<tr>
+<td><code>next_label</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;Diapositive suivante&#39;</code></td>
+<td>Bouton suivant</td>
+</tr>
+<tr>
+<td><code>pagination_label</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;Navigation du carrousel&#39;</code></td>
+<td>Groupe de pagination</td>
+</tr>
+<tr>
+<td><code>slide_label</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;Diapositive&#39;</code></td>
+<td>Nom générique d’une slide</td>
+</tr>
+<tr>
+<td><code>slide_position_format</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;{label} {current} sur {total}&#39;</code></td>
+<td>Format de position</td>
+</tr>
+<tr>
+<td><code>page_label</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;Page&#39;</code></td>
+<td>Annonce de page active</td>
+</tr>
+<tr>
+<td><code>go_to_label</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;Aller à la page&#39;</code></td>
+<td>Boutons de pagination</td>
+</tr>
+</tbody></table>
+<p>Les booléens acceptent aussi <code>0</code>, <code>1</code>, <code>true</code>, <code>false</code>, <code>yes</code> et <code>no</code>.</p>
+<p>En mode card, les posts et les images explicites de la collection sont
+préchargés en lots avant le rendu. En mode <code>picture</code>, les IDs placés dans
+<code>image</code>, <code>images.desktop</code> et <code>images.mobile</code> sont préchargés de la même manière.
+Les URLs externes sont ignorées par ce préchargement et restent supportées.</p>
+<p>Le composant ne contient aucune clé de traduction. Pour une autre langue :</p>
+<pre><code class="language-php hljs"><span class="hljs-string">&#x27;slide_label&#x27;</span> =&gt; <span class="hljs-string">&#x27;Slide&#x27;</span>,
+<span class="hljs-string">&#x27;slide_position_format&#x27;</span> =&gt; <span class="hljs-string">&#x27;{label} {current} of {total}&#x27;</span>,</code></pre>
+<p>Les marqueurs <code>{label}</code>, <code>{current}</code> et <code>{total}</code> sont remplacés sans exécuter
+le format comme une chaîne <code>sprintf</code>, ce qui évite les erreurs de format.</p>
+<h5>Contrôles et hydratation</h5>
+<p><code>navigation</code>, <code>pagination</code> et <code>timeline</code> contrôlent uniquement le markup. Ils
+restent rendus avec <code>hydrate =&gt; false</code>, afin qu’un module parent puisse prendre
+la main. Avec un seul item, les trois sont toujours omis.</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;slider&#x27;</span>, [
+    <span class="hljs-string">&#x27;items&#x27;</span> =&gt; <span class="hljs-variable">$items</span>,
+    <span class="hljs-string">&#x27;card&#x27;</span> =&gt; <span class="hljs-string">&#x27;news&#x27;</span>,
+    <span class="hljs-string">&#x27;hydrate&#x27;</span> =&gt; <span class="hljs-literal">false</span>,
+    <span class="hljs-string">&#x27;navigation&#x27;</span> =&gt; <span class="hljs-literal">true</span>,
+    <span class="hljs-string">&#x27;pagination&#x27;</span> =&gt; <span class="hljs-literal">true</span>,
+    <span class="hljs-string">&#x27;timeline&#x27;</span> =&gt; <span class="hljs-literal">true</span>,
+]);</code></pre>
+<p>Pour un slider purement natif :</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;slider&#x27;</span>, [
+    <span class="hljs-string">&#x27;items&#x27;</span> =&gt; <span class="hljs-variable">$items</span>,
+    <span class="hljs-string">&#x27;card&#x27;</span> =&gt; <span class="hljs-string">&#x27;news&#x27;</span>,
+    <span class="hljs-string">&#x27;hydrate&#x27;</span> =&gt; <span class="hljs-literal">false</span>,
+    <span class="hljs-string">&#x27;navigation&#x27;</span> =&gt; <span class="hljs-literal">false</span>,
+    <span class="hljs-string">&#x27;pagination&#x27;</span> =&gt; <span class="hljs-literal">false</span>,
+    <span class="hljs-string">&#x27;timeline&#x27;</span> =&gt; <span class="hljs-literal">false</span>,
+]);</code></pre>
+<h5>Strate dédiée</h5>
+<p>La strate transmet les options avec <code>slider_options</code>, force uniquement
+<code>hydrate =&gt; false</code> sur le composant et devient propriétaire de son cycle de
+vie :</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">strate</span>(<span class="hljs-string">&#x27;slider&#x27;</span>, [
+    <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;À la une&#x27;</span>,
+    <span class="hljs-string">&#x27;items&#x27;</span> =&gt; <span class="hljs-variable">$items</span>,
+    <span class="hljs-string">&#x27;card&#x27;</span> =&gt; <span class="hljs-string">&#x27;news&#x27;</span>,
+    <span class="hljs-string">&#x27;slider_options&#x27;</span> =&gt; [
+        <span class="hljs-string">&#x27;navigation&#x27;</span> =&gt; <span class="hljs-literal">true</span>,
+        <span class="hljs-string">&#x27;pagination&#x27;</span> =&gt; <span class="hljs-literal">true</span>,
+        <span class="hljs-string">&#x27;timeline&#x27;</span> =&gt; <span class="hljs-literal">false</span>,
+    ],
+]);</code></pre>
+<p>La strate appelle <code>add()</code> à l’entrée dans le viewport et <code>remove()</code> à la sortie
+ou à sa destruction.</p>
+<h5>Interaction et API JavaScript</h5>
+<p>Le drag suit le pointeur. Au relâchement, l’animation rejoint la page suivante
+ou précédente sans déplacement brutal. Un changement rapide de direction
+conserve la position, et les liens restent cliquables tant qu’aucun swipe réel
+n’a eu lieu.</p>
+<pre><code class="language-js hljs"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Slider</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./slider&quot;</span>;
+
+<span class="hljs-keyword">const</span> slider = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Slider</span>(element);
+slider.<span class="hljs-property">onchange</span> = <span class="hljs-function">(<span class="hljs-params">page, lastPage, progress</span>) =&gt;</span> {};
+slider.<span class="hljs-property">onnext</span> = <span class="hljs-function">(<span class="hljs-params">page</span>) =&gt;</span> {};
+slider.<span class="hljs-property">onprev</span> = <span class="hljs-function">(<span class="hljs-params">page</span>) =&gt;</span> {};
+slider.<span class="hljs-title function_">add</span>();
+slider.<span class="hljs-title function_">slideTo</span>(<span class="hljs-number">2</span>);
+slider.<span class="hljs-title function_">remove</span>();</code></pre>
+<p>Les index correspondent aux pages de scroll, pas nécessairement aux items.
+<code>remove()</code> débranche les listeners, observers, frames et contenus générés.
+<code>prefers-reduced-motion</code> désactive le scroll animé.</p>
+<h5>Accessibilité</h5>
+<ul>
+<li>La racine est une région avec <code>aria-roledescription=&quot;carousel&quot;</code>.</li>
+<li>La piste conserve une structure <code>list</code> / <code>listitem</code> valide.</li>
+<li>Chaque item est annoncé comme une slide avec sa position réelle.</li>
+<li>Les boutons natifs sont désactivés aux limites.</li>
+<li>La pagination expose la page active avec <code>aria-current=&quot;page&quot;</code>.</li>
+<li>Les flèches clavier agissent lorsque la liste elle-même a le focus.</li>
+<li>Les attributs structurels, ARIA et ceux du module sont protégés.</li>
+</ul>
+<h5>Dépendances</h5>
+<ul>
+<li><code>assets/components/slider/slider.js</code> ;</li>
+<li><code>assets/components/slider/slider.scss</code> ;</li>
+<li><code>card()</code> en mode card ;</li>
+<li><code>component_classes()</code>, <code>component_attributes()</code> et <code>wp_kses_post()</code>.</li>
+</ul>

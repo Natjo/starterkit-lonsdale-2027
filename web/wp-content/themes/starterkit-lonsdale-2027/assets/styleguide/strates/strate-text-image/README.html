@@ -1,0 +1,154 @@
+<h4>Strate <code>text-image</code></h4>
+<p>Affiche un bloc éditorial composé d’un titre, d’un texte riche et d’une image.
+À partir du breakpoint <code>md</code>, le contenu et le média occupent chacun une moitié
+du rail <code>ctr</code>.</p>
+<p>Lire d’abord le <a href="#family-documentation">README général des strates</a>.</p>
+<h5>Appel</h5>
+<p>Depuis le flexible content ACF, le dispatcher appelle automatiquement :</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">strate</span>(<span class="hljs-string">&#x27;text-image&#x27;</span>, <span class="hljs-variable">$strate</span>);</code></pre>
+<p>Appel direct :</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">strate</span>(<span class="hljs-string">&#x27;text-image&#x27;</span>, [
+    <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Titre de la section&#x27;</span>,
+    <span class="hljs-string">&#x27;text&#x27;</span> =&gt; <span class="hljs-string">&#x27;&lt;p&gt;Contenu éditorial.&lt;/p&gt;&#x27;</span>,
+    <span class="hljs-string">&#x27;image&#x27;</span> =&gt; <span class="hljs-number">123</span>,
+    <span class="hljs-string">&#x27;reverse&#x27;</span> =&gt; <span class="hljs-literal">true</span>,
+    <span class="hljs-string">&#x27;center&#x27;</span> =&gt; <span class="hljs-literal">true</span>,
+]);</code></pre>
+<p>Le nom du layout ACF est <code>text-image</code>. Le préfixe <code>strate-</code> appartient
+uniquement au dossier et au fichier PHP.</p>
+<h5>Options</h5>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Effet à partir du breakpoint <code>md</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>reverse</code></td>
+<td>Place l’image à gauche et le texte à droite</td>
+</tr>
+<tr>
+<td><code>center</code></td>
+<td>Centre verticalement le texte et l’image</td>
+</tr>
+</tbody></table>
+<h5>Contrat</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Valeur ACF vide</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>title</code></td>
+<td><code>mixed</code></td>
+<td>Titre Lorem ipsum</td>
+<td>Transmis à <code>component(&#39;title&#39;)</code></td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td><code>mixed</code></td>
+<td>Deux paragraphes Lorem ipsum</td>
+<td>Transmis à <code>component(&#39;text&#39;)</code></td>
+</tr>
+<tr>
+<td><code>image</code></td>
+<td><code>ID|URL|null</code></td>
+<td>Placeholder du manifeste</td>
+<td>Transmis à <code>component(&#39;picture&#39;)</code></td>
+</tr>
+<tr>
+<td><code>reverse</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td>Inverse les colonnes à partir du breakpoint <code>md</code></td>
+</tr>
+<tr>
+<td><code>center</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td>Centre verticalement les deux colonnes</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Options communes traitées par <code>options()</code></td>
+</tr>
+</tbody></table>
+<h5>Champs ACF</h5>
+<p>Layout flexible content :</p>
+<pre><code class="language-text hljs">acf_fc_layout = text-image</code></pre>
+<table>
+<thead>
+<tr>
+<th>Libellé</th>
+<th>Identifiant</th>
+<th>Type ACF</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Titre</td>
+<td><code>title</code></td>
+<td>WYSIWYG léger</td>
+<td>HTML éditorial filtré par le composant</td>
+</tr>
+<tr>
+<td>Texte</td>
+<td><code>text</code></td>
+<td>WYSIWYG</td>
+<td>HTML éditorial filtré par le composant</td>
+</tr>
+<tr>
+<td>Image</td>
+<td><code>image</code></td>
+<td>Image</td>
+<td>ID de média</td>
+</tr>
+<tr>
+<td>Inverser l’ordre</td>
+<td><code>reverse</code></td>
+<td>Vrai/Faux</td>
+<td>Booléen, défaut <code>false</code></td>
+</tr>
+<tr>
+<td>Centrer verticalement</td>
+<td><code>center</code></td>
+<td>Vrai/Faux</td>
+<td>Booléen, défaut <code>false</code></td>
+</tr>
+<tr>
+<td>Options</td>
+<td><code>options</code></td>
+<td>Groupe cloné</td>
+<td>Options communes des strates</td>
+</tr>
+</tbody></table>
+<p>Le titre et le texte de démonstration viennent des <code>default_value</code> ACF. Le
+placeholder dédié mesure <code>1460 × 973 px</code>, soit deux fois la largeur du format
+WordPress <code>730_auto</code>. Il est déclaré dans le manifeste : Forge l’importe dans la
+médiathèque et remplace sa référence par l’identifiant propre au site créé.</p>
+<h5>Mise en page</h5>
+<p>Avant le breakpoint <code>md</code>, le texte et l’image sont empilés.</p>
+<p>À partir du breakpoint <code>md</code>, ils occupent chacun une moitié du rail <code>ctr</code> :</p>
+<ul>
+<li><code>reverse</code> inverse leur position ;</li>
+<li><code>center</code> les centre verticalement.</li>
+</ul>
+<h5>Assets et dépendances</h5>
+<pre><code class="language-text hljs">template-parts/strates/strate-text-image.php
+assets/strates/strate-text-image/strate-text-image.scss</code></pre>
+<p>Dépendances :</p>
+<ul>
+<li><code>options()</code> ;</li>
+<li><code>component(&#39;title&#39;, [...])</code> ;</li>
+<li><code>component(&#39;text&#39;, [...])</code> ;</li>
+<li><code>component(&#39;picture&#39;, [...])</code>.</li>
+</ul>
+<p>La strate ne produit aucun HTML sans contenu exploitable. Les champs absents
+sont traités comme vides.</p>

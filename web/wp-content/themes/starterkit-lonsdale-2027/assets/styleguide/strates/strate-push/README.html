@@ -1,0 +1,62 @@
+<h4>Strate <code>push</code></h4>
+<p>Affiche un contenu de mise en avant composé d’un titre, d’un texte riche, d’un
+lien et d’une image.</p>
+<h5>Appel</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">strate</span>(<span class="hljs-string">&#x27;push&#x27;</span>, [
+    <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Découvrir le projet&#x27;</span>,
+    <span class="hljs-string">&#x27;text&#x27;</span> =&gt; <span class="hljs-string">&#x27;&lt;p&gt;Une courte présentation du contenu mis en avant.&lt;/p&gt;&#x27;</span>,
+    <span class="hljs-string">&#x27;link&#x27;</span> =&gt; [
+        <span class="hljs-string">&#x27;url&#x27;</span> =&gt; <span class="hljs-string">&#x27;/projet/&#x27;</span>,
+        <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Voir le projet&#x27;</span>,
+        <span class="hljs-string">&#x27;target&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,
+    ],
+    <span class="hljs-string">&#x27;image&#x27;</span> =&gt; <span class="hljs-number">123</span>,
+]);</code></pre>
+<h5>Contrat</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>title</code></td>
+<td><code>mixed</code></td>
+<td>Titre transmis au composant <code>header</code></td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td><code>mixed</code></td>
+<td>Texte riche transmis au composant <code>header</code></td>
+</tr>
+<tr>
+<td><code>link</code></td>
+<td><code>array</code></td>
+<td>Lien ACF transmis au composant <code>header</code></td>
+</tr>
+<tr>
+<td><code>image</code></td>
+<td><code>ID|URL|null</code></td>
+<td>Image transmise au composant <code>picture</code></td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td><code>array</code></td>
+<td>Options communes traitées par <code>options()</code></td>
+</tr>
+</tbody></table>
+<p>La strate ne produit aucun HTML lorsque les quatre contenus sont vides.</p>
+<p>Le titre et le texte Lorem viennent des <code>default_value</code> ACF. Le manifeste
+préremplit le lien avec « Découvrir » et fournit un placeholder dédié de
+<code>1460 × 973 px</code>, adapté au format WordPress <code>730_auto</code> en densité 2×. Forge
+importe cette image dans la médiathèque lors de la création du site.</p>
+<h5>Champs ACF</h5>
+<p>Le layout flexible <code>push</code> contient les champs <code>title</code>, <code>text</code>, <code>link</code> et
+<code>image</code>, suivis des options communes des strates.</p>
+<h5>Dépendances</h5>
+<ul>
+<li><code>component(&#39;header&#39;)</code> ;</li>
+<li><code>component(&#39;picture&#39;)</code>.</li>
+</ul>

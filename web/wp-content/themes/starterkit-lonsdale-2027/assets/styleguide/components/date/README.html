@@ -1,0 +1,90 @@
+<h4>Composant <code>date</code></h4>
+<p>Affiche une date avec une valeur machine fiable. Le composant fonctionne
+uniquement avec <code>component(&#39;date&#39;, [...])</code> et un payload associatif.</p>
+<p>Il utilise <code>&lt;time&gt;</code> lorsqu’un <code>datetime</code> valide est disponible, sinon un
+<code>&lt;span&gt;</code> afin de ne pas exposer une fausse sémantique.</p>
+<h5>Utilisation</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;date&#x27;</span>, [
+    <span class="hljs-string">&#x27;date&#x27;</span> =&gt; <span class="hljs-string">&#x27;20 juillet 2026&#x27;</span>,
+    <span class="hljs-string">&#x27;datetime&#x27;</span> =&gt; <span class="hljs-string">&#x27;2026-07-20&#x27;</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;date-news&#x27;</span>,
+    <span class="hljs-string">&#x27;attributes&#x27;</span> =&gt; [<span class="hljs-string">&#x27;data-tracking&#x27;</span> =&gt; <span class="hljs-string">&#x27;publication-date&#x27;</span>],
+]);</code></pre>
+<p>Les arguments positionnels, les listes directes et
+l’ancien alias <code>text</code> ne sont plus supportés.</p>
+<h5>Payload</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>date</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Libellé visible obligatoire</td>
+</tr>
+<tr>
+<td><code>datetime</code></td>
+<td><code>scalar|Stringable|DateTimeInterface</code></td>
+<td>auto</td>
+<td>Valeur machine explicite</td>
+</tr>
+<tr>
+<td><code>classes</code></td>
+<td><code>string|array</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Classes supplémentaires</td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs supplémentaires</td>
+</tr>
+</tbody></table>
+<p>Si <code>datetime</code> est absent ou invalide, le composant tente de reconnaître une
+date machine dans le libellé visible.</p>
+<h5>Formats reconnus</h5>
+<p>La normalisation est stricte et n’utilise pas <code>strtotime()</code> :</p>
+<ul>
+<li><code>Y-m-d</code>, par exemple <code>2026-07-20</code> ;</li>
+<li><code>Ymd</code>, par exemple <code>20260720</code>, format brut courant d’ACF ;</li>
+<li><code>d/m/Y</code>, par exemple <code>20/07/2026</code> ;</li>
+<li><code>DateTimeInterface</code>, converti dans le fuseau WordPress.</li>
+</ul>
+<p>Toutes les valeurs valides sont rendues au format <code>Y-m-d</code>. Les dates
+impossibles comme <code>2026-02-30</code> sont rejetées.</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;date&#x27;</span>, [
+    <span class="hljs-string">&#x27;date&#x27;</span> =&gt; <span class="hljs-string">&#x27;20 juillet 2026&#x27;</span>,
+    <span class="hljs-string">&#x27;datetime&#x27;</span> =&gt; <span class="hljs-string">&#x27;20260720&#x27;</span>,
+]);</code></pre>
+<p>Produit :</p>
+<pre><code class="language-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">time</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;date&quot;</span> <span class="hljs-attr">datetime</span>=<span class="hljs-string">&quot;2026-07-20&quot;</span>&gt;</span>20 juillet 2026<span class="hljs-tag">&lt;/<span class="hljs-name">time</span>&gt;</span></code></pre>
+<p>Sans valeur machine fiable :</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;date&#x27;</span>, [
+    <span class="hljs-string">&#x27;date&#x27;</span> =&gt; <span class="hljs-string">&#x27;20 juillet 2026&#x27;</span>,
+]);</code></pre>
+<p>Produit un <code>&lt;span class=&quot;date&quot;&gt;</code>.</p>
+<h5>Rendu et sécurité</h5>
+<ul>
+<li>Une valeur <code>date</code> vide ou invalide ne produit aucun HTML.</li>
+<li><code>class</code> et <code>datetime</code> sont protégés.</li>
+<li>Le contenu visible autorise uniquement <code>span</code>, <code>strong</code>, <code>em</code>, <code>abbr</code>,
+<code>small</code>, <code>sup</code>, <code>sub</code> et <code>br</code>.</li>
+<li>Les scripts, liens et balises de bloc sont supprimés.</li>
+<li>Les classes sont nettoyées et dédupliquées.</li>
+<li>Les attributs libres sûrs restent disponibles sur <code>&lt;time&gt;</code> ou <code>&lt;span&gt;</code>.</li>
+<li>Aucun JavaScript n’est nécessaire.</li>
+</ul>
+<h5>Dépendances</h5>
+<ul>
+<li><code>component_classes()</code> pour les classes ;</li>
+<li><code>component_attributes()</code> pour les attributs ;</li>
+<li><code>wp_kses()</code> pour le contenu inline ;</li>
+<li><code>wp_timezone()</code> pour le fuseau WordPress.</li>
+</ul>

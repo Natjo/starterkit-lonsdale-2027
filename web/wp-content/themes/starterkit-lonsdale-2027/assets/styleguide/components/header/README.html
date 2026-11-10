@@ -1,0 +1,121 @@
+<h4>Composant <code>header</code></h4>
+<p>Génère l’introduction d’une section avec un titre <code>h2</code> fixe, un texte éditorial
+et un lien facultatif. Ce composant n’est pas le header principal du site : la
+navigation globale reste dans <code>common/header-nav</code>.</p>
+<h5>Utilisation</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;header&#x27;</span>, [
+    <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Nos expertises&#x27;</span>,
+    <span class="hljs-string">&#x27;title_classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;title-2&#x27;</span>,
+    <span class="hljs-string">&#x27;text&#x27;</span> =&gt; <span class="hljs-string">&#x27;&lt;p&gt;Découvrez nos domaines d’intervention.&lt;/p&gt;&#x27;</span>,
+    <span class="hljs-string">&#x27;link&#x27;</span> =&gt; [
+        <span class="hljs-string">&#x27;url&#x27;</span> =&gt; <span class="hljs-string">&#x27;/expertises/&#x27;</span>,
+        <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Toutes les expertises&#x27;</span>,
+        <span class="hljs-string">&#x27;target&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,
+    ],
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;section-header&#x27;</span>,
+]);</code></pre>
+<p>Seule cette API est supportée. Les arguments positionnels
+et les anciens alias ne sont pas acceptés.</p>
+<h5>Payload</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>title</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Titre de la section</td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Texte éditorial</td>
+</tr>
+<tr>
+<td><code>link</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Lien facultatif</td>
+</tr>
+<tr>
+<td><code>classes</code></td>
+<td><code>string|array</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Classes du <code>&lt;header&gt;</code></td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs du <code>&lt;header&gt;</code></td>
+</tr>
+<tr>
+<td><code>title_classes</code></td>
+<td><code>string|array</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Classes supplémentaires du titre</td>
+</tr>
+<tr>
+<td><code>title_attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs supplémentaires du titre</td>
+</tr>
+<tr>
+<td><code>text_classes</code></td>
+<td><code>string|array</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Classes supplémentaires du texte</td>
+</tr>
+<tr>
+<td><code>text_attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs supplémentaires du texte</td>
+</tr>
+</tbody></table>
+<p>Les anciennes clés <code>titre</code>, <code>heading</code>, <code>headline</code>, <code>intro</code>, <code>content</code>,
+<code>description</code>, <code>cta</code> et <code>button</code> ont été retirées.</p>
+<h5>Lien</h5>
+<p>Le tableau <code>link</code> utilise directement la structure d’un lien ACF. Il peut aussi
+transmettre les options du composant <code>link</code> :</p>
+<pre><code class="language-php hljs"><span class="hljs-string">&#x27;link&#x27;</span> =&gt; [
+    <span class="hljs-string">&#x27;url&#x27;</span> =&gt; <span class="hljs-string">&#x27;/expertises/&#x27;</span>,
+    <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Toutes les expertises&#x27;</span>,
+    <span class="hljs-string">&#x27;target&#x27;</span> =&gt; <span class="hljs-string">&#x27;_blank&#x27;</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;header-link&#x27;</span>,
+    <span class="hljs-string">&#x27;icon&#x27;</span> =&gt; [
+        <span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;blank&#x27;</span>,
+        <span class="hljs-string">&#x27;width&#x27;</span> =&gt; <span class="hljs-number">16</span>,
+        <span class="hljs-string">&#x27;height&#x27;</span> =&gt; <span class="hljs-number">16</span>,
+    ],
+    <span class="hljs-string">&#x27;attributes&#x27;</span> =&gt; [
+        <span class="hljs-string">&#x27;aria-label&#x27;</span> =&gt; <span class="hljs-string">&#x27;Voir toutes les expertises&#x27;</span>,
+        <span class="hljs-string">&#x27;data-track&#x27;</span> =&gt; <span class="hljs-string">&#x27;expertises&#x27;</span>,
+    ],
+],</code></pre>
+<p>Le lien est rendu uniquement lorsque son URL est sûre et son libellé non vide.</p>
+<h5>Niveau du titre</h5>
+<p>Le titre est toujours rendu en <code>h2</code>. La clé <code>hx</code> est volontairement ignorée :
+le niveau fait partie du contrat de présentation du composant.</p>
+<p>Si une autre hiérarchie est nécessaire, utiliser directement
+<code>component(&#39;title&#39;, [...])</code>.</p>
+<h5>Rendu</h5>
+<p>Au moins un titre, un texte ou un lien valide est nécessaire. Chaque donnée est
+déléguée à son composant :</p>
+<ul>
+<li><code>title</code> vers <code>component(&#39;title&#39;, [...])</code> ;</li>
+<li><code>text</code> vers <code>component(&#39;text&#39;, [...])</code> ;</li>
+<li><code>link</code> vers <code>component(&#39;link&#39;, [...])</code>.</li>
+</ul>
+<p>Les sous-composants gèrent eux-mêmes les valeurs vides. <code>class</code> est réservé dans
+<code>attributes</code>, car la classe du conteneur est construite par le composant.</p>
+<p>Le <code>&lt;header&gt;</code> représente l’introduction d’une section, d’un article ou d’un
+bloc de contenu. Il ne doit pas être placé dans un autre élément <code>&lt;header&gt;</code>.</p>

@@ -1,0 +1,225 @@
+<h4>Composants du thème</h4>
+<p>Ce dossier contient les assets et la documentation des composants PHP
+réutilisables du thème. Pour utiliser ou modifier un composant, lire d’abord le
+<code>README.md</code> placé dans son dossier d’assets.</p>
+<h5>API unique</h5>
+<p>Tous les composants sont appelés avec :</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;nom&#x27;</span>, [
+    <span class="hljs-string">&#x27;cle&#x27;</span> =&gt; <span class="hljs-string">&#x27;valeur&#x27;</span>,
+]);</code></pre>
+<p>Exemples :</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;title&#x27;</span>, [
+    <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Titre de section&#x27;</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;title-2&#x27;</span>,
+]);
+
+<span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;picture&#x27;</span>, [
+    <span class="hljs-string">&#x27;image&#x27;</span> =&gt; <span class="hljs-variable">$args</span>[<span class="hljs-string">&#x27;image&#x27;</span>] ?? <span class="hljs-literal">null</span>,
+    <span class="hljs-string">&#x27;size&#x27;</span> =&gt; <span class="hljs-string">&#x27;large&#x27;</span>,
+]);</code></pre>
+<p>Le second argument est toujours un tableau associatif. Les tableaux
+positionnels ne font pas partie du contrat des composants.</p>
+<p><code>component()</code> :</p>
+<ol>
+<li>valide le nom du composant ;</li>
+<li>convertit les underscores en tirets (<code>select_lang</code> devient <code>select-lang</code>) ;</li>
+<li>enregistre ses assets avec <code>theme_queue_module_assets()</code> ;</li>
+<li>transmet le payload dans <code>$params</code> ;</li>
+<li>charge <code>template-parts/components/&lt;nom&gt;.php</code>.</li>
+</ol>
+<p>Utiliser de préférence le nom canonique avec des tirets :</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;select-lang&#x27;</span>, [...]);</code></pre>
+<p>Un nom absent ou invalide est signalé avec <code>_doing_it_wrong()</code> lorsque
+<code>WP_DEBUG</code> est actif.</p>
+<h5>Helpers disponibles</h5>
+<h6>Normalisation du payload</h6>
+<p>Chaque template commence par valider le tableau associatif reçu :</p>
+<pre><code class="language-php hljs"><span class="hljs-variable">$params</span> = <span class="hljs-title function_ invoke__">component_args</span>(<span class="hljs-variable">$params</span> ?? <span class="hljs-literal">null</span>);
+<span class="hljs-keyword">if</span> (<span class="hljs-variable">$params</span> === <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;</code></pre>
+<p><code>component_args()</code> refuse les valeurs non-tableau et les tableaux positionnels.
+Son second argument facultatif permet aussi d&#39;appliquer des valeurs par défaut.</p>
+<p>Les normalisations courantes sont centralisées :</p>
+<pre><code class="language-php hljs"><span class="hljs-variable">$label</span> = <span class="hljs-title function_ invoke__">theme_string</span>(<span class="hljs-variable">$args</span>[<span class="hljs-string">&#x27;label&#x27;</span>] ?? <span class="hljs-string">&#x27;&#x27;</span>);
+<span class="hljs-variable">$disabled</span> = <span class="hljs-title function_ invoke__">component_bool</span>(<span class="hljs-variable">$args</span>[<span class="hljs-string">&#x27;disabled&#x27;</span>] ?? <span class="hljs-literal">false</span>);
+<span class="hljs-variable">$items</span> = <span class="hljs-title function_ invoke__">component_list</span>(<span class="hljs-variable">$args</span>[<span class="hljs-string">&#x27;items&#x27;</span>] ?? <span class="hljs-literal">null</span>);
+<span class="hljs-variable">$options</span> = <span class="hljs-title function_ invoke__">component_options</span>(<span class="hljs-variable">$args</span>[<span class="hljs-string">&#x27;options&#x27;</span>] ?? <span class="hljs-literal">null</span>);
+<span class="hljs-variable">$id</span> = <span class="hljs-title function_ invoke__">component_id</span>(<span class="hljs-variable">$args</span>[<span class="hljs-string">&#x27;id&#x27;</span>] ?? <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-string">&#x27;example-&#x27;</span>);</code></pre>
+<ul>
+<li><code>theme_string()</code> accepte une valeur scalaire ou <code>Stringable</code>, la convertit
+et retire les espaces aux extrémités ;</li>
+<li><code>component_bool()</code> reconnaît les représentations booléennes usuelles et permet
+de fournir une valeur de repli ;</li>
+<li><code>component_list()</code> conserve uniquement un tableau positionnel valide ;</li>
+<li><code>component_options()</code> normalise les clés <code>value</code>, <code>label</code>, <code>alt</code>, <code>selected</code>
+et <code>disabled</code> utilisées par les composants de sélection ;</li>
+<li><code>component_id()</code> nettoie l&#39;identifiant fourni ou génère un identifiant unique
+avec le préfixe demandé.</li>
+</ul>
+<p>Les URL absolues attendues en HTTP ou HTTPS sont validées avec le helper front
+général <code>theme_http_url()</code>.</p>
+<h6>Classes CSS</h6>
+<pre><code class="language-php hljs"><span class="hljs-variable">$classes</span> = <span class="hljs-title function_ invoke__">component_classes</span>(<span class="hljs-string">&#x27;badge&#x27;</span>, <span class="hljs-variable">$params</span>[<span class="hljs-string">&#x27;classes&#x27;</span>] ?? <span class="hljs-string">&#x27;&#x27;</span>);</code></pre>
+<p><code>component_classes()</code> accepte des chaînes et des tableaux imbriqués. Il retire
+les valeurs invalides, nettoie la liste, déduplique les classes et retourne une
+chaîne déjà échappée.</p>
+<h6>Attributs HTML</h6>
+<pre><code class="language-php hljs"><span class="hljs-variable">$attributes</span> = <span class="hljs-title function_ invoke__">component_attributes</span>(
+    <span class="hljs-variable">$params</span>[<span class="hljs-string">&#x27;attributes&#x27;</span>] ?? [],
+    [<span class="hljs-string">&#x27;class&#x27;</span>, <span class="hljs-string">&#x27;id&#x27;</span>]
+);</code></pre>
+<p><code>component_attributes()</code> :</p>
+<ul>
+<li>accepte uniquement un tableau d’attributs ;</li>
+<li>filtre les noms dangereux, les attributs <code>on*</code> et <code>srcdoc</code> ;</li>
+<li>ignore les tableaux, objets et autres valeurs complexes ;</li>
+<li>échappe les noms et les valeurs ;</li>
+<li>ignore les attributs réservés par le composant ;</li>
+<li>ajoute automatiquement l’espace initial lorsque le résultat n’est pas vide.</li>
+</ul>
+<p>Utilisation :</p>
+<pre><code class="language-php hljs">&lt;div <span class="hljs-class"><span class="hljs-keyword">class</span>=&quot;&lt;?= $<span class="hljs-title">classes</span> ?&gt;&quot;&lt;?= $<span class="hljs-title">attributes</span> ?&gt;&gt;&lt;/<span class="hljs-title">div</span>&gt;</span></code></pre>
+<h5>Contrat d’un composant</h5>
+<p>Chaque composant est autonome. Son template normalise son payload, valide ses
+données, sécurise son rendu et décide si un payload vide doit produire du HTML.
+Le comportement exact est documenté dans son propre README.</p>
+<p>Squelette recommandé :</p>
+<pre><code class="language-php hljs"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">/** <span class="hljs-doctag">@var</span> array&lt;int|string, mixed&gt;|null $params */</span>
+
+<span class="hljs-variable">$params</span> = <span class="hljs-title function_ invoke__">component_args</span>(<span class="hljs-variable">$params</span> ?? <span class="hljs-literal">null</span>);
+<span class="hljs-keyword">if</span> (<span class="hljs-variable">$params</span> === <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;
+
+<span class="hljs-variable">$args</span> = <span class="hljs-title function_ invoke__">normalize_args</span>(<span class="hljs-variable">$params</span>, [
+    <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,
+    <span class="hljs-string">&#x27;attributes&#x27;</span> =&gt; [],
+]);
+
+<span class="hljs-variable">$title</span> = <span class="hljs-title function_ invoke__">theme_string</span>(<span class="hljs-variable">$args</span>[<span class="hljs-string">&#x27;title&#x27;</span>]);
+
+<span class="hljs-keyword">if</span> (<span class="hljs-variable">$title</span> === <span class="hljs-string">&#x27;&#x27;</span>) <span class="hljs-keyword">return</span>;
+
+<span class="hljs-variable">$classes</span> = <span class="hljs-title function_ invoke__">component_classes</span>(<span class="hljs-string">&#x27;example&#x27;</span>, <span class="hljs-variable">$args</span>[<span class="hljs-string">&#x27;classes&#x27;</span>]);
+<span class="hljs-variable">$attributes</span> = <span class="hljs-title function_ invoke__">component_attributes</span>(<span class="hljs-variable">$args</span>[<span class="hljs-string">&#x27;attributes&#x27;</span>], [<span class="hljs-string">&#x27;class&#x27;</span>]);
+<span class="hljs-meta">?&gt;</span>
+
+&lt;div <span class="hljs-class"><span class="hljs-keyword">class</span>=&quot;&lt;?= $<span class="hljs-title">classes</span> ?&gt;&quot;&lt;?= $<span class="hljs-title">attributes</span> ?&gt;&gt;
+    &lt;?= <span class="hljs-title">esc_html</span>($<span class="hljs-title">title</span>) ?&gt;
+&lt;/<span class="hljs-title">div</span>&gt;</span></code></pre>
+<p>Règles communes :</p>
+<ul>
+<li>utiliser <code>esc_html()</code> pour un libellé simple ;</li>
+<li>utiliser <code>wp_kses_post()</code> uniquement pour un contenu éditorial autorisant du
+HTML filtré ;</li>
+<li>utiliser <code>esc_url()</code> pour une URL ;</li>
+<li>réserver dans <code>component_attributes()</code> tous les attributs générés par le
+template (<code>class</code>, <code>id</code>, <code>href</code>, <code>type</code>, attributs ARIA, etc.) ;</li>
+<li>normaliser les booléens avec <code>component_bool()</code> ;</li>
+<li>ne pas ajouter d’appel de traduction dans un composant : les libellés
+variables sont fournis par l’appelant ;</li>
+<li>ne pas récupérer implicitement des données ACF dans un composant générique ;</li>
+<li>documenter toutes les clés publiques dans le README local.</li>
+</ul>
+<h5>Fichiers et assets</h5>
+<p>Un composant possède un template PHP plat et peut avoir des fichiers co-localisés
+dans son dossier d’assets :</p>
+<pre><code class="language-text hljs">template-parts/components/&lt;nom&gt;.php
+assets/components/&lt;nom&gt;/README.md
+assets/components/&lt;nom&gt;/&lt;nom&gt;.scss
+assets/components/&lt;nom&gt;/&lt;nom&gt;.js</code></pre>
+<p>Le PHP contient le contrat et le markup. Le SCSS contient uniquement les styles
+du composant. Le JavaScript est facultatif et doit exporter une fonction
+d’initialisation par défaut.</p>
+<p>Exemple d’hydratation :</p>
+<pre><code class="language-php hljs">&lt;div
+    <span class="hljs-class"><span class="hljs-keyword">class</span>=&quot;<span class="hljs-title">example</span>&quot;
+    <span class="hljs-title">data</span>-<span class="hljs-title">module</span>=&quot;<span class="hljs-title">components</span>/<span class="hljs-title">example</span>&quot;
+    <span class="hljs-title">data</span>-<span class="hljs-title">context</span>=&quot;@<span class="hljs-title">visible</span> <span class="hljs-title">true</span>&quot;&gt;
+&lt;/<span class="hljs-title">div</span>&gt;</span></code></pre>
+<pre><code class="language-js hljs"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">initExample</span>(<span class="hljs-params">root</span>) {
+    <span class="hljs-keyword">const</span> controller = <span class="hljs-keyword">new</span> <span class="hljs-title class_">AbortController</span>();
+    <span class="hljs-keyword">const</span> { signal } = controller;
+    <span class="hljs-keyword">const</span> <span class="hljs-title function_">onClick</span> = (<span class="hljs-params"></span>) =&gt; {};
+
+    root.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;click&#x27;</span>, onClick, { signal });
+
+    <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> controller.<span class="hljs-title function_">abort</span>();
+}</code></pre>
+<p>Le retour de la fonction est le nettoyage du module. Pour un module qui doit
+être suspendu hors écran, elle peut retourner un objet avec <code>destroy</code>, <code>pause</code>
+et <code>resume</code>. Le chargeur d’hydratation s’occupe du chargement différé et appelle
+le nettoyage lorsque le nœud est retiré du DOM.</p>
+<h5>Choisir le bon renderer</h5>
+<table>
+<thead>
+<tr>
+<th>Besoin</th>
+<th>Appel</th>
+<th>Emplacement du template</th>
+<th>Variable reçue</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Composant générique</td>
+<td><code>component(&#39;title&#39;, [...])</code></td>
+<td><code>template-parts/components/</code></td>
+<td><code>$params</code></td>
+</tr>
+<tr>
+<td>Card</td>
+<td><code>card(&#39;news&#39;, 123)</code> ou <code>card(&#39;news&#39;, [...])</code></td>
+<td><code>template-parts/cards/</code></td>
+<td><code>get_template_args()</code></td>
+</tr>
+<tr>
+<td>Strate</td>
+<td><code>strate(&#39;slider&#39;, [...])</code></td>
+<td><code>template-parts/strates/</code></td>
+<td><code>get_template_args()</code></td>
+</tr>
+<tr>
+<td>Élément commun</td>
+<td><code>common(&#39;footer&#39;)</code></td>
+<td><code>template-parts/common/</code></td>
+<td>Données globales WordPress</td>
+</tr>
+<tr>
+<td>Hero</td>
+<td><code>hero(&#39;homepage&#39;, [...])</code></td>
+<td><code>template-parts/heros/</code></td>
+<td><code>get_template_args()</code></td>
+</tr>
+</tbody></table>
+<p>Ne pas utiliser <code>component()</code> pour rendre une card, une strate, un common ou
+un hero.</p>
+<h5>Composants disponibles</h5>
+<pre><code class="language-text hljs">accordion       anchor-nav      autocomplete    badge           btn
+breadcrumb      date            dialog          eyebrow
+field           filters
+header          icon            image           intro
+link            list            lottie          marquee         newsletter
+pagination      picto           picture         quote           search
+section-snap    select
+select-custom   select-lang     shares          slider
+socials
+tab             table           tag             text
+title           tooltip         video</code></pre>
+<h5>Documentation locale</h5>
+<p>Le <code>README.md</code> situé dans <code>assets/components/&lt;nom&gt;/</code> est la source de vérité pour :</p>
+<ul>
+<li>les clés du payload ;</li>
+<li>leurs types et valeurs par défaut ;</li>
+<li>les exemples d’appel ;</li>
+<li>les règles d’échappement ;</li>
+<li>les comportements particuliers et les limites.</li>
+</ul>
+<p>Une IA doit lire ce README général, puis le README du composant concerné, avant
+d’ouvrir son PHP pour modifier son comportement.</p>
+<h5>Validation</h5>
+<p>Les contrats sont conservés pendant le développement du starter :</p>
+<pre><code class="language-bash hljs">docker compose -f .docker/docker-compose.yml <span class="hljs-built_in">exec</span> -T wordpress \
+  php /var/www/html/wp-content/themes/starterkit-lonsdale-2027/tests/components-contract.php</code></pre>
+<p>Ils vérifient notamment les payloads, l’échappement, les attributs, les cards,
+les composants interactifs et la restauration des contextes de templates. Les
+fichiers <code>*-browser-contract.html</code> couvrent les comportements nécessitant un
+vrai navigateur.</p>

@@ -1,0 +1,65 @@
+<h4>Composant <code>socials</code></h4>
+<p>Affiche une liste de liens vers les profils sociaux du site. Il ne s’agit pas
+du composant <code>shares</code>, qui partage la page courante.</p>
+<h5>Utilisation</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;socials&#x27;</span>, [
+    <span class="hljs-string">&#x27;items&#x27;</span> =&gt; [
+        [<span class="hljs-string">&#x27;network&#x27;</span> =&gt; <span class="hljs-string">&#x27;linkedin&#x27;</span>, <span class="hljs-string">&#x27;url&#x27;</span> =&gt; <span class="hljs-string">&#x27;https://www.linkedin.com/company/example/&#x27;</span>],
+        [<span class="hljs-string">&#x27;network&#x27;</span> =&gt; <span class="hljs-string">&#x27;instagram&#x27;</span>, <span class="hljs-string">&#x27;url&#x27;</span> =&gt; <span class="hljs-string">&#x27;https://www.instagram.com/example/&#x27;</span>],
+    ],
+    <span class="hljs-string">&#x27;aria_label&#x27;</span> =&gt; <span class="hljs-string">&#x27;Retrouvez-nous&#x27;</span>,
+]);</code></pre>
+<h5>Payload</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>items</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Liste des réseaux et de leurs URL</td>
+</tr>
+<tr>
+<td><code>aria_label</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;Réseaux sociaux&#39;</code></td>
+<td>Nom accessible de la navigation</td>
+</tr>
+<tr>
+<td><code>classes</code></td>
+<td><code>string|array</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Classes du conteneur</td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs libres du conteneur</td>
+</tr>
+</tbody></table>
+<p>Chaque ligne de <code>items</code> accepte uniquement :</p>
+<pre><code class="language-php hljs">[
+    <span class="hljs-string">&#x27;network&#x27;</span> =&gt; <span class="hljs-string">&#x27;linkedin&#x27;</span>,
+    <span class="hljs-string">&#x27;url&#x27;</span> =&gt; <span class="hljs-string">&#x27;https://www.linkedin.com/company/example/&#x27;</span>,
+]</code></pre>
+<p>Réseaux reconnus : <code>facebook</code>, <code>instagram</code>, <code>linkedin</code>, <code>x</code>, <code>youtube</code>,
+<code>tiktok</code>, <code>pinterest</code> et <code>threads</code>.</p>
+<p>Les réseaux inconnus, URL non HTTP(S) et doublons sont ignorés. Tous les liens
+s’ouvrent dans un nouvel onglet avec <code>noopener noreferrer</code>.</p>
+<h5>Icônes</h5>
+<p>Le composant appelle <code>component(&#39;icon&#39;, [...])</code> avec le nom du réseau. Chaque
+réseau reconnu par le catalogue doit donc posséder un symbole portant le même
+identifiant dans <code>assets/img/icons.svg</code>.</p>
+<h5>Dépendances</h5>
+<ul>
+<li><code>component(&#39;icon&#39;, [...])</code> ;</li>
+<li><code>component_classes()</code> et <code>component_attributes()</code> ;</li>
+<li><code>assets/components/socials/socials.scss</code>.</li>
+</ul>

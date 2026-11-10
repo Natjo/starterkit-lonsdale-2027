@@ -1,0 +1,89 @@
+<h4>Composant <code>pagination</code></h4>
+<p>Affiche une pagination WordPress accessible à partir d’un nombre total de pages
+et de la page courante.</p>
+<h5>Appel</h5>
+<pre><code class="language-php hljs"><span class="hljs-keyword">global</span> <span class="hljs-variable">$wp_query</span>;
+
+<span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;pagination&#x27;</span>, [
+    <span class="hljs-string">&#x27;total&#x27;</span> =&gt; (<span class="hljs-keyword">int</span>) <span class="hljs-variable">$wp_query</span>-&gt;max_num_pages,
+    <span class="hljs-string">&#x27;current&#x27;</span> =&gt; <span class="hljs-title function_ invoke__">max</span>(<span class="hljs-number">1</span>, (<span class="hljs-keyword">int</span>) <span class="hljs-title function_ invoke__">get_query_var</span>(<span class="hljs-string">&#x27;paged&#x27;</span>)),
+    <span class="hljs-string">&#x27;prev_text&#x27;</span> =&gt; <span class="hljs-string">&#x27;Précédent&#x27;</span>,
+    <span class="hljs-string">&#x27;next_text&#x27;</span> =&gt; <span class="hljs-string">&#x27;Suivant&#x27;</span>,
+    <span class="hljs-string">&#x27;aria_label&#x27;</span> =&gt; <span class="hljs-string">&#x27;Pagination des actualités&#x27;</span>,
+]);</code></pre>
+<h5>Payload</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>total</code></td>
+<td><code>int|numeric-string</code></td>
+<td><code>0</code></td>
+<td>Nombre total de pages</td>
+</tr>
+<tr>
+<td><code>current</code></td>
+<td><code>int|numeric-string</code></td>
+<td><code>1</code></td>
+<td>Page courante, limitée à la plage disponible</td>
+</tr>
+<tr>
+<td><code>prev_text</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>‹</code></td>
+<td>Libellé du lien précédent</td>
+</tr>
+<tr>
+<td><code>next_text</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>›</code></td>
+<td>Libellé du lien suivant</td>
+</tr>
+<tr>
+<td><code>aria_label</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>Pagination</code></td>
+<td>Nom accessible du <code>&lt;nav&gt;</code></td>
+</tr>
+<tr>
+<td><code>base</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Base facultative contenant <code>%#%</code>, utile pour une pagination par query string</td>
+</tr>
+<tr>
+<td><code>classes</code></td>
+<td><code>string|array</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Classes supplémentaires</td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs supplémentaires du <code>&lt;nav&gt;</code></td>
+</tr>
+</tbody></table>
+<p>Le composant ne produit aucun HTML lorsque <code>total</code> vaut <code>0</code> ou <code>1</code>. Les
+libellés éditoriaux sont fournis par l’appelant et ne sont pas traduits dans le
+composant.</p>
+<h5>Rendu et sécurité</h5>
+<ul>
+<li>les liens sont produits par <code>paginate_links()</code> ;</li>
+<li>une base explicite est utilisée uniquement si elle contient le placeholder <code>%#%</code> ;</li>
+<li>seuls les éléments <code>a</code> et <code>span</code> attendus sont conservés ;</li>
+<li><code>class</code> et <code>aria-label</code> sont réservés ;</li>
+<li>les classes et attributs libres utilisent les helpers communs.</li>
+</ul>
+<h5>Dépendances</h5>
+<ul>
+<li><code>paginate_links()</code> ;</li>
+<li><code>component_classes()</code> ;</li>
+<li><code>component_attributes()</code>.</li>
+</ul>

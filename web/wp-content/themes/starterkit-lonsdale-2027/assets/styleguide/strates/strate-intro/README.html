@@ -1,0 +1,32 @@
+<h4>Strate Intro</h4>
+<p>Affiche un court texte éditorial d’introduction.</p>
+<h5>Appel</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">strate</span>(<span class="hljs-string">&#x27;intro&#x27;</span>, [
+    <span class="hljs-string">&#x27;text&#x27;</span> =&gt; <span class="hljs-string">&#x27;&lt;p&gt;Lorem ipsum dolor sit amet.&lt;/p&gt;&#x27;</span>,
+]);</code></pre>
+<h5>Contrat</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Défaut dans ACF</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>text</code></td>
+<td><code>string</code></td>
+<td>Paragraphe Lorem ipsum</td>
+<td>Contenu transmis à <code>component(&#39;text&#39;)</code></td>
+</tr>
+</tbody></table>
+<p>La valeur de démonstration est définie par <code>default_value</code> dans le layout ACF.
+Forge l’utilise pour préremplir une nouvelle instance de la strate sans écraser
+une contribution existante.</p>
+<h5>Dépendances</h5>
+<ul>
+<li><code>component(&#39;text&#39;, [...])</code>.</li>
+</ul>
+<p>La strate ne produit aucun HTML sans contenu exploitable. Les champs absents
+sont traités comme vides.</p>

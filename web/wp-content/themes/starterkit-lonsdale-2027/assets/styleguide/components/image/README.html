@@ -1,0 +1,205 @@
+<h4>Composant <code>image</code></h4>
+<p>Génère une balise <code>&lt;img&gt;</code> à partir d&#39;un ID WordPress ou d&#39;une URL. Il utilise
+les variantes WebP existantes et leurs dimensions mises en cache. Une liste de
+formats WordPress peut alimenter automatiquement <code>srcset</code> et l&#39;attribut HTML
+<code>sizes</code>, sans produire de balise <code>&lt;picture&gt;</code>.</p>
+<p>Le composant fonctionne uniquement avec <code>component(&#39;image&#39;, [...])</code> et un
+payload associatif.</p>
+<h5>Utilisation</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;image&#x27;</span>, [
+    <span class="hljs-string">&#x27;image&#x27;</span> =&gt; <span class="hljs-variable">$image_id</span>,
+    <span class="hljs-string">&#x27;size&#x27;</span> =&gt; <span class="hljs-string">&#x27;large&#x27;</span>,
+    <span class="hljs-string">&#x27;alt&#x27;</span> =&gt; <span class="hljs-string">&#x27;Description de l’image&#x27;</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;cover&#x27;</span>,
+]);</code></pre>
+<h5>Tailles responsives</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;image&#x27;</span>, [
+    <span class="hljs-string">&#x27;image&#x27;</span> =&gt; <span class="hljs-variable">$image_id</span>,
+    <span class="hljs-string">&#x27;sizes&#x27;</span> =&gt; [<span class="hljs-string">&#x27;718_478&#x27;</span>, <span class="hljs-string">&#x27;medium&#x27;</span>],
+]);</code></pre>
+<p>Le premier format disponible devient le <code>src</code> principal et définit les
+dimensions intrinsèques. Tous les formats disponibles sont triés par largeur
+réelle dans <code>srcset</code>. À partir de la largeur du format principal, le composant
+génère automatiquement un attribut tel que
+<code>sizes=&quot;(max-width: 718px) 100vw, 718px&quot;</code>.</p>
+<p>Chaque candidat utilise son WebP lorsqu&#39;il existe, sinon son JPG/PNG. Les
+formats inexistants et les largeurs dupliquées sont ignorés. Il est recommandé
+d&#39;utiliser des formats de même ratio, car <code>srcset</code> choisit une résolution et
+ne gère pas l&#39;art direction.</p>
+<p>Une URL de la médiathèque WordPress est automatiquement reliée à son ID afin de
+retrouver les formats demandés :</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;image&#x27;</span>, [
+    <span class="hljs-string">&#x27;image&#x27;</span> =&gt; <span class="hljs-variable">$image_url</span>,
+    <span class="hljs-string">&#x27;sizes&#x27;</span> =&gt; [<span class="hljs-string">&#x27;718_478&#x27;</span>, <span class="hljs-string">&#x27;medium&#x27;</span>],
+]);</code></pre>
+<p>Une URL externe reste acceptée, mais elle est rendue comme une source unique :
+WordPress ne possède pas les métadonnées nécessaires pour en déduire d&#39;autres
+formats. La résolution d&#39;une même URL vers son ID est mémorisée pendant toute
+la requête PHP afin d&#39;éviter les recherches SQL répétées.</p>
+<p>La clé source est uniquement <code>image</code>. Les anciens alias <code>src</code>, <code>url</code> et les
+arguments positionnels ne sont plus supportés.</p>
+<h5>Champs ACF</h5>
+<p>Les champs ACF image retournent l&#39;ID du média. Leur nom n&#39;a aucune incidence :
+la valeur est explicitement placée dans <code>image</code>.</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;image&#x27;</span>, [
+    <span class="hljs-string">&#x27;image&#x27;</span> =&gt; <span class="hljs-variable">$args</span>[<span class="hljs-string">&#x27;image&#x27;</span>] ?? <span class="hljs-literal">null</span>,
+    <span class="hljs-string">&#x27;size&#x27;</span> =&gt; <span class="hljs-string">&#x27;large&#x27;</span>,
+]);
+
+<span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;image&#x27;</span>, [
+    <span class="hljs-string">&#x27;image&#x27;</span> =&gt; <span class="hljs-variable">$args</span>[<span class="hljs-string">&#x27;photo&#x27;</span>] ?? <span class="hljs-literal">null</span>,
+    <span class="hljs-string">&#x27;size&#x27;</span> =&gt; <span class="hljs-string">&#x27;large&#x27;</span>,
+]);
+
+<span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;image&#x27;</span>, [
+    <span class="hljs-string">&#x27;image&#x27;</span> =&gt; <span class="hljs-variable">$args</span>[<span class="hljs-string">&#x27;visu&#x27;</span>] ?? <span class="hljs-literal">null</span>,
+    <span class="hljs-string">&#x27;size&#x27;</span> =&gt; <span class="hljs-string">&#x27;large&#x27;</span>,
+]);</code></pre>
+<p>WordPress retourne la déclinaison demandée, ses dimensions et le texte
+alternatif de la médiathèque. Un champ vide ne produit aucun HTML.</p>
+<h5>Payload</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>image</code></td>
+<td><code>ID|URL|Stringable</code></td>
+<td>—</td>
+<td>Source de l&#39;image</td>
+</tr>
+<tr>
+<td><code>size</code></td>
+<td><code>string|array{int,int}</code></td>
+<td><code>full</code></td>
+<td>Taille WordPress</td>
+</tr>
+<tr>
+<td><code>sizes</code></td>
+<td><code>list&lt;string&gt;</code></td>
+<td><code>[]</code></td>
+<td>Formats WordPress du <code>srcset</code>, le premier étant la source principale</td>
+</tr>
+<tr>
+<td><code>alt</code></td>
+<td><code>scalar|Stringable</code></td>
+<td>alt WordPress</td>
+<td>Texte alternatif</td>
+</tr>
+<tr>
+<td><code>width</code></td>
+<td><code>int</code></td>
+<td>dimension détectée</td>
+<td>Largeur explicite</td>
+</tr>
+<tr>
+<td><code>height</code></td>
+<td><code>int</code></td>
+<td>dimension détectée</td>
+<td>Hauteur explicite</td>
+</tr>
+<tr>
+<td><code>lazy</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+<td>Active <code>loading=&quot;lazy&quot;</code></td>
+</tr>
+<tr>
+<td><code>critical</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td>Rend l&#39;image prioritaire</td>
+</tr>
+<tr>
+<td><code>preload</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td>Précharge et rend l&#39;image prioritaire</td>
+</tr>
+<tr>
+<td><code>decoding</code></td>
+<td><code>async|sync|auto</code></td>
+<td><code>async</code></td>
+<td>Stratégie de décodage</td>
+</tr>
+<tr>
+<td><code>fetchpriority</code></td>
+<td><code>low|auto|high</code></td>
+<td>—</td>
+<td>Priorité réseau</td>
+</tr>
+<tr>
+<td><code>classes</code></td>
+<td><code>string|array</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Classes supplémentaires</td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs HTML supplémentaires</td>
+</tr>
+</tbody></table>
+<p>Une valeur <code>alt =&gt; &#39;&#39;</code> explicite déclare une image décorative. Sans clé
+<code>alt</code>, le texte alternatif WordPress est utilisé. Pour une URL distante,
+<code>width</code> et <code>height</code> permettent d&#39;éviter un décalage de mise en page.</p>
+<h5>Chargement</h5>
+<table>
+<thead>
+<tr>
+<th>Configuration</th>
+<th><code>loading</code></th>
+<th><code>fetchpriority</code></th>
+<th>Preload</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>défaut</td>
+<td><code>lazy</code></td>
+<td>absent</td>
+<td>non</td>
+</tr>
+<tr>
+<td><code>lazy =&gt; false</code></td>
+<td>absent</td>
+<td>absent</td>
+<td>non</td>
+</tr>
+<tr>
+<td><code>critical =&gt; true</code></td>
+<td>absent</td>
+<td><code>high</code></td>
+<td>non</td>
+</tr>
+<tr>
+<td><code>preload =&gt; true</code></td>
+<td>absent</td>
+<td><code>high</code></td>
+<td>oui</td>
+</tr>
+</tbody></table>
+<p><code>fetchpriority=&quot;high&quot;</code> est accepté uniquement avec <code>critical</code> ou <code>preload</code>.
+Les chaînes <code>&quot;true&quot;</code> et <code>&quot;false&quot;</code> sont normalisées. Une image critique n&#39;est
+jamais chargée en lazy.</p>
+<h5>Sécurité</h5>
+<ul>
+<li>une source vide, introuvable ou refusée par <code>esc_url()</code> ne produit rien ;</li>
+<li><code>class</code>, <code>src</code>, <code>srcset</code>, <code>sizes</code>, <code>alt</code>, <code>width</code>, <code>height</code>, <code>loading</code>, <code>decoding</code> et
+<code>fetchpriority</code> sont réservés ;</li>
+<li>les handlers <code>on*</code>, <code>srcdoc</code> et les valeurs complexes sont refusés.</li>
+</ul>
+<h5>Dépendances</h5>
+<ul>
+<li><code>lsd_get_thumb()</code> ;</li>
+<li><code>lsd_image_webp_src()</code> ;</li>
+<li><code>lsd_image_file_dimensions()</code> ;</li>
+<li><code>theme_enqueue_image_preload()</code> ;</li>
+<li><code>component_classes()</code> ;</li>
+<li><code>component_attributes()</code>.</li>
+</ul>

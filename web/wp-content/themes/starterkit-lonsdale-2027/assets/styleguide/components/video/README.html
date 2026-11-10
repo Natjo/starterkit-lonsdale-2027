@@ -1,0 +1,168 @@
+<h4>Composant <code>video</code></h4>
+<p>Affiche une vidéo HTML5 ou un lecteur YouTube/Vimeo. Le composant fonctionne
+uniquement avec <code>component(&#39;video&#39;, [...])</code> et un payload associatif.</p>
+<h5>Source unique</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;video&#x27;</span>, [
+    <span class="hljs-string">&#x27;url&#x27;</span> =&gt; <span class="hljs-string">&#x27;/videos/presentation.mp4&#x27;</span>,
+    <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Présentation du projet&#x27;</span>,
+    <span class="hljs-string">&#x27;poster&#x27;</span> =&gt; <span class="hljs-string">&#x27;/images/presentation.jpg&#x27;</span>,
+]);</code></pre>
+<h5>Sources multiples</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;video&#x27;</span>, [
+    <span class="hljs-string">&#x27;sources&#x27;</span> =&gt; [
+        <span class="hljs-string">&#x27;/videos/presentation.webm&#x27;</span>,
+        <span class="hljs-string">&#x27;/videos/presentation.mp4&#x27;</span>,
+        [<span class="hljs-string">&#x27;src&#x27;</span> =&gt; <span class="hljs-string">&#x27;/videos/presentation.custom&#x27;</span>, <span class="hljs-string">&#x27;type&#x27;</span> =&gt; <span class="hljs-string">&#x27;video/mp4&#x27;</span>],
+    ],
+    <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Présentation du projet&#x27;</span>,
+]);</code></pre>
+<p>Les arguments positionnels et les listes directes ne sont
+plus supportés. Une source structurée utilise uniquement <code>src</code>; l’ancien alias
+<code>url</code> n’est plus interprété dans <code>sources</code>.</p>
+<h5>Payload</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>url</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Source unique ou ID média WordPress</td>
+</tr>
+<tr>
+<td><code>sources</code></td>
+<td><code>list&lt;scalar|array&gt;</code></td>
+<td>absent</td>
+<td>Sources HTML5 multiples</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;Lecteur vidéo&#39;</code></td>
+<td>Nom accessible du lecteur</td>
+</tr>
+<tr>
+<td><code>poster</code></td>
+<td><code>URL|ID média</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Image de façade</td>
+</tr>
+<tr>
+<td><code>play_label</code></td>
+<td><code>scalar|Stringable</code></td>
+<td><code>&#39;Lire la vidéo&#39;</code></td>
+<td>Libellé du bouton de façade</td>
+</tr>
+<tr>
+<td><code>autoplay</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td>Lecture automatique</td>
+</tr>
+<tr>
+<td><code>lazy_autoplay</code></td>
+<td><code>bool</code></td>
+<td>automatique</td>
+<td>Limite l’autoplay HTML5 à la zone visible</td>
+</tr>
+<tr>
+<td><code>loop</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td>Lecture en boucle</td>
+</tr>
+<tr>
+<td><code>controls</code></td>
+<td><code>bool</code></td>
+<td>automatique</td>
+<td>Affiche les contrôles HTML5</td>
+</tr>
+<tr>
+<td><code>preload</code></td>
+<td><code>&#39;none&#39;|&#39;metadata&#39;|&#39;auto&#39;</code></td>
+<td><code>&#39;metadata&#39;</code></td>
+<td>Préchargement HTML5</td>
+</tr>
+<tr>
+<td><code>tracks</code></td>
+<td><code>list&lt;array&gt;</code></td>
+<td><code>[]</code></td>
+<td>Sous-titres et pistes textuelles</td>
+</tr>
+<tr>
+<td><code>classes</code></td>
+<td><code>string|array</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Classes du conteneur</td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Attributs supplémentaires</td>
+</tr>
+</tbody></table>
+<p>Si <code>sources</code> est présent, il est prioritaire et doit être une liste. Les
+chaînes <code>&quot;true&quot;</code>, <code>&quot;false&quot;</code>, <code>&quot;1&quot;</code> et <code>&quot;0&quot;</code> sont normalisées pour les options
+booléennes.</p>
+<p>Les extensions <code>mp4</code>, <code>m4v</code>, <code>webm</code>, <code>ogv</code>, <code>ogg</code> et <code>mov</code> reçoivent leur type
+MIME. Un type explicite doit être l’un de ces types reconnus. Les doublons et
+les URL dangereuses sont ignorés.</p>
+<h5>YouTube et Vimeo</h5>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;video&#x27;</span>, [
+    <span class="hljs-string">&#x27;url&#x27;</span> =&gt; <span class="hljs-string">&#x27;https://www.youtube.com/watch?v=dQw4w9WgXcQ&#x27;</span>,
+    <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Présentation vidéo&#x27;</span>,
+    <span class="hljs-string">&#x27;poster&#x27;</span> =&gt; <span class="hljs-variable">$poster_id</span>,
+]);</code></pre>
+<p>YouTube utilise le domaine <code>youtube-nocookie.com</code>. Les identifiants Vimeo et
+YouTube sont extraits uniquement depuis des URL reconnues. Un lecteur externe
+n&#39;est jamais chargé au rendu PHP : son URL reste dans <code>data-src</code> jusqu&#39;à son
+entrée dans le viewport ou, lorsqu&#39;un poster existe, jusqu&#39;à l&#39;action de
+l&#39;utilisateur.</p>
+<h5>Façade et autoplay</h5>
+<p>Un <code>poster</code> active une façade locale pour les lecteurs externes comme pour les
+vidéos HTML5. Le média n&#39;est alors chargé ou démarré qu&#39;après un clic. Le bouton
+possède un nom accessible composé de <code>play_label</code> et de <code>title</code>, puis transfère
+le focus au lecteur.</p>
+<p>Sans <code>poster</code>, aucune façade ni bouton n&#39;est rendu. Une iframe YouTube ou Vimeo
+reste néanmoins différée par <code>data-context=&quot;@visible true&quot;</code> et n&#39;est chargée
+que lorsque le composant arrive dans le viewport.</p>
+<p>Sans façade, l’autoplay HTML5 est muet, utilise <code>playsinline</code>, démarre à
+l’approche de la zone visible et s’arrête hors écran. Avec
+<code>prefers-reduced-motion</code>, l’autoplay est neutralisé et les contrôles restent
+disponibles.</p>
+<p>Une façade force <code>preload=&quot;none&quot;</code>. L’autoplay différé fait de même afin d’éviter
+un téléchargement prématuré. Pour un lecteur externe avec façade, <code>autoplay</code>
+ne contourne jamais le clic obligatoire.</p>
+<h5>Sous-titres</h5>
+<pre><code class="language-php hljs"><span class="hljs-string">&#x27;tracks&#x27;</span> =&gt; [[
+    <span class="hljs-string">&#x27;src&#x27;</span> =&gt; <span class="hljs-string">&#x27;/videos/presentation-fr.vtt&#x27;</span>,
+    <span class="hljs-string">&#x27;kind&#x27;</span> =&gt; <span class="hljs-string">&#x27;subtitles&#x27;</span>,
+    <span class="hljs-string">&#x27;srclang&#x27;</span> =&gt; <span class="hljs-string">&#x27;fr&#x27;</span>,
+    <span class="hljs-string">&#x27;label&#x27;</span> =&gt; <span class="hljs-string">&#x27;Français&#x27;</span>,
+    <span class="hljs-string">&#x27;default&#x27;</span> =&gt; <span class="hljs-literal">true</span>,
+]],</code></pre>
+<p>Les valeurs de <code>kind</code> acceptées sont <code>subtitles</code>, <code>captions</code>, <code>descriptions</code>,
+<code>chapters</code> et <code>metadata</code>. Une piste invalide est ignorée.</p>
+<h5>Sécurité et attributs protégés</h5>
+<ul>
+<li>Seuls HTTP(S), les chemins absolus et les chemins relatifs sûrs sont acceptés.</li>
+<li>Les caractères de contrôle et les antislashs sont refusés dans les URL.</li>
+<li><code>class</code>, <code>data-type</code>, <code>data-autoplay</code>, <code>data-autoplay-src</code>, <code>data-module</code> et
+<code>data-context</code> sont contrôlés par le composant.</li>
+<li>Le poster décoratif utilise <code>component(&#39;image&#39;, [...])</code>.</li>
+<li>L’icône de lecture utilise <code>component(&#39;icon&#39;, [...])</code>.</li>
+</ul>
+<h5>Dépendances</h5>
+<ul>
+<li><code>youtube_id_from_url()</code> pour YouTube ;</li>
+<li><code>component_classes()</code> et <code>component_attributes()</code> ;</li>
+<li><code>assets/components/video/video.js</code> ;</li>
+<li><code>assets/components/video/video.scss</code>.</li>
+</ul>

@@ -120,6 +120,10 @@ WPML. Cela ne constitue pas une exigence multilingue validée.
 | --- | ---: | --- | --- | --- | --- |
 | Homepage | 2 | `/` ; slug stocké `page-d-exemple` | Publiée | Défaut, résolu par `front-page.php` | Hero `homepage`, puis flexible content `strates` |
 | Styleguide | 118 | `/components/` | Publiée | `inc/front/styleguide/styleguide.php` | Affiche le styleguide des composants |
+| Styleguide Styles | 686 | `/styles/` | Publiée | `inc/front/styleguide/styles.php` | Couleurs, typographie, espacements, surfaces et grille du thème |
+| Styleguide Cards | 683 | `/cards/` | Publiée | `inc/front/styleguide/cards.php` | Démos et README des 8 cards |
+| Styleguide Strates | 684 | `/strates/` | Publiée | `inc/front/styleguide/strates.php` | Démos et README des 22 strates |
+| Styleguide Heroes | 685 | `/heros/` | Publiée | `inc/front/styleguide/heros.php` | Démos et README des 4 heroes |
 | Politique de confidentialité | 3 | `/politique-de-confidentialite/` | Brouillon | Défaut | Passe actuellement par le template générique incomplet `page.php` |
 
 La lecture statique est configurée dans WordPress : `show_on_front = page` et
@@ -130,7 +134,7 @@ La lecture statique est configurée dans WordPress : `show_on_front = page` et
 | Template | État actuel |
 | --- | --- |
 | `front-page.php` | Fonctionnel : common `header-nav`, hero ACF `homepage`, strates ACF, puis démonstration statique de la strate `snap`, footer |
-| `inc/front/styleguide/styleguide.php` | Fonctionnel pour la démonstration des composants |
+| `inc/front/styleguide/{styleguide,cards,strates,heros}.php` | Quatre catalogues de démonstration avec navigation commune, README rendus, coloration, copie du code et aperçus sticky |
 | `template-hub.php` | Hub générique de CPT : utilise le CPT de l’archive courante ou le champ ACF `hub_post_type` d’une Page, puis résout automatiquement la card correspondante |
 | `template-contact.php` | Page de contact autonome assemblée avec les composants du starter, sans strate, avec validation serveur et envoi à l’adresse administrateur |
 | `page.php` | Générique : hero ACF avec titre WordPress en fallback, contenu natif éventuel et dispatch des strates |

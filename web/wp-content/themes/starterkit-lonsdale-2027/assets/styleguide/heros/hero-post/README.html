@@ -1,0 +1,54 @@
+<h4>Hero <code>post</code></h4>
+<p>Affiche l’en-tête éditorial d’une publication (article ou CPT).</p>
+<h5>Appel</h5>
+<p>Sans second argument, le helper charge le groupe ACF <code>hero-post</code> :</p>
+<pre><code class="language-php hljs"><span class="hljs-title function_ invoke__">hero</span>(<span class="hljs-string">&#x27;post&#x27;</span>);</code></pre>
+<h5>Contrat</h5>
+<table>
+<thead>
+<tr>
+<th>Clé</th>
+<th>Type</th>
+<th>Défaut</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>date</code></td>
+<td><code>mixed</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Transmis à <code>component(&#39;date&#39;)</code></td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td><code>mixed</code></td>
+<td><code>&#39;&#39;</code></td>
+<td>Transmis à <code>component(&#39;title&#39;)</code></td>
+</tr>
+<tr>
+<td><code>images</code></td>
+<td><code>array</code></td>
+<td><code>[]</code></td>
+<td>Transmis à <code>component(&#39;picture&#39;)</code></td>
+</tr>
+</tbody></table>
+<p>Le titre est rendu en <code>h1</code>. Le groupe <code>images</code> accepte les variantes <code>desktop</code>
+et <code>mobile</code> configurées dans ACF.</p>
+<h5>Taxonomies</h5>
+<p>Le hero récupère les termes associés à la publication WordPress courante pour
+chacune de ses taxonomies publiques.
+Chaque terme est affiché avec <code>component(&#39;tag&#39;)</code>, entre le titre et l’image.
+Ces tags sont informatifs, sans lien. Les taxonomies internes sont ignorées.
+Sans terme ou en cas d’erreur WordPress, aucun conteneur de tags n’est rendu.
+Aucun champ ACF supplémentaire n’est nécessaire.</p>
+<h5>Dépendances</h5>
+<ul>
+<li><code>component(&#39;tag&#39;, [...])</code> ;</li>
+<li><code>component(&#39;date&#39;, [...])</code> ;</li>
+<li><code>component(&#39;title&#39;, [...])</code> ;</li>
+<li><code>component(&#39;picture&#39;, [...])</code>.</li>
+</ul>
+<p>Les données précédemment enregistrées sous <code>hero-news</code> restent accessibles
+via un repli de lecture ACF. Les prochaines sauvegardes utilisent <code>hero-post</code>.</p>
+<p>Dans le starter, la règle de localisation ACF reste affectée au CPT News.
+Elle peut être adaptée aux autres types de publication qui utilisent ce hero.</p>

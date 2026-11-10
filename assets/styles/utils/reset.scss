@@ -62,7 +62,7 @@ button {
     border: 0;
 }
 
-:where(h1, h2, h3, h4, h5, h6, p, li, dt, dd, label) {
+:where(h1, h2, h3, h4, h5, h6, p, label) {
    text-box: trim-both cap alphabetic;
   //   text-box: trim-both cap text;
 }
