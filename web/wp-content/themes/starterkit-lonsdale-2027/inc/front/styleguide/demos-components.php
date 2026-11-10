@@ -272,18 +272,19 @@
             </aside>
         </section>
 
-        <section class="styleguide-section styleguide-section--component" id="component-intro">
+        <section class="styleguide-section styleguide-section--component" id="format-intro">
             <div class="styleguide-demo">
-                <h2 class="styleguide-section-title"><code>intro</code></h2>
+                <h2 class="styleguide-section-title"><code>text.intro</code></h2>
                 <div class="styleguide-preview styleguide-preview--block">
-                    <?php component('intro', [
+                    <?php component('text', [
+                        'classes' => 'intro',
                         'text' => '<p>Une introduction éditoriale mise en avant avant le contenu principal.</p>',
                     ]); ?>
                 </div>
             </div>
-            <aside class="styleguide-readme" aria-labelledby="readme-intro">
-                <h3 class="styleguide-readme-title" id="readme-intro">README</h3>
-                <?= theme_styleguide_readme('intro') ?>
+            <aside class="styleguide-readme" aria-labelledby="readme-format-intro">
+                <h3 class="styleguide-readme-title" id="readme-format-intro">README</h3>
+                <?= theme_styleguide_readme('text') ?>
             </aside>
         </section>
 

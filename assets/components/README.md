@@ -229,7 +229,7 @@ un hero.
 accordion       anchor-nav      autocomplete    badge           btn
 breadcrumb      date            dialog          eyebrow
 field           filters
-header          icon            image           intro
+header          icon            image
 link            list            lottie          marquee         newsletter
 pagination      picto           picture         quote           search
 section-snap    select

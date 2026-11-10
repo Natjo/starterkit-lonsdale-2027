@@ -161,3 +161,11 @@ Le build exporte aussi les seuils de `assets/styles/breakpoints.scss` vers
 `styleguide/breakpoints.json`. Les déclarations de base doivent être des
 valeurs littérales en pixels ; une déclaration non prise en charge fait
 échouer le build plutôt que produire un tableau incomplet.
+
+## Dépendances du CSS de l’éditeur
+
+`assets/styles/utils/admin-rte.scss` importe le SCSS du composant `text`, qui
+contient `.rte` et `.intro`. Ces styles restent dans `components/text/text.scss`,
+sans fichier Intro distinct. Comme ce CSS admin est compilé systématiquement,
+le manifeste de `text` déclare `activation: "always"` : Forge conserve sa source
+même sans appel PHP explicite dans une page.

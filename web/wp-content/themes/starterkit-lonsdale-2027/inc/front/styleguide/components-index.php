@@ -12,7 +12,6 @@ return [
     'header' => 'Header',
     'icon' => 'Icon',
     'image' => 'Image',
-    'intro' => 'Intro',
     'link' => 'Link',
     'list' => 'List',
     'marquee' => 'Marquee',

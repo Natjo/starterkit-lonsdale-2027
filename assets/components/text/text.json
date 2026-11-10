@@ -4,7 +4,9 @@
   "name": "text",
   "slug": "text",
   "assets": {
-    "css": { "loading": "critical" }
+    "css": {
+      "loading": "critical"
+    }
   },
   "dependencies": {
     "components": [],
@@ -13,5 +15,6 @@
     "heroes": [],
     "common": [],
     "modules": []
-  }
+  },
+  "activation": "always"
 }

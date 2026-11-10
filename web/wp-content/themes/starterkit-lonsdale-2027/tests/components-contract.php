@@ -2206,17 +2206,17 @@ $assert_contains('Le slider conserve le picture responsive', '<picture class="pi
 $assert_contains('Le slider rend la source mobile', 'srcset="202"', $picture_slider);
 $assert_contains('Le slider rend la source desktop', 'srcset="201"', $picture_slider);
 
-$intro = $render('intro', [
+$intro = $render('text', [
     'text' => '<p>Introduction <strong>riche</strong></p><script>alert(1)</script>',
-    'classes' => ['featured', 'featured'],
+    'classes' => ['intro', 'featured', 'featured'],
     'attributes' => ['class' => 'duplicate', 'id' => 'page-intro'],
 ]);
 $assert_contains('L’intro conserve le HTML éditorial', '<strong>riche</strong>', $intro);
 $assert_not_contains('L’intro filtre les scripts', '<script>', $intro);
-$assert_contains('L’intro conserve ses classes et attributs', '<div class="intro featured" id="page-intro">', $intro);
+$assert_contains('L’intro conserve ses classes et attributs', '<div class="text intro featured" id="page-intro">', $intro);
 $assert_not_contains('L’intro protège sa classe', 'class="duplicate"', $intro);
-$assert_same('Une intro vide ne produit aucun HTML', '', $render('intro', ['text' => '   ']));
-$assert_same('Intro refuse les arguments positionnels', '', $render('intro', ['Ancienne introduction']));
+$assert_same('Une intro vide ne produit aucun HTML', '', $render('text', ['text' => '   ', 'classes' => 'intro']));
+$assert_same('Text Intro refuse les arguments positionnels', '', $render('text', ['Ancienne introduction']));
 
 $quote_component = $render('quote', [
     'quote' => '<p>Une citation.</p>',
