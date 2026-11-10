@@ -31,7 +31,7 @@ strate('marquee', [
 ]);
 ```
 
-Le mode HTML utilisé par le styleguide reste disponible lors d’un appel PHP :
+Le mode HTML reste disponible lors d’un appel PHP :
 
 ```php
 strate('marquee', [

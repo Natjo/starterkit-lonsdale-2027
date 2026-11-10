@@ -1,6 +1,6 @@
 # Strate `text-animated`
 
-Strate statique réservée au styleguide. Elle présente un titre dont les
+Strate statique de démonstration du catalogue. Elle présente un titre dont les
 caractères se révèlent progressivement en fonction du scroll grâce au module
 `textAnimated`.
 

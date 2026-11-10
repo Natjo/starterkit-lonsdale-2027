@@ -238,52 +238,13 @@ test('dev/prod configurations choose their Sass and watch modes independently of
 });
 
 
-test('component README rendering supports Markdown and stays current in watch', { timeout: 25000 }, async t => {
-    const { root, configs } = project(t, true);
-    const markdown = '# Button\n\n```php\ncomponent("btn", []);\n```\n\n| Option | Type |\n| --- | --- |\n| svg | bool |\n\n[Link](../link/README.md)\n\n```unknown-language\n<script>alert(1)</script>\n```';
-    put(root, 'assets/components/btn/README.md', markdown);
-    fs.unlinkSync(path.join(root, 'assets/styles/_breakpoints.scss'));
-    put(root, 'assets/styles/breakpoints.scss', '$breakpoint-sm: 576px;\n$breakpoint-md: 768px;\n$breakpoint-sm-only: "(min-width: 576px) and (max-width: 767px)";');
-    for (const [family, module] of [['cards', 'card-news'], ['strates', 'strate-text'], ['heros', 'hero-page']]) {
-        put(root, `assets/${family}/${module}/README.md`, '# ' + module);
-        put(root, `assets/${family}/README.md`, '# Documentation générale');
-    }
+test('the starter build does not publish Forge styleguide documentation', { timeout: 15000 }, async t => {
+    const { root, configs } = project(t, false);
+    put(root, 'assets/components/btn/README.md', '# Button');
+    put(root, 'assets/styles/_breakpoints.scss', '$breakpoint-sm: 576px;');
     const compiler = rspack(configs);
-    let watching;
-    t.after(async () => { if (watching) await new Promise(resolve => watching.close(() => compiler.close(resolve))); });
-    await new Promise((resolve, reject) => {
-        const timeout = setTimeout(() => reject(new Error('README watch timeout')), 20000);
-        let step = 0;
-        const output = path.join(root, 'output');
-        const file = path.join(output, 'styleguide/components/btn/README.html');
-        watching = compiler.watch({ poll: 50, aggregateTimeout: 25 }, (error, stats) => {
-            if (error || stats.hasErrors()) { clearTimeout(timeout); reject(error || new Error(stats.toString({ all: false, errors: true }))); return; }
-            try {
-                const html = fs.readFileSync(file, 'utf8');
-                verifyInventory(output);
-                if (step === 0) {
-                    assert.match(html, /<h4>Button<\/h4>/);
-                    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(output, 'styleguide/breakpoints.json'), 'utf8')), [
-                        { name: 'sm', width: 576, only: true },
-                        { name: 'md', width: 768, only: false },
-                    ]);
-                    for (const [family, module] of [['cards', 'card-news'], ['strates', 'strate-text'], ['heros', 'hero-page']]) {
-                        assert.ok(fs.readFileSync(path.join(output, `styleguide/${family}/${module}/README.html`), 'utf8').includes(`<h4>${module}</h4>`));
-                        assert.ok(fs.existsSync(path.join(output, `styleguide/${family}/README.html`)));
-                    }
-                    assert.match(html, /<pre><code class="language-php hljs">/);
-                    assert.match(html, /<span class="hljs-string">/);
-                    assert.match(html, /<table>/);
-                    assert.match(html, /href="#component-link"/);
-                    assert.match(html, /language-plaintext hljs/);
-                    assert.match(html, /&lt;script&gt;alert\(1\)&lt;\/script&gt;/);
-                    assert.doesNotMatch(html, /<script>/);
-                    step = 1;
-                    setTimeout(() => fs.writeFileSync(path.join(root, 'assets/components/btn/README.md'), '# Updated'), 100);
-                } else if (html.includes('<h4>Updated</h4>')) {
-                    clearTimeout(timeout); resolve();
-                }
-            } catch (failure) { clearTimeout(timeout); reject(failure); }
-        });
-    });
+    const stats = await new Promise((resolve, reject) => compiler.run((error, stats) => compiler.close(closeError => error || closeError ? reject(error || closeError) : resolve(stats))));
+    assert.equal(stats.hasErrors(), false, stats.toString({ all: false, errors: true }));
+    assert.ok(!fs.existsSync(path.join(root, 'output/styleguide')));
+    verifyInventory(path.join(root, 'output'));
 });

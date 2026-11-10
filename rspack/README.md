@@ -145,23 +145,6 @@ docker compose -f .docker/docker-compose.yml run --rm --no-deps \
   -v "$PWD/tests:/usr/app/tests:ro" nodejs pnpm run test:build
 ```
 
-## README du Styleguide
-
-Le compilateur app convertit les README de `assets/{components,cards,strates,heros}/` en HTML via
-`marked`, en développement et en production. Les sorties sont publiées sous
-`assets/styleguide/{famille}/{slug}/README.html` et suivies par l’inventaire
-comme les autres assets copiés. Elles sont consommées et filtrées côté PHP
-par le modèle Styleguide. Le watcher suit les README sources.
-
-Les blocs de code des README sont colorés avec `highlight.js` pendant la
-conversion Markdown. Le HTML contient des classes `hljs-*`, conservées par le
-filtrage PHP. Les langues inconnues utilisent `plaintext` et restent échappées.
-
-Le build exporte aussi les seuils de `assets/styles/breakpoints.scss` vers
-`styleguide/breakpoints.json`. Les déclarations de base doivent être des
-valeurs littérales en pixels ; une déclaration non prise en charge fait
-échouer le build plutôt que produire un tableau incomplet.
-
 ## Dépendances du CSS de l’éditeur
 
 `assets/styles/utils/admin-rte.scss` importe le SCSS du composant `text`, qui

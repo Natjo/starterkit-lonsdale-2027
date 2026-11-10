@@ -1,7 +1,6 @@
 const config = require("./rspack.config");
 const path = require("path");
 const rspack = require("@rspack/core");
-const hljs = require("highlight.js");
 const {
     APP_SCSS,
     getDynamicEntries,
@@ -303,54 +302,6 @@ function createRspackConfig({
                                   ...(!isDev
                                       ? { transform: optimizeSvgCopyTransform }
                                       : {}),
-                              },
-                              {
-                                  from: "./assets/styles/breakpoints.scss",
-                                  to: "styleguide/breakpoints.json",
-                                  noErrorOnMissing: true,
-                                  transform: (content) => {
-                                      const source = content.toString();
-                                      const values = [...source.matchAll(/^\$breakpoint-([a-z]+):\s*(\d+)px;\s*$/gm)];
-                                      const declarations = source.match(/^\$breakpoint-[a-z]+:/gm) || [];
-                                      if (!values.length || values.length !== declarations.length) throw new Error("Les seuils du Styleguide doivent être déclarés en pixels dans breakpoints.scss.");
-                                      return JSON.stringify(values.map(([, name, width]) => ({
-                                          name,
-                                          width: Number(width),
-                                          only: source.includes(`$breakpoint-${name}-only:`),
-                                      })).sort((a, b) => a.width - b.width), null, 2);
-                                  },
-                              },
-                              {
-                                  context: assetsRoot,
-                                  from: "{components,cards,strates,heros}/**/README.md",
-                                  to: "styleguide/[path][name].html",
-                                  noErrorOnMissing: true,
-                                  transform: async (content) => {
-                                      const { Marked } = await import("marked");
-                                      const markdown = new Marked({
-                                          renderer: {
-                                              code({ text, lang }) {
-                                                  const requested = (lang || "plaintext").split(/\s+/)[0];
-                                                  const language = /^[a-z0-9-]+$/i.test(requested) && hljs.getLanguage(requested) ? requested : "plaintext";
-                                                  const code = hljs.highlight(text, { language, ignoreIllegals: true }).value;
-                                                  return `<pre><code class="language-${language} hljs">${code}</code></pre>\n`;
-                                              },
-                                          },
-                                          walkTokens(token) {
-                                              if (token.type === "heading") token.depth = Math.min(6, token.depth + 3);
-                                              if (token.type === "link") {
-                                                  const component = /^\.\.\/([a-z0-9-]+)\/README\.md$/.exec(token.href);
-                                                  if (component) {
-                                                      const module = component[1];
-                                                      token.href = `#${/^(card|strate|hero)-/.test(module) ? module : `component-${module}`}`;
-                                                  } else if (/^\.\.\/README\.md(?:#.*)?$/.test(token.href)) {
-                                                      token.href = "#family-documentation";
-                                                  }
-                                              }
-                                          },
-                                      });
-                                      return markdown.parse(content.toString());
-                                  },
                               },
                               {
                                   from: "./assets/components/lottie/*.json",

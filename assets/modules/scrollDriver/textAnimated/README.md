@@ -11,7 +11,7 @@ de scroll dans une plage donnée au lieu de jouer une animation d'entrée unique
 
 Le SCSS est inclus dans le bundle critique par `assets/app.scss`. Le module
 JavaScript est notamment utilisé par la strate statique `text-animated` du
-styleguide. La classe `.text-animated` seule ne lance pas le comportement : le
+catalogue. La classe `.text-animated` seule ne lance pas le comportement : le
 module doit toujours être initialisé par son propriétaire.
 
 Le chargeur `hydrate` ne charge pas directement les chemins `modules/...`.

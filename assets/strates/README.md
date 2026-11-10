@@ -287,7 +287,7 @@ Règles :
 
 ## Strate statique
 
-Une strate de démonstration ou de styleguide peut être entièrement statique :
+Une strate de démonstration peut être entièrement statique :
 
 ```php
 strate('text-animated');
@@ -391,7 +391,7 @@ comportement de la strate. Les imports SCSS actifs sont déclarés dans
 | `snap` | Parcourt des sections éditoriales configurées par repeater |
 | `steps` | Affiche des étapes numérotées |
 | `text` | Assemble `title` et `text` |
-| `text-animated` | Strate statique réservée au styleguide, pilotée par `textAnimated` |
+| `text-animated` | Strate statique de démonstration, pilotée par `textAnimated` |
 | `text-image` | Assemble `title`, `text` et `picture` |
 
 Ne pas considérer un template vide comme une strate terminée. Avant de

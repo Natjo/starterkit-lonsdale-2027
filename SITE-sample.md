@@ -224,7 +224,7 @@ un statut :
 
 Ne rien supprimer pendant l'audit initial. Les suppressions interviennent
 seulement après validation complète du catalogue et vérification des références
-PHP, ACF, SCSS, JavaScript, styleguide et documentation. Un renommage doit être
+PHP, ACF, SCSS, JavaScript et documentation. Un renommage doit être
 appliqué à toute cette chaîne, notamment à `acf_fc_layout`, au dossier
 `strate-<nom>` et à l'éventuel `data-module`.
 

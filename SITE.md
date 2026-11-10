@@ -21,7 +21,7 @@ des besoins métier validés.
 | URL locale | `https://starterkit-lonsdale-2027.code` |
 | Langue WordPress | `fr_FR` |
 | Multisite | Non prévu dans la configuration actuelle |
-| Vocation constatée | Starter WordPress et styleguide servant à développer, tester et documenter des composants, cards, heroes et strates |
+| Vocation constatée | Starter WordPress servant à développer, tester et documenter des composants, cards, heroes et strates |
 | Public actuel | Équipe de développement et d'intégration |
 
 Aucun brief métier, domaine de production, public final, contenu définitif ou
@@ -85,7 +85,7 @@ validation.
 Le starter contient actuellement :
 
 - une page d'accueil construite avec un hero ACF et un flexible content ACF ;
-- une page de styleguide dédiée aux composants ;
+- un catalogue de composants, cards, heroes et strates ;
 - deux heroes PHP et leurs groupes ACF ;
 - dix layouts disponibles dans le flexible content ;
 - des templates de strates supplémentaires, dont certains sont fonctionnels et
@@ -119,11 +119,6 @@ WPML. Cela ne constitue pas une exigence multilingue validée.
 | Page | ID | URL ou slug | Statut | Template | Comportement actuel |
 | --- | ---: | --- | --- | --- | --- |
 | Homepage | 2 | `/` ; slug stocké `page-d-exemple` | Publiée | Défaut, résolu par `front-page.php` | Hero `homepage`, puis flexible content `strates` |
-| Styleguide | 118 | `/components/` | Publiée | `inc/front/styleguide/styleguide.php` | Affiche le styleguide des composants |
-| Styleguide Styles | 686 | `/styles/` | Publiée | `inc/front/styleguide/styles.php` | Couleurs, typographie, espacements, surfaces et grille du thème |
-| Styleguide Cards | 683 | `/cards/` | Publiée | `inc/front/styleguide/cards.php` | Démos et README des 8 cards |
-| Styleguide Strates | 684 | `/strates/` | Publiée | `inc/front/styleguide/strates.php` | Démos et README des 22 strates |
-| Styleguide Heroes | 685 | `/heros/` | Publiée | `inc/front/styleguide/heros.php` | Démos et README des 4 heroes |
 | Politique de confidentialité | 3 | `/politique-de-confidentialite/` | Brouillon | Défaut | Passe actuellement par le template générique incomplet `page.php` |
 
 La lecture statique est configurée dans WordPress : `show_on_front = page` et
@@ -134,7 +129,6 @@ La lecture statique est configurée dans WordPress : `show_on_front = page` et
 | Template | État actuel |
 | --- | --- |
 | `front-page.php` | Fonctionnel : common `header-nav`, hero ACF `homepage`, strates ACF, puis démonstration statique de la strate `snap`, footer |
-| `inc/front/styleguide/{styleguide,cards,strates,heros}.php` | Quatre catalogues de démonstration avec navigation commune, README rendus, coloration, copie du code et aperçus sticky |
 | `template-hub.php` | Hub générique de CPT : utilise le CPT de l’archive courante ou le champ ACF `hub_post_type` d’une Page, puis résout automatiquement la card correspondante |
 | `template-contact.php` | Page de contact autonome assemblée avec les composants du starter, sans strate, avec validation serveur et envoi à l’adresse administrateur |
 | `page.php` | Générique : hero ACF avec titre WordPress en fallback, contenu natif éventuel et dispatch des strates |
@@ -374,9 +368,7 @@ responsabilité de l'appel PHP du composant et non un champ ACF du layout.
 | `accordion` | Oui | Rend le composant `accordion` | Aucun asset propre | Fonctionnelle via le composant |
 | `slider` | Oui | Slider de cards ou d’images | SCSS et JS | Fonctionnelle et administrable |
 | `marquee` | Oui | Marquee de cards ou d’images | SCSS et JS | Fonctionnelle et administrable |
-| `formulaire` | Non | Formulaire statique de démonstration | SCSS | Réservée au styleguide |
-| `text_animated` | Non | Titre statique animé au scroll | SCSS et JS | Réservée au styleguide |
-| `paralax` | Non | Image plein écran avec titre centré et parallaxe | SCSS et JS | Réservée au styleguide |
+| `text-animated` | Non | Titre statique animé au scroll | SCSS et JS | Exemple du catalogue |
 | `intro` | Oui | Rend le composant `intro` | Aucun asset propre | Fonctionnelle |
 | `keynumbers` | Oui | Liste de chiffres clés | SCSS | Fonctionnelle et administrable |
 | `media` | Oui | Rend un média image ou vidéo | Aucun asset propre | Fonctionnelle |
@@ -396,7 +388,7 @@ pourront être supprimées une fois le catalogue final validé.
 
 Aucune strate ne doit être supprimée ou renommée pendant l'audit initial. Avant
 un nettoyage, vérifier ses références dans ACF, les templates PHP, les assets
-SCSS et JavaScript, les attributs `data-module`, le styleguide et les README.
+SCSS et JavaScript, les attributs `data-module`, les README et les exemples embarqués dans Forge.
 Un renommage doit conserver la correspondance complète entre
 `acf_fc_layout`, `strate('nom')`, le dossier `strate-<nom>` et ses assets.
 
@@ -444,7 +436,7 @@ données vers aucun traitement métier.
 | Élément | État local constaté |
 | --- | --- |
 | Page d'accueil affectée | Oui, page 2 |
-| Pages de démonstration | Homepage et Styleguide publiées |
+| Page de démonstration | Homepage |
 | Menus affectés | Non |
 | Options ACF renseignées | Non |
 | `news` publiées | Aucune |

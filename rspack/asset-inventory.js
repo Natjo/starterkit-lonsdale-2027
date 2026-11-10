@@ -4,6 +4,7 @@ const { createHash, randomUUID } = require('node:crypto');
 const { safePath } = require('./output-safety');
 
 const INVENTORY_FILE = '.rspack-assets.json';
+// Keep retired documentation paths readable in old inventories so their files can be pruned.
 const ROOTS = /^(css|js|fonts|video|favicon|img|lottie|styleguide)\//;
 const MODULES = '(?:cards|common|components|heros|modules|pages|strates|vendors)';
 const LEGACY_CSS = new RegExp(`^css/(?:once/)?${MODULES}/.+\\.css(?:\\.map)?$`);
