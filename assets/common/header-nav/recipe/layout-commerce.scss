@@ -3,7 +3,6 @@
 :is(#header-nav, #header-nav-dropdown, #header-nav-mega).header-layout-commerce {
  #nav {flex:1;min-width:0;flex-wrap:wrap;}
  .header-search {order:-2;flex:1;max-width:none;}
- .header-pictos {order:-1;}
  #nav > .nav-menu {flex-basis:100%;order:1;}
 }
 }

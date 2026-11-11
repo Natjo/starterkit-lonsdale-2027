@@ -505,13 +505,13 @@
     },
     {
       "name": "js/app.js",
-      "size": 45391,
-      "sha256": "be50c677da9f96d27e21fc91cbc2ba26d4fda2b8be18254e77d6464f9af1db28"
+      "size": 48928,
+      "sha256": "f0463bada0770c0e332293f778ba699e32aefa851054737d72929697312af14a"
     },
     {
       "name": "js/app.js.map",
-      "size": 156348,
-      "sha256": "654f7ebcc20d5fb01ff5f7d1f44590eedb7c03f7a28aa378309e167ebe50e45c"
+      "size": 166691,
+      "sha256": "250eda7c7b6dc780511ad61718250c34f1951428cacb9b3b53032a593659ad98"
     },
     {
       "name": "js/chunks/1ae55770.js",

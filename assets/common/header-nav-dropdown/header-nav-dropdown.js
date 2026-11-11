@@ -1,6 +1,6 @@
 const MOBILE_MEDIA = '(max-width: 767px)';
 
-function Submenus(root) {
+function Submenus(root, signal) {
     const mobile = window.matchMedia(root.classList.contains('header-layout-minimal') ? '(min-width: 0px)' : MOBILE_MEDIA);
     const controls = new Map();
     root.classList.add('has-submenu-controls');
@@ -22,7 +22,7 @@ function Submenus(root) {
         button.setAttribute('aria-controls', wrapper.id);
         button.setAttribute('aria-expanded', 'false');
         const icon = document.createElement('span');
-        icon.textContent = '+';
+        icon.className = 'submenu-caret';
         icon.setAttribute('aria-hidden', 'true');
         button.append(icon);
         parent.insertBefore(button, wrapper);
@@ -37,7 +37,6 @@ function Submenus(root) {
             parent.classList.toggle('is-submenu-open', open);
             wrapper.inert = !open;
             button.setAttribute('aria-expanded', String(open));
-            icon.textContent = open ? '−' : '+';
             if (!open) {
                 for (const [child, close] of controls) if (parent !== child && parent.contains(child)) close(false);
             }
@@ -46,20 +45,20 @@ function Submenus(root) {
         button.addEventListener('click', () => {
             const open = !parent.classList.contains('is-submenu-open');
             setOpen(open);
-        });
+        }, { signal });
         parent.addEventListener('pointerenter', (event) => {
             if (!mobile.matches && event.pointerType === 'mouse') setOpen(true);
-        });
+        }, { signal });
         parent.addEventListener('pointerleave', () => {
             if (!mobile.matches && !parent.contains(document.activeElement)) setOpen(false);
-        });
+        }, { signal });
         parent.addEventListener('focusin', (event) => {
             // The visible disclosure button must toggle only once, on click.
             if (!mobile.matches && event.target !== button) setOpen(true);
-        });
+        }, { signal });
         parent.addEventListener('focusout', (event) => {
             if (!parent.contains(event.relatedTarget)) setOpen(false);
-        });
+        }, { signal });
         parent.addEventListener('keydown', (event) => {
             if (event.key !== 'Escape' || !parent.classList.contains('is-submenu-open')) return;
             event.preventDefault();
@@ -67,21 +66,27 @@ function Submenus(root) {
             if (mobile.matches || window.matchMedia('(hover: none)').matches) button.focus();
             else link.focus();
             setOpen(false);
-        });
+        }, { signal });
     });
 
     const closeAll = () => controls.forEach((close) => close(false));
-    root.addEventListener('navigation-close', closeAll);
+    root.addEventListener('navigation-close', closeAll, { signal });
     document.addEventListener('pointerdown', (event) => {
         if (!root.contains(event.target)) closeAll();
-    });
+    }, { signal });
     root.querySelector('.btn-nav')?.addEventListener('click', () => {
         if (root.classList.contains('is-open')) closeAll();
-    });
-    mobile.addEventListener('change', closeAll);
+    }, { signal });
+    mobile.addEventListener('change', closeAll, { signal });
+    signal?.addEventListener('abort', () => {
+        closeAll();
+        root.querySelectorAll('.submenu-toggle').forEach(button => button.remove());
+        root.querySelectorAll('.level1').forEach(wrapper => { wrapper.inert = false; });
+        root.classList.remove('has-submenu-controls');
+    }, { once: true });
 }
 
-function Navigation(root) {
+function Navigation(root, signal) {
     const button = root.querySelector('.btn-nav');
     const nav = root.querySelector('#nav');
     if (!button || !nav) return;
@@ -137,8 +142,8 @@ function Navigation(root) {
         nav.toggleAttribute('data-lenis-prevent', open);
         nav.inert = mobile.matches && !open;
         if (open) {
-            document.addEventListener('keydown', onKeydown, true);
-            document.addEventListener('focusin', containFocus);
+            document.addEventListener('keydown', onKeydown, { capture: true, signal });
+            document.addEventListener('focusin', containFocus, { signal });
             focusFrame = requestAnimationFrame(() => {
                 focusFrame = 0;
                 if (!mobile.matches || !root.classList.contains('is-open')) return;
@@ -156,26 +161,39 @@ function Navigation(root) {
             if (mobile.matches && nav.contains(document.activeElement)) button.focus({ preventScroll: true });
         }
     };
-    button.addEventListener('click', () => setOpen(!root.classList.contains('is-open')));
+    button.addEventListener('click', () => setOpen(!root.classList.contains('is-open')), { signal });
     button.addEventListener('keydown', (event) => {
         if (event.key !== 'Enter' || !mobile.matches) return;
         event.preventDefault();
         if (!event.repeat) setOpen(!root.classList.contains('is-open'));
-    });
+    }, { signal });
     nav.addEventListener('click', (event) => {
         if (root.classList.contains('is-open') && event.target instanceof Element && event.target.closest('a')) setOpen(false);
-    });
-    mobile.addEventListener('change', () => setOpen(false, false));
+    }, { signal });
+    mobile.addEventListener('change', () => setOpen(false, false), { signal });
     setOpen(false, false);
+    signal?.addEventListener('abort', () => {
+        clearTimeout(transitionTimer);
+        cancelAnimationFrame(focusFrame);
+        document.removeEventListener('keydown', onKeydown, true);
+        document.removeEventListener('focusin', containFocus);
+        root.classList.remove('is-open', 'is-nav-animating');
+        nav.inert = false;
+        nav.removeAttribute('data-lenis-prevent');
+        button.setAttribute('aria-expanded', 'false');
+        if (originalTabindex === null) nav.removeAttribute('tabindex');
+        else nav.setAttribute('tabindex', originalTabindex);
+    }, { once: true });
 }
 
 function HeaderScroll(root, {
     hideOnScroll = false,
     compactOnScroll = false,
     threshold = 0,
-} = {}) {
+} = {}, signal) {
     const scrollThreshold = Math.max(0, Number(threshold) || 0);
     let scrollFrame = 0;
+    let transitionFrame = 0;
     let previousScrollY = hideOnScroll ? Math.max(0, window.scrollY) : 0;
 
     const setClass = (element, name, enabled) => {
@@ -217,43 +235,60 @@ function HeaderScroll(root, {
     };
 
     if (compactOnScroll || hideOnScroll) {
-        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('scroll', onScroll, { passive: true, signal });
     }
     if (hideOnScroll) {
         root.addEventListener('focusin', () => {
             setClass(root, 'is-hidden', false);
-        });
+        }, { signal });
     }
     update();
 
     const enableTransitions = () => {
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
+        if (signal?.aborted) return;
+        transitionFrame = requestAnimationFrame(() => {
+            transitionFrame = requestAnimationFrame(() => {
                 setClass(root, 'is-scroll-ready', true);
             });
         });
     };
 
+    signal?.addEventListener('abort', () => {
+        cancelAnimationFrame(scrollFrame);
+        cancelAnimationFrame(transitionFrame);
+        document.documentElement.classList.remove('has-compact-header');
+        root.classList.remove('is-compact', 'is-hidden', 'is-scroll-ready');
+    }, { once: true });
+
     if (document.readyState === 'complete') {
         enableTransitions();
     } else {
-        window.addEventListener('pageshow', enableTransitions, { once: true });
+        window.addEventListener('pageshow', enableTransitions, { once: true, signal });
     }
 }
 
-const initializedHeaders = new WeakSet();
 
-export default function HeaderNav() {
-    const headerNav = document.getElementById("header-nav-dropdown");
+const headerInstances = new WeakMap();
 
-    if (!headerNav || initializedHeaders.has(headerNav)) return;
-    initializedHeaders.add(headerNav);
-
-    Submenus(headerNav);
-    Navigation(headerNav);
+export default function HeaderNav(root) {
+    const headerNav = root ?? document.getElementById("header-nav-dropdown");
+    if (!headerNav) return;
+    if (headerInstances.has(headerNav)) return headerInstances.get(headerNav);
+    const controller = new AbortController();
+    const { signal } = controller;
+    const destroy = () => {
+        if (signal.aborted) return;
+        controller.abort();
+        headerInstances.delete(headerNav);
+    };
+    headerInstances.set(headerNav, destroy);
+    headerNav.addEventListener('theme:header-destroy', destroy, { once: true, signal });
+    Submenus(headerNav, signal);
+    Navigation(headerNav, signal);
     HeaderScroll(headerNav, {
         hideOnScroll: false,
         compactOnScroll: true,
         threshold: 100,
-    });
+    }, signal);
+    return destroy;
 }

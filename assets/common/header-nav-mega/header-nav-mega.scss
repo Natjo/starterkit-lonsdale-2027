@@ -31,7 +31,12 @@
     }
 
     .submenu-toggle {
-        display: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        min-width: 2.8rem;
+        min-height: 2.8rem;
         padding: .5rem 1rem;
         border: 0;
         color: inherit;
@@ -43,6 +48,20 @@
             outline: 2px solid var(--color-2);
             outline-offset: 2px;
         }
+    }
+
+    .submenu-caret {
+        display: block;
+        width: .7rem;
+        height: .7rem;
+        border-right: 2px solid currentColor;
+        border-bottom: 2px solid currentColor;
+        transform: translateY(-.15rem) rotate(45deg);
+        transition: transform .2s ease;
+    }
+
+    .submenu-toggle[aria-expanded="true"] .submenu-caret {
+        transform: translateY(.15rem) rotate(225deg);
     }
 
     .nav-menu {
@@ -349,6 +368,7 @@
         &.is-scroll-ready,
         .level1,
         .sub-menu,
+        .submenu-caret,
         .btn-nav span,
         .btn-nav-line,
         &.is-nav-animating #nav {

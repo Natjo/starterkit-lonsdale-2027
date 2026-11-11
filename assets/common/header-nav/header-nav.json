@@ -28,9 +28,7 @@
   "headerConfiguration": {
     "version": 1,
     "layouts": [
-      "default",
-      "minimal",
-      "topbar"
+      "default"
     ],
     "navigation": [
       "simple",
@@ -40,7 +38,6 @@
     "elements": [
       "search",
       "buttons",
-      "pictos",
       "links"
     ]
   }

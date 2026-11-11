@@ -10,8 +10,8 @@ require __DIR__ . '/start.php';
 if ($header_layout === 'topbar') require __DIR__ . '/topbar.php';
 require __DIR__ . '/logo.php';
 require __DIR__ . '/navigation-' . $navigation . '.php';
-if ($header_layout === 'centered') require __DIR__ . '/secondary.php';
-foreach (['search', 'buttons', 'pictos', 'links'] as $option) {
+if ($header_layout === 'centered' && ($config['links'] ?? false) !== true) require __DIR__ . '/secondary.php';
+foreach (['search', 'buttons', 'links'] as $option) {
     if (($config[$option] ?? false) === true) require __DIR__ . '/' . $option . '.php';
 }
 require __DIR__ . '/end.php';

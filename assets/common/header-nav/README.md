@@ -256,8 +256,8 @@ tests/header-nav-browser-contract.html
 ## Configuration dans Forge
 
 Le manifeste propose `headerConfiguration.version: 1`. Forge permet de sélectionner
-indépendamment la disposition, la navigation (`simple`, `dropdown`, `mega`) et les
-éléments recherche, boutons, pictos et liens complémentaires.
+la navigation Simple/Flyout/Reveal (clés `simple`, `dropdown`, `mega`) et les
+éléments recherche, actions et menu secondaire.
 
 Le styleguide peut afficher ces combinaisons avec les fragments du dossier
 `template-parts/common/header-parts`. Cette prévisualisation temporaire ne modifie
@@ -266,7 +266,8 @@ aucun contenu du site. Les variantes indépendantes restent disponibles au catal
 Au build, Forge assemble un seul `header-nav.php`, son SCSS et son JS. Les snippets
 PHP, styles et dépendances des éléments désactivés sont écartés ; le site ne conserve
 ni le renderer de démonstration ni les fragments de recette. Le JS vient uniquement
-du type de navigation sélectionné. En Manage, Save régénère et recompile ce header.
+du type de navigation sélectionné. Les réglages du header sont modifiables en Build
+et affichés en lecture seule en Manage pour préserver les adaptations du projet.
 Les modifications manuelles de ses fichiers peuvent être remplacées lors de cette
 régénération ; adapter la recette du starter pour les conserver durablement.
 
@@ -274,14 +275,9 @@ régénération ; adapter la recette du starter pour les conserver durablement.
 | --- | --- |
 | Navigation | `menu-header` |
 | Barre utilitaire | `menu-header-utility` |
-| Boutons | liens de premier niveau de `menu-header-cta` |
-| Pictos | liens de premier niveau de `menu-header-tools` |
-| Liens complémentaires | `menu-header-links` |
+| Actions (`.header-actions`) | liens de premier niveau de `menu-header-cta` |
+| Menu secondaire (`.menu-secondary`) | `menu-secondary` — Menu secondaire |
 
-Dans un lien du menu Pictos, la classe CSS `icon-email` sélectionne le symbole
-`email` du sprite. Activer « Classes CSS » dans les options de l'écran Menus pour
-renseigner cette valeur. Sans classe, le texte du lien reste affiché. Le nom doit
-correspondre à une icône existante ; aucune lecture du sprite n'est faite au runtime.
 Les libellés, cibles et URL restent modifiables dans WordPress sans recompilation.
 
 Les styles spécifiques à la disposition et aux éléments sont dans `recipe/`.
@@ -289,7 +285,21 @@ Les trois SCSS des navigations restent les sources du cadre et des sous-menus.
 Forge retire leurs blocs `.header-search { ... }` avant d'ajouter la recherche
 sélectionnée. Conserver ces blocs indépendants lorsque ces sources sont adaptées.
 
-Le configurateur propose désormais uniquement les dispositions Classique,
-Minimaliste et Double navigation. Les anciennes dispositions logo centré,
-recherche dominante et commerce restent lisibles pour les projets existants,
-mais ne sont plus proposées. Les liens complémentaires sont bleus et soulignés.
+Le configurateur ne propose plus de sélecteur Disposition : Forge et le styleguide
+utilisent la disposition classique. Les anciens fichiers de variantes restent
+conservés. Les liens du menu secondaire sont bleus et soulignés. L’option
+pictogrammes est supprimée.
+
+
+## Réinitialisation d'un aperçu
+
+L'initialiseur accepte une racine optionnelle : `const destroy = HeaderNav(root)`.
+Sans argument, il retrouve le header par son ID comme auparavant. Un deuxième appel
+sur la même racine retourne le même nettoyage, sans doubler les interactions.
+`destroy()` retire les écouteurs, pièges de focus, timers, RAF et observers créés
+par cette instance. L'événement local `theme:header-destroy` déclenche aussi ce
+nettoyage avant le remplacement d'une racine initialisée globalement.
+
+Dans le styleguide, seule la racine ajoutée en AJAX reçoit `data-module` et passe
+ensuite sous le contrôle de l'hydrateur. Le premier header conserve l'import global
+habituel ; ne pas lui ajouter simultanément `data-module`.

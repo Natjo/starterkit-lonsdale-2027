@@ -90,3 +90,26 @@ extérieure et l'initialisation sans boutons en double.
 
 Le panneau contrôlé est `level1` (ID, `aria-controls`, `inert`, état ouvert).
 La div intérieure `wrapper-sub-menu` entoure la liste.
+
+
+## Réinitialisation d'un aperçu
+
+L'initialiseur accepte une racine optionnelle : `const destroy = HeaderNav(root)`.
+Sans argument, il retrouve le header par son ID comme auparavant. Un deuxième appel
+sur la même racine retourne le même nettoyage, sans doubler les interactions.
+`destroy()` retire les écouteurs, pièges de focus, timers, RAF et observers créés
+par cette instance. L'événement local `theme:header-destroy` déclenche aussi ce
+nettoyage avant le remplacement d'une racine initialisée globalement.
+
+Dans le styleguide, seule la racine ajoutée en AJAX reçoit `data-module` et passe
+ensuite sous le contrôle de l'hydrateur. Le premier header conserve l'import global
+habituel ; ne pas lui ajouter simultanément `data-module`.
+
+## Présentation Flyout
+
+Les entrées possédant des enfants affichent un caret via le bouton accessible
+`.submenu-toggle`. Il s’oriente selon `aria-expanded`, sur desktop et mobile.
+Le panneau desktop est une liste verticale blanche, bordée, arrondie et ombrée.
+Les groupes plus profonds se déplient à l’intérieur du panneau ; leur ouverture
+adapte sa hauteur sans calcul JavaScript. Le petit espace sous le parent reste
+traversable au survol. La navigation clavier et Échap restent disponibles.

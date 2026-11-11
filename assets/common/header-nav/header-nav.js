@@ -1,6 +1,6 @@
 const MOBILE_MEDIA = '(max-width: 767px)';
 
-function Navigation(root) {
+function Navigation(root, signal) {
     const button = root.querySelector('.btn-nav');
     const nav = root.querySelector('#nav');
     if (!button || !nav) return;
@@ -56,8 +56,8 @@ function Navigation(root) {
         nav.toggleAttribute('data-lenis-prevent', open);
         nav.inert = mobile.matches && !open;
         if (open) {
-            document.addEventListener('keydown', onKeydown, true);
-            document.addEventListener('focusin', containFocus);
+            document.addEventListener('keydown', onKeydown, { capture: true, signal });
+            document.addEventListener('focusin', containFocus, { signal });
             focusFrame = requestAnimationFrame(() => {
                 focusFrame = 0;
                 if (!mobile.matches || !root.classList.contains('is-open')) return;
@@ -75,26 +75,39 @@ function Navigation(root) {
             if (mobile.matches && nav.contains(document.activeElement)) button.focus({ preventScroll: true });
         }
     };
-    button.addEventListener('click', () => setOpen(!root.classList.contains('is-open')));
+    button.addEventListener('click', () => setOpen(!root.classList.contains('is-open')), { signal });
     button.addEventListener('keydown', (event) => {
         if (event.key !== 'Enter' || !mobile.matches) return;
         event.preventDefault();
         if (!event.repeat) setOpen(!root.classList.contains('is-open'));
-    });
+    }, { signal });
     nav.addEventListener('click', (event) => {
         if (root.classList.contains('is-open') && event.target instanceof Element && event.target.closest('a')) setOpen(false);
-    });
-    mobile.addEventListener('change', () => setOpen(false, false));
+    }, { signal });
+    mobile.addEventListener('change', () => setOpen(false, false), { signal });
     setOpen(false, false);
+    signal?.addEventListener('abort', () => {
+        clearTimeout(transitionTimer);
+        cancelAnimationFrame(focusFrame);
+        document.removeEventListener('keydown', onKeydown, true);
+        document.removeEventListener('focusin', containFocus);
+        root.classList.remove('is-open', 'is-nav-animating');
+        nav.inert = false;
+        nav.removeAttribute('data-lenis-prevent');
+        button.setAttribute('aria-expanded', 'false');
+        if (originalTabindex === null) nav.removeAttribute('tabindex');
+        else nav.setAttribute('tabindex', originalTabindex);
+    }, { once: true });
 }
 
 function HeaderScroll(root, {
     hideOnScroll = false,
     compactOnScroll = false,
     threshold = 0,
-} = {}) {
+} = {}, signal) {
     const scrollThreshold = Math.max(0, Number(threshold) || 0);
     let scrollFrame = 0;
+    let transitionFrame = 0;
     let previousScrollY = Math.max(0, window.scrollY);
 
     const update = () => {
@@ -125,36 +138,55 @@ function HeaderScroll(root, {
         scrollFrame = requestAnimationFrame(update);
     };
 
-    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true, signal });
     root.addEventListener('focusin', () => {
         root.classList.remove('is-hidden');
-    });
+    }, { signal });
     update();
 
     const enableTransitions = () => {
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
+        if (signal?.aborted) return;
+        transitionFrame = requestAnimationFrame(() => {
+            transitionFrame = requestAnimationFrame(() => {
                 root.classList.add('is-scroll-ready');
             });
         });
     };
 
+    signal?.addEventListener('abort', () => {
+        cancelAnimationFrame(scrollFrame);
+        cancelAnimationFrame(transitionFrame);
+        document.documentElement.classList.remove('has-compact-header');
+        root.classList.remove('is-compact', 'is-hidden', 'is-scroll-ready');
+    }, { once: true });
+
     if (document.readyState === 'complete') {
         enableTransitions();
     } else {
-        window.addEventListener('pageshow', enableTransitions, { once: true });
+        window.addEventListener('pageshow', enableTransitions, { once: true, signal });
     }
 }
 
-export default function HeaderNav() {
-    const headerNav = document.getElementById("header-nav");
+const headerInstances = new WeakMap();
 
+export default function HeaderNav(root) {
+    const headerNav = root ?? document.getElementById("header-nav");
     if (!headerNav) return;
-
-    Navigation(headerNav);
+    if (headerInstances.has(headerNav)) return headerInstances.get(headerNav);
+    const controller = new AbortController();
+    const { signal } = controller;
+    const destroy = () => {
+        if (signal.aborted) return;
+        controller.abort();
+        headerInstances.delete(headerNav);
+    };
+    headerInstances.set(headerNav, destroy);
+    headerNav.addEventListener('theme:header-destroy', destroy, { once: true, signal });
+    Navigation(headerNav, signal);
     HeaderScroll(headerNav, {
         hideOnScroll: false,
         compactOnScroll: true,
         threshold: 100,
-    });
+    }, signal);
+    return destroy;
 }

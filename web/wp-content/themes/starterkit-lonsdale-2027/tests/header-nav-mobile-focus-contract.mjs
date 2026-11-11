@@ -47,7 +47,7 @@ try {
         await evaluate('document.body.innerHTML='+JSON.stringify(html));
         const source=readFileSync(directory+'/assets/common/'+name+'/'+name+'.js','utf8');
         const end=source.includes('function HeaderScroll(root') ? source.indexOf('function HeaderScroll(root') : source.indexOf('export default function HeaderNav()');
-        const navigation=source.slice(source.indexOf('function Navigation(root)'),end);
+        const navigation=source.slice(source.indexOf('function Navigation(root'),end);
         await evaluate('{ const MOBILE_MEDIA='+JSON.stringify(name === 'header-nav-minimal' ? '(min-width: 0px)' : '(max-width: 767px)')+';'+navigation+'Navigation(document.getElementById('+JSON.stringify(name)+')); }');
         assert.equal(await evaluate('document.querySelector("#nav").inert'),true,name);
         await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'no-preference' }] });

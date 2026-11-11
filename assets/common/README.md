@@ -269,6 +269,6 @@ système retenu. Aucun plugin e-commerce ou sélecteur de langue n'est imposé.
 ### Assemblage configurable du header
 
 Le `header-nav` peut désormais être composé dans Forge : une disposition, un type
-simple/dropdown/mega, puis recherche, boutons, pictos et liens optionnels. Le
+simple/dropdown/mega, puis recherche, boutons et menu secondaire optionnels. Le
 [README du header](header-nav/README.md#configuration-dans-forge) décrit les sources,
 les menus et la génération. Les autres common conservent leur contrat habituel.

@@ -34,7 +34,7 @@ try {
     const send = (method, params) => call(method, params, sessionId);
     await send('Emulation.setDeviceMetricsOverride', { width: 1280, height: 900, deviceScaleFactor: 1, mobile: false });
     await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }, { name: 'hover', value: 'hover' }] });
-    const js = readFileSync(directory + '/assets/common/header-nav-mega/header-nav-mega.js', 'utf8').replace('export default function HeaderNav()', 'function HeaderNav()');
+    const js = readFileSync(directory + '/assets/common/header-nav-mega/header-nav-mega.js', 'utf8').replace('export default function HeaderNav(root)', 'function HeaderNav(root)');
     const css = readFileSync(directory + '/web/wp-content/themes/starterkit-lonsdale-2027/assets/css/critical.css', 'utf8');
     const evaluate = async expression => { const value = await send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true }); if (value.exceptionDetails) throw new Error(JSON.stringify(value.exceptionDetails)); return value.result.value; };
     const html = '<style>' + css + '</style><header id="header-nav-mega"><button class="btn-nav" aria-expanded="false">Menu</button><nav id="nav"><ul class="nav-menu"><li id="p"><a href="#p">Parent</a><div class="level1"><div class="wrapper-sub-menu"><ul class="sub-menu"><li><a href="#child">Enfant</a><ul class="sub-menu"><li><a id="grandchild" href="#grandchild">Petit enfant</a></li></ul></li></ul></div></div></li></ul></nav></header><button id="outside">Outside</button>';
@@ -78,6 +78,14 @@ try {
     assert.equal(await evaluate('document.querySelector(".submenu-toggle").getAttribute("aria-expanded")'), 'true');
     await evaluate('document.querySelector("#outside").dispatchEvent(new PointerEvent("pointerdown",{bubbles:true}))');
     assert.equal(await evaluate('document.querySelector("#p").classList.contains("is-submenu-open")'), false);
+    await evaluate('const dispose=HeaderNav();dispose();dispose();document.querySelector("#outside").focus()');
+    assert.equal(await evaluate('document.activeElement.id'),'outside','Cleanup releases the focus trap');
+    assert.equal(await evaluate('document.querySelectorAll(".submenu-toggle").length'),0,'Cleanup removes generated controls');
+    await evaluate('HeaderNav();document.querySelector(".btn-nav").click()');
+    await evaluate('new Promise(resolve=>setTimeout(resolve,100))');
+    assert.equal(await evaluate('document.querySelectorAll(".submenu-toggle").length'),1,'Reinitialization adds one set of controls');
+    assert.equal(await evaluate('document.querySelector("#nav").contains(document.activeElement)'),true,'Reinitialized mobile focus works');
+    await evaluate('HeaderNav()()');
     console.log('Header mega: OK (natural heights, keyboard, Escape, inert, mobile, outside click, idempotence)');
 
 } finally {
