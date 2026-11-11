@@ -1,7 +1,7 @@
 <?php
 $footer_name = get_bloginfo('name');
 ?>
-<footer id="footer" class="footer-type-<?= esc_attr($footer_type) ?>" role="contentinfo">
+<footer id="footer" class="footer-type-<?= esc_attr($footer_type) ?><?= ($footer_has_tools ?? false) ? ' footer-has-tools' : '' ?>" role="contentinfo">
     <div class="footer-main">
         <div class="footer-brand">
             <a class="footer-logo" href="<?= esc_url(home_url('/')) ?>" aria-label="<?= esc_attr($footer_name) ?>">

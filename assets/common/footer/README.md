@@ -8,11 +8,13 @@ leurs réglages en lecture seule en Manage.
 | --- | --- | --- |
 | Liens sociaux | oui | oui |
 | Menu footer secondaire | oui | oui |
-| Recherche | oui | non |
 | Copyright | oui | oui |
 | Texte | non | oui |
+| Newsletter | non | oui |
+| Recherche | non | oui |
 
-La newsletter est réservée à un futur type : elle n’est pas proposée ici.
+Newsletter et Recherche occupent une zone à droite des menus de Columns. Si les
+deux sont actives, elles sont empilées. Sur mobile, la zone passe sous les menus.
 
 ## Menus WordPress
 
@@ -40,3 +42,25 @@ PHP résident dans `footer-parts/` et les styles dans `assets/common/footer/reci
 Un site généré reçoit un seul footer PHP/SCSS avec le type et les options retenus,
 ainsi que leurs dépendances de menus et composants. Les fragments d’aperçu sont
 retirés. Il n’y a pas de JavaScript propre au footer.
+
+La recherche et la newsletter ne sont pas proposées pour Simple.
+
+## Newsletter et recherche dans Columns
+
+La newsletter utilise le composant `newsletter` : titre, texte, champ e-mail et
+bouton. Les libellés sont fournis par le footer ; l’envoi doit être relié au
+service retenu pour le projet. Aucun succès d’inscription n’est simulé.
+Le tableau WordPress `get_option('theme_footer_newsletter', [])` et le filtre
+`theme_footer_newsletter` acceptent `title`, `text` (HTML éditorial), `action`
+(URL HTTP(S) du service) et `button_label`. Exemple dans le thème :
+
+```php
+add_filter('theme_footer_newsletter', static fn (array $args): array => array_replace($args, [
+    'action' => 'https://newsletter.example.com/subscribe',
+]));
+```
+
+La recherche utilise le formulaire natif WordPress. L’activer dans Forge active
+aussi la recherche du site. Les deux formulaires gardent leurs labels accessibles,
+et le styleguide assure l’unicité des IDs lors des remplacements partiels.
+Les composants ne sont pas modifiés.

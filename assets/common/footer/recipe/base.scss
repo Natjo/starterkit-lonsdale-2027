@@ -13,7 +13,6 @@
     .menu-footer-secondary { display: flex; flex-wrap: wrap; gap: 1rem 2rem; }
     .footer-secondary { margin-left: auto; }
     .footer-secondary a { text-decoration: underline; text-underline-offset: .2em; }
-    .footer-search { width: min(100%, 32rem); }
     a:hover { color: var(--color-text); text-decoration: underline; text-underline-offset: .25em; }
     a:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
 }

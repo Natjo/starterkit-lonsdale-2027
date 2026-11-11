@@ -33,9 +33,10 @@
     "elements": [
       "socials",
       "secondaryMenu",
-      "search",
       "copyright",
-      "text"
+      "text",
+      "newsletter",
+      "search"
     ]
   }
 }

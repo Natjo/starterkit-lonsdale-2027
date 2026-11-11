@@ -1,0 +1,41 @@
+#footer.footer-type-columns.footer-has-tools {
+    .footer-tools { display: grid; align-content: start; gap: 3rem; min-width: 0; grid-column: 1 / -1; }
+    .footer-widget-title { margin: 0; color: var(--color-text); font-size: 1.6rem; font-weight: 600; line-height: 1.4; }
+    .footer-search-widget { display: grid; align-content: start; gap: 2rem; min-width: 0; }
+    .newsletter-form, .search-field {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 0;
+        padding: .6rem .6rem .6rem 1.8rem;
+        border: 1px solid var(--color-border);
+        border-radius: 999px;
+        background: #fff;
+        &:focus-within { outline: 2px solid var(--color-text); outline-offset: 3px; }
+    }
+    .newsletter-form .field { margin: 0; min-width: 0; max-width: none; }
+    .newsletter-form .field > label {
+        position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+        overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+    }
+    input[type="email"], input[type="search"] {
+        width: 100%; min-width: 0; min-height: 4.6rem; padding: 1rem .8rem;
+        border: 0; border-radius: 0; color: var(--color-text); background: transparent;
+        font: inherit; box-shadow: none;
+        &:focus-visible { outline: none; }
+    }
+    .newsletter-form .btn, .search-submit {
+        position: relative; display: inline-flex; align-items: center; justify-content: center;
+        width: 5.6rem; min-height: 4.6rem; padding: 0; border: 0; border-radius: 999px;
+        color: #fff; background: #151719; justify-self: end;
+        &::after { content: "→"; font-size: 2.4rem; line-height: 1; }
+        &:focus-visible { outline: 2px solid var(--color-text); outline-offset: 3px; }
+    }
+    .newsletter-form .btn > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .search-submit { text-indent: -9999px; overflow: hidden; }
+    .search-submit::after { position: absolute; inset: 50% auto auto 50%; transform: translate(-50%, -50%); text-indent: 0; }
+    @media #{$breakpoint-lg-up} {
+        .footer-main { grid-template-columns: minmax(0, .9fr) minmax(0, 1.4fr) minmax(26rem, 1fr); gap: 4rem; }
+        .footer-tools { grid-column: auto; }
+    }
+}
