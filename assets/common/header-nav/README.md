@@ -303,3 +303,17 @@ nettoyage avant le remplacement d'une racine initialisée globalement.
 Dans le styleguide, seule la racine ajoutée en AJAX reçoit `data-module` et passe
 ensuite sous le contrôle de l'hydrateur. Le premier header conserve l'import global
 habituel ; ne pas lui ajouter simultanément `data-module`.
+
+Le configurateur affiche un descriptif pour chaque type de navigation. Simple
+reste sur un niveau ; Flyout accepte plusieurs niveaux ; Reveal est limité
+aux niveaux 1 et 2.
+
+## Mega à trois niveaux
+
+Le quatrième choix Mega utilise la clé `mega-columns` (la clé historique `mega`
+reste Reveal). Le niveau 1 ouvre un panneau pleine largeur ; le niveau 2 forme
+les titres de colonnes et le niveau 3 leurs listes de liens. Le rendu est limité
+à trois niveaux. Aucun picto, texte descriptif ou bloc éditorial n’est ajouté.
+La recette `navigation-mega-columns.scss` est assemblée uniquement pour ce choix
+sur un site généré. Le JS et le walker de Reveal sont réutilisés ; seul le fragment
+PHP `navigation-mega-columns.php` utilise `depth => 3`.

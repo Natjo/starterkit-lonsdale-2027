@@ -27,11 +27,10 @@ Les listes `.sub-menu` ne reçoivent pas d'ID.
 ## Hiérarchie du menu
 
 Le même `wp_nav_menu()` lit la hiérarchie configurée dans WordPress.
-Chaque entrée principale possède un panneau `.level1` contenant
-ses sous-pages. Chaque sous-page liste ses sous-sous-pages dans son propre
-`ul.sub-menu`, sans wrapper ni bouton supplémentaire. Les niveaux plus
-profonds restent imbriqués sous leur parent.
-Sur desktop, les sous-pages sont des colonnes avec leurs descendants.
+Reveal affiche uniquement les niveaux 1 et 2 (`depth => 2`).
+Chaque entrée principale possède un panneau `.level1` contenant ses sous-pages.
+Les descendants de ces sous-pages ne sont pas rendus dans cette navigation.
+Sur desktop, les sous-pages sont disposées dans le panneau sous le header.
 La hauteur naturelle du panneau complet est calculée en JS dans `--height`
 sur le wrapper ; elle est actualisée au redimensionnement et lors des
 changements de contenu. Sur mobile, la hauteur reste automatique.
@@ -56,7 +55,7 @@ Les animations respectent `prefers-reduced-motion`.
 node web/wp-content/themes/starterkit-lonsdale-2027/tests/header-nav-mega-browser-contract.mjs
 ```
 
-Contrôle un troisième niveau, les IDs sur les wrappers, `aria-controls`,
+Contrôle les panneaux, les IDs sur les wrappers, `aria-controls`,
 les hauteurs et les interactions clavier/mobile.
 
 ## Structure du panneau
@@ -88,3 +87,5 @@ habituel ; ne pas lui ajouter simultanément `data-module`.
 
 Les boutons de sous-menu affichent un caret qui suit `aria-expanded`,
 sur desktop et mobile, au lieu des symboles plus/moins.
+
+Les panneaux passent au-dessus du séparateur inférieur du header.

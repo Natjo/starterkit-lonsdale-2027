@@ -26,6 +26,7 @@ $has_menu = has_nav_menu($location);
             wp_nav_menu([
                 'theme_location' => $location,
                 'container' => false,
+                'depth' => 2,
                 'menu_class' => 'nav-menu',
                 'items_wrap' => '<ul class="%2$s">%3$s</ul>',
                 'walker' => new Theme_Mega_Nav_Walker(),

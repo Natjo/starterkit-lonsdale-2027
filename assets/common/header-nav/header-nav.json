@@ -33,7 +33,8 @@
     "navigation": [
       "simple",
       "dropdown",
-      "mega"
+      "mega",
+      "mega-columns"
     ],
     "elements": [
       "search",

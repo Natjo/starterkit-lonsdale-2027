@@ -11,7 +11,7 @@
     z-index: 100;
     transition: background-color .2s ease, transform .3s ease;
 
-    // Keep the separator above the sub-navigation backgrounds.
+    // Keep the header separator below the submenu panels.
     &::after {
         content: "";
         position: absolute;
@@ -162,6 +162,7 @@
         }
 
         .level1 {
+            z-index: 2;
             pointer-events: none;
             transition: grid-template-rows .25s ease;
             position: absolute;

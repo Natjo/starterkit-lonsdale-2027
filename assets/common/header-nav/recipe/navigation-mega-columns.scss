@@ -1,0 +1,38 @@
+// Mega: level 2 headings and level 3 links, without editorial blocks.
+:is(#header-nav, #header-nav-mega).header-navigation-mega-columns {
+    .sub-menu > li { min-width: 0; }
+    .sub-menu .sub-menu {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: .8rem;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+    .sub-menu .sub-menu a {
+        font-weight: 400;
+        text-decoration: none;
+        &:hover, &:focus-visible { text-decoration: underline; }
+    }
+    @media #{$breakpoint-md-up} {
+        .level1 > .wrapper-sub-menu > .sub-menu {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            align-items: start;
+            gap: 3rem;
+            padding: 4rem 0;
+        }
+        .level1 > .wrapper-sub-menu > .sub-menu > li { align-items: stretch; gap: 1.6rem; }
+        .level1 > .wrapper-sub-menu > .sub-menu > li > a {
+            font-size: 1.3rem;
+            font-weight: 600;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+        }
+    }
+    @media #{$breakpoint-md-down} {
+        .level1 > .wrapper-sub-menu > .sub-menu { flex-direction: column; align-items: stretch; gap: 2rem; }
+        .sub-menu .sub-menu { padding: .8rem 0 0 1.6rem; gap: .4rem; }
+    }
+}

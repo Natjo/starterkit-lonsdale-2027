@@ -113,3 +113,5 @@ Le panneau desktop est une liste verticale blanche, bordée, arrondie et ombrée
 Les groupes plus profonds se déplient à l’intérieur du panneau ; leur ouverture
 adapte sa hauteur sans calcul JavaScript. Le petit espace sous le parent reste
 traversable au survol. La navigation clavier et Échap restent disponibles.
+
+Les panneaux passent au-dessus du séparateur inférieur du header.
