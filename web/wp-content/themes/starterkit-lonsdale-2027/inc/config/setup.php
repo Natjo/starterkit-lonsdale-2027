@@ -3,6 +3,9 @@
 add_action('after_setup_theme', function () {
     register_nav_menus(array(
         'menu-header' => 'Menu Principal',
+        'menu-header-cta' => 'Action du header',
+        'menu-header-utility' => 'Navigation utilitaire',
+        'menu-header-tools' => 'Compte et panier',
         'menu-footer' => 'Menu Footer',
         'menu-legal' => 'Menu légal',
         'menu-secondary' => 'Menu secondaire',

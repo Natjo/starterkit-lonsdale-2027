@@ -1,7 +1,8 @@
 # Common `header-nav`
 
 Header global du thème. Il affiche le logo, la recherche du site et, lorsqu’un
-menu est affecté à l’emplacement WordPress `menu-header`, sa navigation.
+menu est affecté à l’emplacement WordPress `menu-header`, sa navigation de premier niveau.
+Les sous-menus ne sont pas rendus, sur desktop comme sur mobile.
 
 ## Appel
 
@@ -42,16 +43,15 @@ l’accueil.
 | Recherche courante | `get_search_query()` |
 | Libellés accessibles | domaine de traduction `theme` |
 
-Le menu est rendu avec `wp_nav_menu()`, sans fallback. Le walker partagé
-`inc/front/header-nav-walker.php` enveloppe chaque `ul.sub-menu` dans un
-`div.level1 > div.wrapper-sub-menu`, à tous les niveaux enfants. Le `ul` principal n'a pas
-de wrapper. Le formulaire utilise `component('search', [...])`.
+Le menu est rendu avec `wp_nav_menu()`, sans fallback, avec `depth => 1`.
+Le walker partagé `inc/front/header-nav-walker.php` conserve le nettoyage des
+classes et identifiants WordPress. Aucun sous-menu ni wrapper enfant n’est
+produit par cette variante. Le formulaire utilise `component('search', [...])`.
 
 Le walker retire des `li` les classes techniques `menu-item`,
 `menu-item-type-*`, `menu-item-object-*`, `menu-item-{ID}` et
 `menu-item-has-children`. Les classes de page active et les classes personnalisées sont
-conservées. Les attributs `id` des `li` et du `ul` principal sont supprimés ;
-les identifiants des sous-menus restent disponibles pour `aria-controls`.
+conservées. Les attributs `id` des `li` et du `ul` principal sont supprimés.
 
 ## Initialisation JavaScript
 

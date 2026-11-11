@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "type": "common",
+  "name": "Navigation minimaliste",
+  "slug": "header-nav-minimal",
+  "variantOf": "header-nav",
+  "assets": {
+    "css": {
+      "loading": "critical"
+    },
+    "js": {
+      "loading": "eager"
+    }
+  },
+  "dependencies": {
+    "menus": [
+      "menu-header"
+    ],
+    "components": [
+      "icon"
+    ],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": [],
+    "vendors": []
+  }
+}

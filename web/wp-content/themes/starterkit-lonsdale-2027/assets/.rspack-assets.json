@@ -80,13 +80,13 @@
     },
     {
       "name": "css/critical.css",
-      "size": 31363,
-      "sha256": "32ce953be2a50ac39779c5b8fd5736a30e0defee8dbd8e5c449ed5fc441dd306"
+      "size": 51194,
+      "sha256": "60faf540d6b3ac207a7d07cc22f5d4ea9946546e666428b2468465944227f4f5"
     },
     {
       "name": "css/critical.css.map",
-      "size": 49833,
-      "sha256": "fbf1fdbcc1c121fedc37a794acb361c910a09d064b399aec4f7db05e93e63a30"
+      "size": 79271,
+      "sha256": "e30a0ab7a8ee1113a5d055f97fe465c75160661db55ecfb7f0c9a05449aa6ee5"
     },
     {
       "name": "css/heros/hero-flexible/hero-flexible.css",
@@ -505,13 +505,13 @@
     },
     {
       "name": "js/app.js",
-      "size": 29996,
-      "sha256": "4d4b7c4fd8a8181987138698207c9bf189781d7addb3c050e6d5fdaafbbff3bb"
+      "size": 45066,
+      "sha256": "a67a44e7ce957cb0998012432d18248ba6dc7c760f422e2180cdcc898071bd05"
     },
     {
       "name": "js/app.js.map",
-      "size": 108932,
-      "sha256": "257d2b903494709e8927b86689fc1289abf01a1225b4699399b3655b0e52d762"
+      "size": 155788,
+      "sha256": "88a0b94398ca416212401cdb89667fdfbedf259cdb10da1f2f08b8fc9aeff425"
     },
     {
       "name": "js/chunks/1ae55770.js",

@@ -41,13 +41,14 @@ try {
         await send('Input.dispatchKeyEvent', {type:'keyDown',key,code:key,windowsVirtualKeyCode:key === 'Tab' ? 9 : 27,modifiers:shift ? 8 : 0});
         await send('Input.dispatchKeyEvent', {type:'keyUp',key,code:key,windowsVirtualKeyCode:key === 'Tab' ? 9 : 27,modifiers:shift ? 8 : 0});
     };
-    for (const name of ['header-nav', 'header-nav-subnav', 'header-nav-dropdown']) {
+    for (const name of ['header-nav', 'header-nav-subnav', 'header-nav-dropdown', 'header-nav-cta', 'header-nav-centered', 'header-nav-minimal', 'header-nav-search', 'header-nav-topbar', 'header-nav-commerce']) {
         await send('Emulation.setDeviceMetricsOverride', {width:390,height:844,deviceScaleFactor:1,mobile:true});
         const html='<style>'+css+'</style><header id="'+name+'"><button class="btn-nav" id="burger">Menu</button><nav id="nav"><ul class="nav-menu header-nav-menu"><li><a id="first" href="#first">Premier</a></li><li><button disabled>Disabled</button><div inert><a href="#hidden">Hidden</a></div><a style="display:none" href="#hidden2">Hidden</a><button id="last">Dernier</button></li></ul></nav></header><button id="outside">Outside</button>';
         await evaluate('document.body.innerHTML='+JSON.stringify(html));
         const source=readFileSync(directory+'/assets/common/'+name+'/'+name+'.js','utf8');
-        const navigation=source.slice(source.indexOf('function Navigation(root)'),source.indexOf('function HeaderScroll(root'));
-        await evaluate('{ const MOBILE_MEDIA="(max-width: 767px)";'+navigation+'Navigation(document.getElementById('+JSON.stringify(name)+')); }');
+        const end=source.includes('function HeaderScroll(root') ? source.indexOf('function HeaderScroll(root') : source.indexOf('export default function HeaderNav()');
+        const navigation=source.slice(source.indexOf('function Navigation(root)'),end);
+        await evaluate('{ const MOBILE_MEDIA='+JSON.stringify(name === 'header-nav-minimal' ? '(min-width: 0px)' : '(max-width: 767px)')+';'+navigation+'Navigation(document.getElementById('+JSON.stringify(name)+')); }');
         assert.equal(await evaluate('document.querySelector("#nav").inert'),true,name);
         await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'no-preference' }] });
         await evaluate('document.querySelector("#burger").focus()');
@@ -76,7 +77,19 @@ try {
         await key('Escape');
         await send('Emulation.setDeviceMetricsOverride',{width:1280,height:900,deviceScaleFactor:1,mobile:false});
         await evaluate('new Promise(resolve=>setTimeout(resolve,100))');
-        assert.equal(await evaluate('document.querySelector("#nav").inert'),false,name+' desktop');
+        assert.equal(await evaluate('document.querySelector("#nav").inert'),name === 'header-nav-minimal',name+' desktop');
+        if (name === 'header-nav-minimal') {
+            assert.notEqual(await evaluate('getComputedStyle(document.querySelector("#burger")).display'),'none');
+            await evaluate('document.querySelector("#nav").innerHTML="<a id=desktop-link href=#test>Desktop</a>";document.querySelector("#burger").click()');
+            await evaluate('new Promise(resolve=>setTimeout(resolve,100))');
+            assert.equal(await evaluate('document.activeElement.id'),'desktop-link');
+            await key('Escape');
+            assert.equal(await evaluate('document.activeElement.id'),'burger');
+        }
+        if (name === 'header-nav-centered') {
+            await evaluate(`(() => { const logo=document.createElement('a');logo.className='header-nav-logo';logo.textContent='Logo';document.querySelector('header').prepend(logo);const list=document.createElement('ul');list.className='header-nav-menu header-nav-menu-secondary';list.innerHTML='<li>Second menu</li>';document.querySelector('#nav').append(list); })()`);
+            assert.ok(await evaluate('(() => { const logo=document.querySelector(".header-nav-logo").getBoundingClientRect(); return Math.abs(logo.left+logo.width/2-window.innerWidth/2)<1; })()'), 'centered logo');
+        }
         console.log(name+': mobile focus trap OK');
     }
 

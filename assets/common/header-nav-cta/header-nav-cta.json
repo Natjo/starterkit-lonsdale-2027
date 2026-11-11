@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "type": "common",
+  "name": "Navigation avec CTA",
+  "slug": "header-nav-cta",
+  "variantOf": "header-nav",
+  "assets": {
+    "css": {
+      "loading": "critical"
+    },
+    "js": {
+      "loading": "eager"
+    }
+  },
+  "dependencies": {
+    "menus": [
+      "menu-header",
+      "menu-header-cta"
+    ],
+    "components": [
+      "icon",
+      "btn"
+    ],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": [],
+    "vendors": []
+  }
+}

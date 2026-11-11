@@ -12,8 +12,7 @@ parent conserve son lien. Sur ordinateur, le sous-menu s'ouvre au survol
 ou lorsque Tab place le focus dans son parent, sans bouton supplémentaire.
 Sur mobile ou sur un appareil sans survol, un bouton distinct ouvre les enfants
 sans détourner le lien parent.
-Chaque `ul.sub-menu` est enveloppé dans un `div.level1`, comme dans
-le header standard, à tous les niveaux enfants. Le `ul` principal reste sans
+Chaque `ul.sub-menu` est enveloppé dans un `div.level1`, à tous les niveaux enfants. Le header standard reste limité au premier niveau. Le `ul` principal reste sans
 wrapper. Le JavaScript place le bouton d'ouverture avant ce wrapper.
 Le walker retire les classes techniques des `li` (`menu-item`,
 `menu-item-type-*`, `menu-item-object-*`, `menu-item-{ID}` et

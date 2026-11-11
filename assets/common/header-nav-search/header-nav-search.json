@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "type": "common",
+  "name": "Recherche dominante",
+  "slug": "header-nav-search",
+  "variantOf": "header-nav",
+  "assets": {
+    "css": {
+      "loading": "critical"
+    },
+    "js": {
+      "loading": "eager"
+    }
+  },
+  "dependencies": {
+    "menus": [
+      "menu-header"
+    ],
+    "components": [
+      "icon",
+      "search"
+    ],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": [],
+    "vendors": []
+  }
+}

@@ -233,3 +233,35 @@ peine de lancer son initialisation deux fois.
 | `prefooter` | `common('prefooter')` | [`prefooter/README.md`](prefooter/README.md) |
 | `prefooter-newsletter` | `common('prefooter-newsletter')` | [`prefooter-newsletter/README.md`](prefooter-newsletter/README.md) |
 | `footer` | `common('footer')` | [`footer/README.md`](footer/README.md) |
+
+## Choisir un header
+
+Les headers du catalogue sont des bases indépendantes, sélectionnées dans Forge
+comme variantes de `header-nav`. Les pages continuent d'appeler ce nom canonique.
+
+| Variante | Desktop | Menus |
+| --- | --- | --- |
+| `header-nav` | Logo à gauche, navigation à droite, recherche optionnelle | `menu-header`, niveau 1 |
+| `header-nav-cta` | Logo, navigation centrale et bouton d'action | `menu-header` + `menu-header-cta`, niveau 1 |
+| `header-nav-centered` | Logo centré entre deux groupes de liens | `menu-header` + `menu-secondary`, niveau 1 |
+| `header-nav-minimal` | Logo et hamburger à toutes les largeurs | `menu-header`, niveau 1 |
+| `header-nav-search` | Recherche dominante et liens en dessous | `menu-header`, niveau 1 |
+| `header-nav-topbar` | Barre utilitaire et navigation principale | `menu-header` + `menu-header-utility`, niveau 1 |
+| `header-nav-commerce` | Recherche, catégories, liens compte/panier | `menu-header` + `menu-header-tools`, niveau 1 |
+| `header-nav-subnav` | Sous-navigation horizontale | `menu-header`, hiérarchie WordPress |
+| `header-nav-dropdown` | Menus déroulants sous les entrées | `menu-header`, hiérarchie WordPress |
+| `header-nav-mega` | Panneaux avec colonnes de sous-pages | `menu-header`, hiérarchie WordPress |
+
+Sur mobile, les liens passent dans un panneau avec gestion du focus et Échap.
+Le minimaliste utilise ce panneau sur desktop aussi. Les variantes restent des
+fichiers PHP/SCSS/JS lisibles, sans options combinatoires `sticky`, `topbar`, etc.
+Le positionnement fixe, les couleurs et les espacements s'adaptent dans le SCSS
+local. La recherche des variantes existantes suit `THEME_ENABLE_SEARCH`.
+
+Les huit modèles sont couverts : classique, CTA, commerce, recherche, double
+navigation, mega menu, minimaliste et logo centré. Subnav et dropdown restent des
+alternatives existantes au mega menu.
+
+Le modèle commerce fournit la présentation et des liens configurables ; il ne crée
+pas de boutique, de panier ou de compte utilisateur. Brancher ces liens sur le
+système retenu. Aucun plugin e-commerce ou sélecteur de langue n'est imposé.
