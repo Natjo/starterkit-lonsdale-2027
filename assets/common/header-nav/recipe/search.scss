@@ -1,0 +1,2 @@
+:is(#header-nav, #header-nav-dropdown, #header-nav-mega) .header-search {width:clamp(22rem,24vw,34rem);}
+@media #{$breakpoint-md-down} {:is(#header-nav, #header-nav-dropdown, #header-nav-mega) .header-search {width:100%;max-width:none;}}

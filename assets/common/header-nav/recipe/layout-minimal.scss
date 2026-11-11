@@ -1,0 +1,13 @@
+:is(#header-nav, #header-nav-dropdown, #header-nav-mega).header-layout-minimal {
+ .btn-nav {display:flex;}
+ #nav {position:fixed;inset:0;z-index:-1;display:flex;flex-direction:column;align-items:stretch;gap:3rem;height:100dvh;padding:var(--header-height) var(--ctr-offset) 3rem;overflow-y:auto;overscroll-behavior:contain;background:var(--color-bg);visibility:hidden;pointer-events:none;transform:translateX(-100%);}
+ .submenu-toggle {display:inline-flex;}
+ .nav-menu .level1 {position:static;display:none;width:auto;height:auto;overflow:visible;visibility:visible;pointer-events:auto;}
+ .nav-menu .is-submenu-open > .level1 {display:block;}
+ .wrapper-sub-menu {overflow:visible;}
+ .sub-menu {position:static;display:flex;flex-direction:column;align-items:flex-start;gap:1rem;min-width:0;}
+ .nav-menu {flex-direction:column;align-items:flex-start;}
+ &.is-open #nav {visibility:visible;pointer-events:auto;transform:translateX(0);}
+ &.is-nav-animating #nav {transition:transform .25s ease,visibility .25s ease;}
+ @media (prefers-reduced-motion: reduce) {&.is-nav-animating #nav {transition:none;}}
+}

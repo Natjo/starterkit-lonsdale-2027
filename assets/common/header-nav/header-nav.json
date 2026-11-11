@@ -4,16 +4,47 @@
   "name": "header-nav",
   "slug": "header-nav",
   "assets": {
-    "css": { "loading": "critical" },
-    "js": { "loading": "eager" }
+    "css": {
+      "loading": "critical"
+    },
+    "js": {
+      "loading": "eager"
+    }
   },
   "dependencies": {
-    "menus": ["menu-header"],
-    "components": ["icon", "search"],
+    "menus": [
+      "menu-header"
+    ],
+    "components": [
+      "icon",
+      "search"
+    ],
     "cards": [],
     "strates": [],
     "heroes": [],
     "common": [],
     "modules": []
+  },
+  "headerConfiguration": {
+    "version": 1,
+    "layouts": [
+      "default",
+      "centered",
+      "minimal",
+      "search",
+      "commerce",
+      "topbar"
+    ],
+    "navigation": [
+      "simple",
+      "dropdown",
+      "mega"
+    ],
+    "elements": [
+      "search",
+      "buttons",
+      "pictos",
+      "links"
+    ]
   }
 }

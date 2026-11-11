@@ -6,6 +6,7 @@ add_action('after_setup_theme', function () {
         'menu-header-cta' => 'Action du header',
         'menu-header-utility' => 'Navigation utilitaire',
         'menu-header-tools' => 'Compte et panier',
+        'menu-header-links' => 'Liens du header',
         'menu-footer' => 'Menu Footer',
         'menu-legal' => 'Menu légal',
         'menu-secondary' => 'Menu secondaire',

@@ -252,3 +252,40 @@ assets/common/header-nav/header-nav.js
 assets/app.js
 tests/header-nav-browser-contract.html
 ```
+
+## Configuration dans Forge
+
+Le manifeste propose `headerConfiguration.version: 1`. Forge permet de sélectionner
+indépendamment la disposition, la navigation (`simple`, `dropdown`, `mega`) et les
+éléments recherche, boutons, pictos et liens complémentaires.
+
+Le styleguide peut afficher ces combinaisons avec les fragments du dossier
+`template-parts/common/header-parts`. Cette prévisualisation temporaire ne modifie
+aucun contenu du site. Les variantes indépendantes restent disponibles au catalogue.
+
+Au build, Forge assemble un seul `header-nav.php`, son SCSS et son JS. Les snippets
+PHP, styles et dépendances des éléments désactivés sont écartés ; le site ne conserve
+ni le renderer de démonstration ni les fragments de recette. Le JS vient uniquement
+du type de navigation sélectionné. En Manage, Save régénère et recompile ce header.
+Les modifications manuelles de ses fichiers peuvent être remplacées lors de cette
+régénération ; adapter la recette du starter pour les conserver durablement.
+
+| Élément | Données WordPress |
+| --- | --- |
+| Navigation | `menu-header` |
+| Seconde colonne du logo centré | `menu-secondary` |
+| Barre utilitaire | `menu-header-utility` |
+| Boutons | liens de premier niveau de `menu-header-cta` |
+| Pictos | liens de premier niveau de `menu-header-tools` |
+| Liens complémentaires | `menu-header-links` |
+
+Dans un lien du menu Pictos, la classe CSS `icon-email` sélectionne le symbole
+`email` du sprite. Activer « Classes CSS » dans les options de l'écran Menus pour
+renseigner cette valeur. Sans classe, le texte du lien reste affiché. Le nom doit
+correspondre à une icône existante ; aucune lecture du sprite n'est faite au runtime.
+Les libellés, cibles et URL restent modifiables dans WordPress sans recompilation.
+
+Les styles spécifiques à la disposition et aux éléments sont dans `recipe/`.
+Les trois SCSS des navigations restent les sources du cadre et des sous-menus.
+Forge retire leurs blocs `.header-search { ... }` avant d'ajouter la recherche
+sélectionnée. Conserver ces blocs indépendants lorsque ces sources sont adaptées.

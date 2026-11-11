@@ -5,7 +5,7 @@ function Navigation(root) {
     const nav = root.querySelector('#nav');
     if (!button || !nav) return;
 
-    const mobile = window.matchMedia(MOBILE_MEDIA);
+    const mobile = window.matchMedia(root.classList.contains('header-layout-minimal') ? '(min-width: 0px)' : MOBILE_MEDIA);
     const originalTabindex = nav.getAttribute('tabindex');
     let transitionTimer = 0;
     let focusFrame = 0;

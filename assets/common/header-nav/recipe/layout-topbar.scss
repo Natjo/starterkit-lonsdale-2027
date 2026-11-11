@@ -1,0 +1,8 @@
+:is(#header-nav, #header-nav-dropdown, #header-nav-mega).header-layout-topbar {
+ display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:3rem minmax(0,1fr);gap:0 2rem;
+ .header-topbar {grid-area:1/1/2/-1;justify-self:end;display:flex;gap:2rem;font-size:1.2rem;max-width:100%;overflow-x:auto;white-space:nowrap;}
+ .nav-logo {grid-area:2/1;}
+ #nav,.btn-nav {grid-area:2/2;justify-self:end;}
+}
+:root:has(:is(#header-nav, #header-nav-dropdown, #header-nav-mega).header-layout-topbar) {--header-height:12rem;}
+@media #{$breakpoint-md-down} {:root:has(:is(#header-nav, #header-nav-dropdown, #header-nav-mega).header-layout-topbar) {--header-height:10rem;}}

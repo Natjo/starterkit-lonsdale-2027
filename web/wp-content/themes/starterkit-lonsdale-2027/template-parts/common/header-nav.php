@@ -1,4 +1,8 @@
 <?php
+if (isset($GLOBALS['theme_header_preview']) && is_array($GLOBALS['theme_header_preview'])) {
+    require __DIR__ . '/header-parts/render.php';
+    return;
+}
 require_once __DIR__ . '/../../inc/front/header-nav-walker.php';
 $location = 'menu-header';
 $nav_label = __('Navigation principale', 'theme');
