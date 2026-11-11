@@ -1,1 +1,10 @@
 :is(#header-nav, #header-nav-dropdown, #header-nav-mega) .header-links {display:flex;flex-wrap:wrap;gap:1.6rem;list-style:none;}
+
+:is(#header-nav, #header-nav-dropdown, #header-nav-mega) .header-links a,
+:is(#header-nav, #header-nav-dropdown, #header-nav-mega) .header-links a:hover,
+:is(#header-nav, #header-nav-dropdown, #header-nav-mega) .header-links a:focus-visible {
+    color: #185adb;
+    text-decoration: underline;
+    text-decoration-color: currentColor;
+    text-underline-offset: .2em;
+}

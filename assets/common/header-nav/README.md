@@ -273,7 +273,6 @@ régénération ; adapter la recette du starter pour les conserver durablement.
 | Élément | Données WordPress |
 | --- | --- |
 | Navigation | `menu-header` |
-| Seconde colonne du logo centré | `menu-secondary` |
 | Barre utilitaire | `menu-header-utility` |
 | Boutons | liens de premier niveau de `menu-header-cta` |
 | Pictos | liens de premier niveau de `menu-header-tools` |
@@ -289,3 +288,8 @@ Les styles spécifiques à la disposition et aux éléments sont dans `recipe/`.
 Les trois SCSS des navigations restent les sources du cadre et des sous-menus.
 Forge retire leurs blocs `.header-search { ... }` avant d'ajouter la recherche
 sélectionnée. Conserver ces blocs indépendants lorsque ces sources sont adaptées.
+
+Le configurateur propose désormais uniquement les dispositions Classique,
+Minimaliste et Double navigation. Les anciennes dispositions logo centré,
+recherche dominante et commerce restent lisibles pour les projets existants,
+mais ne sont plus proposées. Les liens complémentaires sont bleus et soulignés.

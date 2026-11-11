@@ -80,13 +80,13 @@
     },
     {
       "name": "css/critical.css",
-      "size": 56507,
-      "sha256": "1d1e7fe3aaabc772810a01bab96fbf8596a9469dff69bd316dd8d7de705a3cdb"
+      "size": 56807,
+      "sha256": "c63866ec2586fd29615f69da4002f9afc477e014c2891ffb8cb4e890630688d5"
     },
     {
       "name": "css/critical.css.map",
-      "size": 84456,
-      "sha256": "a803191de963a2b8b3b8f905c3c66f0e26e4034812562ed4a8939799c52b28a2"
+      "size": 84843,
+      "sha256": "a1820b8031dc1b5b898da4d29f94e03940056fa7fe9c30399eacaab88e135ad9"
     },
     {
       "name": "css/heros/hero-flexible/hero-flexible.css",

@@ -29,10 +29,7 @@
     "version": 1,
     "layouts": [
       "default",
-      "centered",
       "minimal",
-      "search",
-      "commerce",
       "topbar"
     ],
     "navigation": [
