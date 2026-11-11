@@ -78,9 +78,6 @@ function Submenus(root, signal) {
         parent.addEventListener('pointerenter', (event) => {
             if (!mobile.matches && event.pointerType === 'mouse') setOpen(true);
         }, { signal });
-        parent.addEventListener('pointerleave', () => {
-            if (!mobile.matches && !parent.contains(document.activeElement)) setOpen(false);
-        }, { signal });
         parent.addEventListener('focusin', (event) => {
             // The visible disclosure button must toggle only once, on click.
             if (!mobile.matches && event.target !== button) setOpen(true);
@@ -99,6 +96,10 @@ function Submenus(root, signal) {
     });
 
     const closeAll = () => controls.forEach((close) => close(false));
+    // The full-width panel belongs to the header, with space below its trigger.
+    root.addEventListener('pointerleave', () => {
+        if (!mobile.matches && !root.contains(document.activeElement)) closeAll();
+    }, { signal });
     root.addEventListener('navigation-close', closeAll, { signal });
     document.addEventListener('pointerdown', (event) => {
         if (!root.contains(event.target)) closeAll();

@@ -89,3 +89,8 @@ Les boutons de sous-menu affichent un caret qui suit `aria-expanded`,
 sur desktop et mobile, au lieu des symboles plus/moins.
 
 Les panneaux passent au-dessus du séparateur inférieur du header.
+
+Au survol desktop, le panneau reste ouvert pendant le passage du lien à la zone
+du header puis au panneau. Il se ferme à la sortie de l’ensemble du header et
+de ses descendants, sauf lorsqu’un élément intérieur conserve le focus clavier.
+Ce comportement est également utilisé par le choix Mega à trois niveaux.

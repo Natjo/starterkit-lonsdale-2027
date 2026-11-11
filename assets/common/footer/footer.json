@@ -4,16 +4,38 @@
   "name": "footer",
   "slug": "footer",
   "assets": {
-    "css": { "loading": "normal" }
+    "css": {
+      "loading": "normal"
+    }
   },
-  "activation": { "pageType": "any" },
+  "activation": {
+    "pageType": "any"
+  },
   "dependencies": {
-    "menus": ["menu-footer"],
-    "components": [],
+    "menus": [
+      "menu-footer"
+    ],
+    "components": [
+      "icon"
+    ],
     "cards": [],
     "strates": [],
     "heroes": [],
     "common": [],
     "modules": []
+  },
+  "footerConfiguration": {
+    "version": 1,
+    "types": [
+      "simple",
+      "columns"
+    ],
+    "elements": [
+      "socials",
+      "secondaryMenu",
+      "search",
+      "copyright",
+      "text"
+    ]
   }
 }

@@ -317,3 +317,6 @@ les titres de colonnes et le niveau 3 leurs listes de liens. Le rendu est limit�
 La recette `navigation-mega-columns.scss` est assemblée uniquement pour ce choix
 sur un site généré. Le JS et le walker de Reveal sont réutilisés ; seul le fragment
 PHP `navigation-mega-columns.php` utilise `depth => 3`.
+
+Dans Mega, les titres du niveau 2 sont des liens WordPress cliquables, présentés
+comme des titres de colonnes. Ils conservent leur URL configurée dans le menu.

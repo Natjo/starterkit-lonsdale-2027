@@ -46,6 +46,22 @@ try {
     assert.equal(await evaluate('document.querySelector(".sub-menu").hasAttribute("id")'), false);
     assert.ok(await evaluate('parseFloat(document.querySelector(".level1").style.getPropertyValue("--height"))') > 0);
     assert.equal(await evaluate('document.querySelector(".level1").inert'), true);
+    // In the styleguide, the header has a natural height: triggers do not fill it.
+    await evaluate(`document.querySelector('header').style.height='auto';document.querySelector('header').style.minHeight='90px';document.querySelector('#outside').focus()`);
+    const trigger = await evaluate(`(()=>{const r=document.querySelector('#p>a').getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2}})()`);
+    await send('Input.dispatchMouseEvent',{type:'mouseMoved',...trigger});
+    assert.equal(await evaluate(`document.querySelector('#p').classList.contains('is-submenu-open')`),true);
+    const bridge = await evaluate(`(()=>{const r=document.querySelector('header').getBoundingClientRect();return {x:10,y:r.bottom-2}})()`);
+    await send('Input.dispatchMouseEvent',{type:'mouseMoved',...bridge});
+    assert.equal(await evaluate(`document.querySelector('#p').matches(':hover')`),false,'Mouse has left the trigger item');
+    assert.equal(await evaluate(`document.querySelector('#p').classList.contains('is-submenu-open')`),true,'Header gap must not close the panel');
+    const panelPoint = await evaluate(`(()=>{const r=document.querySelector('.level1').getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2}})()`);
+    await send('Input.dispatchMouseEvent',{type:'mouseMoved',...panelPoint});
+    assert.equal(await evaluate(`document.querySelector('#p').classList.contains('is-submenu-open')`),true,'Panel remains usable after the pointer moves inside');
+    await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:10,y:700});
+    assert.equal(await evaluate(`document.querySelector('#p').classList.contains('is-submenu-open')`),false,'Leaving the whole header closes the panel');
+    await evaluate(`document.querySelector('header').style.height='';document.querySelector('header').style.minHeight=''`);
+
     await evaluate('document.querySelector("#p>a").focus()');
     assert.equal(await evaluate('document.querySelector("#p").classList.contains("is-submenu-open")'), true);
     assert.equal(await evaluate('document.querySelector(".level1").inert'), false);

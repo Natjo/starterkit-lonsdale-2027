@@ -1,0 +1,10 @@
+#footer.footer-type-columns {
+    .footer-main { display: grid; grid-template-columns: minmax(0, 1fr); }
+    .footer-text { max-width: 48rem; }
+    .footer-columns { display: grid; grid-template-columns: minmax(0, 1fr); gap: 3rem; }
+    .footer-column { min-width: 0; }
+    .footer-column-title { margin: 0 0 2rem; color: var(--color-text); font-size: 1.6rem; font-weight: 600; }
+    .sub-menu { display: grid; gap: 1.2rem; }
+    @media #{$breakpoint-sm-up} { .footer-columns { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media #{$breakpoint-md-up} { .footer-main { grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 6rem; } }
+}

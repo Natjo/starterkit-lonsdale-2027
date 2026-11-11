@@ -7,6 +7,8 @@ add_action('after_setup_theme', function () {
         'menu-header-utility' => 'Navigation utilitaire',
         'menu-header-tools' => 'Compte et panier',
         'menu-footer' => 'Menu Footer',
+        'menu-footer-secondary' => 'Menu footer secondaire',
+        'menu-footer-socials' => 'Réseaux sociaux du footer',
         'menu-legal' => 'Menu légal',
         'menu-secondary' => 'Menu secondaire',
     ));

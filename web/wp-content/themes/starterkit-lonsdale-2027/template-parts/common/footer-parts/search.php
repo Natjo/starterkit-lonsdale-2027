@@ -1,0 +1,1 @@
+        <?php if (!defined('THEME_ENABLE_SEARCH') || THEME_ENABLE_SEARCH) component('search', ['label' => 'Rechercher sur le site', 'placeholder' => 'Rechercher…', 'submit_label' => 'Rechercher', 'classes' => 'footer-search']); ?>

@@ -268,7 +268,16 @@ système retenu. Aucun plugin e-commerce ou sélecteur de langue n'est imposé.
 
 ### Assemblage configurable du header
 
-Le `header-nav` peut désormais être composé dans Forge : une disposition, un type
-simple/dropdown/mega, puis recherche, boutons et menu secondaire optionnels. Le
+Le `header-nav` peut être composé dans Forge : Simple, Flyout, Reveal ou Mega,
+puis recherche, actions et menu secondaire optionnels. Le
 [README du header](header-nav/README.md#configuration-dans-forge) décrit les sources,
 les menus et la génération. Les autres common conservent leur contrat habituel.
+
+
+### Footer configurable
+
+Le [footer](footer/README.md) propose Simple et Columns. Les réglages sont choisis
+en Build et affichés en lecture seule en Manage. Columns utilise un seul menu
+WordPress organisé en trois groupes maximum : titres au premier niveau, liens au
+second. Les options disponibles dépendent du type sélectionné. Forge assemble
+uniquement les fragments PHP et les styles retenus ; le styleguide reste interactif.
