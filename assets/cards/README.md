@@ -104,3 +104,11 @@ Les images et les liens n’utilisent pas un défaut natif ACF : leur prérempli
 portable est déclaré dans les manifestes pour Forge. Après synchronisation du
 starter, les nouvelles contributions peuvent reprendre ces défauts. Aucun
 contenu existant ni aucune base de données n’est modifié par ces déclarations.
+
+## Version du catalogue
+
+Le champ `version` du manifeste `card-{nom}/card-{nom}.json` indique la version
+de la card affichée dans Forge et ses Design systems. Le suivi commence à
+`"1.0.0"` ; incrémenter cette valeur lors des prochaines évolutions.
+Elle est indépendante de `schemaVersion`, qui décrit le format du manifeste.
+Sans version déclarée, la card reste compatible et affiche « Version non renseignée ».
