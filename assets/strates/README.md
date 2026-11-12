@@ -427,3 +427,11 @@ docker compose -f .docker/docker-compose.yml run --rm --no-deps -T \
   -v "$PWD/tests:/tmp/starter-tests:ro" wordpress \
   wp --allow-root eval-file /tmp/starter-tests/strates-wordpress-contract.php
 ```
+
+## Version du catalogue
+
+Le champ `version` du manifeste `{nom}/{nom}.json` indique la version de
+l’élément affichée dans Forge et ses Design systems. Le suivi commence à
+`"1.0.0"` ; incrémenter cette valeur lors des prochaines évolutions.
+Elle est indépendante de `schemaVersion`, qui décrit le format du manifeste.
+Sans version déclarée, l’élément reste compatible et affiche « Version non renseignée ».

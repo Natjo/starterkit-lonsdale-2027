@@ -5,7 +5,7 @@ const { safePath } = require('./output-safety');
 
 const INVENTORY_FILE = '.rspack-assets.json';
 // Keep retired documentation paths readable in old inventories so their files can be pruned.
-const ROOTS = /^(css|js|fonts|video|favicon|img|lottie|styleguide)\//;
+const ROOTS = /^(css|js|fonts|video|favicon|img|lottie|design-system|styleguide)\//;
 const MODULES = '(?:cards|common|components|heros|modules|pages|strates|vendors)';
 const LEGACY_CSS = new RegExp(`^css/(?:once/)?${MODULES}/.+\\.css(?:\\.map)?$`);
 const LEGACY_STYLE_JS = new RegExp(`^js/(?:once/)?${MODULES}/.+\\.js(?:\\.map)?$`);

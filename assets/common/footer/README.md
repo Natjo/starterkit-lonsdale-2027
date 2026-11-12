@@ -62,5 +62,5 @@ add_filter('theme_footer_newsletter', static fn (array $args): array => array_re
 
 La recherche utilise le formulaire natif WordPress. L’activer dans Forge active
 aussi la recherche du site. Les deux formulaires gardent leurs labels accessibles,
-et le styleguide assure l’unicité des IDs lors des remplacements partiels.
+et le design system assure l’unicité des IDs lors des remplacements partiels.
 Les composants ne sont pas modifiés.

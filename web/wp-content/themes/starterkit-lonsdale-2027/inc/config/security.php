@@ -1,17 +1,17 @@
 <?php
 
 // disable feed
-add_action('do_feed', 'itsme_disable_feed', 1);
-add_action('do_feed_rdf', 'itsme_disable_feed', 1);
-add_action('do_feed_rss', 'itsme_disable_feed', 1);
-add_action('do_feed_rss2', 'itsme_disable_feed', 1);
-add_action('do_feed_atom', 'itsme_disable_feed', 1);
-add_action('do_feed_rss2_comments', 'itsme_disable_feed', 1);
-add_action('do_feed_atom_comments', 'itsme_disable_feed', 1);
+add_action('do_feed', 'theme_disable_feeds', 1);
+add_action('do_feed_rdf', 'theme_disable_feeds', 1);
+add_action('do_feed_rss', 'theme_disable_feeds', 1);
+add_action('do_feed_rss2', 'theme_disable_feeds', 1);
+add_action('do_feed_atom', 'theme_disable_feeds', 1);
+add_action('do_feed_rss2_comments', 'theme_disable_feeds', 1);
+add_action('do_feed_atom_comments', 'theme_disable_feeds', 1);
 
-function itsme_disable_feed()
+function theme_disable_feeds(): void
 {
-    wp_die(__('Non disponible, <a href="' . esc_url(home_url('/')) . '">accueil</a>'));
+    wp_die(__('Non disponible, <a href="' . esc_url(home_url('/')) . '">accueil</a>'), '', ['response' => 404]);
 }
 
 // remove wp version
@@ -24,33 +24,14 @@ add_filter('the_generator', '__return_empty_string');
 // yoast remove version number
 add_filter('wpseo_hide_version', '__return_true');
 
-// Canonical page d'accueil sans slash final (aligné sur l'URL publique, évite duplicate content).
-add_filter('wpseo_canonical', function ($canonical) {
-    if (!is_front_page() || empty($canonical)) {
-        return $canonical;
-    }
-    return untrailingslashit($canonical);
-}, 10, 1);
-
-add_filter('get_canonical_url', function ($canonical_url, $post) {
-    if (empty($canonical_url) || !is_object($post)) {
-        return $canonical_url;
-    }
-    $front_id = (int) get_option('page_on_front');
-    if ($front_id && (int) $post->ID === $front_id) {
-        return untrailingslashit($canonical_url);
-    }
-    return $canonical_url;
-}, 10, 2);
-
 add_filter('wpseo_debug_markers', '__return_false');
 
 // change errors hints
-function no_wordpress_errors()
+function theme_login_error_message(): string
 {
     return 'Erreur d\'authentification !';
 }
-add_filter('login_errors', 'no_wordpress_errors');
+add_filter('login_errors', 'theme_login_error_message');
 
 // disable xmlrpc
 add_filter('xmlrpc_methods', function () {
@@ -58,8 +39,8 @@ add_filter('xmlrpc_methods', function () {
 }, PHP_INT_MAX);
 
 // Disable X-Pingback to header
-add_filter('wp_headers', 'disable_x_pingback');
-function disable_x_pingback($headers)
+add_filter('wp_headers', 'theme_remove_pingback_header');
+function theme_remove_pingback_header(array $headers): array
 {
     unset($headers['X-Pingback']);
 

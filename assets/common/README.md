@@ -280,4 +280,4 @@ Le [footer](footer/README.md) propose Simple et Columns. Les réglages sont choi
 en Build et affichés en lecture seule en Manage. Columns utilise un seul menu
 WordPress organisé en trois groupes maximum : titres au premier niveau, liens au
 second. Les options disponibles dépendent du type sélectionné. Forge assemble
-uniquement les fragments PHP et les styles retenus ; le styleguide reste interactif.
+uniquement les fragments PHP et les styles retenus ; le design system reste interactif.

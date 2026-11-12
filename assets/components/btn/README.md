@@ -54,8 +54,8 @@ supportés.
 | `icon` | `array associatif` | absent | Payload de `component('icon', [...])` |
 | `attributes` | `array` | `[]` | Attributs HTML supplémentaires |
 
-La présence de `link` sélectionne toujours le mode lien. Un `link` incomplet
-ou invalide ne produit aucun HTML et ne retombe pas sur `name`.
+La présence de `link` sélectionne toujours le mode lien. Un `link` sans URL sûre
+ne produit aucun HTML et ne retombe pas sur `name`.
 
 ## Élément racine
 
@@ -195,18 +195,44 @@ accompagne déjà le texte visible et reste donc décorative par défaut.
 
 Sans `icon` associatif ni `svg` actif, le libellé est rendu directement dans
 l’élément racine, sans `span` intérieur. Avec une icône ou un SVG, le libellé
-est enveloppé dans un `span`. Cette règle s’applique aux racines `button`,
+non vide est enveloppé dans un `span`. Sans texte visible, aucun `span` intérieur n’est rendu. Cette règle s’applique aux racines `button`,
 `a` et `span`, comme pour le composant `link`.
 
 ## Règles de rendu
 
-- Un bouton sans `name` valide ne produit aucun HTML.
-- Un lien exige une URL sûre et un titre non vide.
+- Sans `name`, un bouton exige une icône ou un SVG et un `aria-label` non vide.
+- Un lien exige une URL sûre et un titre non vide, ou une icône/SVG avec `aria-label`.
 - Un `span` utilise `name` sans lien, ou `link.title` avec un lien valide.
 - Le libellé visible est échappé avec `esc_html()`.
 - Les classes sont nettoyées et dédupliquées.
 - `class`, `href`, `target`, `rel` et `type` sont protégés.
 - Aucun JavaScript n’est requis.
+
+## Icône seule
+
+Sans `name` (ou sans `link.title` en mode lien), une icône ou `svg => true`
+peut être rendue seule, sans `span` intérieur. `attributes['aria-label']`
+est alors obligatoire et doit décrire l’action. Le label de l’icône seule
+ne remplace pas cet attribut sur le bouton ou le lien. Sans icône/SVG,
+un `aria-label` seul ne produit aucun HTML.
+
+```php
+component('btn', [
+    'icon' => ['name' => 'blank', 'width' => 16, 'height' => 16],
+    'classes' => 'btn-icon',
+    'attributes' => ['aria-label' => 'Ouvrir les détails'],
+]);
+
+// Lien avec une icône seule.
+component('btn', [
+    'link' => ['url' => '/projet/'],
+    'icon' => ['name' => 'blank'],
+    'attributes' => ['aria-label' => 'Découvrir le projet'],
+]);
+```
+
+La classe `btn-icon` est une classe fournie par l’appelant ; elle n’active
+pas le mode icône seule et n’ajoute aucun style automatiquement.
 
 ## Dépendances
 

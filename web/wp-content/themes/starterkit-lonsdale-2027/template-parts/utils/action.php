@@ -13,10 +13,15 @@ $is_span = strtolower(theme_string($params['element'] ?? '')) === 'span';
 $element = $is_span ? 'span' : ($is_link ? 'a' : 'button');
 $attributes_input = is_array($params['attributes'] ?? null) ? $params['attributes'] : [];
 $href = $target = $rel = $type = '';
+$svg = component_bool($params['svg'] ?? false);
+$icon = component_args($params['icon'] ?? null);
+if ($icon !== null) {
+    $icon = array_replace(['width' => 16, 'height' => 16], $icon);
+}
 
 if ($is_link) {
     $link = theme_link($params['link'], $attributes_input);
-    if ($link['url'] === '' || $link['title'] === '') return;
+    if ($link['url'] === '') return;
 
     $label = $link['title'];
     $attributes_input = $link['attributes'];
@@ -27,7 +32,6 @@ if ($is_link) {
     }
 } else {
     $label = theme_string($params['name'] ?? '');
-    if ($label === '') return;
 
     if ($element === 'button') {
         $button_type = 'button';
@@ -40,6 +44,19 @@ if ($is_link) {
     }
 }
 
+// An icon-only action needs its own accessible name on the root element.
+if ($label === '') {
+    $aria_label = '';
+    foreach ($attributes_input as $attribute_name => $value) {
+        if (strtolower((string) $attribute_name) !== 'aria-label') continue;
+        $aria_label = theme_string($value);
+        unset($attributes_input[$attribute_name]);
+    }
+    $icon_name = sanitize_html_class(theme_string($icon['name'] ?? ''));
+    if ($aria_label === '' || (!$svg && $icon_name === '')) return;
+    $attributes_input['aria-label'] = $aria_label;
+}
+
 $reserved_attributes = ['class', 'href', 'target', 'rel', 'type'];
 if ($is_span) {
     $reserved_attributes = array_merge($reserved_attributes, [
@@ -49,16 +66,11 @@ if ($is_span) {
 }
 $attributes = component_attributes($attributes_input, $reserved_attributes);
 $classes = component_classes($action_class, $params['classes'] ?? '');
-$svg = component_bool($params['svg'] ?? false);
-$icon = component_args($params['icon'] ?? null);
-if ($icon !== null) {
-    $icon = array_replace(['width' => 16, 'height' => 16], $icon);
-}
 ?>
 <<?= $element ?><?= $type . $href ?> class="<?= $classes ?>"<?= $attributes . $target . $rel ?>>
-    <?php if (!$svg && $icon === null) : ?>
+    <?php if ($label !== '' && !$svg && $icon === null) : ?>
         <?= esc_html($label) ?>
-    <?php else : ?>
+    <?php elseif ($label !== '') : ?>
         <span><?= esc_html($label) ?></span>
     <?php endif; ?>
     <?php if ($svg) : ?>

@@ -1,5 +1,26 @@
 # Configuration SEO
 
+## Sécurité
+
+`security.php` désactive les flux RSS/Atom avec une réponse HTTP 404 et un lien
+vers l’accueil. Les callbacks nommés utilisent le préfixe `theme_` pour limiter
+les collisions avec les plugins. Les erreurs de connexion restent génériques.
+
+Les en-têtes HSTS, Referrer-Policy, X-Content-Type-Options, X-Frame-Options et
+Cross-Origin-Resource-Policy
+sont configurés dans `.docker/apache/default.conf`, sans duplication PHP.
+Les versions des assets restent présentes pour permettre l’invalidation du cache.
+
+CORP utilise `same-origin` sur les réponses HTTPS, y compris les assets et les
+erreurs. Les autres origines ne peuvent pas intégrer ces ressources avec une
+requête `no-cors`. Cela ne bloque pas les ressources externes chargées par le site
+et ne remplace pas la CSP ni les autorisations CORS.
+Si le projet partage des assets entre sous-domaines, adapter la règle concernée
+à `same-site` ; pour des ressources publiques utilisées sur d’autres sites,
+prévoir une règle ciblée `cross-origin` ou des accès CORS adaptés aux consommateurs.
+Reporter ces en-têtes sur l’hébergement de production si celui-ci n’utilise pas
+la configuration Apache du starter. Recharger Apache après modification.
+
 ## Content Security Policy
 
 La CSP front est désactivée sans `wp-content/theme-csp.json`. Forge écrit ce
@@ -58,6 +79,9 @@ Le thème conserve uniquement les adaptations liées à son modèle de données 
   `NewsArticle` ;
 - l’image du hero sert de secours Open Graph et Twitter uniquement lorsqu’une
   image sociale propre à la News n’a pas été définie dans Yoast.
+
+`seo.php` centralise aussi les filtres canonical WordPress et Yoast : l’URL
+canonique de l’accueil conserve le comportement existant sans slash final.
 
 Le CPT `news` doit conserver le support WordPress `author`, requis par Yoast
 pour produire un schéma Article.

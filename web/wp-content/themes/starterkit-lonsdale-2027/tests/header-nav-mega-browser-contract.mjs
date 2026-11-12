@@ -46,7 +46,7 @@ try {
     assert.equal(await evaluate('document.querySelector(".sub-menu").hasAttribute("id")'), false);
     assert.ok(await evaluate('parseFloat(document.querySelector(".level1").style.getPropertyValue("--height"))') > 0);
     assert.equal(await evaluate('document.querySelector(".level1").inert'), true);
-    // In the styleguide, the header has a natural height: triggers do not fill it.
+    // In the design-system, the header has a natural height: triggers do not fill it.
     await evaluate(`document.querySelector('header').style.height='auto';document.querySelector('header').style.minHeight='90px';document.querySelector('#outside').focus()`);
     const trigger = await evaluate(`(()=>{const r=document.querySelector('#p>a').getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2}})()`);
     await send('Input.dispatchMouseEvent',{type:'mouseMoved',...trigger});

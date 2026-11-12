@@ -101,7 +101,7 @@ sur la même racine retourne le même nettoyage, sans doubler les interactions.
 par cette instance. L'événement local `theme:header-destroy` déclenche aussi ce
 nettoyage avant le remplacement d'une racine initialisée globalement.
 
-Dans le styleguide, seule la racine ajoutée en AJAX reçoit `data-module` et passe
+Dans le design system, seule la racine ajoutée en AJAX reçoit `data-module` et passe
 ensuite sous le contrôle de l'hydrateur. Le premier header conserve l'import global
 habituel ; ne pas lui ajouter simultanément `data-module`.
 

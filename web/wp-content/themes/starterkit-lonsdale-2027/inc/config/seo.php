@@ -1,5 +1,24 @@
 <?php
 
+// Canonical page d'accueil sans slash final (aligné sur l'URL publique, évite duplicate content).
+add_filter('wpseo_canonical', function ($canonical) {
+    if (!is_front_page() || empty($canonical)) {
+        return $canonical;
+    }
+    return untrailingslashit($canonical);
+}, 10, 1);
+
+add_filter('get_canonical_url', function ($canonical_url, $post) {
+    if (empty($canonical_url) || !is_object($post)) {
+        return $canonical_url;
+    }
+    $front_id = (int) get_option('page_on_front');
+    if ($front_id && (int) $post->ID === $front_id) {
+        return untrailingslashit($canonical_url);
+    }
+    return $canonical_url;
+}, 10, 2);
+
 /**
  * Données éditoriales du hero News utilisées comme secours par Yoast.
  *

@@ -242,3 +242,11 @@ Pour un hero contenant une image principale :
 - les variantes desktop/mobile utilisent des media queries cohérentes ;
 - aucune image secondaire n’est préchargée inutilement ;
 - le HTML statique est régénéré après une modification du rendu.
+
+## Version du catalogue
+
+Le champ `version` du manifeste `{nom}/{nom}.json` indique la version de
+l’élément affichée dans Forge et ses Design systems. Le suivi commence à
+`"1.0.0"` ; incrémenter cette valeur lors des prochaines évolutions.
+Elle est indépendante de `schemaVersion`, qui décrit le format du manifeste.
+Sans version déclarée, l’élément reste compatible et affiche « Version non renseignée ».

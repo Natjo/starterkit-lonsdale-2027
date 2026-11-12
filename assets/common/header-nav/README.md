@@ -259,7 +259,7 @@ Le manifeste propose `headerConfiguration.version: 1`. Forge permet de sélectio
 la navigation Simple/Flyout/Reveal (clés `simple`, `dropdown`, `mega`) et les
 éléments recherche, actions et menu secondaire.
 
-Le styleguide peut afficher ces combinaisons avec les fragments du dossier
+Le design system peut afficher ces combinaisons avec les fragments du dossier
 `template-parts/common/header-parts`. Cette prévisualisation temporaire ne modifie
 aucun contenu du site. Les variantes indépendantes restent disponibles au catalogue.
 
@@ -285,7 +285,7 @@ Les trois SCSS des navigations restent les sources du cadre et des sous-menus.
 Forge retire leurs blocs `.header-search { ... }` avant d'ajouter la recherche
 sélectionnée. Conserver ces blocs indépendants lorsque ces sources sont adaptées.
 
-Le configurateur ne propose plus de sélecteur Disposition : Forge et le styleguide
+Le configurateur ne propose plus de sélecteur Disposition : Forge et le design system
 utilisent la disposition classique. Les anciens fichiers de variantes restent
 conservés. Les liens du menu secondaire sont bleus et soulignés. L’option
 pictogrammes est supprimée.
@@ -300,7 +300,7 @@ sur la même racine retourne le même nettoyage, sans doubler les interactions.
 par cette instance. L'événement local `theme:header-destroy` déclenche aussi ce
 nettoyage avant le remplacement d'une racine initialisée globalement.
 
-Dans le styleguide, seule la racine ajoutée en AJAX reçoit `data-module` et passe
+Dans le design system, seule la racine ajoutée en AJAX reçoit `data-module` et passe
 ensuite sous le contrôle de l'hydrateur. Le premier header conserve l'import global
 habituel ; ne pas lui ajouter simultanément `data-module`.
 

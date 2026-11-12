@@ -265,3 +265,11 @@ Ils vérifient notamment les payloads, l’échappement, les attributs, les card
 les composants interactifs et la restauration des contextes de templates. Les
 fichiers `*-browser-contract.html` couvrent les comportements nécessitant un
 vrai navigateur.
+
+## Version du catalogue
+
+Le champ `version` du manifeste `{nom}/{nom}.json` indique la version de
+l’élément affichée dans Forge et ses Design systems. Le suivi commence à
+`"1.0.0"` ; incrémenter cette valeur lors des prochaines évolutions.
+Elle est indépendante de `schemaVersion`, qui décrit le format du manifeste.
+Sans version déclarée, l’élément reste compatible et affiche « Version non renseignée ».

@@ -56,8 +56,10 @@ component('link', [
 ## Règles de rendu
 
 La présence de `link` sélectionne le mode lien : une URL sûre et un titre non
-vide sont obligatoires, même pour un `span`. Un lien invalide ne retombe pas
-sur `name`. Sans `link`, `name` fournit le libellé obligatoire.
+vide sont attendus, même pour un `span`. Un titre vide est accepté uniquement
+avec une icône/SVG et un `aria-label` non vide. Un lien invalide ne retombe pas
+sur `name`. Sans `link`, `name` fournit le libellé visible ; son absence suit
+les mêmes règles pour une icône seule.
 
 `element => 'span'` fonctionne dans les deux modes. Les autres valeurs
 conservent la racine par défaut : `a` avec `link`, `button` sans `link`.
@@ -77,12 +79,38 @@ ignoré. Sinon, l’icône associative est rendue via `component('icon', ...)`.
 
 Sans `icon` associatif ni `svg` actif, le libellé est rendu directement dans
 l’élément racine, sans `span` intérieur. Avec une icône ou un SVG, le libellé
-est enveloppé dans un `span`. Cette règle s’applique aux racines `a`, `button`
+non vide est enveloppé dans un `span`. Sans texte visible, aucun `span` intérieur n’est rendu. Cette règle s’applique aux racines `a`, `button`
 et `span`, pour `link` comme pour `btn`.
 
 Les libellés et attributs sont échappés à la sortie. `class`, `href`, `target`,
 `rel` et `type` sont protégés. Les payloads positionnels et la forme plate
 `url`/`title` sont refusés. Aucun JavaScript n’est requis.
+
+## Icône seule
+
+Sans `name` (ou sans `link.title` en mode lien), une icône ou `svg => true`
+peut être rendue seule, sans `span` intérieur. `attributes['aria-label']`
+est alors obligatoire et doit décrire l’action. Le label de l’icône seule
+ne remplace pas cet attribut sur le bouton ou le lien. Sans icône/SVG,
+un `aria-label` seul ne produit aucun HTML.
+
+```php
+component('link', [
+    'icon' => ['name' => 'blank', 'width' => 16, 'height' => 16],
+    'classes' => 'link-icon',
+    'attributes' => ['aria-label' => 'Ouvrir les détails'],
+]);
+
+// Lien avec une icône seule.
+component('link', [
+    'link' => ['url' => '/projet/'],
+    'icon' => ['name' => 'blank'],
+    'attributes' => ['aria-label' => 'Découvrir le projet'],
+]);
+```
+
+La classe `link-icon` est une classe fournie par l’appelant ; elle n’active
+pas le mode icône seule et n’ajoute aucun style automatiquement.
 
 ## Dépendances
 

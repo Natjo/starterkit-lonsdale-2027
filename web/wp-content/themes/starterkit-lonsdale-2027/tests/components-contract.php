@@ -1304,6 +1304,34 @@ $assert_same('Link sans libellé ne rend rien', '', $render('link', ['element' =
 $assert_html('Link sans element utilise un bouton natif', '//button[@class="link" and @type="button"]', $render('link', ['name' => 'Ouvrir']));
 $assert_html('Link type invalide revient à button', '//button[@type="button"]', $render('link', ['name' => 'Ouvrir', 'attributes' => ['type' => 'invalid']]));
 
+foreach (['btn', 'link'] as $action_component) {
+    foreach (['button' => [], 'a' => ['link' => ['url' => '/project/', 'target' => '_blank']]] as $tag => $mode) {
+        foreach (['icon' => ['icon' => ['name' => 'blank']], 'svg' => ['svg' => true]] as $decoration => $visual) {
+            $payload = array_replace($mode, $visual, ['attributes' => ['aria-label' => 'Ouvrir <projet>']]);
+            $html = $render($action_component, $payload);
+            $assert_html($action_component . ' icône seule accessible : ' . $tag . ' / ' . $decoration,
+                '//' . $tag . '[@class="' . $action_component . '" and @aria-label="Ouvrir <projet>" and not(span)]/svg', $html);
+            if ($tag === 'a') {
+                $assert_html($action_component . ' icône seule sécurise le lien externe',
+                    '//a[@href="/project/" and @target="_blank" and @rel="noopener noreferrer"]', $html);
+                $disabled = $render($action_component, array_replace($payload, ['attributes' => ['aria-label' => 'Indisponible', 'aria-disabled' => 'true']]));
+                $assert_html($action_component . ' icône seule désactivée', '//a[not(@href) and not(@target) and @aria-disabled="true"]/svg', $disabled);
+            }
+            foreach ([[], ['aria-label' => ' '], ['aria-label' => []]] as $attributes) {
+                $assert_same($action_component . ' refuse une icône seule sans nom accessible', '',
+                    $render($action_component, array_replace($payload, ['attributes' => $attributes])));
+            }
+        }
+    }
+    foreach ([[], ['icon' => []], ['icon' => ['name' => '']], ['icon' => ['blank']], ['icon' => ['name' => []]]] as $visual) {
+        $assert_same($action_component . ' refuse un bouton vide même avec aria-label', '',
+            $render($action_component, array_replace($visual, ['attributes' => ['aria-label' => 'Ouvrir']])));
+    }
+    $assert_same($action_component . ' refuse une URL dangereuse avec icône seule', '', $render($action_component, [
+        'link' => ['url' => 'javascript:alert(1)'], 'icon' => ['name' => 'blank'], 'attributes' => ['aria-label' => 'Ouvrir'],
+    ]));
+}
+
 $custom_card = $render_card('news', [
     'title' => 'Contenu personnalisé',
     'text' => '<p>Texte personnalisé</p>',

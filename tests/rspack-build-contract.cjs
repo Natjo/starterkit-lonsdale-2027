@@ -238,13 +238,13 @@ test('dev/prod configurations choose their Sass and watch modes independently of
 });
 
 
-test('the starter build does not publish Forge styleguide documentation', { timeout: 15000 }, async t => {
+test('the starter build does not publish Forge design-system documentation', { timeout: 15000 }, async t => {
     const { root, configs } = project(t, false);
     put(root, 'assets/components/btn/README.md', '# Button');
     put(root, 'assets/styles/_breakpoints.scss', '$breakpoint-sm: 576px;');
     const compiler = rspack(configs);
     const stats = await new Promise((resolve, reject) => compiler.run((error, stats) => compiler.close(closeError => error || closeError ? reject(error || closeError) : resolve(stats))));
     assert.equal(stats.hasErrors(), false, stats.toString({ all: false, errors: true }));
-    assert.ok(!fs.existsSync(path.join(root, 'output/styleguide')));
+    assert.ok(!fs.existsSync(path.join(root, 'output/design-system')));
     verifyInventory(path.join(root, 'output'));
 });
