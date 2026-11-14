@@ -1,0 +1,2 @@
+.page-404{grid-template-columns:var(--layout);min-height:100svh;padding-block:calc(var(--header-height) + var(--space-md)) var(--space-md);display:grid}.page-404 .page-404-content{text-align:center;grid-column:ctr-sm;align-content:center;justify-items:center;gap:2.4rem;display:grid}.page-404 .page-404-code{color:var(--color-2);font-family:var(--font-1);font-size:clamp(8rem,20vw,24rem);font-weight:700;line-height:.75}.page-404 .page-404-text{max-width:60rem}
+/*# sourceMappingURL=404.css.map*/

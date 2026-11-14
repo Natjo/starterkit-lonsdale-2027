@@ -1,0 +1,39 @@
+.forge-common-main {
+    display: grid;
+    grid-template-columns: var(--layout);
+    padding-block: 4rem 8rem;
+}
+.forge-common-main > * { grid-column: ctr; min-width: 0; }
+.forge-common-controls { padding-top: 2.4rem; border-top: 1px solid var(--sg-border); }
+.forge-common-controls form { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:3rem; align-items:start; }
+.forge-common-config-column { display:grid; align-content:start; gap:1.6rem; min-width:0; padding:0; margin:0; border:0; }
+.forge-common-config-column + .forge-common-config-column { align-self:stretch; border-inline-start:1px solid var(--sg-border); padding-inline-start:3rem; }
+.forge-common-config-column legend { font-size:1.8rem; font-weight:600; padding:0 0 1.6rem; }
+.forge-common-description { margin:0; max-width:42rem; color:var(--sg-muted,#62645d); font-size:1.4rem; line-height:1.5; }
+.forge-common-feedback { grid-column:1/-1; color:#b42318; }
+.forge-common-controls label { display:grid; gap:.8rem; font-size:1.6rem; }
+.forge-common-controls select { box-sizing:border-box; justify-self:start; width:auto; min-width:18rem; max-width:100%; height:auto; min-height:6rem; padding:1.6rem 3.8rem 1.6rem 1.6rem; border:1px solid #aaa; border-radius:.4rem; background:#fff; color:#111; font:inherit; line-height:1.5; }
+.forge-common-controls [hidden] { display:none; }
+.forge-common-controls .forge-common-switch { position:relative; display:flex; align-items:center; gap:1.2rem; min-height:2.8rem; cursor:pointer; }
+.forge-common-switch input { position:absolute; width:1px; height:1px; opacity:0; margin:0; padding:0; }
+.forge-common-switch-track { position:relative; flex-shrink:0; width:4.4rem; height:2.6rem; border:1px solid #81857d; border-radius:2rem; background:#d4d6d0; transition:background-color .2s ease; }
+.forge-common-switch-track::after { content:""; position:absolute; top:.3rem; left:.3rem; width:1.8rem; height:1.8rem; border-radius:50%; background:#fff; box-shadow:0 1px 3px #0003; transition:transform .2s ease; }
+.forge-common-switch input:checked + .forge-common-switch-track { background:#16845a; border-color:#16845a; }
+.forge-common-switch input:checked + .forge-common-switch-track::after { transform:translateX(1.8rem); }
+.forge-common-switch input:focus-visible + .forge-common-switch-track { outline:2px solid #185adb; outline-offset:3px; }
+.forge-common-switch:has(input:disabled) { opacity:.5; cursor:default; }
+@media (max-width:600px) {
+    .forge-common-controls form { grid-template-columns:minmax(0,1fr); }
+    .forge-common-config-column + .forge-common-config-column { border-inline-start:0; border-top:1px solid var(--sg-border); padding-inline-start:0; padding-top:2.4rem; }
+}
+@media (prefers-reduced-motion:reduce) {
+    .forge-common-switch-track, .forge-common-switch-track::after { transition:none; }
+}
+.design-system--common { padding-bottom: 0; }
+.forge-common-site { overflow-anchor:none; background:var(--color-bg); color:var(--color-text); }
+/* Keep the actual header in its demonstration region, with one document scroll. */
+.forge-common-site > :is(#header-nav, #header-nav-dropdown, #header-nav-mega) { position:sticky; top:0; height:auto; min-height:var(--header-height); }
+@media (min-width:768px) {
+    .forge-common-site > :is(#header-nav, #header-nav-dropdown, #header-nav-mega):not(.header-layout-minimal) #nav { min-width:0; flex-wrap:wrap; }
+    .forge-common-site > :is(#header-nav, #header-nav-dropdown, #header-nav-mega) .nav-menu { flex-wrap:wrap; }
+}

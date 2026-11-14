@@ -1,0 +1,2 @@
+.template-hub .main-content{grid-template-columns:var(--layout);margin-bottom:var(--space-md);align-content:start;display:grid}.template-hub .main-content>*{grid-column:ctr}.template-hub .results-list{--list-columns:4}
+/*# sourceMappingURL=template-hub.css.map*/

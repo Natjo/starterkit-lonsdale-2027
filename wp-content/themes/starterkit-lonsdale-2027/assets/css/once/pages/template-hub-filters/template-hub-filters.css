@@ -1,0 +1,2 @@
+.template-hub-filters .main-content{grid-template-columns:var(--layout);margin-bottom:var(--space-sm);display:grid}.template-hub-filters .filters{flex-direction:column;grid-column:ctr;align-items:end;margin-bottom:2rem;display:flex}.template-hub-filters .results{grid-column:ctr}
+/*# sourceMappingURL=template-hub-filters.css.map*/

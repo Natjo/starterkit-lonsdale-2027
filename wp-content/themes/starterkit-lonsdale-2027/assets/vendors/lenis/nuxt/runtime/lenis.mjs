@@ -1,0 +1,1 @@
+import e from"lenis/vue";import{defineNuxtPlugin as p}from"#imports";var r=p({name:"lenis",setup(p){p.vueApp.use(e)}});export{r as default};

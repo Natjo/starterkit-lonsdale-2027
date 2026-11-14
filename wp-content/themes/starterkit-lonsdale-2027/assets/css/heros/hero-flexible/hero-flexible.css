@@ -1,0 +1,2 @@
+.hero-flexible{padding-bottom:var(--space-md)}.hero-flexible .hero-inner{gap:var(--gap);grid-template-columns:1fr .5fr;align-items:center;display:grid}.hero-flexible .hero-content{padding-block:var(--space-sm) 0;flex-direction:column;gap:3.6rem;display:flex}.hero-flexible .hero-image{aspect-ratio:1;width:100%;height:auto;overflow:hidden}
+/*# sourceMappingURL=hero-flexible.css.map*/
