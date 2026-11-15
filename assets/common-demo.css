@@ -4,7 +4,7 @@
     padding-block: 4rem 8rem;
 }
 .forge-common-main > * { grid-column: ctr; min-width: 0; }
-.forge-common-controls { padding-top: 2.4rem; border-top: 1px solid var(--sg-border); }
+.forge-common-controls { padding-top: 2.4rem; border-top: 1px solid var(--sg-border); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 .forge-common-controls form { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:3rem; align-items:start; }
 .forge-common-config-column { display:grid; align-content:start; gap:1.6rem; min-width:0; padding:0; margin:0; border:0; }
 .forge-common-config-column + .forge-common-config-column { align-self:stretch; border-inline-start:1px solid var(--sg-border); padding-inline-start:3rem; }

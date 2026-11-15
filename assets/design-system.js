@@ -59,6 +59,29 @@ export default function initDesignSystem(root) {
         });
     };
     const tokenController = new AbortController();
+    root.querySelectorAll('[data-card-columns]').forEach(input => {
+        const section = input.closest('.design-system-section');
+        const preview = section?.querySelector('.design-system-cards-preview');
+        const output = input.parentElement.querySelector('output');
+        if (!preview) return;
+        const updateColumns = () => {
+            const columns = Math.max(1, Math.min(3, Number(input.value) || 3));
+            preview.style.setProperty('--card-columns', String(columns));
+            [...preview.children].forEach((item, index) => {
+                item.hidden = index >= columns;
+            });
+            if (output) output.value = String(columns);
+        };
+        input.addEventListener('input', updateColumns, { signal: tokenController.signal });
+        updateColumns();
+    });
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Tab') root.setAttribute('data-keyboard-navigation', '');
+    }, { signal: tokenController.signal, capture: true });
+    document.addEventListener('pointerdown', () => {
+        root.removeAttribute('data-keyboard-navigation');
+    }, { signal: tokenController.signal, capture: true });
+    const clearParticles = initHeaderParticles(root, tokenController.signal);
     root.querySelector('[data-design-system-refresh]')?.addEventListener('click', () => {
         window.location.reload();
     }, { signal: tokenController.signal });
@@ -165,6 +188,10 @@ export default function initDesignSystem(root) {
     let activeFrame = null;
     const updateActiveSection = () => {
         activeFrame = null;
+        if (nav) {
+            const stickyTop = parseFloat(getComputedStyle(nav).top) || 0;
+            nav.classList.toggle('is-stuck', nav.getBoundingClientRect().top <= stickyTop + 1);
+        }
         const line = parseFloat(getComputedStyle(root).getPropertyValue('--design-system-demo-top')) || 0;
         let current = null;
         let closestTop = -Infinity;
@@ -229,7 +256,7 @@ export default function initDesignSystem(root) {
         filterSections();
     }
     let sectionObserver;
-    if (navEntries.length) {
+    if (nav) {
         window.addEventListener('scroll', scheduleActiveSection, { passive: true, signal: tokenController.signal });
         window.addEventListener('resize', scheduleActiveSection, { signal: tokenController.signal });
         window.addEventListener('hashchange', scheduleActiveSection, { signal: tokenController.signal });
@@ -252,6 +279,8 @@ export default function initDesignSystem(root) {
     }
     const clearStickyOffset = () => {
         tokenController.abort();
+        root.removeAttribute('data-keyboard-navigation');
+        clearParticles();
         closeStratePanel();
         clearStrateOptions();
         cancelInitialRestore();
@@ -270,7 +299,10 @@ export default function initDesignSystem(root) {
         sectionObserver?.disconnect();
         if (activeFrame !== null) cancelAnimationFrame(activeFrame);
         activeLink?.removeAttribute('aria-current');
-        if (nav) root.style.removeProperty('--design-system-demo-top');
+        if (nav) {
+            root.style.removeProperty('--design-system-demo-top');
+            nav.classList.remove('is-stuck');
+        }
     };
     // Restore after filtering, stylesheet/image loading and font metrics have settled.
     const initialHash = window.location.hash;
@@ -495,4 +527,103 @@ function initStratePanels(root, signal, revealSection) {
         if (active && !active.panel.contains(event.target) && !active.button.contains(event.target)) close();
     }, { signal });
     return close;
+}
+
+function initHeaderParticles(root, signal) {
+    const canvas = root.querySelector('.design-system-particles');
+    const context = canvas?.getContext('2d');
+    if (!context) return () => {};
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let width = 0;
+    let height = 0;
+    let points = [];
+    let visible = false;
+    let frame = null;
+    let previous = 0;
+    let color;
+    const draw = (elapsed = 0) => {
+        context.clearRect(0, 0, width, height);
+        context.fillStyle = color;
+        context.strokeStyle = color;
+        context.lineWidth = 1;
+        for (const point of points) {
+            point.x += point.vx * elapsed;
+            point.y += point.vy * elapsed;
+            if (point.x < 0 || point.x > width) point.vx *= -1;
+            if (point.y < 0 || point.y > height) point.vy *= -1;
+            point.x = Math.max(0, Math.min(width, point.x));
+            point.y = Math.max(0, Math.min(height, point.y));
+        }
+        const reach = 150;
+        for (let i = 0; i < points.length; i++) {
+            const point = points[i];
+            for (let j = i + 1; j < points.length; j++) {
+                const other = points[j];
+                const distance = Math.hypot(point.x - other.x, point.y - other.y);
+                if (distance >= reach) continue;
+                context.globalAlpha = .42 * (1 - distance / reach);
+                context.beginPath();
+                context.moveTo(point.x, point.y);
+                context.lineTo(other.x, other.y);
+                context.stroke();
+            }
+            context.globalAlpha = .65;
+            context.beginPath();
+            context.arc(point.x, point.y, point.radius, 0, Math.PI * 2);
+            context.fill();
+        }
+        context.globalAlpha = 1;
+    };
+    const tick = now => {
+        frame = requestAnimationFrame(tick);
+        if (now - previous < 1000 / 30) return;
+        const elapsed = previous ? Math.min((now - previous) / 1000, .06) : 0;
+        previous = now;
+        draw(elapsed);
+    };
+    const update = () => {
+        if (frame !== null) cancelAnimationFrame(frame);
+        frame = null;
+        previous = 0;
+        if (visible && !document.hidden && !motion.matches && width && height) frame = requestAnimationFrame(tick);
+    };
+    const resize = () => {
+        const boundary = root.querySelector('.st-components') || root.querySelector('.design-system-intro');
+        if (boundary) {
+            const rootTop = root.getBoundingClientRect().top;
+            const bounds = boundary.getBoundingClientRect();
+            canvas.style.height = `${Math.max(0, (boundary.matches('.st-components') ? bounds.top : bounds.bottom) - rootTop)}px`;
+        }
+        const bounds = canvas.getBoundingClientRect();
+        width = bounds.width;
+        height = bounds.height;
+        const ratio = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.round(width * ratio);
+        canvas.height = Math.round(height * ratio);
+        context.setTransform(ratio, 0, 0, ratio, 0, 0);
+        color = getComputedStyle(root).getPropertyValue('--sg-accent').trim() || '#315efb';
+        points = Array.from({ length: Math.min(65, Math.ceil(width * height / 12000)) }, () => ({
+            x: Math.random() * width, y: Math.random() * height,
+            vx: (Math.random() - .5) * 12, vy: (Math.random() - .5) * 12,
+            radius: .8 + Math.random() * 1.2,
+        }));
+        draw();
+        update();
+    };
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(root);
+    const intro = root.querySelector('.design-system-intro');
+    if (intro) resizeObserver.observe(intro);
+    const observer = new IntersectionObserver(entries => {
+        visible = entries[0].isIntersecting;
+        update();
+    });
+    observer.observe(canvas);
+    motion.addEventListener('change', update, { signal });
+    document.addEventListener('visibilitychange', update, { signal });
+    return () => {
+        resizeObserver.disconnect();
+        observer.disconnect();
+        if (frame !== null) cancelAnimationFrame(frame);
+    };
 }
