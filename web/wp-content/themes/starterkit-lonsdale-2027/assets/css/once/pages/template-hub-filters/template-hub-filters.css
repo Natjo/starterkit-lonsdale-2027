@@ -1,2 +1,17 @@
-.template-hub-filters .main-content{grid-template-columns:var(--layout);margin-bottom:var(--space-sm);display:grid}.template-hub-filters .filters{flex-direction:column;grid-column:ctr;align-items:end;margin-bottom:2rem;display:flex}.template-hub-filters .results{grid-column:ctr}
+.template-hub-filters .main-content {
+  display: grid;
+  grid-template-columns: var(--layout);
+  margin-bottom: var(--space-sm);
+}
+.template-hub-filters .filters {
+  grid-column: ctr;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+.template-hub-filters .results {
+  grid-column: ctr;
+}
+
 /*# sourceMappingURL=template-hub-filters.css.map*/

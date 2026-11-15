@@ -1,2 +1,20 @@
-.hero-post{margin-bottom:var(--space-md);align-content:start}.hero-post .hero-content{background-color:#fff;flex-direction:column;align-items:center;gap:2rem;margin-top:-10rem;padding-top:6rem;display:flex}.hero-post .hero-image{aspect-ratio:16/3;order:-1;grid-column:full}
+.hero-post {
+  align-content: start;
+  margin-bottom: var(--space-md);
+}
+.hero-post .hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  padding-top: 6rem;
+  margin-top: -10rem;
+  background-color: #fff;
+}
+.hero-post .hero-image {
+  grid-column: full;
+  order: -1;
+  aspect-ratio: 16/3;
+}
+
 /*# sourceMappingURL=hero-post.css.map*/

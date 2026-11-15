@@ -4,6 +4,19 @@ Ce dossier contient le socle partagé du Design System, ses exemples et toutes
 ses commandes. Il utilise les vrais composants, strates, heroes et assets du
 starter, sans créer de page WordPress.
 
+## Générer et publier le Design System
+
+**Depuis la racine du starter, avec Docker démarré et les assets compilés :**
+
+```bash
+make -C design-system publish
+```
+
+Cette commande génère le Design System puis le pousse sur la branche
+`design-sytem` définie dans `design-system/config.json`.
+
+## Démonstrations
+
 Les images de démonstration sont centralisées dans `assets/img/placeholders/`
 du starter. Le Design System utilise leurs URLs compilées dans les assets du
 thème ; aucune image d’exemple n’est stockée dans ce dossier.

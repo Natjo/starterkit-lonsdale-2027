@@ -1,2 +1,14 @@
-.template-hub .main-content{grid-template-columns:var(--layout);margin-bottom:var(--space-md);align-content:start;display:grid}.template-hub .main-content>*{grid-column:ctr}.template-hub .results-list{--list-columns:4}
+.template-hub .main-content {
+  display: grid;
+  grid-template-columns: var(--layout);
+  align-content: start;
+  margin-bottom: var(--space-md);
+}
+.template-hub .main-content > * {
+  grid-column: ctr;
+}
+.template-hub .results-list {
+  --list-columns: 4;
+}
+
 /*# sourceMappingURL=template-hub.css.map*/

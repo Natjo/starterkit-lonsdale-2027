@@ -7,12 +7,14 @@ if ($args['title'] === '' && $args['text'] === '') return;
 
 <section <?= options("strate strate-text", $args) ?>>
     <div class="strate-inner">
-        <?php
-        component('title', [
-            'title' => $args['title'] ?? '',
-            'classes' => 'title-2 strate-title',
-        ])
-        ?>
+        <header class="strate-header">
+            <?php
+            component('title', [
+                'title' => $args['title'] ?? '',
+                'classes' => 'title-2 strate-title',
+            ])
+            ?>
+        </header>
 
         <?php component('text', [
             'text' => $args['text'],
