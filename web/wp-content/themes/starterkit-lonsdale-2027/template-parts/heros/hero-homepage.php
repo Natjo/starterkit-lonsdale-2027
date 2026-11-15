@@ -17,12 +17,17 @@ $args = get_template_args();
             'text' => $args['text'] ?? '',
             'classes' => 'hero-text',
         ]); ?>
+        
+        <?php component('btn', [
+            'link' => $args['link'] ?? null,
+            'classes' => 'btn-1 hero-link',
+        ]); ?>
     </div>
 
     <?php component('picture', [
         'images' => $args['images'] ?? null,
         'classes' => 'hero-bg',
-        'fit' => "cover",
+        'cover' => true,
         'preload' => true,
     ]); ?>
 </header>

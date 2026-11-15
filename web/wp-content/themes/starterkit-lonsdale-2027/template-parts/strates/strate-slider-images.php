@@ -7,7 +7,7 @@ foreach ($rows as $row) {
     $items[] = [
         'image' => $row['image'],
         'size' => 'full',
-        'fit' => 'cover',
+        'cover' => true,
         'classes' => 'slider-image',
     ];
 }

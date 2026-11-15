@@ -6,15 +6,14 @@
     .card-content {
         display: flex;
         flex-direction: column;
-        gap: 1.2rem;
+        gap: 1.3rem;
         height: 100%;
         padding-block: 2.4rem;
         align-items: start;
     }
 
-    .card-image {
+    picture {
         aspect-ratio: 3 / 2;
-        overflow: hidden;
     }
 
     .card-meta {

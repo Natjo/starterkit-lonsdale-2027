@@ -794,6 +794,25 @@
                             "preview_size": "medium"
                         },
                         {
+                            "key": "field_strate_image_fixed_height_2027",
+                            "label": "Hauteur fixe",
+                            "name": "fixed_height",
+                            "type": "true_false",
+                            "instructions": "Recadre l’image pour remplir la hauteur définie en CSS. Désactivé : proportions naturelles.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "message": "Recadrer l’image en cover",
+                            "default_value": 0,
+                            "ui": 1,
+                            "ui_on_text": "Oui",
+                            "ui_off_text": "Non"
+                        },
+                        {
                             "key": "field_6a649fcc6b736_image",
                             "label": "Options",
                             "name": "",
@@ -3871,5 +3890,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1790761630
+    "modified": 1794750324
 }

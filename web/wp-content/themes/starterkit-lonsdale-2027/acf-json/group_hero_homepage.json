@@ -79,6 +79,22 @@
                     "delay": 0
                 },
                 {
+                    "key": "field_hero_homepage_link",
+                    "label": "Lien",
+                    "name": "link",
+                    "aria-label": "",
+                    "type": "link",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array"
+                },
+                {
                     "key": "field_6a6384cb68b71",
                     "label": "Images",
                     "name": "images",

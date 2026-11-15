@@ -27,3 +27,16 @@ prod:
 
 %:
 	@:
+
+.PHONY: design-system design-system-watch design-system-export design-system-publish
+design-system:
+	$(MAKE) -C design-system docs
+
+design-system-watch:
+	$(MAKE) -C design-system watch
+
+design-system-export:
+	$(MAKE) -C design-system export URL="$(URL)"
+
+design-system-publish:
+	$(MAKE) -C design-system publish URL="$(URL)"

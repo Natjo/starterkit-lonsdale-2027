@@ -1,11 +1,13 @@
 {
   "schemaVersion": 1,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "hero",
   "name": "homepage",
   "slug": "homepage",
   "assets": {
-    "css": { "loading": "critical" }
+    "css": {
+      "loading": "critical"
+    }
   },
   "defaults": {
     "suptitle": "Lorem ipsum",
@@ -20,10 +22,21 @@
         "__forgeStarterMediaPath": "assets/img/placeholders/hero-homepage-mobile.jpg",
         "name": "hero-homepage-mobile.jpg"
       }
+    },
+    "link": {
+      "url": "/",
+      "title": "En savoir plus",
+      "target": ""
     }
   },
   "dependencies": {
-    "components": ["eyebrow", "picture", "text", "title"],
+    "components": [
+      "eyebrow",
+      "link",
+      "picture",
+      "text",
+      "title"
+    ],
     "cards": [],
     "strates": [],
     "heroes": [],

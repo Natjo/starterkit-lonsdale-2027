@@ -19,7 +19,7 @@ $args = get_template_args();
         <?php component('picture', [
             'images' => $args['images'] ?? null,
             'classes' => "hero-image",
-            'fit' => 'cover',
+            'cover' => true,
             'preload' => true,
         ]); ?>
     </div>

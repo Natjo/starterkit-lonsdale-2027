@@ -15,8 +15,7 @@ $tag = $url !== '' ? 'a' : 'div';
         <?php component('picture', [
             'image' => $args['image'] ?? null,
             'size' => $args['image_size'] ?? 'large',
-            'fit' => 'cover',
-            'classes' => 'card-image',
+            'cover' => true,
         ]); ?>
 
         <div class="card-meta">
@@ -40,13 +39,12 @@ $tag = $url !== '' ? 'a' : 'div';
 
         <?php component('text', [
             'text' => $args['text'] ?? '',
-            'classes' => 'card-text',
         ]); ?>
 
         <?php component('btn', [
             'name' => "See",
             'element' => 'span',
-            'classes' => 'btn-1',
+            'classes' => 'btn-1 cta',
         ]); ?>
     </<?= $tag ?>>
 </div>

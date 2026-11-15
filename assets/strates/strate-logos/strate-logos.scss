@@ -21,7 +21,14 @@
     .logos-item {
         display: grid;
         place-items: center;
+        gap: 1.2rem;
         min-width: 0;
+    }
+
+    .logos-name {
+        margin: 0;
+        font-size: 1.4rem;
+        text-align: center;
     }
 
     .logos-link {

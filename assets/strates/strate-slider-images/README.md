@@ -18,6 +18,6 @@ pagination, timeline), `aria_label` et options communes. Les lignes sans image
 sont ignorées. Sans image valide, aucun balisage n’est produit.
 
 Les images sont transmises au composant `slider` via `picture`, en taille
-`full` et `fit: cover`. Le composant hydrate lui-même son JavaScript à
+`full` et `cover: true`. Le composant hydrate lui-même son JavaScript à
 l’approche du viewport. Les trois images du manifeste sont des placeholders
 destinés à Forge.

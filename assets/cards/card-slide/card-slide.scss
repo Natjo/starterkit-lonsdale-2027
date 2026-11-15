@@ -1,13 +1,27 @@
 .card-slide {
+    a {
+        display: grid;
+    }
+
     .card-content {
+        grid-area: 1/1;
         display: flex;
         flex-direction: column;
         gap: 1.2rem;
-        min-height: 100%;
+        padding: 1rem;
+        align-self: end;
+        background-color: rgba(255, 255, 255, .5);
     }
-
+    .card-text {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
+    }
     .card-image {
+        grid-area: 1/1;
         aspect-ratio: 4 / 3;
         overflow: hidden;
+
     }
 }

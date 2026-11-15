@@ -28,8 +28,7 @@ if (is_array($images)) {
 
 $classes = $params['classes'] ?? '';
 $attributes = component_attributes($params['attributes'] ?? [], ['class']);
-$fit = is_scalar($params['fit'] ?? null) ? strtolower(trim((string) $params['fit'])) : '';
-$fit = in_array($fit, ['fluid', 'cover'], true) ? 'fit-' . $fit : '';
+$cover = component_bool($params['cover'] ?? false) ? 'cover' : '';
 $placeholder = component_bool($params['placeholder'] ?? false);
 $breakpoint = is_numeric($params['breakpoint'] ?? null) ? (int) $params['breakpoint'] : 768;
 $breakpoint = $breakpoint > 0 ? $breakpoint : 768;
@@ -40,8 +39,8 @@ $size = $params['size'] ?? 'full';
 $desktop_size = $normalize_size($params['desktop_size'] ?? $size);
 $mobile_size = $normalize_size($params['mobile_size'] ?? $size);
 
-$render_placeholder = static function () use ($classes, $fit, $attributes): void {
-    $placeholder_classes = component_classes('picture', $fit, 'placeholder', $classes);
+$render_placeholder = static function () use ($classes, $cover, $attributes): void {
+    $placeholder_classes = component_classes('picture', $cover, 'placeholder', $classes);
     echo '<picture class="' . $placeholder_classes . '"' . $attributes . '></picture>';
 };
 
@@ -87,7 +86,7 @@ if ($fallback === []) {
 
 $alt_value = array_key_exists('alt', $params) ? $params['alt'] : ($fallback['alt'] ?? '');
 $alt = is_scalar($alt_value) || $alt_value instanceof Stringable ? trim((string) $alt_value) : '';
-$picture_classes = component_classes('picture', $fit, $classes);
+$picture_classes = component_classes('picture', $cover, $classes);
 $class_attribute = ' class="' . $picture_classes . '"';
 $loading_attribute = $lazy && !$critical ? ' loading="lazy"' : '';
 $priority_attribute = $critical ? ' fetchpriority="high"' : '';

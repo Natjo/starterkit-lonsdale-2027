@@ -1,38 +1,99 @@
 {
   "schemaVersion": 1,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "strate",
   "name": "marquee",
   "slug": "marquee",
   "assets": {
-    "css": { "loading": "normal" },
-    "js": { "loading": "visible" }
+    "css": {
+      "loading": "normal"
+    },
+    "js": {
+      "loading": "visible"
+    }
   },
   "defaults": {
     "content_type": "images",
     "images": [
       {
         "image": {
-          "__forgeStarterMediaPath": "assets/img/placeholders/content-column-1.jpg",
-          "name": "content-column-1.jpg"
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/airbnb.svg",
+          "name": "airbnb.svg"
         }
       },
       {
         "image": {
-          "__forgeStarterMediaPath": "assets/img/placeholders/content-column-2.jpg",
-          "name": "content-column-2.jpg"
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/apple.svg",
+          "name": "apple.svg"
         }
       },
       {
         "image": {
-          "__forgeStarterMediaPath": "assets/img/placeholders/content-column-3.jpg",
-          "name": "content-column-3.jpg"
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/discord.svg",
+          "name": "discord.svg"
+        }
+      },
+      {
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/dropbox.svg",
+          "name": "dropbox.svg"
+        }
+      },
+      {
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/figma.svg",
+          "name": "figma.svg"
+        }
+      },
+      {
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/github.svg",
+          "name": "github.svg"
+        }
+      },
+      {
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/google.svg",
+          "name": "google.svg"
+        }
+      },
+      {
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/linkedin.svg",
+          "name": "linkedin.svg"
+        }
+      },
+      {
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/microsoft.svg",
+          "name": "microsoft.svg"
+        }
+      },
+      {
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/slack.svg",
+          "name": "slack.svg"
+        }
+      },
+      {
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/spotify.svg",
+          "name": "spotify.svg"
+        }
+      },
+      {
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/youtube.svg",
+          "name": "youtube.svg"
         }
       }
     ]
   },
   "dependencies": {
-    "components": ["header","marquee"],
+    "components": [
+      "header",
+      "marquee"
+    ],
     "cards": [],
     "strates": [],
     "heroes": [],

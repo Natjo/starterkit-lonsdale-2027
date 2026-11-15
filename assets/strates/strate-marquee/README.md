@@ -1,7 +1,7 @@
 # Strate `marquee`
 
 Affiche un défilement continu de cards ou d’images. Le starter utilise par
-défaut le mode images avec trois visuels de démonstration.
+défaut le mode images avec les douze logos de démonstration.
 
 Lire d’abord le [README général des strates](../README.md) et le
 [README du composant marquee](../../components/marquee/README.md).
@@ -97,10 +97,11 @@ La taille WordPress est définie au début du template :
 $image_size = 'full';
 ```
 
-Les images utilisent `picture` avec `fit => 'cover'`. Le starter leur applique
-un ratio `3 / 2` et une largeur maximale de `48rem`. Les trois placeholders de
-`960 × 640 px` sont déclarés dans le manifeste puis importés par Forge. Ils sont
-partagés avec Columns Content afin d’éviter les doublons dans la médiathèque.
+Les images utilisent `picture` avec `cover => true`. Le starter leur applique
+un ratio `3 / 2` et une largeur maximale de `48rem`. Les douze SVG de
+`assets/img/placeholders/logos/` sont déclarés dans le manifeste puis importés
+par Forge. Ils sont partagés avec la strate Logos et illustrent uniquement la
+démonstration, sans représenter des partenaires réels du site.
 
 ## Hydratation
 

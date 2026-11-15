@@ -26,7 +26,7 @@ if ($content_type === 'images') {
         $items[] = [
             'image' => $row['image'],
             'size' => $image_size,
-            'fit' => 'cover',
+            'cover' => true,
             'classes' => 'marquee-image',
         ];
     }

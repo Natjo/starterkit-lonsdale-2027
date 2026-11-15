@@ -10,7 +10,7 @@ $tag = $url !== '' ? 'a' : 'div';
         <?php component('picture', [
             'image' => $args['image'] ?? null,
             'size' => $args['image_size'] ?? 'large',
-            'fit' => 'cover',
+            'cover' => true,
             'classes' => 'card-image',
         ]); ?>
         <div class="card-content">

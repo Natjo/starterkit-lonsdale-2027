@@ -2,6 +2,9 @@
 
 Card éditoriale utilisée par `slider-cards`, sans publication WordPress.
 
+Le manifeste définit `designSystem.columns: 2` pour ouvrir la démonstration sur
+deux colonnes. Ce réglage ne modifie pas la grille du site.
+
 ```php
 card('slide', [
     'title' => 'Notre engagement',
@@ -15,6 +18,9 @@ card('slide', [
 ligne où les trois contenus visibles sont vides. Un lien valide transforme la
 card en lien ; sans URL, elle conserve un conteneur non interactif. L’image
 ACF est attendue sous forme d’identifiant WordPress.
+
+Le texte est limité visuellement à trois lignes, avec des points de suspension
+en cas de dépassement. Le contenu HTML complet reste présent dans la page.
 
 ## Groupe ACF réutilisable
 

@@ -77,3 +77,13 @@ web/wp-content/wp-static-pending.lock
 
 # Rspack process lock (never commit a running build lease)
 .rspack-build.lock/
+
+# Local Design System runtime / generated documentation
+web/.forge/
+design-system/docs/
+design-system/dist.next/
+design-system/node_modules/
+design-system/__pycache__/
+web/.forge/.htaccess
+
+design-system/dist/

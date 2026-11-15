@@ -49,6 +49,13 @@ try {
         return listeners.filter(listener => ['pointermove', 'pointerup', 'pointercancel', 'blur'].includes(listener.type)).length;
     };
     await reset();
+    // A mouse press on a card must not trigger keyboard focus navigation
+    // before its drag has even started (notably on a partially visible slide).
+    await evaluate(`document.querySelector('.slider-content').dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,pointerId:91,pointerType:'mouse',button:0,buttons:1,clientX:500}));document.querySelectorAll('.item a')[1].focus({preventScroll:true});`);
+    await pause(120);
+    assert.ok(await evaluate(`document.querySelector('.slider-content').scrollLeft`)<2,'Mouse focus must not jump to another slide before dragging');
+    await evaluate(`window.dispatchEvent(new PointerEvent('pointercancel',{pointerId:91,pointerType:'mouse'}));`);
+    await reset();
     // Native smooth scroll changes the selected index before the destination is reached.
     await evaluate(`document.querySelector('.next').click()`);await pause(80);
     await evaluate(`document.querySelector('.next').click()`);await pause(1000);

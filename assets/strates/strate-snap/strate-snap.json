@@ -4,6 +4,14 @@
   "type": "strate",
   "name": "snap",
   "slug": "snap",
+  "designSystem": {
+    "options": {
+      "margin": {
+        "top": "",
+        "bottom": "0"
+      }
+    }
+  },
   "assets": {
     "css": { "loading": "split" }
   },

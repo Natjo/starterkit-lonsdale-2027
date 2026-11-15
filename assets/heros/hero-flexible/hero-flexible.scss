@@ -1,9 +1,8 @@
 .hero-flexible {
     padding-bottom: var(--space-md);
 
-    .hero-inner{
+    .hero-inner {
         display: grid;
-        grid-template-columns: 1fr .5fr;
         gap: var(--gap);
         align-items: center;
     }
@@ -19,10 +18,18 @@
         aspect-ratio: 1;
         width: 100%;
         height: auto;
-        overflow: hidden;  
+        overflow: hidden;
     }
 
-    @media #{$breakpoint-lg-down} {}
+    @media #{$breakpoint-lg-down} {
+        .hero-image {
+            display: none;
+        }
+    }
 
-    @media #{$breakpoint-lg-up} {}
+    @media #{$breakpoint-lg-up} {
+        .hero-inner {
+            grid-template-columns: 1fr .5fr;
+        }
+    }
 }

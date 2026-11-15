@@ -1,17 +1,113 @@
 {
   "schemaVersion": 1,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "strate",
   "name": "Logos",
   "slug": "logos",
-  "assets": { "css": { "loading": "normal" } },
+  "assets": {
+    "css": {
+      "loading": "normal"
+    }
+  },
   "defaults": {
-    "title": "Nos partenaires",
-    "text": "<p>Découvrez les organisations qui nous accompagnent.</p>",
-    "logos": []
+    "title": "Exemples de logos",
+    "text": "<p>Une sélection de logos pour illustrer la grille.</p>",
+    "logos": [
+      {
+        "name": "Airbnb",
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/airbnb.svg",
+          "name": "airbnb.svg"
+        }
+      },
+      {
+        "name": "Apple",
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/apple.svg",
+          "name": "apple.svg"
+        }
+      },
+      {
+        "name": "Discord",
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/discord.svg",
+          "name": "discord.svg"
+        }
+      },
+      {
+        "name": "Dropbox",
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/dropbox.svg",
+          "name": "dropbox.svg"
+        }
+      },
+      {
+        "name": "Figma",
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/figma.svg",
+          "name": "figma.svg"
+        }
+      },
+      {
+        "name": "GitHub",
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/github.svg",
+          "name": "github.svg"
+        }
+      },
+      {
+        "name": "Google",
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/google.svg",
+          "name": "google.svg"
+        }
+      },
+      {
+        "name": "LinkedIn",
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/linkedin.svg",
+          "name": "linkedin.svg"
+        }
+      },
+      {
+        "name": "Microsoft",
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/microsoft.svg",
+          "name": "microsoft.svg"
+        }
+      },
+      {
+        "name": "Slack",
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/slack.svg",
+          "name": "slack.svg"
+        }
+      },
+      {
+        "name": "Spotify",
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/spotify.svg",
+          "name": "spotify.svg"
+        }
+      },
+      {
+        "name": "YouTube",
+        "image": {
+          "__forgeStarterMediaPath": "assets/img/placeholders/logos/youtube.svg",
+          "name": "youtube.svg"
+        }
+      }
+    ]
   },
   "dependencies": {
-    "components": ["header", "picture"],
-    "cards": [], "strates": [], "heroes": [], "common": [], "modules": []
+    "components": [
+      "header",
+      "picture"
+    ],
+    "cards": [],
+    "strates": [],
+    "heroes": [],
+    "common": [],
+    "modules": []
   }
 }

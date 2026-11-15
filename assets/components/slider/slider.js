@@ -279,6 +279,9 @@ function Slider(root) {
     };
 
     const onFocusIn = (event) => {
+        // Mouse focus arrives after pointerdown: it must not start a competing
+        // page animation while the user is about to drag a card.
+        if (state.pointerId !== null) return;
         const item = event.target instanceof Element ? event.target.closest(".item") : null;
         const itemIndex = item ? itemIndexes.get(item) : undefined;
         if (itemIndex === undefined || !content.contains(item)) return;

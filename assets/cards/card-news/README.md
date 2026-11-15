@@ -136,5 +136,9 @@ Le groupe **Images** de **Card - news** fournit `card.images.desktop` et
 `picture`. Sans image de card, l’image mise en avant sert de repli. Le payload
 explicite `image` reste accepté ; `images` explicite est prioritaire.
 
+Si aucune source n’est fournie (y compris deux variantes vides), la card affiche
+`assets/img/placeholder.svg` en `cover`, avec un texte alternatif vide : cette
+image de remplacement est décorative. Une variante mobile seule reste utilisée.
+
 Les nouvelles contributions disposent de valeurs de démonstration ; voir le
 [contrat des valeurs par défaut](../README.md#contenu-de-démonstration).

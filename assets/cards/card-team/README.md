@@ -33,3 +33,8 @@ continuent d’utiliser `title`, `text` et `image`, sans imbrication imposée.
 
 Les nouvelles contributions disposent de valeurs de démonstration ; voir le
 [contrat des valeurs par défaut](../README.md#contenu-de-démonstration).
+Le portrait par défaut déclaré pour Forge est
+`assets/img/placeholders/card-team-1.png`. Les autres portraits `card-team-2.png`,
+`card-team-3.png` et `card-team-4.png` restent disponibles pour varier les contenus.
+Le Design System utilise les trois premiers pour ses exemples. Les images déjà
+contribuées ne sont pas remplacées.

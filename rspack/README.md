@@ -49,7 +49,8 @@ de source maps, même si `NODE_ENV` est absent ou si elles sont chargées dans
 un même processus.
 
 En dev, la minification JS se limite à une passe et les fichiers possèdent des
-source maps. En prod,
+source maps. Le CSS reste non minifié pour conserver un code lisible et des
+correspondances plus précises avec les sources SCSS dans l’inspecteur. En prod,
 JS et CSS sont minifiés ; `console.warn` et `console.error` restent disponibles,
 mais `log`, `info`, `debug` et `debugger` sont retirés.
 

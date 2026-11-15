@@ -42,7 +42,7 @@ if ($post_id) {
     <?php component('picture', [
         'images' => $args['images'] ?? [],
         'classes' => 'hero-image',
-        'fit' => "cover",
+        'cover' => true,
         'preload' => true,
     ]); ?>
 </header>

@@ -1338,7 +1338,7 @@ $custom_card = $render_card('news', [
     'image' => 321,
 ]);
 $assert_contains('Card accepte un contenu associatif personnalisé', 'Contenu personnalisé', $custom_card);
-$assert_contains('Card rend son image en cover', '<picture class="picture fit-cover card-image">', $custom_card);
+$assert_contains('Card rend son image en cover', '<picture class="picture cover card-image">', $custom_card);
 $post_card = $render_card('news', 101);
 $assert_contains('Card charge les champs ACF depuis un ID', 'Titre WordPress 101', $post_card);
 $assert_contains('Card transmet le post_id normalisé au template', 'Extrait 101', $post_card);
@@ -1657,17 +1657,17 @@ $picture = $render('picture', [
     'mobile_size' => 'medium',
     'alt' => '',
     'classes' => ['cover', 'cover'],
-    'fit' => 'cover',
+    'cover' => true,
     'attributes' => ['class' => 'duplicate', 'id' => 'responsive-picture'],
     'lazy' => 'false',
     'breakpoint' => 900,
 ]);
-$assert_contains('Picture utilise son payload procédural strict', '<picture class="picture fit-cover cover" id="responsive-picture">', $picture);
+$assert_contains('Picture utilise son payload procédural strict', '<picture class="picture cover" id="responsive-picture">', $picture);
 $assert_contains('Picture rend la variante mobile sous le breakpoint', 'srcset="/images/mobile.jpg" media="(max-width:899px)"', $picture);
 $assert_contains('Picture rend la variante desktop à partir du breakpoint', 'srcset="/images/desktop.jpg" media="(min-width:900px)"', $picture);
 $assert_contains('Picture utilise la variante desktop comme fallback', '<img src="/images/desktop.jpg" alt=""', $picture);
 $assert_not_contains('Picture respecte lazy false', 'loading="lazy"', $picture);
-$assert_not_contains('Picture protège sa classe structurelle', 'class="duplicate"', $picture);
+$assert_not_contains('Picture protège les classes du composant', 'class="duplicate"', $picture);
 
 $GLOBALS['lsd_thumb_calls'] = [];
 $GLOBALS['lsd_webp_sources'] = [
@@ -1680,9 +1680,10 @@ $simple_picture = $render('picture', [
 ]);
 $assert_contains('Picture simple rend le WebP existant dans une source', '<source srcset="/images/simple.webp" type="image/webp">', $simple_picture);
 $assert_contains('Picture simple conserve l’original comme fallback', '<img src="/images/simple.jpg"', $simple_picture);
-$assert_contains('Picture ne définit aucun fit par défaut', '<picture class="picture">', $simple_picture);
-$assert_contains('Picture accepte fluid explicitement', '<picture class="picture fit-fluid">', $render('picture', ['image' => 321, 'fit' => 'fluid']));
-$assert_contains('Picture ignore un fit invalide', '<picture class="picture">', $render('picture', ['image' => 321, 'fit' => 'invalid']));
+$assert_contains('Picture est fluide avec sa classe structurelle par défaut', '<picture class="picture">', $simple_picture);
+$assert_contains('Picture conserve les proportions avec cover false', '<picture class="picture">', $render('picture', ['image' => 321, 'cover' => false]));
+$assert_contains('Picture normalise cover false en chaîne', '<picture class="picture">', $render('picture', ['image' => 321, 'cover' => 'false']));
+$assert_contains('Picture active cover true en chaîne', '<picture class="picture cover">', $render('picture', ['image' => 321, 'cover' => 'true']));
 
 $assert_same(
     'Picture transmet la taille simple au resolver',
@@ -2720,13 +2721,13 @@ $picture_marquee = $render('marquee', [
     'items' => [[
         'image' => 501,
         'size' => 'large',
-        'fit' => 'cover',
+        'cover' => true,
         'classes' => 'marquee-image',
     ]],
     'item_component' => 'picture',
     'hydrate' => false,
 ]);
-$assert_contains('Le marquee rend directement ses pictures', '<picture class="picture fit-cover marquee-image">', $picture_marquee);
+$assert_contains('Le marquee rend directement ses pictures', '<picture class="picture cover marquee-image">', $picture_marquee);
 $assert_contains('Le marquee transmet les images', '<img src="501"', $picture_marquee);
 
 $assert_same('Le marquee refuse une liste directe', '', $render('marquee', [['Ancienne forme']]));
@@ -3164,7 +3165,7 @@ $image_only_slider = $render_strate('slider-images', [
     'images' => [['image' => 401], ['image' => null]],
 ]);
 $assert_same('Le slider images ignore les lignes vides', 1, substr_count($image_only_slider, '<li'));
-$assert_contains('Le slider images utilise picture', '<picture class="picture fit-cover slider-image">', $image_only_slider);
+$assert_contains('Le slider images utilise picture', '<picture class="picture cover slider-image">', $image_only_slider);
 $assert_same('Le slider images vide ne produit aucun HTML', '', $render_strate('slider-images', ['images' => []]));
 
 $post_types_by_id = [501 => 'news', 502 => 'page', 503 => 'news'];
@@ -3195,7 +3196,7 @@ $marquee_images_strate = $render_strate('marquee', [
     ],
 ]);
 $assert_same('La strate marquee ignore les lignes image vides', 1, substr_count($marquee_images_strate, 'class="marquee-item"'));
-$assert_contains('La strate marquee rend ses images en cover', '<picture class="picture fit-cover marquee-image">', $marquee_images_strate);
+$assert_contains('La strate marquee rend ses images en cover', '<picture class="picture cover marquee-image">', $marquee_images_strate);
 $assert_same('La strate marquee transmet sa taille d’image', [601, 'full'], $GLOBALS['lsd_thumb_calls'][0] ?? null);
 
 $marquee_html_strate = $render_strate('marquee', [

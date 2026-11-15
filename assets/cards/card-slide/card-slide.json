@@ -4,6 +4,9 @@
   "type": "card",
   "name": "Slide",
   "slug": "slide",
+  "designSystem": {
+    "columns": 2
+  },
   "assets": {
     "css": {
       "loading": "normal"

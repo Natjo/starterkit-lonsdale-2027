@@ -69,7 +69,7 @@ component('marquee', [
         [
             'image' => 123,
             'size' => 'large',
-            'fit' => 'cover',
+            'cover' => true,
         ],
     ],
     'item_component' => 'picture',

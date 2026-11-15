@@ -15,8 +15,7 @@ Les champs ACF image retournent l'ID du média :
 component('picture', [
     'image' => $args['image'] ?? null,
     'size' => 'large',
-    'fit' => 'fluid',
-    'classes' => 'cover',
+    'classes' => 'editorial-image',
 ]);
 ```
 
@@ -47,7 +46,7 @@ supportées.
 | `images` | `ID\|URL\|array{desktop?,mobile?}` | — | Compatibilité simple ou variantes responsive |
 | `desktop_size` | `string\|array{int,int}` | valeur de `size` | Taille WordPress desktop |
 | `mobile_size` | `string\|array{int,int}` | valeur de `size` | Taille WordPress mobile |
-| `fit` | `'fluid'\|'cover'` | aucune classe de fit | Comportement dimensionnel de l’image |
+| `cover` | `bool` | `false` | Recadre l’image pour remplir la hauteur disponible |
 | `alt` | `scalar\|Stringable` | alt WordPress | Texte alternatif du fallback |
 | `classes` | `string\|array` | `''` | Classes du `<picture>` |
 | `attributes` | `array` | `[]` | Attributs du `<picture>` |
@@ -66,18 +65,20 @@ variante respective.
 
 ## Ajustement dans le conteneur
 
-Sans `fit`, aucune classe `fit-*` n’est ajoutée. La classe structurelle `picture`
-et les classes personnalisées restent présentes. Une valeur vide ou invalide
-ne produit pas de classe de fit non plus.
-
-Le mode explicite `fit => 'fluid'` ajoute `fit-fluid` et conserve les proportions naturelles :
+Par défaut, l’image conserve ses proportions naturelles. La classe structurelle
+`picture` est toujours présente ; aucune classe `fit-*` n’est générée.
+L’ancienne option `fit` n’est plus interprétée.
 
 ```css
 width: 100%;
 height: auto;
 ```
 
-Le mode `cover` remplit la hauteur disponible :
+L’option `cover => true` ajoute la classe `cover` et remplit la hauteur disponible :
+
+```php
+component('picture', ['image' => 123, 'cover' => true]);
+```
 
 ```css
 width: 100%;

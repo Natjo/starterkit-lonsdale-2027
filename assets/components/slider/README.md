@@ -4,6 +4,9 @@ Génère un carrousel horizontal fondé sur le scroll natif et `scroll-snap`. Le
 composant fonctionne uniquement avec `component('slider', [...])` et un payload
 associatif.
 
+Pendant un geste à la souris, le focus d’un lien de card ne déclenche pas de
+changement de slide. La navigation au focus reste disponible au clavier.
+
 ## Mode card
 
 ```php

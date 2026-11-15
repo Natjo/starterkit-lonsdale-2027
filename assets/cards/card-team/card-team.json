@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "card",
   "name": "Team",
   "slug": "team",
@@ -42,8 +42,8 @@
       "type": "image",
       "required": false,
       "default": {
-        "__forgeStarterMediaPath": "assets/img/placeholders/strate-quote-author.jpg",
-        "name": "strate-quote-author.jpg"
+        "__forgeStarterMediaPath": "assets/img/placeholders/card-team-1.png",
+        "name": "card-team-1.png"
       }
     },
     {

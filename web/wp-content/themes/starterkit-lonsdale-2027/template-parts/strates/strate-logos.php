@@ -42,6 +42,9 @@ if ($logos === []) return;
                     component('picture', $picture);
                     ?>
                     <?php if ($has_link) : ?></a><?php endif; ?>
+                    <?php if ($logo['name'] !== '') : ?>
+                        <p class="logos-name"><?= esc_html($logo['name']) ?></p>
+                    <?php endif; ?>
                 </li>
             <?php endforeach; ?>
         </ul>

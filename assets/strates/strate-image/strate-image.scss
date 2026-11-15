@@ -1,5 +1,18 @@
 .strate-image {
-    .strate-image-media img {
+
+    picture {
+        grid-column: full;
+    }
+
+    &.has-fixed-height picture {
+        height: var(--image-height, 60rem);
+
+        img {
+            height: 100%;
+        }
+    }
+
+    img {
         width: 100%;
         height: auto;
     }

@@ -9,7 +9,7 @@ $quote = theme_string($args['quote'] ?? '');
 if ($quote === '') return;
 ?>
 
-<article class="card-testimonial">
+<div class="card-testimonial">
     <?php component('quote', [
         'quote' => $quote,
         'image' => $args['image'] ?? null,
@@ -17,4 +17,4 @@ if ($quote === '') return;
         'author' => $args['author'] ?? '',
         'source' => $args['source'] ?? '',
     ]); ?>
-</article>
+</div>

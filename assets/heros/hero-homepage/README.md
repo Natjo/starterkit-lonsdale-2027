@@ -17,6 +17,7 @@ hero('homepage', ['title' => 'Test']);
     'suptitle' => 'Surtitre',
     'title' => 'Titre de la page',
     'text' => '<p>Introduction éditoriale.</p>',
+    'link' => ['url' => '/contact/', 'title' => 'Nous contacter', 'target' => ''],
     'images' => [
         'desktop' => 123,
         'mobile' => 124,
@@ -39,6 +40,7 @@ catalogue ne remplace pas les contributions existantes.
 | Sur titre | `suptitle` | `wysiwyg light` |         Non |           Oui |
 | Titre     | `title`    | `textarea`      |         Non |           Oui |
 | Texte     | `text`     | `wysiwyg`       |         Non |           Oui |
+| Lien      | `link` | `link` (tableau ACF) | Non | Oui |
 | Desktop   | `images.desktop` | `image`  |         Non |           Oui |
 | Mobile    | `images.mobile`  | `image`  |         Non |           Oui |
 
@@ -51,3 +53,10 @@ catalogue ne remplace pas les contributions existantes.
 - `component('eyebrow', [...])`
 - `component('title', [...])`
 - `component('text', [...])`
+
+Le lien facultatif est rendu après le texte avec `component('link')`.
+Sans URL ou libellé valide, aucun lien n’est affiché. Le manifeste fournit
+« En savoir plus » pour les nouvelles contributions Forge, sans remplacer un
+lien existant ou volontairement supprimé.
+
+- Dépendance : `component('link', [...])`.

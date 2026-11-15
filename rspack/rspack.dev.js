@@ -23,7 +23,6 @@ const devOptimization = {
                 },
             },
         }),
-        new rspack.LightningCssMinimizerRspackPlugin(),
     ],
     removeAvailableModules: false,
     removeEmptyChunks: false,

@@ -196,3 +196,8 @@ if (ENV_LOCAL) {
         $phpmailer->IsSMTP();
     });
 }
+
+// Development tooling is mounted/installed locally; never loaded in production.
+if (ENV_LOCAL && is_file(ABSPATH . '.forge/design-system/bootstrap.php')) {
+    require_once ABSPATH . '.forge/design-system/bootstrap.php';
+}
