@@ -1,2 +1,39 @@
-.anchor-nav ul{flex-direction:column;display:flex}.anchor-nav a{color:var(--color-muted);text-underline-offset:.4em;padding-block:.6rem;font-weight:500;-webkit-text-decoration:underline #0000;text-decoration:underline #0000;transition:color .2s,text-decoration-color .2s;display:inline-flex}.anchor-nav a:hover,.anchor-nav a.active,.anchor-nav a[aria-current=location]{color:var(--color-1);text-decoration-color:currentColor}.anchor-nav a:focus-visible{outline:2px solid var(--color-2);outline-offset:.3rem}.anchor-nav.horizontal{scrollbar-width:thin;min-width:0;overflow-x:auto}.anchor-nav.horizontal ul{flex-direction:row;width:max-content;min-width:100%}@media (prefers-reduced-motion:reduce){.anchor-nav a{transition:none}}
+.anchor-nav ul {
+  display: flex;
+  flex-direction: column;
+}
+.anchor-nav a {
+  display: inline-flex;
+  padding-block: 0.6rem;
+  color: var(--color-muted);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.4em;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+.anchor-nav a:hover, .anchor-nav a.active, .anchor-nav a[aria-current=location] {
+  color: var(--color-1);
+  text-decoration-color: currentColor;
+}
+.anchor-nav a:focus-visible {
+  outline: 2px solid var(--color-2);
+  outline-offset: 0.3rem;
+}
+.anchor-nav.horizontal {
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.anchor-nav.horizontal ul {
+  flex-direction: row;
+  width: max-content;
+  min-width: 100%;
+}
+@media (prefers-reduced-motion: reduce) {
+  .anchor-nav a {
+    transition: none;
+  }
+}
+
 /*# sourceMappingURL=anchor-nav.css.map*/
