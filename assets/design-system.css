@@ -985,6 +985,13 @@
     line-height: 1.2;
 }
 
+.design-system-background-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.2rem;
+}
+
 
 .design-system-icons {
     display: grid;

@@ -28,7 +28,8 @@
   --color-overlay: rgba(17, 17, 19, .48);
   --color-border: #dedee3;
   --color-shadow: rgba(17, 17, 19, .12);
-  --color-text: #171719;
+  --color-text-default: #171719;
+  --color-text: var(--color-text-default);
   --color-text-invert: #fff;
   --color-muted: #68686f;
   --color-error: #b42318;
@@ -39,6 +40,12 @@
   --color-2: #315efb;
   --color-3: #f1f2f4;
   --color-theme: var(--color-2);
+  --bg-color: var(--color-bg);
+  --bg-text: var(--color-text);
+  --bg-action: var(--color-2);
+  --bg-action-text: var(--color-text-invert);
+  --bg-action-hover: color-mix(in srgb, var(--color-1) 86%, #fff);
+  --bg-action-hover-text: var(--color-text-invert);
   /*--layout:
   [full] var(--ctr-offset) 
   [fluid ctr ctr-sm center] auto [center-end ctr-sm-end ctr-end fluid-end] var(--ctr-offset) [full-end];*/
@@ -286,18 +293,35 @@ body {
 /* bg */
 .bg-color-1 {
   --bg-color: var(--color-1);
-  background-color: var(--color-1);
-  color: var(--color-text-invert);
+  --bg-text: var(--color-text-invert);
+  --bg-action: var(--color-text-invert);
+  --bg-action-text: var(--color-1);
+  --bg-action-hover: var(--color-3);
+  --bg-action-hover-text: var(--color-1);
+  background-color: var(--bg-color);
+  color: var(--bg-text);
 }
 
 .bg-color-2 {
-  background-color: var(--color-2);
-  color: var(--color-text-invert);
+  --bg-color: var(--color-2);
+  --bg-text: var(--color-text-invert);
+  --bg-action: var(--color-text-invert);
+  --bg-action-text: var(--color-1);
+  --bg-action-hover: var(--color-3);
+  --bg-action-hover-text: var(--color-1);
+  background-color: var(--bg-color);
+  color: var(--bg-text);
 }
 
 .bg-color-3 {
-  background-color: var(--color-3);
-  color: var(--color-text);
+  --bg-color: var(--color-3);
+  --bg-text: var(--color-text-default);
+  --bg-action: var(--color-2);
+  --bg-action-text: var(--color-text-invert);
+  --bg-action-hover: color-mix(in srgb, var(--color-1) 86%, #fff);
+  --bg-action-hover-text: var(--color-text-invert);
+  background-color: var(--bg-color);
+  color: var(--bg-text);
 }
 
 /* ctr */
@@ -2981,6 +3005,11 @@ html.lenis body {
 }
 
 .btn {
+  --btn-bg: initial;
+  --btn-color: initial;
+  --btn-border: initial;
+  --btn-hover-bg: initial;
+  --btn-hover-color: initial;
   font-size: 1.4rem;
   font-weight: 400;
   line-height: 2rem;
@@ -2991,6 +3020,16 @@ html.lenis body {
   gap: 0.8rem;
   border-radius: var(--radius);
   text-align: center;
+  background: var(--btn-bg, transparent);
+  color: var(--btn-color, inherit);
+  border: var(--btn-border, 0);
+}
+.btn.icon-first > svg {
+  order: -1;
+}
+.card:hover .btn, .btn:hover {
+  background: var(--btn-hover-bg, var(--btn-bg, transparent));
+  color: var(--btn-hover-color, var(--btn-color, inherit));
 }
 .btn:focus-visible {
   outline: 2px solid currentColor;
@@ -3011,29 +3050,50 @@ html.lenis body {
   }
 }
 
-.btn-1 {
-  background: var(--color-2);
-  color: var(--color-text-invert);
+.btn-solid {
+  --btn-bg: var(--color-2);
+  --btn-color: var(--color-text-invert);
+  --btn-hover-bg: color-mix(in srgb, var(--color-1) 86%, #fff);
+  --btn-hover-color: var(--color-text-invert);
 }
-.card:hover .btn-1, .btn-1:hover {
-  background: color-mix(in srgb, var(--color-1) 86%, #fff);
+.btn-solid.btn-invert {
+  --btn-bg: var(--bg-action);
+  --btn-color: var(--bg-action-text);
+  --btn-hover-bg: var(--bg-action-hover);
+  --btn-hover-color: var(--bg-action-hover-text);
 }
 
-.btn-2 {
-  border: 1px solid var(--color-2);
+.btn-outline {
+  --btn-color: var(--bg-action);
+  --btn-border: 1px solid currentColor;
+}
+
+.btn-ghost {
+  --btn-color: var(--bg-action);
+  --btn-hover-bg: color-mix(in srgb, var(--bg-action) 10%, transparent);
 }
 
 .link {
+  --link-color: var(--color-2);
+  --link-color-hover: var(--link-color);
   display: inline-flex;
   align-items: center;
   gap: 0.8rem;
-  color: var(--color-2);
+  color: var(--link-color);
   font-weight: 600;
   text-decoration: underline;
   text-decoration-color: transparent;
   text-underline-offset: 0.25em;
 }
+.link.icon-first > svg {
+  order: -1;
+}
+.link.link-invert {
+  --link-color: var(--bg-text);
+  --link-color-hover: var(--link-color);
+}
 .link:hover {
+  color: var(--link-color-hover, var(--link-color));
   text-decoration-color: currentColor;
 }
 .link:focus-visible {
@@ -3044,14 +3104,6 @@ html.lenis body {
 .link:disabled, .link[aria-disabled=true] {
   opacity: 0.5;
   pointer-events: none;
-}
-
-.link-1 {
-  font-weight: 600;
-}
-
-.link-2 {
-  font-weight: 600;
 }
 
 .list {
@@ -3167,8 +3219,8 @@ html.lenis body {
 	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https:\/\/schema.org","@graph":[{"@type":"WebSite","@id":"https:\/\/starterkit-lonsdale-2027.code\/#website","url":"https:\/\/starterkit-lonsdale-2027.code\/","name":"Starter kit 2027","description":"","publisher":{"@id":"https:\/\/starterkit-lonsdale-2027.code\/#organization"},"potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https:\/\/starterkit-lonsdale-2027.code\/?s={search_term_string}"},"query-input":{"@type":"PropertyValueSpecification","valueRequired":true,"valueName":"search_term_string"}}],"inLanguage":"fr-FR"},{"@type":"Organization","@id":"https:\/\/starterkit-lonsdale-2027.code\/#organization","name":"Starter kit 2027","url":"https:\/\/starterkit-lonsdale-2027.code\/","logo":{"@type":"ImageObject","inLanguage":"fr-FR","@id":"https:\/\/starterkit-lonsdale-2027.code\/#\/schema\/logo\/image\/","url":"https:\/\/starterkit-lonsdale-2027.code\/wp-content\/uploads\/2026\/07\/starterkit-social-default.png","contentUrl":"https:\/\/starterkit-lonsdale-2027.code\/wp-content\/uploads\/2026\/07\/starterkit-social-default.png","width":512,"height":512,"caption":"Starter kit 2027"},"image":{"@id":"https:\/\/starterkit-lonsdale-2027.code\/#\/schema\/logo\/image\/"}}]}</script>
 
 
-<link rel='stylesheet' id='theme-design-system-css' href='/starterkit-lonsdale-2027/assets/design-system.css?ver=1794754791' media='all' />
-<link rel='stylesheet' id='app-css-css' href='/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/css/app.css?ver=1794765527' media='all' />
+<link rel='stylesheet' id='theme-design-system-css' href='/starterkit-lonsdale-2027/assets/design-system.css?ver=1794906277' media='all' />
+<link rel='stylesheet' id='app-css-css' href='/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/css/app.css?ver=1794832314' media='all' />
 
     </head>
 
@@ -4241,10 +4293,10 @@ jusqu'au <code>destroy</code></li>
 </footer>
 <script id="forge-design-system-js-module" src="/starterkit-lonsdale-2027/assets/boot.js?ver=1794653906" type="module"></script>
 <script id="app-js-js-extra">
-var ParamsData = {"ajaxUrl":"/wp-admin/admin-ajax.php","nonce":"1eeef5f911"};
+var ParamsData = {"ajaxUrl":"/wp-admin/admin-ajax.php","nonce":"defc338493"};
 //# sourceURL=app-js-js-extra
 </script>
-<script id="app-js-js" defer src="/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/js/app.js?ver=1794765527"></script>
+<script id="app-js-js" defer src="/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/js/app.js?ver=1794832314"></script>
 
 </body>
 </html>

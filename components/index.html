@@ -28,7 +28,8 @@
   --color-overlay: rgba(17, 17, 19, .48);
   --color-border: #dedee3;
   --color-shadow: rgba(17, 17, 19, .12);
-  --color-text: #171719;
+  --color-text-default: #171719;
+  --color-text: var(--color-text-default);
   --color-text-invert: #fff;
   --color-muted: #68686f;
   --color-error: #b42318;
@@ -39,6 +40,12 @@
   --color-2: #315efb;
   --color-3: #f1f2f4;
   --color-theme: var(--color-2);
+  --bg-color: var(--color-bg);
+  --bg-text: var(--color-text);
+  --bg-action: var(--color-2);
+  --bg-action-text: var(--color-text-invert);
+  --bg-action-hover: color-mix(in srgb, var(--color-1) 86%, #fff);
+  --bg-action-hover-text: var(--color-text-invert);
   /*--layout:
   [full] var(--ctr-offset) 
   [fluid ctr ctr-sm center] auto [center-end ctr-sm-end ctr-end fluid-end] var(--ctr-offset) [full-end];*/
@@ -286,18 +293,35 @@ body {
 /* bg */
 .bg-color-1 {
   --bg-color: var(--color-1);
-  background-color: var(--color-1);
-  color: var(--color-text-invert);
+  --bg-text: var(--color-text-invert);
+  --bg-action: var(--color-text-invert);
+  --bg-action-text: var(--color-1);
+  --bg-action-hover: var(--color-3);
+  --bg-action-hover-text: var(--color-1);
+  background-color: var(--bg-color);
+  color: var(--bg-text);
 }
 
 .bg-color-2 {
-  background-color: var(--color-2);
-  color: var(--color-text-invert);
+  --bg-color: var(--color-2);
+  --bg-text: var(--color-text-invert);
+  --bg-action: var(--color-text-invert);
+  --bg-action-text: var(--color-1);
+  --bg-action-hover: var(--color-3);
+  --bg-action-hover-text: var(--color-1);
+  background-color: var(--bg-color);
+  color: var(--bg-text);
 }
 
 .bg-color-3 {
-  background-color: var(--color-3);
-  color: var(--color-text);
+  --bg-color: var(--color-3);
+  --bg-text: var(--color-text-default);
+  --bg-action: var(--color-2);
+  --bg-action-text: var(--color-text-invert);
+  --bg-action-hover: color-mix(in srgb, var(--color-1) 86%, #fff);
+  --bg-action-hover-text: var(--color-text-invert);
+  background-color: var(--bg-color);
+  color: var(--bg-text);
 }
 
 /* ctr */
@@ -2981,6 +3005,11 @@ html.lenis body {
 }
 
 .btn {
+  --btn-bg: initial;
+  --btn-color: initial;
+  --btn-border: initial;
+  --btn-hover-bg: initial;
+  --btn-hover-color: initial;
   font-size: 1.4rem;
   font-weight: 400;
   line-height: 2rem;
@@ -2991,6 +3020,16 @@ html.lenis body {
   gap: 0.8rem;
   border-radius: var(--radius);
   text-align: center;
+  background: var(--btn-bg, transparent);
+  color: var(--btn-color, inherit);
+  border: var(--btn-border, 0);
+}
+.btn.icon-first > svg {
+  order: -1;
+}
+.card:hover .btn, .btn:hover {
+  background: var(--btn-hover-bg, var(--btn-bg, transparent));
+  color: var(--btn-hover-color, var(--btn-color, inherit));
 }
 .btn:focus-visible {
   outline: 2px solid currentColor;
@@ -3011,29 +3050,50 @@ html.lenis body {
   }
 }
 
-.btn-1 {
-  background: var(--color-2);
-  color: var(--color-text-invert);
+.btn-solid {
+  --btn-bg: var(--color-2);
+  --btn-color: var(--color-text-invert);
+  --btn-hover-bg: color-mix(in srgb, var(--color-1) 86%, #fff);
+  --btn-hover-color: var(--color-text-invert);
 }
-.card:hover .btn-1, .btn-1:hover {
-  background: color-mix(in srgb, var(--color-1) 86%, #fff);
+.btn-solid.btn-invert {
+  --btn-bg: var(--bg-action);
+  --btn-color: var(--bg-action-text);
+  --btn-hover-bg: var(--bg-action-hover);
+  --btn-hover-color: var(--bg-action-hover-text);
 }
 
-.btn-2 {
-  border: 1px solid var(--color-2);
+.btn-outline {
+  --btn-color: var(--bg-action);
+  --btn-border: 1px solid currentColor;
+}
+
+.btn-ghost {
+  --btn-color: var(--bg-action);
+  --btn-hover-bg: color-mix(in srgb, var(--bg-action) 10%, transparent);
 }
 
 .link {
+  --link-color: var(--color-2);
+  --link-color-hover: var(--link-color);
   display: inline-flex;
   align-items: center;
   gap: 0.8rem;
-  color: var(--color-2);
+  color: var(--link-color);
   font-weight: 600;
   text-decoration: underline;
   text-decoration-color: transparent;
   text-underline-offset: 0.25em;
 }
+.link.icon-first > svg {
+  order: -1;
+}
+.link.link-invert {
+  --link-color: var(--bg-text);
+  --link-color-hover: var(--link-color);
+}
 .link:hover {
+  color: var(--link-color-hover, var(--link-color));
   text-decoration-color: currentColor;
 }
 .link:focus-visible {
@@ -3044,14 +3104,6 @@ html.lenis body {
 .link:disabled, .link[aria-disabled=true] {
   opacity: 0.5;
   pointer-events: none;
-}
-
-.link-1 {
-  font-weight: 600;
-}
-
-.link-2 {
-  font-weight: 600;
 }
 
 .list {
@@ -3167,8 +3219,8 @@ html.lenis body {
 	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https:\/\/schema.org","@graph":[{"@type":"WebSite","@id":"https:\/\/starterkit-lonsdale-2027.code\/#website","url":"https:\/\/starterkit-lonsdale-2027.code\/","name":"Starter kit 2027","description":"","publisher":{"@id":"https:\/\/starterkit-lonsdale-2027.code\/#organization"},"potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https:\/\/starterkit-lonsdale-2027.code\/?s={search_term_string}"},"query-input":{"@type":"PropertyValueSpecification","valueRequired":true,"valueName":"search_term_string"}}],"inLanguage":"fr-FR"},{"@type":"Organization","@id":"https:\/\/starterkit-lonsdale-2027.code\/#organization","name":"Starter kit 2027","url":"https:\/\/starterkit-lonsdale-2027.code\/","logo":{"@type":"ImageObject","inLanguage":"fr-FR","@id":"https:\/\/starterkit-lonsdale-2027.code\/#\/schema\/logo\/image\/","url":"https:\/\/starterkit-lonsdale-2027.code\/wp-content\/uploads\/2026\/07\/starterkit-social-default.png","contentUrl":"https:\/\/starterkit-lonsdale-2027.code\/wp-content\/uploads\/2026\/07\/starterkit-social-default.png","width":512,"height":512,"caption":"Starter kit 2027"},"image":{"@id":"https:\/\/starterkit-lonsdale-2027.code\/#\/schema\/logo\/image\/"}}]}</script>
 
 
-<link rel='stylesheet' id='theme-design-system-css' href='/starterkit-lonsdale-2027/assets/design-system.css?ver=1794754791' media='all' />
-<link rel='stylesheet' id='app-css-css' href='/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/css/app.css?ver=1794765527' media='all' />
+<link rel='stylesheet' id='theme-design-system-css' href='/starterkit-lonsdale-2027/assets/design-system.css?ver=1794906277' media='all' />
+<link rel='stylesheet' id='app-css-css' href='/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/css/app.css?ver=1794832314' media='all' />
 
     </head>
 
@@ -3705,17 +3757,17 @@ anciens alias <code>label</code>, <code>title</code> et <code>text</code> ne son
         <section class="design-system-section design-system-section--component" id="component-btn">
             <div class="design-system-demo">
                 <h2 class="design-system-section-title"><code>btn</code></h2>
-                <p class="design-system-note">Version 1.0.0</p>
+                <p class="design-system-note">Version 2.0.0</p>
                                 <div class="design-system-variants">
                                             <div class="design-system-variant">
-                            <h3><code>btn-1</code></h3>
+                            <h3><code>btn-solid</code></h3>
                             <ul class="design-system-preview" role="list">
                                                                     <li>
-                                        <button type="button" class="btn btn-1">
+                                        <button type="button" class="btn btn-solid">
             Bouton simple        </button>
                                     </li>
                                                                     <li>
-                                        <button type="button" class="btn btn-1">
+                                        <button type="button" class="btn btn-solid">
             <span>Bouton avec icône</span>
                 <svg class="icon icon-blank" width="16" height="16" aria-hidden="true" focusable="false">
     <use href="/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/img/icons.svg#blank"></use>
@@ -3723,7 +3775,7 @@ anciens alias <code>label</code>, <code>title</code> et <code>text</code> ne son
     </button>
                                     </li>
                                                                     <li>
-                                        <button type="button" class="btn btn-1">
+                                        <button type="button" class="btn btn-solid">
             <span>Bouton avec SVG</span>
                 <svg class="btn-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
             <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -3731,34 +3783,34 @@ anciens alias <code>label</code>, <code>title</code> et <code>text</code> ne son
     </button>
                                     </li>
                                                                     <li>
-                                        <button type="button" class="btn btn-1" aria-label="Ouvrir les détails (icône seule)">
+                                        <button type="button" class="btn btn-solid" aria-label="Ouvrir les détails (icône seule)">
                 <svg class="icon icon-blank" width="16" height="16" aria-hidden="true" focusable="false">
     <use href="/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/img/icons.svg#blank"></use>
 </svg>
     </button>
                                     </li>
                                                                     <li>
-                                        <button type="button" class="btn btn-1" aria-label="Ouvrir les détails (SVG seul)">
+                                        <button type="button" class="btn btn-solid" aria-label="Ouvrir les détails (SVG seul)">
                 <svg class="btn-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
             <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
     </button>
                                     </li>
                                                                     <li>
-                                        <button type="button" class="btn btn-1" disabled>
+                                        <button type="button" class="btn btn-solid" disabled>
             Bouton désactivé        </button>
                                     </li>
                                                             </ul>
                         </div>
                                             <div class="design-system-variant">
-                            <h3><code>btn-2</code></h3>
+                            <h3><code>btn-outline</code></h3>
                             <ul class="design-system-preview" role="list">
                                                                     <li>
-                                        <button type="button" class="btn btn-2">
+                                        <button type="button" class="btn btn-outline">
             Bouton simple        </button>
                                     </li>
                                                                     <li>
-                                        <button type="button" class="btn btn-2">
+                                        <button type="button" class="btn btn-outline">
             <span>Bouton avec icône</span>
                 <svg class="icon icon-blank" width="16" height="16" aria-hidden="true" focusable="false">
     <use href="/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/img/icons.svg#blank"></use>
@@ -3766,7 +3818,7 @@ anciens alias <code>label</code>, <code>title</code> et <code>text</code> ne son
     </button>
                                     </li>
                                                                     <li>
-                                        <button type="button" class="btn btn-2">
+                                        <button type="button" class="btn btn-outline">
             <span>Bouton avec SVG</span>
                 <svg class="btn-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
             <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -3774,21 +3826,107 @@ anciens alias <code>label</code>, <code>title</code> et <code>text</code> ne son
     </button>
                                     </li>
                                                                     <li>
-                                        <button type="button" class="btn btn-2" aria-label="Ouvrir les détails (icône seule)">
+                                        <button type="button" class="btn btn-outline" aria-label="Ouvrir les détails (icône seule)">
                 <svg class="icon icon-blank" width="16" height="16" aria-hidden="true" focusable="false">
     <use href="/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/img/icons.svg#blank"></use>
 </svg>
     </button>
                                     </li>
                                                                     <li>
-                                        <button type="button" class="btn btn-2" aria-label="Ouvrir les détails (SVG seul)">
+                                        <button type="button" class="btn btn-outline" aria-label="Ouvrir les détails (SVG seul)">
                 <svg class="btn-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
             <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
     </button>
                                     </li>
                                                                     <li>
-                                        <button type="button" class="btn btn-2" disabled>
+                                        <button type="button" class="btn btn-outline" disabled>
+            Bouton désactivé        </button>
+                                    </li>
+                                                            </ul>
+                        </div>
+                                            <div class="design-system-variant">
+                            <h3><code>btn-ghost</code></h3>
+                            <ul class="design-system-preview" role="list">
+                                                                    <li>
+                                        <button type="button" class="btn btn-ghost">
+            Bouton simple        </button>
+                                    </li>
+                                                                    <li>
+                                        <button type="button" class="btn btn-ghost">
+            <span>Bouton avec icône</span>
+                <svg class="icon icon-blank" width="16" height="16" aria-hidden="true" focusable="false">
+    <use href="/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/img/icons.svg#blank"></use>
+</svg>
+    </button>
+                                    </li>
+                                                                    <li>
+                                        <button type="button" class="btn btn-ghost">
+            <span>Bouton avec SVG</span>
+                <svg class="btn-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    </button>
+                                    </li>
+                                                                    <li>
+                                        <button type="button" class="btn btn-ghost" aria-label="Ouvrir les détails (icône seule)">
+                <svg class="icon icon-blank" width="16" height="16" aria-hidden="true" focusable="false">
+    <use href="/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/img/icons.svg#blank"></use>
+</svg>
+    </button>
+                                    </li>
+                                                                    <li>
+                                        <button type="button" class="btn btn-ghost" aria-label="Ouvrir les détails (SVG seul)">
+                <svg class="btn-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    </button>
+                                    </li>
+                                                                    <li>
+                                        <button type="button" class="btn btn-ghost" disabled>
+            Bouton désactivé        </button>
+                                    </li>
+                                                            </ul>
+                        </div>
+                                            <div class="design-system-variant">
+                            <h3><code>btn-solid btn-invert</code></h3>
+                            <ul class="design-system-preview" role="list">
+                                                                    <li>
+                                        <button type="button" class="btn btn-solid btn-invert">
+            Bouton simple        </button>
+                                    </li>
+                                                                    <li>
+                                        <button type="button" class="btn btn-solid btn-invert">
+            <span>Bouton avec icône</span>
+                <svg class="icon icon-blank" width="16" height="16" aria-hidden="true" focusable="false">
+    <use href="/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/img/icons.svg#blank"></use>
+</svg>
+    </button>
+                                    </li>
+                                                                    <li>
+                                        <button type="button" class="btn btn-solid btn-invert">
+            <span>Bouton avec SVG</span>
+                <svg class="btn-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    </button>
+                                    </li>
+                                                                    <li>
+                                        <button type="button" class="btn btn-solid btn-invert" aria-label="Ouvrir les détails (icône seule)">
+                <svg class="icon icon-blank" width="16" height="16" aria-hidden="true" focusable="false">
+    <use href="/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/img/icons.svg#blank"></use>
+</svg>
+    </button>
+                                    </li>
+                                                                    <li>
+                                        <button type="button" class="btn btn-solid btn-invert" aria-label="Ouvrir les détails (SVG seul)">
+                <svg class="btn-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    </button>
+                                    </li>
+                                                                    <li>
+                                        <button type="button" class="btn btn-solid btn-invert" disabled>
             Bouton désactivé        </button>
                                     </li>
                                                             </ul>
@@ -3803,10 +3941,48 @@ classe <code>btn</code>. Le composant fonctionne uniquement avec <code>component
 et un payload associatif.</p>
 <p>Le rendu PHP est partagé avec <code>link</code> dans <code>template-parts/utils/action.php</code>.
 Chaque composant conserve sa classe racine, sa classe SVG et ses styles.</p>
+<h5>Variantes visuelles</h5>
+<p>La classe <code>btn</code> est ajoutée automatiquement par le composant. Passer la variante
+souhaitée dans <code>classes</code> ; aucune variante visuelle n’est sélectionnée par défaut.</p>
+<table>
+<thead>
+<tr>
+<th><code>classes</code></th>
+<th>Apparence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>btn-solid</code></td>
+<td>Fond plein, palette standard</td>
+</tr>
+<tr>
+<td><code>btn-solid btn-invert</code></td>
+<td>Fond plein adapté au contexte du fond</td>
+</tr>
+<tr>
+<td><code>btn-outline</code></td>
+<td>Bordure, fond transparent</td>
+</tr>
+<tr>
+<td><code>btn-ghost</code></td>
+<td>Sans bordure, fond transparent ; léger fond au survol</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-php"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;btn&#x27;</span>, [<span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;Découvrir&#x27;</span>, <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-solid&#x27;</span>]);
+<span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;btn&#x27;</span>, [<span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;Découvrir&#x27;</span>, <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-solid btn-invert&#x27;</span>]);
+<span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;btn&#x27;</span>, [<span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;En savoir plus&#x27;</span>, <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-outline&#x27;</span>]);
+<span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;btn&#x27;</span>, [<span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;Annuler&#x27;</span>, <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-ghost&#x27;</span>]);
+</code></pre>
+<p><code>btn-invert</code> est un modificateur de <code>btn-solid</code>, pas une variante autonome.
+Les variantes fonctionnent avec un bouton natif, un lien ou un <code>span</code> et
+acceptent les options <code>icon</code> et <code>svg</code> décrites plus bas. Les anciens noms
+<code>btn-1</code>, <code>btn-2</code> et <code>light</code> sont remplacés, sans alias CSS.</p>
 <h5>Bouton</h5>
 <pre><code class="language-php"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;btn&#x27;</span>, [
     <span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;Envoyer&#x27;</span>,
-    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-1&#x27;</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-solid&#x27;</span>,
     <span class="hljs-string">&#x27;attributes&#x27;</span> =&gt; [
         <span class="hljs-string">&#x27;type&#x27;</span> =&gt; <span class="hljs-string">&#x27;submit&#x27;</span>,
         <span class="hljs-string">&#x27;aria-label&#x27;</span> =&gt; <span class="hljs-string">&#x27;Envoyer le formulaire&#x27;</span>,
@@ -3820,7 +3996,7 @@ Chaque composant conserve sa classe racine, sa classe SVG et ses styles.</p>
         <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Découvrir le projet&#x27;</span>,
         <span class="hljs-string">&#x27;target&#x27;</span> =&gt; <span class="hljs-string">&#x27;&#x27;</span>,
     ],
-    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-1&#x27;</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-solid&#x27;</span>,
     <span class="hljs-string">&#x27;icon&#x27;</span> =&gt; [
         <span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;blank&#x27;</span>,
         <span class="hljs-string">&#x27;width&#x27;</span> =&gt; <span class="hljs-number">16</span>,
@@ -3892,29 +4068,29 @@ ne produit aucun HTML et ne retombe pas sur <code>name</code>.</p>
 <p>La présence de <code>link</code> génère un <code>&lt;a&gt;</code> par défaut. Sans <code>link</code>, le composant
 génère un <code>&lt;button&gt;</code> par défaut, ou un <code>&lt;span&gt;</code> avec <code>element =&gt; 'span'</code>.</p>
 <p>Exemples avec <code>element</code> explicite :</p>
-<pre><code class="language-php"><span class="hljs-comment">// Bouton natif : &lt;button type=&quot;button&quot; class=&quot;btn btn-1&quot;&gt;…&lt;/button&gt;</span>
+<pre><code class="language-php"><span class="hljs-comment">// Bouton natif : &lt;button type=&quot;button&quot; class=&quot;btn btn-solid&quot;&gt;…&lt;/button&gt;</span>
 <span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;btn&#x27;</span>, [
     <span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;Ouvrir&#x27;</span>,
     <span class="hljs-string">&#x27;element&#x27;</span> =&gt; <span class="hljs-string">&#x27;button&#x27;</span>,
-    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-1&#x27;</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-solid&#x27;</span>,
 ]);
 
-<span class="hljs-comment">// Lien : &lt;a href=&quot;/projet/&quot; class=&quot;btn btn-1&quot;&gt;…&lt;/a&gt;</span>
+<span class="hljs-comment">// Lien : &lt;a href=&quot;/projet/&quot; class=&quot;btn btn-solid&quot;&gt;…&lt;/a&gt;</span>
 <span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;btn&#x27;</span>, [
     <span class="hljs-string">&#x27;link&#x27;</span> =&gt; [
         <span class="hljs-string">&#x27;url&#x27;</span> =&gt; <span class="hljs-string">&#x27;/projet/&#x27;</span>,
         <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Découvrir le projet&#x27;</span>,
     ],
     <span class="hljs-string">&#x27;element&#x27;</span> =&gt; <span class="hljs-string">&#x27;a&#x27;</span>,
-    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-1&#x27;</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-solid&#x27;</span>,
 ]);
 
-<span class="hljs-comment">// Élément visuel : &lt;span class=&quot;btn btn-1&quot;&gt;…&lt;/span&gt;</span>
+<span class="hljs-comment">// Élément visuel : &lt;span class=&quot;btn btn-solid&quot;&gt;…&lt;/span&gt;</span>
 <span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;btn&#x27;</span>, [
     <span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;Découvrir&#x27;</span>,
     <span class="hljs-string">&#x27;element&#x27;</span> =&gt; <span class="hljs-string">&#x27;span&#x27;</span>,
     <span class="hljs-string">&#x27;svg&#x27;</span> =&gt; <span class="hljs-literal">true</span>,
-    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-1&#x27;</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-solid&#x27;</span>,
 ]);
 </code></pre>
 <p><code>element</code> ne change pas le mode choisi par la présence de <code>link</code> : <code>a</code> exige
@@ -3928,7 +4104,7 @@ visuel non interactif afin d'éviter d'imbriquer deux liens :</p>
         <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Découvrir le projet&#x27;</span>,
     ],
     <span class="hljs-string">&#x27;element&#x27;</span> =&gt; <span class="hljs-string">&#x27;span&#x27;</span>,
-    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-1&#x27;</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-solid&#x27;</span>,
 ]);
 </code></pre>
 <p>Avec <code>link</code>, le <code>span</code> utilise <code>link.title</code>. Sans <code>link</code>, il utilise <code>name</code>. Il ne rend jamais <code>href</code>, <code>target</code>, <code>rel</code>,
@@ -3940,7 +4116,7 @@ Un <code>link</code> fourni doit rester valide, même avec <code>element =&gt; '
 <pre><code class="language-php"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;btn&#x27;</span>, [
     <span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;See&#x27;</span>,
     <span class="hljs-string">&#x27;element&#x27;</span> =&gt; <span class="hljs-string">&#x27;span&#x27;</span>,
-    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-1&#x27;</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-solid&#x27;</span>,
 ]);
 </code></pre>
 <h5>Bouton natif</h5>
@@ -3970,17 +4146,27 @@ Un <code>link</code> fourni doit rester valide, même avec <code>element =&gt; '
 <pre><code class="language-php"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;btn&#x27;</span>, [
     <span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;Découvrir&#x27;</span>,
     <span class="hljs-string">&#x27;svg&#x27;</span> =&gt; <span class="hljs-literal">true</span>,
-    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-1&#x27;</span>,
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-solid&#x27;</span>,
 ]);
 </code></pre>
 <p><code>svg</code> affiche une flèche décorative de 24 × 24, définie directement dans le
-template <code>btn.php</code>, avec la classe <code>.btn-svg</code> et la couleur <code>currentColor</code>.
+rendu partagé <code>template-parts/utils/action.php</code>, avec la classe <code>.btn-svg</code>
+et la couleur <code>currentColor</code>.
 Elle porte <code>aria-hidden=&quot;true&quot;</code> et <code>focusable=&quot;false&quot;</code>.
 Cette option fonctionne pour les racines <code>button</code>, <code>a</code> et <code>span</code>.
 Si <code>svg</code> est vrai, <code>icon</code> est ignoré. Par défaut (<code>false</code>), le rendu de <code>icon</code>
 est conservé. Les booléens et leurs représentations usuelles en chaîne sont
 normalisés avec <code>component_bool()</code>.</p>
 <h5>Icône</h5>
+<p>La classe <code>icon-first</code> place l’icône ou la flèche SVG avant le libellé.
+Sans cette classe, elle reste après. Ce réglage est purement visuel et ne
+modifie pas l’ordre du HTML.</p>
+<pre><code class="language-php"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;btn&#x27;</span>, [
+    <span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;Découvrir&#x27;</span>,
+    <span class="hljs-string">&#x27;icon&#x27;</span> =&gt; [<span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;blank&#x27;</span>],
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-solid icon-first&#x27;</span>,
+]);
+</code></pre>
 <p>L’icône utilise exclusivement un payload associatif :</p>
 <pre><code class="language-php"><span class="hljs-string">&#x27;icon&#x27;</span> =&gt; [
     <span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;blank&#x27;</span>,
@@ -4026,6 +4212,57 @@ un <code>aria-label</code> seul ne produit aucun HTML.</p>
 </code></pre>
 <p>La classe <code>btn-icon</code> est une classe fournie par l’appelant ; elle n’active
 pas le mode icône seule et n’ajoute aucun style automatiquement.</p>
+<h5>Couleurs contextuelles</h5>
+<p><code>.btn-solid</code> conserve sa palette standard. Avec la classe <code>.btn-invert</code>, les couleurs
+sont héritées du contexte : <code>.btn-solid.btn-invert</code> utilise <code>--bg-action</code>,
+<code>--bg-action-text</code>, <code>--bg-action-hover</code> et <code>--bg-action-hover-text</code>.
+<code>.btn-outline</code> utilise <code>--bg-action</code> pour son texte et sa bordure (<code>currentColor</code>).
+<code>.btn-ghost</code> utilise aussi <code>--bg-action</code> pour son texte et mélange cette couleur
+à 10 % avec du transparent pour son fond au survol.
+Les classes <code>.bg-color-1</code>, <code>.bg-color-2</code> et <code>.bg-color-3</code> définissent ces valeurs,
+y compris pour des fonds imbriqués. Aucun paramètre PHP supplémentaire n’est requis.
+La palette globale reste dans <code>--color-*</code>, le contexte de fond utilise
+<code>--bg-*</code> et le rendu du bouton utilise ses variables <code>--btn-*</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Variable du fond</th>
+<th>Utilisation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--bg-action</code></td>
+<td>Fond de Solid Invert, texte de Outline et Ghost</td>
+</tr>
+<tr>
+<td><code>--bg-action-text</code></td>
+<td>Texte de Solid Invert</td>
+</tr>
+<tr>
+<td><code>--bg-action-hover</code></td>
+<td>Fond de Solid Invert au survol</td>
+</tr>
+<tr>
+<td><code>--bg-action-hover-text</code></td>
+<td>Texte de Solid Invert au survol</td>
+</tr>
+</tbody>
+</table>
+<p>Les valeurs par défaut sont définies sur <code>:root</code> dans <code>variables.scss</code>.
+Chaque <code>.bg-color-*</code> redéfinit la palette complète : un fond imbriqué retrouve
+ainsi ses propres couleurs, sans modifier les variables globales <code>--color-*</code>.</p>
+<pre><code class="language-php"><span class="hljs-comment">// La couleur dépend du contexte .bg-color-* englobant.</span>
+<span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;btn&#x27;</span>, [<span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;Découvrir&#x27;</span>, <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;btn-solid btn-invert&#x27;</span>]);
+</code></pre>
+<p><code>.btn</code> porte les règles de fond, couleur, bordure et survol. Les variantes
+définissent uniquement <code>--btn-bg</code>, <code>--btn-color</code>, <code>--btn-border</code>,
+<code>--btn-hover-bg</code> et <code>--btn-hover-color</code>. Ces variables sont réinitialisées sur
+chaque <code>.btn</code> pour éviter l’héritage accidentel d’un autre bouton.</p>
+<p>Le même survol s’applique lorsque le bouton est survolé directement ou que son
+parent <code>.card</code> est survolé. Le focus clavier reste visible avec un contour et
+les états <code>disabled</code> / <code>aria-disabled=&quot;true&quot;</code> réduisent l’opacité et neutralisent
+les interactions à la souris.</p>
 <h5>Dépendances</h5>
 <ul>
 <li><code>theme_link()</code> pour normaliser et sécuriser les liens ;</li>
@@ -5262,17 +5499,17 @@ jamais chargée en lazy.</p>
         <section class="design-system-section design-system-section--component" id="component-link">
             <div class="design-system-demo">
                 <h2 class="design-system-section-title"><code>link</code></h2>
-                <p class="design-system-note">Version 1.0.0</p>
+                <p class="design-system-note">Version 1.2.0</p>
                                 <div class="design-system-variants">
                                             <div class="design-system-variant">
-                            <h3><code>link-1</code></h3>
+                            <h3><code>link</code></h3>
                             <ul class="design-system-preview" role="list">
                                                                     <li>
-                                        <a href="#component-link" class="link link-1">
+                                        <a href="#component-link" class="link">
             Lien simple        </a>
                                     </li>
                                                                     <li>
-                                        <a href="#component-link" class="link link-1">
+                                        <a href="#component-link" class="link">
             <span>Lien avec icône</span>
                 <svg class="icon icon-blank" width="16" height="16" aria-hidden="true" focusable="false">
     <use href="/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/img/icons.svg#blank"></use>
@@ -5280,7 +5517,7 @@ jamais chargée en lazy.</p>
     </a>
                                     </li>
                                                                     <li>
-                                        <a href="#component-link" class="link link-1">
+                                        <a href="#component-link" class="link">
             <span>Lien avec SVG</span>
                 <svg class="link-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
             <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -5288,34 +5525,34 @@ jamais chargée en lazy.</p>
     </a>
                                     </li>
                                                                     <li>
-                                        <a href="#component-link" class="link link-1" aria-label="Découvrir le projet (icône seule)">
+                                        <a href="#component-link" class="link" aria-label="Découvrir le projet (icône seule)">
                 <svg class="icon icon-blank" width="16" height="16" aria-hidden="true" focusable="false">
     <use href="/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/img/icons.svg#blank"></use>
 </svg>
     </a>
                                     </li>
                                                                     <li>
-                                        <a href="#component-link" class="link link-1" aria-label="Découvrir le projet (SVG seul)">
+                                        <a href="#component-link" class="link" aria-label="Découvrir le projet (SVG seul)">
                 <svg class="link-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
             <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
     </a>
                                     </li>
                                                                     <li>
-                                        <a class="link link-1" aria-disabled>
+                                        <a class="link" aria-disabled>
             Lien désactivé        </a>
                                     </li>
                                                             </ul>
                         </div>
                                             <div class="design-system-variant">
-                            <h3><code>link-2</code></h3>
+                            <h3><code>link-invert</code></h3>
                             <ul class="design-system-preview" role="list">
                                                                     <li>
-                                        <a href="#component-link" class="link link-2">
+                                        <a href="#component-link" class="link link-invert">
             Lien simple        </a>
                                     </li>
                                                                     <li>
-                                        <a href="#component-link" class="link link-2">
+                                        <a href="#component-link" class="link link-invert">
             <span>Lien avec icône</span>
                 <svg class="icon icon-blank" width="16" height="16" aria-hidden="true" focusable="false">
     <use href="/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/img/icons.svg#blank"></use>
@@ -5323,7 +5560,7 @@ jamais chargée en lazy.</p>
     </a>
                                     </li>
                                                                     <li>
-                                        <a href="#component-link" class="link link-2">
+                                        <a href="#component-link" class="link link-invert">
             <span>Lien avec SVG</span>
                 <svg class="link-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
             <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -5331,21 +5568,64 @@ jamais chargée en lazy.</p>
     </a>
                                     </li>
                                                                     <li>
-                                        <a href="#component-link" class="link link-2" aria-label="Découvrir le projet (icône seule)">
+                                        <a href="#component-link" class="link link-invert" aria-label="Découvrir le projet (icône seule)">
                 <svg class="icon icon-blank" width="16" height="16" aria-hidden="true" focusable="false">
     <use href="/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/img/icons.svg#blank"></use>
 </svg>
     </a>
                                     </li>
                                                                     <li>
-                                        <a href="#component-link" class="link link-2" aria-label="Découvrir le projet (SVG seul)">
+                                        <a href="#component-link" class="link link-invert" aria-label="Découvrir le projet (SVG seul)">
                 <svg class="link-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
             <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
     </a>
                                     </li>
                                                                     <li>
-                                        <a class="link link-2" aria-disabled>
+                                        <a class="link link-invert" aria-disabled>
+            Lien désactivé        </a>
+                                    </li>
+                                                            </ul>
+                        </div>
+                                            <div class="design-system-variant">
+                            <h3><code>link icon-first</code></h3>
+                            <ul class="design-system-preview" role="list">
+                                                                    <li>
+                                        <a href="#component-link" class="link icon-first">
+            Lien simple        </a>
+                                    </li>
+                                                                    <li>
+                                        <a href="#component-link" class="link icon-first">
+            <span>Lien avec icône</span>
+                <svg class="icon icon-blank" width="16" height="16" aria-hidden="true" focusable="false">
+    <use href="/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/img/icons.svg#blank"></use>
+</svg>
+    </a>
+                                    </li>
+                                                                    <li>
+                                        <a href="#component-link" class="link icon-first">
+            <span>Lien avec SVG</span>
+                <svg class="link-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    </a>
+                                    </li>
+                                                                    <li>
+                                        <a href="#component-link" class="link icon-first" aria-label="Découvrir le projet (icône seule)">
+                <svg class="icon icon-blank" width="16" height="16" aria-hidden="true" focusable="false">
+    <use href="/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/img/icons.svg#blank"></use>
+</svg>
+    </a>
+                                    </li>
+                                                                    <li>
+                                        <a href="#component-link" class="link icon-first" aria-label="Découvrir le projet (SVG seul)">
+                <svg class="link-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    </a>
+                                    </li>
+                                                                    <li>
+                                        <a class="link icon-first" aria-disabled>
             Lien désactivé        </a>
                                     </li>
                                                             </ul>
@@ -5366,7 +5646,6 @@ jamais chargée en lazy.</p>
         <span class="hljs-string">&#x27;target&#x27;</span> =&gt; <span class="hljs-string">&#x27;_blank&#x27;</span>,
     ],
     <span class="hljs-string">&#x27;element&#x27;</span> =&gt; <span class="hljs-string">&#x27;a&#x27;</span>,
-    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;link-1&#x27;</span>,
     <span class="hljs-string">&#x27;svg&#x27;</span> =&gt; <span class="hljs-literal">true</span>,
 ]);
 </code></pre>
@@ -5374,7 +5653,6 @@ jamais chargée en lazy.</p>
 <pre><code class="language-php"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;link&#x27;</span>, [
     <span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;Ouvrir les détails&#x27;</span>,
     <span class="hljs-string">&#x27;element&#x27;</span> =&gt; <span class="hljs-string">&#x27;button&#x27;</span>,
-    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;link-1&#x27;</span>,
     <span class="hljs-string">&#x27;attributes&#x27;</span> =&gt; [<span class="hljs-string">&#x27;type&#x27;</span> =&gt; <span class="hljs-string">&#x27;button&#x27;</span>],
 ]);
 </code></pre>
@@ -5382,7 +5660,6 @@ jamais chargée en lazy.</p>
 <pre><code class="language-php"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;link&#x27;</span>, [
     <span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;Découvrir&#x27;</span>,
     <span class="hljs-string">&#x27;element&#x27;</span> =&gt; <span class="hljs-string">&#x27;span&#x27;</span>,
-    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;link-1&#x27;</span>,
     <span class="hljs-string">&#x27;svg&#x27;</span> =&gt; <span class="hljs-literal">true</span>,
 ]);
 </code></pre>
@@ -5487,6 +5764,58 @@ un <code>aria-label</code> seul ne produit aucun HTML.</p>
 </code></pre>
 <p>La classe <code>link-icon</code> est une classe fournie par l’appelant ; elle n’active
 pas le mode icône seule et n’ajoute aucun style automatiquement.</p>
+<h5>Position de l’icône</h5>
+<p>La classe <code>icon-first</code> place l’icône ou la flèche SVG avant le texte. Sans cette
+classe, elle reste après. L’ordre du HTML reste inchangé.</p>
+<pre><code class="language-php"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;link&#x27;</span>, [
+    <span class="hljs-string">&#x27;link&#x27;</span> =&gt; [<span class="hljs-string">&#x27;url&#x27;</span> =&gt; <span class="hljs-string">&#x27;/contact/&#x27;</span>, <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Contact&#x27;</span>],
+    <span class="hljs-string">&#x27;icon&#x27;</span> =&gt; [<span class="hljs-string">&#x27;name&#x27;</span> =&gt; <span class="hljs-string">&#x27;blank&#x27;</span>],
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;icon-first&#x27;</span>,
+]);
+</code></pre>
+<h5>Couleurs contextuelles</h5>
+<p>Le composant définit <code>--link-color</code> et <code>--link-color-hover</code> pour sa couleur
+normale et sa couleur au survol. Le lien standard utilise <code>--color-2</code>.
+Les classes <code>.bg-color-*</code> ne définissent aucune variable propre aux liens.</p>
+<table>
+<thead>
+<tr>
+<th>Niveau</th>
+<th>Variables</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Palette globale</td>
+<td><code>--color-*</code></td>
+<td>Couleurs de référence du site</td>
+</tr>
+<tr>
+<td>Contexte de fond</td>
+<td><code>--bg-color</code>, <code>--bg-text</code></td>
+<td>Fond et texte du contexte courant</td>
+</tr>
+<tr>
+<td>Composant</td>
+<td><code>--link-color</code>, <code>--link-color-hover</code></td>
+<td>Couleurs normale et au survol</td>
+</tr>
+</tbody>
+</table>
+<p>Avec <code>.link-invert</code>, <code>--link-color</code> reprend directement <code>--bg-text</code> du
+contexte et la couleur de survol suit cette même valeur.
+<code>--bg-text</code> est défini par défaut sur <code>:root</code> et redéfini par chaque
+<code>.bg-color-*</code>. Cela fonctionne aussi avec des fonds imbriqués, sans modifier
+<code>--color-text</code> ni nécessiter de sélecteur parent spécifique.</p>
+<pre><code class="language-php"><span class="hljs-title function_ invoke__">component</span>(<span class="hljs-string">&#x27;link&#x27;</span>, [
+    <span class="hljs-string">&#x27;link&#x27;</span> =&gt; [<span class="hljs-string">&#x27;url&#x27;</span> =&gt; <span class="hljs-string">&#x27;/contact/&#x27;</span>, <span class="hljs-string">&#x27;title&#x27;</span> =&gt; <span class="hljs-string">&#x27;Contact&#x27;</span>],
+    <span class="hljs-string">&#x27;classes&#x27;</span> =&gt; <span class="hljs-string">&#x27;link-invert&#x27;</span>,
+]);
+</code></pre>
+<p>La classe <code>link</code> est ajoutée automatiquement ; <code>link-1</code> n’est plus utilisée.
+Le soulignement apparaît au survol. Le focus clavier conserve un contour et un
+soulignement visibles avec <code>currentColor</code>.</p>
 <h5>Dépendances</h5>
 <ul>
 <li><code>theme_link()</code> pour normaliser les liens ;</li>
@@ -9039,10 +9368,10 @@ ne contourne jamais le clic obligatoire.</p>
 </footer>
 <script id="forge-design-system-js-module" src="/starterkit-lonsdale-2027/assets/boot.js?ver=1794653906" type="module"></script>
 <script id="app-js-js-extra">
-var ParamsData = {"ajaxUrl":"/wp-admin/admin-ajax.php","nonce":"1eeef5f911"};
+var ParamsData = {"ajaxUrl":"/wp-admin/admin-ajax.php","nonce":"defc338493"};
 //# sourceURL=app-js-js-extra
 </script>
-<script id="app-js-js" defer src="/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/js/app.js?ver=1794765527"></script>
+<script id="app-js-js" defer src="/starterkit-lonsdale-2027/wp-content/themes/starterkit-lonsdale-2027/assets/js/app.js?ver=1794832314"></script>
 
 </body>
 </html>
