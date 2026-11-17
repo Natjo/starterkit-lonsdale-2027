@@ -44,7 +44,7 @@ $tag = $url !== '' ? 'a' : 'div';
         <?php component('btn', [
             'name' => "See",
             'element' => 'span',
-            'classes' => 'btn-1 cta',
+            'classes' => 'btn-solid cta',
         ]); ?>
     </<?= $tag ?>>
 </div>

@@ -16,7 +16,8 @@
     --color-shadow: rgba(17, 17, 19, .12);
 
     // text
-    --color-text: #171719;
+    --color-text-default: #171719;
+    --color-text: var(--color-text-default);
     --color-text-invert: #fff;
     --color-muted: #68686f;
     --color-error: #b42318;
@@ -32,6 +33,14 @@
     --color-3: #f1f2f4;
 
     --color-theme: var(--color-2);
+
+    // Palette de fond par défaut, remplacée par les classes .bg-color-*.
+    --bg-color: var(--color-bg);
+    --bg-text: var(--color-text);
+    --bg-action: var(--color-2);
+    --bg-action-text: var(--color-text-invert);
+    --bg-action-hover: color-mix(in srgb, var(--color-1) 86%, #fff);
+    --bg-action-hover-text: var(--color-text-invert);
 
     /*--layout:
     [full] var(--ctr-offset) 

@@ -45,6 +45,6 @@ foreach ($action_items as $item) {
             ?>
         <?php endif; ?>
 
-        <?php if ($action !== null) component('btn', ['link' => $action, 'classes' => 'btn-1 header-nav-action']); ?>
+        <?php if ($action !== null) component('btn', ['link' => $action, 'classes' => 'btn-solid header-nav-action']); ?>
     </nav>
 </header>

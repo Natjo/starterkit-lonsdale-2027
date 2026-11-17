@@ -1,14 +1,27 @@
 .link {
+    --link-color: var(--color-2);
+    --link-color-hover: var(--link-color);
+
     display: inline-flex;
     align-items: center;
     gap: .8rem;
-    color: var(--color-2);
+    color: var(--link-color);
     font-weight: 600;
     text-decoration: underline;
     text-decoration-color: transparent;
     text-underline-offset: .25em;
 
+    &.icon-first > svg {
+        order: -1;
+    }
+
+    &.link-invert {
+        --link-color: var(--bg-text);
+        --link-color-hover: var(--link-color);
+    }
+
     &:hover {
+        color: var(--link-color-hover, var(--link-color));
         text-decoration-color: currentColor;
     }
 
@@ -23,12 +36,4 @@
         opacity: .5;
         pointer-events: none;
     }
-}
-
-.link-1 {
-    font-weight: 600;
-}
-
-.link-2 {
-    font-weight: 600;
 }

@@ -7,12 +7,36 @@ et un payload associatif.
 Le rendu PHP est partagé avec `link` dans `template-parts/utils/action.php`.
 Chaque composant conserve sa classe racine, sa classe SVG et ses styles.
 
+## Variantes visuelles
+
+La classe `btn` est ajoutée automatiquement par le composant. Passer la variante
+souhaitée dans `classes` ; aucune variante visuelle n’est sélectionnée par défaut.
+
+| `classes` | Apparence |
+| --- | --- |
+| `btn-solid` | Fond plein, palette standard |
+| `btn-solid btn-invert` | Fond plein adapté au contexte du fond |
+| `btn-outline` | Bordure, fond transparent |
+| `btn-ghost` | Sans bordure, fond transparent ; léger fond au survol |
+
+```php
+component('btn', ['name' => 'Découvrir', 'classes' => 'btn-solid']);
+component('btn', ['name' => 'Découvrir', 'classes' => 'btn-solid btn-invert']);
+component('btn', ['name' => 'En savoir plus', 'classes' => 'btn-outline']);
+component('btn', ['name' => 'Annuler', 'classes' => 'btn-ghost']);
+```
+
+`btn-invert` est un modificateur de `btn-solid`, pas une variante autonome.
+Les variantes fonctionnent avec un bouton natif, un lien ou un `span` et
+acceptent les options `icon` et `svg` décrites plus bas. Les anciens noms
+`btn-1`, `btn-2` et `light` sont remplacés, sans alias CSS.
+
 ## Bouton
 
 ```php
 component('btn', [
     'name' => 'Envoyer',
-    'classes' => 'btn-1',
+    'classes' => 'btn-solid',
     'attributes' => [
         'type' => 'submit',
         'aria-label' => 'Envoyer le formulaire',
@@ -29,7 +53,7 @@ component('btn', [
         'title' => 'Découvrir le projet',
         'target' => '',
     ],
-    'classes' => 'btn-1',
+    'classes' => 'btn-solid',
     'icon' => [
         'name' => 'blank',
         'width' => 16,
@@ -65,29 +89,29 @@ génère un `<button>` par défaut, ou un `<span>` avec `element => 'span'`.
 Exemples avec `element` explicite :
 
 ```php
-// Bouton natif : <button type="button" class="btn btn-1">…</button>
+// Bouton natif : <button type="button" class="btn btn-solid">…</button>
 component('btn', [
     'name' => 'Ouvrir',
     'element' => 'button',
-    'classes' => 'btn-1',
+    'classes' => 'btn-solid',
 ]);
 
-// Lien : <a href="/projet/" class="btn btn-1">…</a>
+// Lien : <a href="/projet/" class="btn btn-solid">…</a>
 component('btn', [
     'link' => [
         'url' => '/projet/',
         'title' => 'Découvrir le projet',
     ],
     'element' => 'a',
-    'classes' => 'btn-1',
+    'classes' => 'btn-solid',
 ]);
 
-// Élément visuel : <span class="btn btn-1">…</span>
+// Élément visuel : <span class="btn btn-solid">…</span>
 component('btn', [
     'name' => 'Découvrir',
     'element' => 'span',
     'svg' => true,
-    'classes' => 'btn-1',
+    'classes' => 'btn-solid',
 ]);
 ```
 
@@ -105,7 +129,7 @@ component('btn', [
         'title' => 'Découvrir le projet',
     ],
     'element' => 'span',
-    'classes' => 'btn-1',
+    'classes' => 'btn-solid',
 ]);
 ```
 
@@ -122,7 +146,7 @@ Sans lien, pour un CTA visuel dans une card déjà cliquable :
 component('btn', [
     'name' => 'See',
     'element' => 'span',
-    'classes' => 'btn-1',
+    'classes' => 'btn-solid',
 ]);
 ```
 
@@ -164,12 +188,13 @@ Un lien avec `aria-disabled="true"` est rendu sans `href` ni `target`.
 component('btn', [
     'name' => 'Découvrir',
     'svg' => true,
-    'classes' => 'btn-1',
+    'classes' => 'btn-solid',
 ]);
 ```
 
 `svg` affiche une flèche décorative de 24 × 24, définie directement dans le
-template `btn.php`, avec la classe `.btn-svg` et la couleur `currentColor`.
+rendu partagé `template-parts/utils/action.php`, avec la classe `.btn-svg`
+et la couleur `currentColor`.
 Elle porte `aria-hidden="true"` et `focusable="false"`.
 Cette option fonctionne pour les racines `button`, `a` et `span`.
 Si `svg` est vrai, `icon` est ignoré. Par défaut (`false`), le rendu de `icon`
@@ -177,6 +202,18 @@ est conservé. Les booléens et leurs représentations usuelles en chaîne sont
 normalisés avec `component_bool()`.
 
 ## Icône
+
+La classe `icon-first` place l’icône ou la flèche SVG avant le libellé.
+Sans cette classe, elle reste après. Ce réglage est purement visuel et ne
+modifie pas l’ordre du HTML.
+
+```php
+component('btn', [
+    'name' => 'Découvrir',
+    'icon' => ['name' => 'blank'],
+    'classes' => 'btn-solid icon-first',
+]);
+```
 
 L’icône utilise exclusivement un payload associatif :
 
@@ -233,6 +270,45 @@ component('btn', [
 
 La classe `btn-icon` est une classe fournie par l’appelant ; elle n’active
 pas le mode icône seule et n’ajoute aucun style automatiquement.
+
+## Couleurs contextuelles
+
+`.btn-solid` conserve sa palette standard. Avec la classe `.btn-invert`, les couleurs
+sont héritées du contexte : `.btn-solid.btn-invert` utilise `--bg-action`,
+`--bg-action-text`, `--bg-action-hover` et `--bg-action-hover-text`.
+`.btn-outline` utilise `--bg-action` pour son texte et sa bordure (`currentColor`).
+`.btn-ghost` utilise aussi `--bg-action` pour son texte et mélange cette couleur
+à 10 % avec du transparent pour son fond au survol.
+Les classes `.bg-color-1`, `.bg-color-2` et `.bg-color-3` définissent ces valeurs,
+y compris pour des fonds imbriqués. Aucun paramètre PHP supplémentaire n’est requis.
+La palette globale reste dans `--color-*`, le contexte de fond utilise
+`--bg-*` et le rendu du bouton utilise ses variables `--btn-*`.
+
+| Variable du fond | Utilisation |
+| --- | --- |
+| `--bg-action` | Fond de Solid Invert, texte de Outline et Ghost |
+| `--bg-action-text` | Texte de Solid Invert |
+| `--bg-action-hover` | Fond de Solid Invert au survol |
+| `--bg-action-hover-text` | Texte de Solid Invert au survol |
+
+Les valeurs par défaut sont définies sur `:root` dans `variables.scss`.
+Chaque `.bg-color-*` redéfinit la palette complète : un fond imbriqué retrouve
+ainsi ses propres couleurs, sans modifier les variables globales `--color-*`.
+
+```php
+// La couleur dépend du contexte .bg-color-* englobant.
+component('btn', ['name' => 'Découvrir', 'classes' => 'btn-solid btn-invert']);
+```
+
+`.btn` porte les règles de fond, couleur, bordure et survol. Les variantes
+définissent uniquement `--btn-bg`, `--btn-color`, `--btn-border`,
+`--btn-hover-bg` et `--btn-hover-color`. Ces variables sont réinitialisées sur
+chaque `.btn` pour éviter l’héritage accidentel d’un autre bouton.
+
+Le même survol s’applique lorsque le bouton est survolé directement ou que son
+parent `.card` est survolé. Le focus clavier reste visible avec un contour et
+les états `disabled` / `aria-disabled="true"` réduisent l’opacité et neutralisent
+les interactions à la souris.
 
 ## Dépendances
 

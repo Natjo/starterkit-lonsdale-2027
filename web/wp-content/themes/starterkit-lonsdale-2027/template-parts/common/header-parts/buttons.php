@@ -5,7 +5,7 @@ $header_items = is_array($header_items) ? array_filter($header_items, static fn 
 if ($header_items !== []) : ?>
         <div class="header-actions">
             <?php foreach ($header_items as $item) :
-                $payload = ['link' => ['url' => $item->url, 'title' => $item->title, 'target' => $item->target], 'classes' => 'btn-1'];
+                $payload = ['link' => ['url' => $item->url, 'title' => $item->title, 'target' => $item->target], 'classes' => 'btn-solid'];
 
                 component('btn', $payload);
             endforeach; ?>

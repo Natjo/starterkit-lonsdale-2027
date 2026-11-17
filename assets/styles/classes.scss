@@ -72,17 +72,33 @@
 /* bg */
 .bg-color-1 {
     --bg-color: var(--color-1);
-    background-color: var(--color-1);
-    color: var(--color-text-invert);
+    --bg-text: var(--color-text-invert);
+    --bg-action: var(--color-text-invert);
+    --bg-action-text: var(--color-1);
+    --bg-action-hover: var(--color-3);
+    --bg-action-hover-text: var(--color-1);
+    background-color: var(--bg-color);
+    color: var(--bg-text);
 }
 .bg-color-2 {
-    background-color: var(--color-2);
-    color: var(--color-text-invert);
-  
+    --bg-color: var(--color-2);
+    --bg-text: var(--color-text-invert);
+    --bg-action: var(--color-text-invert);
+    --bg-action-text: var(--color-1);
+    --bg-action-hover: var(--color-3);
+    --bg-action-hover-text: var(--color-1);
+    background-color: var(--bg-color);
+    color: var(--bg-text);
 }
 .bg-color-3 {
-    background-color: var(--color-3);
-    color: var(--color-text);
+    --bg-color: var(--color-3);
+    --bg-text: var(--color-text-default);
+    --bg-action: var(--color-2);
+    --bg-action-text: var(--color-text-invert);
+    --bg-action-hover: color-mix(in srgb, var(--color-1) 86%, #fff);
+    --bg-action-hover-text: var(--color-text-invert);
+    background-color: var(--bg-color);
+    color: var(--bg-text);
 }
 
 

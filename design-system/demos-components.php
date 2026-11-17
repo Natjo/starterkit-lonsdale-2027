@@ -68,7 +68,7 @@
                 ];
                 ?>
                 <div class="design-system-variants">
-                    <?php foreach (['btn-1', 'btn-2'] as $variant) : ?>
+                    <?php foreach (['btn-solid', 'btn-outline', 'btn-ghost', 'btn-solid btn-invert'] as $variant) : ?>
                         <div class="design-system-variant">
                             <h3><code><?= esc_html($variant) ?></code></h3>
                             <ul class="design-system-preview" role="list">
@@ -269,7 +269,7 @@
                 ];
                 ?>
                 <div class="design-system-variants">
-                    <?php foreach (['link-1', 'link-2'] as $variant) : ?>
+                    <?php foreach (['link', 'link-invert', 'link icon-first'] as $variant) : ?>
                         <div class="design-system-variant">
                             <h3><code><?= esc_html($variant) ?></code></h3>
                             <ul class="design-system-preview" role="list">

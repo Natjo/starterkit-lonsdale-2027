@@ -15,6 +15,12 @@ $backgrounds = is_array($backgrounds) ? array_values(array_unique(array_filter($
                         <div class="design-system-background-sample <?= esc_attr($background) ?>">
                             <span>Aa</span>
                             <span>Exemple de texte sur ce fond.</span>
+                            <div class="design-system-background-actions">
+                                <?php component('btn', ['name' => 'Bouton principal', 'classes' => 'btn-solid btn-invert']); ?>
+                                <?php component('btn', ['name' => 'Bouton secondaire', 'classes' => 'btn-outline']); ?>
+                                <?php component('btn', ['name' => 'Bouton ghost', 'classes' => 'btn-ghost']); ?>
+                                <?php component('link', ['link' => ['url' => '#style-backgrounds', 'title' => 'Exemple de lien'], 'classes' => 'link-invert']); ?>
+                            </div>
                         </div>
                         <code>.<?= esc_html($background) ?></code>
                     </li>

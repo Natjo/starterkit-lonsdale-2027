@@ -104,7 +104,7 @@ common('header-nav');
 
             <?php component('btn', [
                 'name' => 'Envoyer',
-                'classes' => 'btn-1 contact-submit',
+                'classes' => 'btn-solid contact-submit',
                 'attributes' => ['type' => 'submit'],
             ]); ?>
         </form>

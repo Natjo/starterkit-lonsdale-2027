@@ -155,7 +155,7 @@ $control_types = ['text', 'search', 'select', 'checkbox', 'checkboxes', 'radios'
     <div class="filters-actions">
         <?php component('btn', [
             'name' => $submit_label,
-            'classes' => 'btn-1 filters-submit',
+            'classes' => 'btn-solid filters-submit',
             'attributes' => ['type' => 'submit'],
         ]); ?>
 
@@ -165,7 +165,7 @@ $control_types = ['text', 'search', 'select', 'checkbox', 'checkboxes', 'radios'
                     'url' => $reset_url,
                     'title' => $reset_label,
                 ],
-                'classes' => 'btn-2 filters-reset',
+                'classes' => 'btn-outline filters-reset',
             ]); ?>
         <?php endif; ?>
     </div>

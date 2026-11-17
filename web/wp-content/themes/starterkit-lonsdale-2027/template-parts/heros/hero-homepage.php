@@ -20,7 +20,7 @@ $args = get_template_args();
         
         <?php component('btn', [
             'link' => $args['link'] ?? null,
-            'classes' => 'btn-1 hero-link',
+            'classes' => 'btn-solid hero-link',
         ]); ?>
     </div>
 

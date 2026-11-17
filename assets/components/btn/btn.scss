@@ -1,4 +1,10 @@
 .btn {
+    --btn-bg: initial;
+    --btn-color: initial;
+    --btn-border: initial;
+    --btn-hover-bg: initial;
+    --btn-hover-color: initial;
+
     font-size: 1.4rem;
     font-weight: 400;
     line-height: 2rem;
@@ -9,6 +15,19 @@
     gap: .8rem;
     border-radius: var(--radius);
     text-align: center;
+    background: var(--btn-bg, transparent);
+    color: var(--btn-color, inherit);
+    border: var(--btn-border, 0);
+
+    &.icon-first > svg {
+        order: -1;
+    }
+
+    .card:hover &,
+    &:hover {
+        background: var(--btn-hover-bg, var(--btn-bg, transparent));
+        color: var(--btn-hover-color, var(--btn-color, inherit));
+    }
 
     &:focus-visible {
         outline: 2px solid currentColor;
@@ -32,16 +51,26 @@
     }
 }
 
-.btn-1 {
-    background: var(--color-2);
-    color: var(--color-text-invert);
+.btn-solid {
+    --btn-bg: var(--color-2);
+    --btn-color: var(--color-text-invert);
+    --btn-hover-bg: color-mix(in srgb, var(--color-1) 86%, #fff);
+    --btn-hover-color: var(--color-text-invert);
 
-    .card:hover &,
-    &:hover {
-        background: color-mix(in srgb, var(--color-1) 86%, #fff);
+    &.btn-invert {
+        --btn-bg: var(--bg-action);
+        --btn-color: var(--bg-action-text);
+        --btn-hover-bg: var(--bg-action-hover);
+        --btn-hover-color: var(--bg-action-hover-text);
     }
 }
 
-.btn-2 {
-    border: 1px solid var(--color-2);
+.btn-outline {
+    --btn-color: var(--bg-action);
+    --btn-border: 1px solid currentColor;
+}
+
+.btn-ghost {
+    --btn-color: var(--bg-action);
+    --btn-hover-bg: color-mix(in srgb, var(--bg-action) 10%, transparent);
 }

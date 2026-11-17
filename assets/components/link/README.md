@@ -14,7 +14,6 @@ component('link', [
         'target' => '_blank',
     ],
     'element' => 'a',
-    'classes' => 'link-1',
     'svg' => true,
 ]);
 ```
@@ -25,7 +24,6 @@ component('link', [
 component('link', [
     'name' => 'Ouvrir les détails',
     'element' => 'button',
-    'classes' => 'link-1',
     'attributes' => ['type' => 'button'],
 ]);
 ```
@@ -36,7 +34,6 @@ component('link', [
 component('link', [
     'name' => 'Découvrir',
     'element' => 'span',
-    'classes' => 'link-1',
     'svg' => true,
 ]);
 ```
@@ -111,6 +108,48 @@ component('link', [
 
 La classe `link-icon` est une classe fournie par l’appelant ; elle n’active
 pas le mode icône seule et n’ajoute aucun style automatiquement.
+
+## Position de l’icône
+
+La classe `icon-first` place l’icône ou la flèche SVG avant le texte. Sans cette
+classe, elle reste après. L’ordre du HTML reste inchangé.
+
+```php
+component('link', [
+    'link' => ['url' => '/contact/', 'title' => 'Contact'],
+    'icon' => ['name' => 'blank'],
+    'classes' => 'icon-first',
+]);
+```
+
+## Couleurs contextuelles
+
+Le composant définit `--link-color` et `--link-color-hover` pour sa couleur
+normale et sa couleur au survol. Le lien standard utilise `--color-2`.
+Les classes `.bg-color-*` ne définissent aucune variable propre aux liens.
+
+| Niveau | Variables | Rôle |
+| --- | --- | --- |
+| Palette globale | `--color-*` | Couleurs de référence du site |
+| Contexte de fond | `--bg-color`, `--bg-text` | Fond et texte du contexte courant |
+| Composant | `--link-color`, `--link-color-hover` | Couleurs normale et au survol |
+
+Avec `.link-invert`, `--link-color` reprend directement `--bg-text` du
+contexte et la couleur de survol suit cette même valeur.
+`--bg-text` est défini par défaut sur `:root` et redéfini par chaque
+`.bg-color-*`. Cela fonctionne aussi avec des fonds imbriqués, sans modifier
+`--color-text` ni nécessiter de sélecteur parent spécifique.
+
+```php
+component('link', [
+    'link' => ['url' => '/contact/', 'title' => 'Contact'],
+    'classes' => 'link-invert',
+]);
+```
+
+La classe `link` est ajoutée automatiquement ; `link-1` n’est plus utilisée.
+Le soulignement apparaît au survol. Le focus clavier conserve un contour et un
+soulignement visibles avec `currentColor`.
 
 ## Dépendances
 

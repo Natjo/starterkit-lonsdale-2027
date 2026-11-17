@@ -22,6 +22,6 @@ if ($title === '') return;
             'url' => $args['link']['url'],
             'title' => 'See more',
         ],
-        'classes' => 'btn-1',
+        'classes' => 'btn-solid',
     ]); ?>
 </div>

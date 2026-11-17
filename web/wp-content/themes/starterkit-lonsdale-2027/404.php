@@ -33,7 +33,7 @@ common('header-nav');
 
         <?php component('btn', [
             'link' => is_array($page_404['link'] ?? null) ? $page_404['link'] : [],
-            'classes' => 'btn-1 page-404-link',
+            'classes' => 'btn-solid page-404-link',
         ]); ?>
     </div>
 </main>
